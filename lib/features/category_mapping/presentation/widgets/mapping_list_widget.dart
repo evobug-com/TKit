@@ -27,21 +27,23 @@ class MappingListWidget extends StatelessWidget {
           children: [
             Icon(
               Icons.category_outlined,
-              size: 64,
+              size: 48,
               color: TKitColors.textMuted,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             Text(
               l10n.categoryMappingListEmpty,
               style: TKitTextStyles.bodyMedium.copyWith(
                 color: TKitColors.textSecondary,
+                fontSize: 14,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             Text(
               l10n.categoryMappingListEmptySubtitle,
               style: TKitTextStyles.bodySmall.copyWith(
                 color: TKitColors.textMuted,
+                fontSize: 12,
               ),
             ),
           ],
@@ -71,11 +73,18 @@ class MappingListWidget extends StatelessWidget {
             ),
             headingTextStyle: TKitTextStyles.labelLarge.copyWith(
               color: TKitColors.textPrimary,
+              fontSize: 12,
               letterSpacing: 0.5,
             ),
             dataTextStyle: TKitTextStyles.bodyMedium.copyWith(
               color: TKitColors.textSecondary,
+              fontSize: 13,
             ),
+            headingRowHeight: 48,
+            dataRowMinHeight: 52,
+            dataRowMaxHeight: 64,
+            columnSpacing: 24,
+            horizontalMargin: 12,
             columns: [
               DataColumn(label: Text(l10n.categoryMappingListColumnProcessName)),
               DataColumn(label: Text(l10n.categoryMappingListColumnCategory)),
@@ -91,6 +100,7 @@ class MappingListWidget extends StatelessWidget {
                       mapping.processName,
                       style: TKitTextStyles.code.copyWith(
                         color: TKitColors.textPrimary,
+                        fontSize: 13,
                       ),
                     ),
                   ),
@@ -103,12 +113,14 @@ class MappingListWidget extends StatelessWidget {
                           mapping.twitchCategoryName,
                           style: TKitTextStyles.bodyMedium.copyWith(
                             color: TKitColors.textPrimary,
+                            fontSize: 13,
                           ),
                         ),
                         Text(
                           l10n.categoryMappingListCategoryId(mapping.twitchCategoryId),
                           style: TKitTextStyles.bodySmall.copyWith(
                             color: TKitColors.textMuted,
+                            fontSize: 11,
                           ),
                         ),
                       ],
@@ -120,6 +132,7 @@ class MappingListWidget extends StatelessWidget {
                           ? _formatDate(context, mapping.lastUsedAt!)
                           : l10n.categoryMappingListNever,
                       style: TKitTextStyles.bodySmall.copyWith(
+                        fontSize: 12,
                         color: mapping.lastUsedAt != null
                             ? TKitColors.textSecondary
                             : TKitColors.textMuted,
@@ -129,8 +142,8 @@ class MappingListWidget extends StatelessWidget {
                   DataCell(
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
+                        horizontal: 6,
+                        vertical: 3,
                       ),
                       decoration: BoxDecoration(
                         color: mapping.manualOverride
@@ -145,6 +158,7 @@ class MappingListWidget extends StatelessWidget {
                       child: Text(
                         mapping.manualOverride ? l10n.categoryMappingListTypeUser : l10n.categoryMappingListTypePreset,
                         style: TKitTextStyles.caption.copyWith(
+                          fontSize: 10,
                           color: mapping.manualOverride
                               ? TKitColors.accent
                               : TKitColors.textMuted,
@@ -158,19 +172,28 @@ class MappingListWidget extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.edit, size: 18),
+                          icon: const Icon(Icons.edit, size: 16),
                           color: TKitColors.textSecondary,
                           hoverColor: TKitColors.accent.withValues(alpha: 0.2),
                           onPressed: () => onEdit(mapping),
                           tooltip: l10n.categoryMappingListEditTooltip,
+                          padding: const EdgeInsets.all(8),
+                          constraints: const BoxConstraints(
+                            minWidth: 32,
+                            minHeight: 32,
+                          ),
                         ),
-                        const SizedBox(width: 4),
                         IconButton(
-                          icon: const Icon(Icons.delete, size: 18),
+                          icon: const Icon(Icons.delete, size: 16),
                           color: TKitColors.textSecondary,
                           hoverColor: TKitColors.error.withValues(alpha: 0.2),
                           onPressed: () => onDelete(mapping.id!),
                           tooltip: l10n.categoryMappingListDeleteTooltip,
+                          padding: const EdgeInsets.all(8),
+                          constraints: const BoxConstraints(
+                            minWidth: 32,
+                            minHeight: 32,
+                          ),
                         ),
                       ],
                     ),

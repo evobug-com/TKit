@@ -71,7 +71,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
           children: [
             // Header
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(16),
               decoration: const BoxDecoration(
                 border: Border(bottom: BorderSide(color: TKitColors.border)),
                 color: TKitColors.surfaceVariant,
@@ -81,16 +81,16 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                   Icon(
                     isEditMode ? Icons.edit : Icons.add_circle_outline,
                     color: TKitColors.accent,
-                    size: 24,
+                    size: 20,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 10),
                   Text(
                     isEditMode ? l10n.categoryMappingAddDialogEditTitle : l10n.categoryMappingAddDialogAddTitle,
-                    style: TKitTextStyles.heading3,
+                    style: TKitTextStyles.heading3.copyWith(fontSize: 15),
                   ),
                   const Spacer(),
                   IconButton(
-                    icon: const Icon(Icons.close, size: 20),
+                    icon: const Icon(Icons.close, size: 18),
                     color: TKitColors.textSecondary,
                     onPressed: () => Navigator.of(context).pop(),
                     tooltip: l10n.categoryMappingAddDialogClose,
@@ -101,7 +101,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
 
             // Form
             Padding(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(16),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -112,19 +112,22 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                       l10n.categoryMappingAddDialogProcessName,
                       style: TKitTextStyles.labelSmall.copyWith(
                         color: TKitColors.textSecondary,
+                        fontSize: 11,
                         letterSpacing: 1.0,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     TextFormField(
                       controller: _processNameController,
                       style: TKitTextStyles.bodyMedium.copyWith(
                         color: TKitColors.textPrimary,
+                        fontSize: 13,
                       ),
                       decoration: InputDecoration(
                         hintText: l10n.categoryMappingAddDialogProcessNameHint,
                         hintStyle: TKitTextStyles.bodyMedium.copyWith(
                           color: TKitColors.textMuted,
+                          fontSize: 13,
                         ),
                         filled: true,
                         fillColor: TKitColors.background,
@@ -152,8 +155,8 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                           borderSide: const BorderSide(color: TKitColors.error),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 12,
+                          horizontal: 10,
+                          vertical: 10,
                         ),
                       ),
                       validator: (value) {
@@ -163,26 +166,29 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 14),
 
                     // Executable Path (Optional)
                     Text(
                       l10n.categoryMappingAddDialogExecutablePath,
                       style: TKitTextStyles.labelSmall.copyWith(
                         color: TKitColors.textSecondary,
+                        fontSize: 11,
                         letterSpacing: 1.0,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     TextFormField(
                       controller: _executablePathController,
                       style: TKitTextStyles.bodyMedium.copyWith(
                         color: TKitColors.textPrimary,
+                        fontSize: 13,
                       ),
                       decoration: InputDecoration(
                         hintText: l10n.categoryMappingAddDialogExecutablePathHint,
                         hintStyle: TKitTextStyles.bodySmall.copyWith(
                           color: TKitColors.textMuted,
+                          fontSize: 13,
                         ),
                         filled: true,
                         fillColor: TKitColors.background,
@@ -206,31 +212,34 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                           ),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 12,
+                          horizontal: 10,
+                          vertical: 10,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 14),
 
                     // Category ID
                     Text(
                       l10n.categoryMappingAddDialogCategoryId,
                       style: TKitTextStyles.labelSmall.copyWith(
                         color: TKitColors.textSecondary,
+                        fontSize: 11,
                         letterSpacing: 1.0,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     TextFormField(
                       controller: _categoryIdController,
                       style: TKitTextStyles.bodyMedium.copyWith(
                         color: TKitColors.textPrimary,
+                        fontSize: 13,
                       ),
                       decoration: InputDecoration(
                         hintText: l10n.categoryMappingAddDialogCategoryIdHint,
                         hintStyle: TKitTextStyles.bodyMedium.copyWith(
                           color: TKitColors.textMuted,
+                          fontSize: 13,
                         ),
                         filled: true,
                         fillColor: TKitColors.background,
@@ -258,8 +267,8 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                           borderSide: const BorderSide(color: TKitColors.error),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 12,
+                          horizontal: 10,
+                          vertical: 10,
                         ),
                       ),
                       validator: (value) {
@@ -269,26 +278,29 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 14),
 
                     // Category Name
                     Text(
                       l10n.categoryMappingAddDialogCategoryName,
                       style: TKitTextStyles.labelSmall.copyWith(
                         color: TKitColors.textSecondary,
+                        fontSize: 11,
                         letterSpacing: 1.0,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     TextFormField(
                       controller: _categoryNameController,
                       style: TKitTextStyles.bodyMedium.copyWith(
                         color: TKitColors.textPrimary,
+                        fontSize: 13,
                       ),
                       decoration: InputDecoration(
                         hintText: l10n.categoryMappingAddDialogCategoryNameHint,
                         hintStyle: TKitTextStyles.bodyMedium.copyWith(
                           color: TKitColors.textMuted,
+                          fontSize: 13,
                         ),
                         filled: true,
                         fillColor: TKitColors.background,
@@ -316,8 +328,8 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                           borderSide: const BorderSide(color: TKitColors.error),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 12,
+                          horizontal: 10,
+                          vertical: 10,
                         ),
                       ),
                       validator: (value) {
@@ -327,11 +339,12 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     Text(
                       l10n.categoryMappingAddDialogTip,
                       style: TKitTextStyles.caption.copyWith(
                         color: TKitColors.textMuted,
+                        fontSize: 11,
                       ),
                     ),
                   ],
@@ -341,7 +354,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
 
             // Footer
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(16),
               decoration: const BoxDecoration(
                 border: Border(top: BorderSide(color: TKitColors.border)),
               ),
@@ -351,14 +364,14 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                   AccentButton(
                     text: l10n.categoryMappingAddDialogCancel,
                     onPressed: () => Navigator.of(context).pop(),
-                    width: 120,
+                    width: 110,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 10),
                   PrimaryButton(
                     text: isEditMode ? l10n.categoryMappingAddDialogUpdate : l10n.categoryMappingAddDialogAdd,
                     icon: isEditMode ? Icons.check : Icons.add,
                     onPressed: _handleSubmit,
-                    width: 120,
+                    width: 110,
                   ),
                 ],
               ),

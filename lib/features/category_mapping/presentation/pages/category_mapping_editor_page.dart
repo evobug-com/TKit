@@ -48,17 +48,19 @@ class _CategoryMappingEditorContent extends StatelessWidget {
               AppLocalizations.of(context)!.categoryMappingTitle,
               style: TKitTextStyles.heading2.copyWith(
                 letterSpacing: 1.2,
-                fontSize: 12,
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 3),
             Text(
               AppLocalizations.of(context)!.categoryMappingSubtitle,
               style: TKitTextStyles.bodySmall.copyWith(
                 color: TKitColors.textMuted,
+                fontSize: 12,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 14),
 
             // Content
           Expanded(
@@ -100,54 +102,52 @@ class _CategoryMappingEditorContent extends StatelessWidget {
 
                 final mappings = provider.mappings;
 
-                return Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // Stats bar with Add button
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: TKitColors.border),
-                          color: TKitColors.surfaceVariant,
-                        ),
-                        child: Row(
-                          children: [
-                            _buildStatItem(
-                              context,
-                              AppLocalizations.of(context)!.categoryMappingStatsTotalMappings,
-                              mappings.length.toString(),
-                            ),
-                            const SizedBox(width: 32),
-                            _buildStatItem(
-                              context,
-                              AppLocalizations.of(context)!.categoryMappingStatsUserDefined,
-                              mappings
-                                  .where((m) => m.manualOverride)
-                                  .length
-                                  .toString(),
-                            ),
-                            const SizedBox(width: 32),
-                            _buildStatItem(
-                              context,
-                              AppLocalizations.of(context)!.categoryMappingStatsPresets,
-                              mappings
-                                  .where((m) => !m.manualOverride)
-                                  .length
-                                  .toString(),
-                            ),
-                            const Spacer(),
-                            PrimaryButton(
-                              text: AppLocalizations.of(context)!.categoryMappingAddMappingButton,
-                              icon: Icons.add,
-                              onPressed: () => _showAddMappingDialog(context),
-                              width: 180,
-                            ),
-                          ],
-                        ),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Stats bar with Add button
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: TKitColors.border),
+                        color: TKitColors.surfaceVariant,
                       ),
-                      const SizedBox(height: 16),
+                      child: Row(
+                        children: [
+                          _buildStatItem(
+                            context,
+                            AppLocalizations.of(context)!.categoryMappingStatsTotalMappings,
+                            mappings.length.toString(),
+                          ),
+                          const SizedBox(width: 24),
+                          _buildStatItem(
+                            context,
+                            AppLocalizations.of(context)!.categoryMappingStatsUserDefined,
+                            mappings
+                                .where((m) => m.manualOverride)
+                                .length
+                                .toString(),
+                          ),
+                          const SizedBox(width: 24),
+                          _buildStatItem(
+                            context,
+                            AppLocalizations.of(context)!.categoryMappingStatsPresets,
+                            mappings
+                                .where((m) => !m.manualOverride)
+                                .length
+                                .toString(),
+                          ),
+                          const Spacer(),
+                          PrimaryButton(
+                            text: AppLocalizations.of(context)!.categoryMappingAddMappingButton,
+                            icon: Icons.add,
+                            onPressed: () => _showAddMappingDialog(context),
+                            width: 180,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
 
                       // Mappings table
                       Expanded(
@@ -159,8 +159,7 @@ class _CategoryMappingEditorContent extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ),
-                );
+                  );
               },
             ),
           ),
@@ -178,13 +177,17 @@ class _CategoryMappingEditorContent extends StatelessWidget {
           label.toUpperCase(),
           style: TKitTextStyles.labelSmall.copyWith(
             color: TKitColors.textMuted,
+            fontSize: 10,
             letterSpacing: 1.0,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 3),
         Text(
           value,
-          style: TKitTextStyles.heading2.copyWith(color: TKitColors.accent),
+          style: TKitTextStyles.heading2.copyWith(
+            color: TKitColors.accent,
+            fontSize: 18,
+          ),
         ),
       ],
     );
