@@ -6,9 +6,6 @@ on:
       - 'v*.*.*'
       - 'v*.*.*-*'
 
-env:
-  FLUTTER_VERSION: '3.37.0-1.0.pre-483'
-
 jobs:
   build-windows:
     runs-on: windows-latest
@@ -20,8 +17,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: any
+          channel: stable
 
       - name: Get dependencies
         run: flutter pub get
