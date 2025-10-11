@@ -527,6 +527,16 @@ void main() async {
     // Initialize update service
     await updateService.initialize();
 
+    // Check for updates immediately on startup
+    logger.info('Checking for app updates...');
+    final updateChannel = await getSettingsUseCase().then(
+      (result) => result.fold(
+        (_) => UpdateChannel.stable,
+        (settings) => settings.updateChannel,
+      ),
+    );
+    updateService.checkForUpdates(silent: true, channel: updateChannel);
+
     // Initialize maintenance scheduler with use cases
     logger.info('Starting maintenance scheduler...');
     await _initializeMaintenanceScheduler(
