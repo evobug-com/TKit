@@ -74,8 +74,11 @@ class SettingsProvider extends ChangeNotifier {
         _logger.info('Settings updated successfully');
         _originalSettings = settings;
         _setState(SettingsSaved(settings));
-        // Transition back to loaded state
-        _setState(SettingsLoaded(settings));
+        // Transition to loaded state after a short delay
+        // This allows the UI to process the SettingsSaved state first
+        Future.delayed(const Duration(milliseconds: 100), () {
+          _setState(SettingsLoaded(settings));
+        });
       },
     );
   }
