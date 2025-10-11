@@ -1,0 +1,35 @@
+  /// Setup notification click handler (doesn't require auth)
+  void _setupNotificationClickHandler() {
+    try {
+      final notificationService = Provider.of<NotificationService>(
+        context,
+        listen: false,
+      );
+      final logger = Provider.of<AppLogger>(context, listen: false);
+
+      // Set the notification click handler  
+      notificationService.onMissingCategoryClick =
+          ({required String processName, String? executablePath}) async {
+            logger.info('Notification clicked for: $processName');
+            // Show dialog directly when notification is clicked
+            final result = await showDialog<Map<String, dynamic>>(
+              context: _appRouter.navigatorKey.currentContext!,
+              barrierDismissible: false,
+              builder: (context) => UnknownGameDialog(
+                processName: processName,
+                executablePath: executablePath,
+                windowTitle: null,
+              ),
+            );
+            
+            if (result != null && result['ignore'] == true) {
+              logger.info('User chose to ignore: $processName');
+              // TODO: Add to ignore list
+            }
+          };
+
+      logger.info('Notification click handler configured');
+    } catch (e) {
+      _logger.error('Failed to setup notification click handler', e);
+    }
+  }

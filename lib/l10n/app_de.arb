@@ -1,0 +1,1278 @@
+{
+  "@@locale": "de",
+  "appTitle": "TKit",
+  "@appTitle": {
+    "description": "The application title"
+  },
+  "welcomeTitle": "Willkommen bei TKit",
+  "@welcomeTitle": {
+    "description": "Welcome screen title"
+  },
+  "selectLanguage": "Wählen Sie Ihre Sprache",
+  "@selectLanguage": {
+    "description": "Language selection instruction"
+  },
+  "languageLabel": "Sprache",
+  "@languageLabel": {
+    "description": "Language field label"
+  },
+  "continueButton": "WEITER",
+  "@continueButton": {
+    "description": "Continue button text"
+  },
+  "confirm": "Bestätigen",
+  "@confirm": {
+    "description": "Confirmation button text"
+  },
+  "hello": "Hallo",
+  "@hello": {
+    "description": "Hello greeting"
+  },
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "English language name"
+  },
+  "languageCzech": "Čeština",
+  "@languageCzech": {
+    "description": "Czech language name"
+  },
+  "languagePolish": "Polski",
+  "@languagePolish": {
+    "description": "Polish language name"
+  },
+  "languageSpanish": "Español",
+  "@languageSpanish": {
+    "description": "Spanish language name"
+  },
+  "languageFrench": "Français",
+  "@languageFrench": {
+    "description": "French language name"
+  },
+  "languageGerman": "Deutsch",
+  "@languageGerman": {
+    "description": "German language name"
+  },
+  "languagePortuguese": "Português",
+  "@languagePortuguese": {
+    "description": "Portuguese language name"
+  },
+  "languageJapanese": "日本語",
+  "@languageJapanese": {
+    "description": "Japanese language name"
+  },
+  "languageKorean": "한국어",
+  "@languageKorean": {
+    "description": "Korean language name"
+  },
+  "languageChinese": "中文",
+  "@languageChinese": {
+    "description": "Chinese language name"
+  },
+  "settingsLanguage": "Sprache",
+  "@settingsLanguage": {
+    "description": "Language settings label"
+  },
+  "settingsLanguageDescription": "Wählen Sie Ihre bevorzugte Sprache für die Anwendung",
+  "@settingsLanguageDescription": {
+    "description": "Language settings description"
+  },
+  "languageChangeNotice": "Sprache geändert. Die Anwendung wird sofort aktualisiert.",
+  "@languageChangeNotice": {
+    "description": "Notice shown when language is changed"
+  },
+  "authSuccessAuthenticatedAs": "Erfolgreich authentifiziert als",
+  "@authSuccessAuthenticatedAs": {
+    "description": "Success message for authentication"
+  },
+  "systemTrayShowTkit": "TKit anzeigen",
+  "@systemTrayShowTkit": {
+    "description": "System tray menu option to show TKit window"
+  },
+  "authConnectToTwitch": "Mit Twitch verbinden",
+  "@authConnectToTwitch": {
+    "description": "Button to initiate Twitch connection"
+  },
+  "systemTrayAutoSwitcher": "Auto-Umschalter",
+  "@systemTrayAutoSwitcher": {
+    "description": "System tray menu option for auto switcher"
+  },
+  "authLoading": "Wird geladen...",
+  "@authLoading": {
+    "description": "Loading state message"
+  },
+  "systemTrayCategoryMappings": "Kategorie-Zuordnungen",
+  "@systemTrayCategoryMappings": {
+    "description": "System tray menu option for category mappings"
+  },
+  "authRefreshingToken": "Token wird aktualisiert...",
+  "@authRefreshingToken": {
+    "description": "Token refresh in progress message"
+  },
+  "systemTraySettings": "Einstellungen",
+  "@systemTraySettings": {
+    "description": "System tray menu option for settings"
+  },
+  "authSuccessfullyAuthenticated": "Erfolgreich authentifiziert",
+  "@authSuccessfullyAuthenticated": {
+    "description": "Successful authentication message"
+  },
+  "systemTrayExit": "Beenden",
+  "@systemTrayExit": {
+    "description": "System tray menu option to exit application"
+  },
+  "authLoggedInAs": "Angemeldet als",
+  "@authLoggedInAs": {
+    "description": "Label showing current logged in user"
+  },
+  "systemTrayTooltip": "TKit - Twitch-Toolkit",
+  "@systemTrayTooltip": {
+    "description": "System tray icon tooltip"
+  },
+  "authErrorAuthenticationFailed": "Authentifizierung fehlgeschlagen",
+  "@authErrorAuthenticationFailed": {
+    "description": "Authentication failure error message"
+  },
+  "authErrorErrorCode": "Fehlercode:",
+  "@authErrorErrorCode": {
+    "description": "Label for error code display"
+  },
+  "authTryAgain": "Erneut versuchen",
+  "@authTryAgain": {
+    "description": "Button to retry authentication"
+  },
+  "authAuthorizationSteps": "Autorisierungsschritte",
+  "@authAuthorizationSteps": {
+    "description": "Header for authorization steps"
+  },
+  "authStep1": "Klicken Sie unten auf die Schaltfläche \"Mit Twitch verbinden\"",
+  "@authStep1": {
+    "description": "First authorization step instruction"
+  },
+  "authStep2": "Ihr Browser öffnet die Twitch-Autorisierungsseite",
+  "@authStep2": {
+    "description": "Second authorization step instruction"
+  },
+  "authStep3": "Überprüfen und autorisieren Sie TKit zur Verwaltung Ihres Kanals",
+  "@authStep3": {
+    "description": "Third authorization step instruction"
+  },
+  "authStep4": "Kehren Sie nach der Autorisierung zu diesem Fenster zurück",
+  "@authStep4": {
+    "description": "Fourth authorization step instruction"
+  },
+  "authConnectToTwitchButton": "MIT TWITCH VERBINDEN",
+  "@authConnectToTwitchButton": {
+    "description": "Connect to Twitch button text"
+  },
+  "authRequiresAccessMessage": "TKit benötigt Zugriff, um die Kategorie Ihres Twitch-Kanals zu aktualisieren.",
+  "@authRequiresAccessMessage": {
+    "description": "Message explaining required access"
+  },
+  "authDeviceCodeTitle": "Mit Twitch verbinden",
+  "@authDeviceCodeTitle": {
+    "description": "Device code authentication title"
+  },
+  "authDeviceCodeInstructions": "Um Ihr Twitch-Konto zu verbinden, folgen Sie diesen einfachen Schritten:",
+  "@authDeviceCodeInstructions": {
+    "description": "Device code flow instructions header"
+  },
+  "authDeviceCodeStep1": "Gehen Sie zu",
+  "@authDeviceCodeStep1": {
+    "description": "Device code step 1 text"
+  },
+  "authDeviceCodeStep2": "Geben Sie diesen Code ein:",
+  "@authDeviceCodeStep2": {
+    "description": "Device code step 2 text"
+  },
+  "authDeviceCodeStep3": "Autorisieren Sie TKit zur Verwaltung Ihrer Kanalkategorie",
+  "@authDeviceCodeStep3": {
+    "description": "Device code step 3 text"
+  },
+  "authDeviceCodeCodeLabel": "Ihr Code",
+  "@authDeviceCodeCodeLabel": {
+    "description": "Label for device code display"
+  },
+  "authDeviceCodeCopyCode": "Code kopieren",
+  "@authDeviceCodeCopyCode": {
+    "description": "Copy code button text"
+  },
+  "authDeviceCodeCopied": "Kopiert!",
+  "@authDeviceCodeCopied": {
+    "description": "Code copied confirmation"
+  },
+  "authDeviceCodeOpenBrowser": "twitch.tv/activate öffnen",
+  "@authDeviceCodeOpenBrowser": {
+    "description": "Open browser button text"
+  },
+  "authDeviceCodeWaiting": "Warten auf Autorisierung...",
+  "@authDeviceCodeWaiting": {
+    "description": "Waiting for user to authorize"
+  },
+  "authDeviceCodeExpiresIn": "Code läuft ab in {minutes}:{seconds}",
+  "@authDeviceCodeExpiresIn": {
+    "description": "Code expiration countdown",
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "authDeviceCodeExpired": "Code abgelaufen. Bitte versuchen Sie es erneut.",
+  "@authDeviceCodeExpired": {
+    "description": "Code expired message"
+  },
+  "authDeviceCodeCancel": "Abbrechen",
+  "@authDeviceCodeCancel": {
+    "description": "Cancel device code flow button"
+  },
+  "authDeviceCodeSuccess": "Erfolgreich verbunden!",
+  "@authDeviceCodeSuccess": {
+    "description": "Device code success message"
+  },
+  "authDeviceCodeError": "Verbindung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+  "@authDeviceCodeError": {
+    "description": "Device code error message"
+  },
+  "authDeviceCodeHelp": "Probleme? Stellen Sie sicher, dass Sie in Ihrem Browser bei Twitch angemeldet sind.",
+  "@authDeviceCodeHelp": {
+    "description": "Help text for device code flow"
+  },
+  "autoSwitcherPageTitle": "AUTO-UMSCHALTER",
+  "@autoSwitcherPageTitle": {
+    "description": "Auto switcher page title"
+  },
+  "authStatusAuthenticated": "Authentifiziert",
+  "@authStatusAuthenticated": {
+    "description": "Authenticated status"
+  },
+  "autoSwitcherPageDescription": "Aktualisiert die Stream-Kategorie automatisch basierend auf der fokussierten Anwendung",
+  "@autoSwitcherPageDescription": {
+    "description": "Auto switcher page description"
+  },
+  "authStatusConnecting": "Verbindung wird hergestellt...",
+  "@authStatusConnecting": {
+    "description": "Connecting status"
+  },
+  "autoSwitcherStatusHeader": "STATUS",
+  "@autoSwitcherStatusHeader": {
+    "description": "Status section header"
+  },
+  "authStatusError": "Fehler",
+  "@authStatusError": {
+    "description": "Error status"
+  },
+  "autoSwitcherStatusCurrentProcess": "AKTUELLER PROZESS",
+  "@autoSwitcherStatusCurrentProcess": {
+    "description": "Current process label"
+  },
+  "authStatusNotConnected": "Nicht verbunden",
+  "@authStatusNotConnected": {
+    "description": "Not connected status"
+  },
+  "autoSwitcherStatusNone": "Keine",
+  "@autoSwitcherStatusNone": {
+    "description": "None value"
+  },
+  "autoSwitcherStatusMatchedCategory": "ÜBEREINSTIMMENDE KATEGORIE",
+  "@autoSwitcherStatusMatchedCategory": {
+    "description": "Matched category label"
+  },
+  "mainWindowNavAutoSwitcher": "Auto-Umschalter",
+  "@mainWindowNavAutoSwitcher": {
+    "description": "Auto switcher navigation item"
+  },
+  "autoSwitcherStatusLastUpdate": "LETZTE AKTUALISIERUNG",
+  "@autoSwitcherStatusLastUpdate": {
+    "description": "Last update label"
+  },
+  "mainWindowNavMappings": "Zuordnungen",
+  "@mainWindowNavMappings": {
+    "description": "Mappings navigation item"
+  },
+  "autoSwitcherStatusNever": "Nie",
+  "@autoSwitcherStatusNever": {
+    "description": "Never value for last update"
+  },
+  "mainWindowNavSettings": "Einstellungen",
+  "@mainWindowNavSettings": {
+    "description": "Settings navigation item"
+  },
+  "mainWindowStatusConnected": "Verbunden",
+  "@mainWindowStatusConnected": {
+    "description": "Connected status in main window"
+  },
+  "autoSwitcherStatusUpdateStatus": "AKTUALISIERUNGSSTATUS",
+  "@autoSwitcherStatusUpdateStatus": {
+    "description": "Update status label"
+  },
+  "mainWindowStatusDisconnected": "Getrennt",
+  "@mainWindowStatusDisconnected": {
+    "description": "Disconnected status in main window"
+  },
+  "autoSwitcherStatusNoUpdatesYet": "Noch keine Aktualisierungen",
+  "@autoSwitcherStatusNoUpdatesYet": {
+    "description": "No updates yet message"
+  },
+  "mainWindowWindowControlMinimize": "Minimieren",
+  "@mainWindowWindowControlMinimize": {
+    "description": "Minimize window button"
+  },
+  "autoSwitcherStatusSuccess": "ERFOLG",
+  "@autoSwitcherStatusSuccess": {
+    "description": "Success update status"
+  },
+  "authLoadingStartingAuthentication": "Authentifizierung wird gestartet...",
+  "@authLoadingStartingAuthentication": {
+    "description": "Starting authentication loading message"
+  },
+  "mainWindowWindowControlMaximize": "Maximieren",
+  "@mainWindowWindowControlMaximize": {
+    "description": "Maximize window button"
+  },
+  "autoSwitcherStatusFailed": "FEHLGESCHLAGEN",
+  "@autoSwitcherStatusFailed": {
+    "description": "Failed update status"
+  },
+  "authLoadingLoggingOut": "Wird abgemeldet...",
+  "@authLoadingLoggingOut": {
+    "description": "Logging out loading message"
+  },
+  "settingsSavedSuccessfully": "Einstellungen erfolgreich gespeichert",
+  "@settingsSavedSuccessfully": {
+    "description": "Settings saved success message"
+  },
+  "autoSwitcherStatusSystemState": "SYSTEMZUSTAND",
+  "@autoSwitcherStatusSystemState": {
+    "description": "System state label"
+  },
+  "mainWindowWindowControlClose": "Schließen",
+  "@mainWindowWindowControlClose": {
+    "description": "Close window button"
+  },
+  "authLoadingCheckingStatus": "Authentifizierungsstatus wird überprüft...",
+  "@authLoadingCheckingStatus": {
+    "description": "Checking status loading message"
+  },
+  "settingsRetry": "Wiederholen",
+  "@settingsRetry": {
+    "description": "Retry button"
+  },
+  "settingsPageTitle": "EINSTELLUNGEN",
+  "@settingsPageTitle": {
+    "description": "Settings page title"
+  },
+  "settingsPageDescription": "Anwendungsverhalten und Einstellungen konfigurieren",
+  "@settingsPageDescription": {
+    "description": "Settings page description"
+  },
+  "autoSwitcherStatusNotInitialized": "NICHT INITIALISIERT",
+  "@autoSwitcherStatusNotInitialized": {
+    "description": "Not initialized system state"
+  },
+  "mainWindowFooterReady": "Bereit",
+  "@mainWindowFooterReady": {
+    "description": "Ready status in footer"
+  },
+  "authErrorTokenRefreshFailed": "Token-Aktualisierung fehlgeschlagen:",
+  "@authErrorTokenRefreshFailed": {
+    "description": "Token refresh failed error message"
+  },
+  "settingsAutoSwitcher": "Auto-Umschalter",
+  "@settingsAutoSwitcher": {
+    "description": "Auto switcher settings section"
+  },
+  "autoSwitcherStatusIdle": "INAKTIV",
+  "@autoSwitcherStatusIdle": {
+    "description": "Idle system state"
+  },
+  "updateDialogTitle": "Aktualisierung verfügbar",
+  "@updateDialogTitle": {
+    "description": "Update dialog title"
+  },
+  "settingsMonitoring": "Überwachung",
+  "@settingsMonitoring": {
+    "description": "Monitoring settings section"
+  },
+  "autoSwitcherStatusDetectingProcess": "PROZESS WIRD ERKANNT",
+  "@autoSwitcherStatusDetectingProcess": {
+    "description": "Detecting process system state"
+  },
+  "categoryMappingTitle": "KATEGORIE-ZUORDNUNGEN",
+  "@categoryMappingTitle": {
+    "description": "Category mappings page title"
+  },
+  "updateDialogWhatsNew": "Was ist neu:",
+  "@updateDialogWhatsNew": {
+    "description": "What's new label in update dialog"
+  },
+  "settingsScanIntervalLabel": "Scan-Intervall",
+  "@settingsScanIntervalLabel": {
+    "description": "Scan interval setting label"
+  },
+  "autoSwitcherStatusSearchingMapping": "ZUORDNUNG WIRD GESUCHT",
+  "@autoSwitcherStatusSearchingMapping": {
+    "description": "Searching mapping system state"
+  },
+  "categoryMappingSubtitle": "Verwalten Sie Prozess-zu-Kategorie-Zuordnungen für automatisches Umschalten",
+  "@categoryMappingSubtitle": {
+    "description": "Category mappings page subtitle"
+  },
+  "updateDialogDownloadComplete": "Download abgeschlossen! Bereit zur Installation.",
+  "@updateDialogDownloadComplete": {
+    "description": "Download complete message"
+  },
+  "settingsScanIntervalDescription": "Wie oft überprüft werden soll, welche Anwendung den Fokus hat",
+  "@settingsScanIntervalDescription": {
+    "description": "Scan interval setting description"
+  },
+  "autoSwitcherStatusUpdatingCategory": "KATEGORIE WIRD AKTUALISIERT",
+  "@autoSwitcherStatusUpdatingCategory": {
+    "description": "Updating category system state"
+  },
+  "categoryMappingAddMappingButton": "ZUORDNUNG HINZUFÜGEN",
+  "@categoryMappingAddMappingButton": {
+    "description": "Add mapping button"
+  },
+  "updateDialogDownloadFailed": "Download fehlgeschlagen:",
+  "@updateDialogDownloadFailed": {
+    "description": "Download failed error message"
+  },
+  "settingsDebounceTimeLabel": "Entprellzeit",
+  "@settingsDebounceTimeLabel": {
+    "description": "Debounce time setting label"
+  },
+  "autoSwitcherStatusWaitingDebounce": "WARTEN (ENTPRELLEN)",
+  "@autoSwitcherStatusWaitingDebounce": {
+    "description": "Waiting debounce system state"
+  },
+  "categoryMappingErrorDialogTitle": "Fehler",
+  "@categoryMappingErrorDialogTitle": {
+    "description": "Error dialog title"
+  },
+  "updateDialogRemindLater": "Später erinnern",
+  "@updateDialogRemindLater": {
+    "description": "Remind later button"
+  },
+  "settingsDebounceTimeDescription": "Wartezeit vor dem Kategorienwechsel nach App-Wechsel (verhindert schnelles Umschalten)",
+  "@settingsDebounceTimeDescription": {
+    "description": "Debounce time setting description"
+  },
+  "autoSwitcherStatusError": "FEHLER",
+  "@autoSwitcherStatusError": {
+    "description": "Error system state"
+  },
+  "categoryMappingStatsTotalMappings": "Zuordnungen gesamt",
+  "@categoryMappingStatsTotalMappings": {
+    "description": "Total mappings stat label"
+  },
+  "updateDialogDownloadUpdate": "Aktualisierung herunterladen",
+  "@updateDialogDownloadUpdate": {
+    "description": "Download update button"
+  },
+  "settingsAutoStartMonitoringLabel": "Überwachung automatisch starten",
+  "@settingsAutoStartMonitoringLabel": {
+    "description": "Auto start monitoring setting label"
+  },
+  "autoSwitcherControlsHeader": "STEUERUNG",
+  "@autoSwitcherControlsHeader": {
+    "description": "Controls section header"
+  },
+  "categoryMappingStatsUserDefined": "Benutzerdefiniert",
+  "@categoryMappingStatsUserDefined": {
+    "description": "User defined mappings stat label"
+  },
+  "updateDialogCancel": "Abbrechen",
+  "@updateDialogCancel": {
+    "description": "Cancel button in update dialog"
+  },
+  "settingsAutoStartMonitoringSubtitle": "Überwachung für aktive Anwendung beim Start von TKit beginnen",
+  "@settingsAutoStartMonitoringSubtitle": {
+    "description": "Auto start monitoring setting subtitle"
+  },
+  "autoSwitcherControlsStopMonitoring": "ÜBERWACHUNG STOPPEN",
+  "@autoSwitcherControlsStopMonitoring": {
+    "description": "Stop monitoring button"
+  },
+  "categoryMappingStatsPresets": "Voreinstellungen",
+  "@categoryMappingStatsPresets": {
+    "description": "Presets stat label"
+  },
+  "updateDialogLater": "Später",
+  "@updateDialogLater": {
+    "description": "Later button in update dialog"
+  },
+  "settingsFallbackBehavior": "Fallback-Verhalten",
+  "@settingsFallbackBehavior": {
+    "description": "Fallback behavior settings section"
+  },
+  "autoSwitcherControlsStartMonitoring": "ÜBERWACHUNG STARTEN",
+  "@autoSwitcherControlsStartMonitoring": {
+    "description": "Start monitoring button"
+  },
+  "categoryMappingErrorLoading": "Fehler beim Laden der Zuordnungen",
+  "@categoryMappingErrorLoading": {
+    "description": "Error loading mappings message"
+  },
+  "updateDialogInstallRestart": "Installieren und neu starten",
+  "@updateDialogInstallRestart": {
+    "description": "Install and restart button"
+  },
+  "settingsFallbackBehaviorLabel": "Wenn keine Zuordnung gefunden wird",
+  "@settingsFallbackBehaviorLabel": {
+    "description": "Fallback behavior setting label"
+  },
+  "autoSwitcherControlsManualUpdate": "MANUELLE AKTUALISIERUNG",
+  "@autoSwitcherControlsManualUpdate": {
+    "description": "Manual update button"
+  },
+  "categoryMappingRetryButton": "WIEDERHOLEN",
+  "@categoryMappingRetryButton": {
+    "description": "Retry button"
+  },
+  "updateDialogToday": "heute",
+  "@updateDialogToday": {
+    "description": "Today text for date display"
+  },
+  "settingsFallbackBehaviorDescription": "Wählen Sie, was passiert, wenn die fokussierte App keine Kategoriezuordnung hat",
+  "@settingsFallbackBehaviorDescription": {
+    "description": "Fallback behavior setting description"
+  },
+  "categoryMappingDeleteDialogTitle": "Zuordnung löschen",
+  "@categoryMappingDeleteDialogTitle": {
+    "description": "Delete mapping dialog title"
+  },
+  "autoSwitcherControlsMonitoringStatus": "ÜBERWACHUNGSSTATUS",
+  "@autoSwitcherControlsMonitoringStatus": {
+    "description": "Monitoring status label"
+  },
+  "updateDialogYesterday": "gestern",
+  "@updateDialogYesterday": {
+    "description": "Yesterday text for date display"
+  },
+  "settingsCustomCategory": "Benutzerdefinierte Kategorie",
+  "@settingsCustomCategory": {
+    "description": "Custom category settings section"
+  },
+  "categoryMappingDeleteDialogMessage": "Möchten Sie diese Zuordnung wirklich löschen?",
+  "@categoryMappingDeleteDialogMessage": {
+    "description": "Delete mapping confirmation message"
+  },
+  "autoSwitcherControlsActive": "AKTIV",
+  "@autoSwitcherControlsActive": {
+    "description": "Active monitoring status"
+  },
+  "updateDialogDaysAgo": "vor {days} Tagen",
+  "@updateDialogDaysAgo": {
+    "description": "Days ago text for date display",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsCustomCategoryHint": "Nach einer Kategorie suchen...",
+  "@settingsCustomCategoryHint": {
+    "description": "Custom category search hint"
+  },
+  "categoryMappingDeleteDialogConfirm": "LÖSCHEN",
+  "@categoryMappingDeleteDialogConfirm": {
+    "description": "Delete confirmation button"
+  },
+  "autoSwitcherControlsInactive": "INAKTIV",
+  "@autoSwitcherControlsInactive": {
+    "description": "Inactive monitoring status"
+  },
+  "updateDialogVersion": "Version {version}",
+  "@updateDialogVersion": {
+    "description": "Version text for update dialog",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryMappingDeleteDialogCancel": "ABBRECHEN",
+  "@categoryMappingDeleteDialogCancel": {
+    "description": "Cancel delete button"
+  },
+  "settingsCategorySearchUnavailable": "Kategoriesuche wird verfügbar sein, wenn das Twitch-API-Modul fertiggestellt ist",
+  "@settingsCategorySearchUnavailable": {
+    "description": "Category search unavailable message"
+  },
+  "autoSwitcherControlsActiveDescription": "Kategorie wird automatisch basierend auf dem fokussierten Prozess aktualisiert",
+  "@autoSwitcherControlsActiveDescription": {
+    "description": "Active monitoring description"
+  },
+  "updateDialogPublished": "Veröffentlicht am {date}",
+  "@updateDialogPublished": {
+    "description": "Published date text for update dialog",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryMappingAddDialogEditTitle": "ZUORDNUNG BEARBEITEN",
+  "@categoryMappingAddDialogEditTitle": {
+    "description": "Edit mapping dialog title"
+  },
+  "settingsApplication": "Anwendung",
+  "@settingsApplication": {
+    "description": "Application settings section"
+  },
+  "autoSwitcherControlsInactiveDescription": "Starten Sie die Überwachung, um automatische Kategorieaktualisierungen zu aktivieren",
+  "@autoSwitcherControlsInactiveDescription": {
+    "description": "Inactive monitoring description"
+  },
+  "welcomeStepLanguage": "Sprache",
+  "@welcomeStepLanguage": {
+    "description": "Language setup step"
+  },
+  "categoryMappingAddDialogAddTitle": "NEUE ZUORDNUNG HINZUFÜGEN",
+  "@categoryMappingAddDialogAddTitle": {
+    "description": "Add new mapping dialog title"
+  },
+  "categoryMappingAddDialogClose": "Schließen",
+  "@categoryMappingAddDialogClose": {
+    "description": "Close button for add/edit mapping dialog"
+  },
+  "categoryMappingAddDialogProcessName": "PROZESSNAME",
+  "@categoryMappingAddDialogProcessName": {
+    "description": "Process name field label"
+  },
+  "categoryMappingAddDialogExecutablePath": "AUSFÜHRBARER PFAD (OPTIONAL)",
+  "@categoryMappingAddDialogExecutablePath": {
+    "description": "Executable path field label"
+  },
+  "categoryMappingAddDialogCategoryId": "TWITCH-KATEGORIE-ID",
+  "@categoryMappingAddDialogCategoryId": {
+    "description": "Twitch category ID field label"
+  },
+  "categoryMappingAddDialogCategoryName": "TWITCH-KATEGORIENAME",
+  "@categoryMappingAddDialogCategoryName": {
+    "description": "Twitch category name field label"
+  },
+  "categoryMappingAddDialogCancel": "ABBRECHEN",
+  "@categoryMappingAddDialogCancel": {
+    "description": "Cancel button in add/edit mapping dialog"
+  },
+  "categoryMappingAddDialogUpdate": "AKTUALISIEREN",
+  "@categoryMappingAddDialogUpdate": {
+    "description": "Update button in edit mapping dialog"
+  },
+  "categoryMappingAddDialogAdd": "HINZUFÜGEN",
+  "@categoryMappingAddDialogAdd": {
+    "description": "Add button in add mapping dialog"
+  },
+  "settingsAutoStartWindowsLabel": "Automatischer Start mit Windows",
+  "@settingsAutoStartWindowsLabel": {
+    "description": "Auto-start with Windows setting label"
+  },
+  "categoryMappingAddDialogCloseTooltip": "Schließen",
+  "@categoryMappingAddDialogCloseTooltip": {
+    "description": "Close dialog tooltip"
+  },
+  "welcomeStepTwitch": "Twitch",
+  "@welcomeStepTwitch": {
+    "description": "Twitch setup step"
+  },
+  "welcomeStepBehavior": "Verhalten",
+  "@welcomeStepBehavior": {
+    "description": "Behavior setup step"
+  },
+  "welcomeBehaviorStepTitle": "SCHRITT 3: ANWENDUNGSVERHALTEN",
+  "@welcomeBehaviorStepTitle": {
+    "description": "Behavior step title"
+  },
+  "welcomeBehaviorTitle": "Anwendungsverhalten",
+  "@welcomeBehaviorTitle": {
+    "description": "Behavior settings title"
+  },
+  "welcomeBehaviorDescription": "Konfigurieren Sie, wie sich TKit beim Start und beim Minimieren verhält.",
+  "@welcomeBehaviorDescription": {
+    "description": "Behavior settings description"
+  },
+  "welcomeBehaviorOptionalInfo": "Diese Einstellungen können jederzeit in den Einstellungen geändert werden.",
+  "@welcomeBehaviorOptionalInfo": {
+    "description": "Behavior settings optional info"
+  },
+  "settingsAutoStartWindowsSubtitle": "TKit automatisch beim Start von Windows starten",
+  "@settingsAutoStartWindowsSubtitle": {
+    "description": "Auto-start with Windows setting subtitle"
+  },
+  "categoryMappingAddDialogProcessNameLabel": "PROZESSNAME",
+  "@categoryMappingAddDialogProcessNameLabel": {
+    "description": "Process name field label"
+  },
+  "welcomeLanguageStepTitle": "SCHRITT 1: WÄHLEN SIE IHRE SPRACHE",
+  "@welcomeLanguageStepTitle": {
+    "description": "Language step title"
+  },
+  "settingsStartMinimizedLabel": "Minimiert starten",
+  "@settingsStartMinimizedLabel": {
+    "description": "Start minimized setting label"
+  },
+  "categoryMappingAddDialogProcessNameHint": "z. B. League of Legends.exe",
+  "@categoryMappingAddDialogProcessNameHint": {
+    "description": "Process name field hint"
+  },
+  "welcomeLanguageChangeLater": "Sie können dies später in den Einstellungen ändern.",
+  "@welcomeLanguageChangeLater": {
+    "description": "Language change later message"
+  },
+  "settingsStartMinimizedSubtitle": "TKit minimiert in der Taskleiste starten",
+  "@settingsStartMinimizedSubtitle": {
+    "description": "Start minimized setting subtitle"
+  },
+  "categoryMappingAddDialogProcessNameRequired": "Prozessname ist erforderlich",
+  "@categoryMappingAddDialogProcessNameRequired": {
+    "description": "Process name required validation message"
+  },
+  "welcomeTwitchStepTitle": "SCHRITT 2: MIT TWITCH VERBINDEN",
+  "@welcomeTwitchStepTitle": {
+    "description": "Twitch step title"
+  },
+  "settingsMinimizeToTrayLabel": "In Taskleiste minimieren",
+  "@settingsMinimizeToTrayLabel": {
+    "description": "Minimize to tray setting label"
+  },
+  "categoryMappingAddDialogExecutablePathLabel": "AUSFÜHRBARER PFAD (OPTIONAL)",
+  "@categoryMappingAddDialogExecutablePathLabel": {
+    "description": "Executable path field label"
+  },
+  "welcomeTwitchConnectionTitle": "Twitch-Verbindung",
+  "@welcomeTwitchConnectionTitle": {
+    "description": "Twitch connection title"
+  },
+  "settingsMinimizeToTraySubtitle": "TKit beim Schließen oder Minimieren im Hintergrund weiterlaufen lassen",
+  "@settingsMinimizeToTraySubtitle": {
+    "description": "Minimize to tray setting subtitle"
+  },
+  "settingsWindowControlsPositionLabel": "Position der Fenstersteuerelemente",
+  "@settingsWindowControlsPositionLabel": {
+    "description": "Window controls position setting label"
+  },
+  "settingsWindowControlsPositionDescription": "Wählen Sie, wo Fenstersteuerelemente (Minimieren, Maximieren, Schließen) angezeigt werden",
+  "@settingsWindowControlsPositionDescription": {
+    "description": "Window controls position setting description"
+  },
+  "windowControlsPositionLeft": "Links",
+  "@windowControlsPositionLeft": {
+    "description": "Left position option"
+  },
+  "windowControlsPositionCenter": "Mitte",
+  "@windowControlsPositionCenter": {
+    "description": "Center position option"
+  },
+  "windowControlsPositionRight": "Rechts",
+  "@windowControlsPositionRight": {
+    "description": "Right position option"
+  },
+  "categoryMappingAddDialogExecutablePathHint": "z. B. C:\\Games\\LeagueOfLegends\\Game\\League of Legends.exe",
+  "@categoryMappingAddDialogExecutablePathHint": {
+    "description": "Executable path field hint"
+  },
+  "welcomeTwitchConnectedAs": "Verbunden als {username}",
+  "@welcomeTwitchConnectedAs": {
+    "description": "Connected as username message",
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsShowNotificationsLabel": "Benachrichtigungen anzeigen",
+  "@settingsShowNotificationsLabel": {
+    "description": "Show notifications setting label"
+  },
+  "categoryMappingAddDialogCategoryIdLabel": "TWITCH-KATEGORIE-ID",
+  "@categoryMappingAddDialogCategoryIdLabel": {
+    "description": "Category ID field label"
+  },
+  "welcomeTwitchDescription": "Verbinden Sie Ihr Twitch-Konto, um automatisches Kategorienwechseln basierend auf der aktiven Anwendung zu aktivieren.",
+  "@welcomeTwitchDescription": {
+    "description": "Twitch connection description"
+  },
+  "settingsShowNotificationsSubtitle": "Benachrichtigungen anzeigen, wenn die Kategorie aktualisiert wird",
+  "@settingsShowNotificationsSubtitle": {
+    "description": "Show notifications setting subtitle"
+  },
+  "settingsNotifyMissingCategoryLabel": "Bei fehlender Kategorie benachrichtigen",
+  "@settingsNotifyMissingCategoryLabel": {
+    "description": "Notify on missing category setting label"
+  },
+  "settingsNotifyMissingCategorySubtitle": "Benachrichtigung anzeigen, wenn keine Zuordnung für ein Spiel oder eine App gefunden wird",
+  "@settingsNotifyMissingCategorySubtitle": {
+    "description": "Notify on missing category setting subtitle"
+  },
+  "categoryMappingAddDialogCategoryIdHint": "z. B. 21779",
+  "@categoryMappingAddDialogCategoryIdHint": {
+    "description": "Category ID field hint"
+  },
+  "welcomeTwitchOptionalInfo": "Dieser Schritt ist optional. Sie können ihn überspringen und später in den Einstellungen einrichten.",
+  "@welcomeTwitchOptionalInfo": {
+    "description": "Twitch step optional info"
+  },
+  "settingsKeyboardShortcuts": "Tastenkombinationen",
+  "@settingsKeyboardShortcuts": {
+    "description": "Keyboard shortcuts settings section"
+  },
+  "categoryMappingAddDialogCategoryIdRequired": "Kategorie-ID ist erforderlich",
+  "@categoryMappingAddDialogCategoryIdRequired": {
+    "description": "Category ID required validation message"
+  },
+  "welcomeTwitchAuthorizeButton": "MIT TWITCH AUTORISIEREN",
+  "@welcomeTwitchAuthorizeButton": {
+    "description": "Authorize with Twitch button"
+  },
+  "settingsManualUpdateHotkeyLabel": "Manuelle Aktualisierungs-Tastenkombination",
+  "@settingsManualUpdateHotkeyLabel": {
+    "description": "Manual update hotkey setting label"
+  },
+  "categoryMappingAddDialogCategoryNameLabel": "TWITCH-KATEGORIENAME",
+  "@categoryMappingAddDialogCategoryNameLabel": {
+    "description": "Category name field label"
+  },
+  "welcomeButtonNext": "WEITER",
+  "@welcomeButtonNext": {
+    "description": "Next button"
+  },
+  "settingsManualUpdateHotkeyDescription": "Manuelle Kategorieaktualisierung auslösen",
+  "@settingsManualUpdateHotkeyDescription": {
+    "description": "Manual update hotkey setting description"
+  },
+  "categoryMappingAddDialogCategoryNameHint": "z. B. League of Legends",
+  "@categoryMappingAddDialogCategoryNameHint": {
+    "description": "Category name field hint"
+  },
+  "welcomeButtonBack": "ZURÜCK",
+  "@welcomeButtonBack": {
+    "description": "Back button"
+  },
+  "settingsUnsavedChanges": "Sie haben nicht gespeicherte Änderungen",
+  "@settingsUnsavedChanges": {
+    "description": "Unsaved changes warning"
+  },
+  "categoryMappingAddDialogCategoryNameRequired": "Kategoriename ist erforderlich",
+  "@categoryMappingAddDialogCategoryNameRequired": {
+    "description": "Category name required validation message"
+  },
+  "settingsDiscard": "Verwerfen",
+  "@settingsDiscard": {
+    "description": "Discard changes button"
+  },
+  "categoryMappingAddDialogTip": "Tipp: Verwenden Sie die Twitch-Kategoriesuche, um die richtige ID und den Namen zu finden",
+  "@categoryMappingAddDialogTip": {
+    "description": "Tip for finding category ID and name"
+  },
+  "settingsSave": "Speichern",
+  "@settingsSave": {
+    "description": "Save settings button"
+  },
+  "categoryMappingAddDialogCancelButton": "ABBRECHEN",
+  "@categoryMappingAddDialogCancelButton": {
+    "description": "Cancel button in add/edit dialog"
+  },
+  "settingsTwitchConnection": "Twitch-Verbindung",
+  "@settingsTwitchConnection": {
+    "description": "Twitch connection settings section"
+  },
+  "categoryMappingAddDialogUpdateButton": "AKTUALISIEREN",
+  "@categoryMappingAddDialogUpdateButton": {
+    "description": "Update button in edit dialog"
+  },
+  "settingsTwitchStatusConnected": "Verbunden",
+  "@settingsTwitchStatusConnected": {
+    "description": "Twitch connected status"
+  },
+  "categoryMappingAddDialogAddButton": "HINZUFÜGEN",
+  "@categoryMappingAddDialogAddButton": {
+    "description": "Add button in add dialog"
+  },
+  "settingsTwitchStatusNotConnected": "Nicht verbunden",
+  "@settingsTwitchStatusNotConnected": {
+    "description": "Twitch not connected status"
+  },
+  "categoryMappingListEmpty": "Noch keine Kategoriezuordnungen",
+  "@categoryMappingListEmpty": {
+    "description": "Empty mappings list message"
+  },
+  "categoryMappingListEmptyTitle": "Noch keine Kategoriezuordnungen",
+  "@categoryMappingListEmptyTitle": {
+    "description": "Empty mappings list title"
+  },
+  "settingsTwitchLoggedInAs": "Angemeldet als:",
+  "@settingsTwitchLoggedInAs": {
+    "description": "Logged in as label"
+  },
+  "categoryMappingListEmptySubtitle": "Fügen Sie Ihre erste Zuordnung hinzu, um zu beginnen",
+  "@categoryMappingListEmptySubtitle": {
+    "description": "Empty mappings list subtitle"
+  },
+  "settingsTwitchDisconnect": "Trennen",
+  "@settingsTwitchDisconnect": {
+    "description": "Disconnect from Twitch button"
+  },
+  "categoryMappingListColumnProcessName": "PROZESSNAME",
+  "@categoryMappingListColumnProcessName": {
+    "description": "Process name column header"
+  },
+  "settingsTwitchConnectDescription": "Verbinden Sie Ihr Twitch-Konto, um automatisches Kategorienwechseln zu aktivieren.",
+  "@settingsTwitchConnectDescription": {
+    "description": "Twitch connect description"
+  },
+  "categoryMappingListColumnCategory": "KATEGORIE",
+  "@categoryMappingListColumnCategory": {
+    "description": "Category column header"
+  },
+  "settingsTwitchConnect": "Mit Twitch verbinden",
+  "@settingsTwitchConnect": {
+    "description": "Connect to Twitch button"
+  },
+  "categoryMappingListColumnLastUsed": "ZULETZT VERWENDET",
+  "@categoryMappingListColumnLastUsed": {
+    "description": "Last used column header"
+  },
+  "hotkeyInputCancel": "Abbrechen",
+  "@hotkeyInputCancel": {
+    "description": "Cancel hotkey input button"
+  },
+  "categoryMappingListColumnType": "TYP",
+  "@categoryMappingListColumnType": {
+    "description": "Type column header"
+  },
+  "hotkeyInputChange": "Ändern",
+  "@hotkeyInputChange": {
+    "description": "Change hotkey button"
+  },
+  "categoryMappingListColumnActions": "AKTIONEN",
+  "@categoryMappingListColumnActions": {
+    "description": "Actions column header"
+  },
+  "hotkeyInputClearHotkey": "Tastenkombination löschen",
+  "@hotkeyInputClearHotkey": {
+    "description": "Clear hotkey button"
+  },
+  "categoryMappingListIdPrefix": "ID: ",
+  "@categoryMappingListIdPrefix": {
+    "description": "ID prefix for category display"
+  },
+  "categoryMappingListCategoryId": "ID: {categoryId}",
+  "@categoryMappingListCategoryId": {
+    "description": "Category ID display format",
+    "placeholders": {
+      "categoryId": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryMappingListNever": "Nie",
+  "@categoryMappingListNever": {
+    "description": "Never used text for last used column"
+  },
+  "categoryMappingListJustNow": "Gerade eben",
+  "@categoryMappingListJustNow": {
+    "description": "Just now time text for recent activity"
+  },
+  "categoryMappingListMinutesAgo": "vor {minutes} {minutes, plural, =1{Minute} other{Minuten}}",
+  "@categoryMappingListMinutesAgo": {
+    "description": "Minutes ago time format",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "categoryMappingListHoursAgo": "vor {hours} {hours, plural, =1{Stunde} other{Stunden}}",
+  "@categoryMappingListHoursAgo": {
+    "description": "Hours ago time format",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "categoryMappingListDaysAgo": "vor {days} {days, plural, =1{Tag} other{Tagen}}",
+  "@categoryMappingListDaysAgo": {
+    "description": "Days ago time format",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "hotkeyInputSetHotkey": "Tastenkombination festlegen",
+  "@hotkeyInputSetHotkey": {
+    "description": "Set hotkey button"
+  },
+  "categoryMappingListNeverUsed": "Nie",
+  "@categoryMappingListNeverUsed": {
+    "description": "Never used text"
+  },
+  "categoryMappingListTypeUser": "BENUTZER",
+  "@categoryMappingListTypeUser": {
+    "description": "User type label"
+  },
+  "categoryMappingListTypePreset": "VOREINSTELLUNG",
+  "@categoryMappingListTypePreset": {
+    "description": "Preset type label"
+  },
+  "categoryMappingListEditTooltip": "Zuordnung bearbeiten",
+  "@categoryMappingListEditTooltip": {
+    "description": "Edit mapping tooltip"
+  },
+  "categoryMappingListDeleteTooltip": "Zuordnung löschen",
+  "@categoryMappingListDeleteTooltip": {
+    "description": "Delete mapping tooltip"
+  },
+  "categoryMappingListTimeJustNow": "Gerade eben",
+  "@categoryMappingListTimeJustNow": {
+    "description": "Just now time text"
+  },
+  "categoryMappingProviderSuccessAdded": "Zuordnung erfolgreich hinzugefügt",
+  "@categoryMappingProviderSuccessAdded": {
+    "description": "Mapping added success message"
+  },
+  "categoryMappingProviderSuccessUpdated": "Zuordnung erfolgreich aktualisiert",
+  "@categoryMappingProviderSuccessUpdated": {
+    "description": "Mapping updated success message"
+  },
+  "categoryMappingProviderSuccessDeleted": "Zuordnung erfolgreich gelöscht",
+  "@categoryMappingProviderSuccessDeleted": {
+    "description": "Mapping deleted success message"
+  },
+  "commonCancel": "Abbrechen",
+  "@commonCancel": {
+    "description": "Common cancel button"
+  },
+  "commonOk": "OK",
+  "@commonOk": {
+    "description": "Common OK button"
+  },
+  "commonConfirm": "Bestätigen",
+  "@commonConfirm": {
+    "description": "Common confirm button"
+  },
+  "autoSwitcherProviderErrorPrefix": "Fehler beim",
+  "@autoSwitcherProviderErrorPrefix": {
+    "description": "Error message prefix for auto switcher operations"
+  },
+  "autoSwitcherProviderStartMonitoring": "Starten der Überwachung",
+  "@autoSwitcherProviderStartMonitoring": {
+    "description": "Start monitoring operation text"
+  },
+  "autoSwitcherProviderStopMonitoring": "Stoppen der Überwachung",
+  "@autoSwitcherProviderStopMonitoring": {
+    "description": "Stop monitoring operation text"
+  },
+  "autoSwitcherProviderManualUpdate": "Durchführen der manuellen Aktualisierung",
+  "@autoSwitcherProviderManualUpdate": {
+    "description": "Manual update operation text"
+  },
+  "autoSwitcherProviderLoadHistory": "Laden des Verlaufs",
+  "@autoSwitcherProviderLoadHistory": {
+    "description": "Load history operation text"
+  },
+  "autoSwitcherProviderClearHistory": "Löschen des Verlaufs",
+  "@autoSwitcherProviderClearHistory": {
+    "description": "Clear history operation text"
+  },
+  "autoSwitcherProviderSuccessCategoryUpdated": "Kategorie erfolgreich aktualisiert",
+  "@autoSwitcherProviderSuccessCategoryUpdated": {
+    "description": "Success message for category update"
+  },
+  "autoSwitcherProviderSuccessHistoryCleared": "Verlauf erfolgreich gelöscht",
+  "@autoSwitcherProviderSuccessHistoryCleared": {
+    "description": "Success message for clearing history"
+  },
+  "autoSwitcherProviderErrorUnknown": "Unbekannter Fehler",
+  "@autoSwitcherProviderErrorUnknown": {
+    "description": "Unknown error message"
+  },
+  "settingsFactoryReset": "Zurücksetzen auf Werkseinstellungen",
+  "@settingsFactoryReset": {
+    "description": "Factory reset settings section"
+  },
+  "settingsFactoryResetDescription": "Alle Einstellungen und Daten auf Werkseinstellungen zurücksetzen",
+  "@settingsFactoryResetDescription": {
+    "description": "Factory reset description"
+  },
+  "settingsFactoryResetButton": "Auf Werkseinstellungen zurücksetzen",
+  "@settingsFactoryResetButton": {
+    "description": "Factory reset button text"
+  },
+  "settingsFactoryResetDialogTitle": "Zurücksetzen auf Werkseinstellungen",
+  "@settingsFactoryResetDialogTitle": {
+    "description": "Factory reset dialog title"
+  },
+  "settingsFactoryResetDialogMessage": "Alle Einstellungen, die lokale Datenbank und alle lokal erstellten Kategorien gehen verloren. Möchten Sie wirklich fortfahren?",
+  "@settingsFactoryResetDialogMessage": {
+    "description": "Factory reset confirmation message"
+  },
+  "settingsFactoryResetDialogConfirm": "ZURÜCKSETZEN",
+  "@settingsFactoryResetDialogConfirm": {
+    "description": "Factory reset confirm button"
+  },
+  "settingsFactoryResetSuccess": "Die Anwendung wurde erfolgreich auf Werkseinstellungen zurückgesetzt. Bitte starten Sie die Anwendung neu.",
+  "@settingsFactoryResetSuccess": {
+    "description": "Factory reset success message"
+  },
+  "settingsUpdates": "Aktualisierungen",
+  "@settingsUpdates": {
+    "description": "Updates settings section"
+  },
+  "settingsUpdateChannelLabel": "Aktualisierungskanal",
+  "@settingsUpdateChannelLabel": {
+    "description": "Update channel setting label"
+  },
+  "settingsUpdateChannelDescription": "Wählen Sie, welche Arten von Aktualisierungen Sie erhalten möchten",
+  "@settingsUpdateChannelDescription": {
+    "description": "Update channel setting description"
+  },
+  "settingsUpdateChannelChanged": "Aktualisierungskanal geändert zu {channel}. Suche nach Aktualisierungen...",
+  "@settingsUpdateChannelChanged": {
+    "description": "Update channel changed confirmation message",
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "updateChannelStable": "Stabil",
+  "@updateChannelStable": {
+    "description": "Stable update channel name"
+  },
+  "updateChannelStableDesc": "Empfohlen für die meisten Benutzer. Nur stabile Versionen.",
+  "@updateChannelStableDesc": {
+    "description": "Stable update channel description"
+  },
+  "updateChannelRc": "Release Candidate",
+  "@updateChannelRc": {
+    "description": "Release candidate update channel name"
+  },
+  "updateChannelRcDesc": "Stabile Funktionen mit abschließendem Test vor der stabilen Version.",
+  "@updateChannelRcDesc": {
+    "description": "Release candidate update channel description"
+  },
+  "updateChannelBeta": "Beta",
+  "@updateChannelBeta": {
+    "description": "Beta update channel name"
+  },
+  "updateChannelBetaDesc": "Neue Funktionen, die größtenteils stabil sind. Kann Fehler enthalten.",
+  "@updateChannelBetaDesc": {
+    "description": "Beta update channel description"
+  },
+  "updateChannelDev": "Entwicklung",
+  "@updateChannelDev": {
+    "description": "Development update channel name"
+  },
+  "updateChannelDevDesc": "Neueste Funktionen. Erwarten Sie Fehler und Instabilität.",
+  "@updateChannelDevDesc": {
+    "description": "Development update channel description"
+  },
+  "fallbackBehaviorDoNothing": "Nichts tun",
+  "@fallbackBehaviorDoNothing": {
+    "description": "Do nothing fallback behavior option"
+  },
+  "fallbackBehaviorJustChatting": "Just Chatting",
+  "@fallbackBehaviorJustChatting": {
+    "description": "Just Chatting fallback behavior option"
+  },
+  "fallbackBehaviorCustom": "Eigene Kategorie",
+  "@fallbackBehaviorCustom": {
+    "description": "Custom category fallback behavior option"
+  },
+  "unknownGameDialogTitle": "Game Not Mapped",
+  "@unknownGameDialogTitle": {
+    "description": "Unknown game dialog title"
+  },
+  "unknownGameDialogSubtitle": "Select a Twitch category for \"{processName}\"",
+  "@unknownGameDialogSubtitle": {
+    "description": "Unknown game dialog subtitle",
+    "placeholders": {
+      "processName": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameDialogClose": "Close",
+  "@unknownGameDialogClose": {
+    "description": "Close button tooltip"
+  },
+  "unknownGameDialogSearchLabel": "SEARCH TWITCH CATEGORIES",
+  "@unknownGameDialogSearchLabel": {
+    "description": "Search section label"
+  },
+  "unknownGameDialogSearchHint": "Type game name...",
+  "@unknownGameDialogSearchHint": {
+    "description": "Search input hint text"
+  },
+  "unknownGameDialogOptionsHeader": "OPTIONS",
+  "@unknownGameDialogOptionsHeader": {
+    "description": "Options section header"
+  },
+  "unknownGameDialogSaveLocallyLabel": "Save mapping locally",
+  "@unknownGameDialogSaveLocallyLabel": {
+    "description": "Save locally checkbox label"
+  },
+  "unknownGameDialogContributeLabel": "Contribute to community mappings",
+  "@unknownGameDialogContributeLabel": {
+    "description": "Contribute to community checkbox label"
+  },
+  "unknownGameDialogContributeSubtitle": "Help others by sharing this mapping on GitHub",
+  "@unknownGameDialogContributeSubtitle": {
+    "description": "Contribute to community checkbox subtitle"
+  },
+  "unknownGameDialogSearchError": "Search Error",
+  "@unknownGameDialogSearchError": {
+    "description": "Search error message title"
+  },
+  "unknownGameDialogSearchPrompt": "Search for a Twitch category above",
+  "@unknownGameDialogSearchPrompt": {
+    "description": "Prompt to search for categories"
+  },
+  "unknownGameDialogNoResults": "No categories found",
+  "@unknownGameDialogNoResults": {
+    "description": "No search results message"
+  },
+  "unknownGameDialogIgnore": "Ignore",
+  "@unknownGameDialogIgnore": {
+    "description": "Ignore button text"
+  },
+  "unknownGameDialogSkip": "Skip",
+  "@unknownGameDialogSkip": {
+    "description": "Skip button text"
+  },
+  "unknownGameDialogSave": "Save",
+  "@unknownGameDialogSave": {
+    "description": "Save button text"
+  },
+  "versionStatusUpToDate": "Auf dem neuesten Stand",
+  "@versionStatusUpToDate": {
+    "description": "Version status when up to date"
+  },
+  "versionStatusUpdateAvailable": "Update verfügbar",
+  "@versionStatusUpdateAvailable": {
+    "description": "Version status when update is available"
+  },
+  "versionStatusCheckFailed": "Update-Prüfung fehlgeschlagen: {error}",
+  "@versionStatusCheckFailed": {
+    "description": "Version status when check failed",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "versionStatusNotInitialized": "Update-Dienst nicht initialisiert",
+  "@versionStatusNotInitialized": {
+    "description": "Version status when not initialized"
+  },
+  "versionStatusPlatformNotSupported": "Updates auf dieser Plattform nicht unterstützt",
+  "@versionStatusPlatformNotSupported": {
+    "description": "Version status when platform not supported"
+  }
+}

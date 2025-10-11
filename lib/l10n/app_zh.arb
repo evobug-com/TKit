@@ -1,0 +1,1278 @@
+{
+  "@@locale": "zh",
+  "appTitle": "TKit",
+  "@appTitle": {
+    "description": "The application title"
+  },
+  "welcomeTitle": "欢迎使用 TKit",
+  "@welcomeTitle": {
+    "description": "Welcome screen title"
+  },
+  "selectLanguage": "选择您的语言",
+  "@selectLanguage": {
+    "description": "Language selection instruction"
+  },
+  "languageLabel": "语言",
+  "@languageLabel": {
+    "description": "Language field label"
+  },
+  "continueButton": "继续",
+  "@continueButton": {
+    "description": "Continue button text"
+  },
+  "confirm": "确认",
+  "@confirm": {
+    "description": "Confirmation button text"
+  },
+  "hello": "你好",
+  "@hello": {
+    "description": "Hello greeting"
+  },
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "English language name"
+  },
+  "languageCzech": "Čeština",
+  "@languageCzech": {
+    "description": "Czech language name"
+  },
+  "languagePolish": "Polski",
+  "@languagePolish": {
+    "description": "Polish language name"
+  },
+  "languageSpanish": "Español",
+  "@languageSpanish": {
+    "description": "Spanish language name"
+  },
+  "languageFrench": "Français",
+  "@languageFrench": {
+    "description": "French language name"
+  },
+  "languageGerman": "Deutsch",
+  "@languageGerman": {
+    "description": "German language name"
+  },
+  "languagePortuguese": "Português",
+  "@languagePortuguese": {
+    "description": "Portuguese language name"
+  },
+  "languageJapanese": "日本語",
+  "@languageJapanese": {
+    "description": "Japanese language name"
+  },
+  "languageKorean": "한국어",
+  "@languageKorean": {
+    "description": "Korean language name"
+  },
+  "languageChinese": "中文",
+  "@languageChinese": {
+    "description": "Chinese language name"
+  },
+  "settingsLanguage": "语言",
+  "@settingsLanguage": {
+    "description": "Language settings label"
+  },
+  "settingsLanguageDescription": "为应用程序选择您的首选语言",
+  "@settingsLanguageDescription": {
+    "description": "Language settings description"
+  },
+  "languageChangeNotice": "语言已更改。应用程序将立即更新。",
+  "@languageChangeNotice": {
+    "description": "Notice shown when language is changed"
+  },
+  "authSuccessAuthenticatedAs": "成功验证为",
+  "@authSuccessAuthenticatedAs": {
+    "description": "Success message for authentication"
+  },
+  "systemTrayShowTkit": "显示 TKit",
+  "@systemTrayShowTkit": {
+    "description": "System tray menu option to show TKit window"
+  },
+  "authConnectToTwitch": "连接到 Twitch",
+  "@authConnectToTwitch": {
+    "description": "Button to initiate Twitch connection"
+  },
+  "systemTrayAutoSwitcher": "自动切换",
+  "@systemTrayAutoSwitcher": {
+    "description": "System tray menu option for auto switcher"
+  },
+  "authLoading": "加载中...",
+  "@authLoading": {
+    "description": "Loading state message"
+  },
+  "systemTrayCategoryMappings": "分类映射",
+  "@systemTrayCategoryMappings": {
+    "description": "System tray menu option for category mappings"
+  },
+  "authRefreshingToken": "刷新令牌中...",
+  "@authRefreshingToken": {
+    "description": "Token refresh in progress message"
+  },
+  "systemTraySettings": "设置",
+  "@systemTraySettings": {
+    "description": "System tray menu option for settings"
+  },
+  "authSuccessfullyAuthenticated": "成功验证",
+  "@authSuccessfullyAuthenticated": {
+    "description": "Successful authentication message"
+  },
+  "systemTrayExit": "退出",
+  "@systemTrayExit": {
+    "description": "System tray menu option to exit application"
+  },
+  "authLoggedInAs": "已登录为",
+  "@authLoggedInAs": {
+    "description": "Label showing current logged in user"
+  },
+  "systemTrayTooltip": "TKit - Twitch 工具包",
+  "@systemTrayTooltip": {
+    "description": "System tray icon tooltip"
+  },
+  "authErrorAuthenticationFailed": "验证失败",
+  "@authErrorAuthenticationFailed": {
+    "description": "Authentication failure error message"
+  },
+  "authErrorErrorCode": "错误代码：",
+  "@authErrorErrorCode": {
+    "description": "Label for error code display"
+  },
+  "authTryAgain": "重试",
+  "@authTryAgain": {
+    "description": "Button to retry authentication"
+  },
+  "authAuthorizationSteps": "授权步骤",
+  "@authAuthorizationSteps": {
+    "description": "Header for authorization steps"
+  },
+  "authStep1": "点击下方的\"连接到 Twitch\"按钮",
+  "@authStep1": {
+    "description": "First authorization step instruction"
+  },
+  "authStep2": "您的浏览器将打开 Twitch 授权页面",
+  "@authStep2": {
+    "description": "Second authorization step instruction"
+  },
+  "authStep3": "查看并授权 TKit 管理您的频道",
+  "@authStep3": {
+    "description": "Third authorization step instruction"
+  },
+  "authStep4": "授权后返回此窗口",
+  "@authStep4": {
+    "description": "Fourth authorization step instruction"
+  },
+  "authConnectToTwitchButton": "连接到 TWITCH",
+  "@authConnectToTwitchButton": {
+    "description": "Connect to Twitch button text"
+  },
+  "authRequiresAccessMessage": "TKit 需要访问权限才能更新您的 Twitch 频道分类。",
+  "@authRequiresAccessMessage": {
+    "description": "Message explaining required access"
+  },
+  "authDeviceCodeTitle": "连接到 Twitch",
+  "@authDeviceCodeTitle": {
+    "description": "Device code authentication title"
+  },
+  "authDeviceCodeInstructions": "要连接您的 Twitch 账户，请按照以下简单步骤操作：",
+  "@authDeviceCodeInstructions": {
+    "description": "Device code flow instructions header"
+  },
+  "authDeviceCodeStep1": "访问",
+  "@authDeviceCodeStep1": {
+    "description": "Device code step 1 text"
+  },
+  "authDeviceCodeStep2": "输入此代码：",
+  "@authDeviceCodeStep2": {
+    "description": "Device code step 2 text"
+  },
+  "authDeviceCodeStep3": "授权 TKit 管理您的频道分类",
+  "@authDeviceCodeStep3": {
+    "description": "Device code step 3 text"
+  },
+  "authDeviceCodeCodeLabel": "您的代码",
+  "@authDeviceCodeCodeLabel": {
+    "description": "Label for device code display"
+  },
+  "authDeviceCodeCopyCode": "复制代码",
+  "@authDeviceCodeCopyCode": {
+    "description": "Copy code button text"
+  },
+  "authDeviceCodeCopied": "已复制！",
+  "@authDeviceCodeCopied": {
+    "description": "Code copied confirmation"
+  },
+  "authDeviceCodeOpenBrowser": "打开 twitch.tv/activate",
+  "@authDeviceCodeOpenBrowser": {
+    "description": "Open browser button text"
+  },
+  "authDeviceCodeWaiting": "等待授权中...",
+  "@authDeviceCodeWaiting": {
+    "description": "Waiting for user to authorize"
+  },
+  "authDeviceCodeExpiresIn": "代码将在 {minutes}:{seconds} 后过期",
+  "@authDeviceCodeExpiresIn": {
+    "description": "Code expiration countdown",
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "authDeviceCodeExpired": "代码已过期。请重试。",
+  "@authDeviceCodeExpired": {
+    "description": "Code expired message"
+  },
+  "authDeviceCodeCancel": "取消",
+  "@authDeviceCodeCancel": {
+    "description": "Cancel device code flow button"
+  },
+  "authDeviceCodeSuccess": "成功连接！",
+  "@authDeviceCodeSuccess": {
+    "description": "Device code success message"
+  },
+  "authDeviceCodeError": "连接失败。请重试。",
+  "@authDeviceCodeError": {
+    "description": "Device code error message"
+  },
+  "authDeviceCodeHelp": "遇到问题？请确保您已在浏览器中登录 Twitch。",
+  "@authDeviceCodeHelp": {
+    "description": "Help text for device code flow"
+  },
+  "autoSwitcherPageTitle": "自动切换",
+  "@autoSwitcherPageTitle": {
+    "description": "Auto switcher page title"
+  },
+  "authStatusAuthenticated": "已验证",
+  "@authStatusAuthenticated": {
+    "description": "Authenticated status"
+  },
+  "autoSwitcherPageDescription": "根据聚焦的应用程序自动更新直播分类",
+  "@autoSwitcherPageDescription": {
+    "description": "Auto switcher page description"
+  },
+  "authStatusConnecting": "连接中...",
+  "@authStatusConnecting": {
+    "description": "Connecting status"
+  },
+  "autoSwitcherStatusHeader": "状态",
+  "@autoSwitcherStatusHeader": {
+    "description": "Status section header"
+  },
+  "authStatusError": "错误",
+  "@authStatusError": {
+    "description": "Error status"
+  },
+  "autoSwitcherStatusCurrentProcess": "当前进程",
+  "@autoSwitcherStatusCurrentProcess": {
+    "description": "Current process label"
+  },
+  "authStatusNotConnected": "未连接",
+  "@authStatusNotConnected": {
+    "description": "Not connected status"
+  },
+  "autoSwitcherStatusNone": "无",
+  "@autoSwitcherStatusNone": {
+    "description": "None value"
+  },
+  "autoSwitcherStatusMatchedCategory": "匹配的分类",
+  "@autoSwitcherStatusMatchedCategory": {
+    "description": "Matched category label"
+  },
+  "mainWindowNavAutoSwitcher": "自动切换",
+  "@mainWindowNavAutoSwitcher": {
+    "description": "Auto switcher navigation item"
+  },
+  "autoSwitcherStatusLastUpdate": "最后更新",
+  "@autoSwitcherStatusLastUpdate": {
+    "description": "Last update label"
+  },
+  "mainWindowNavMappings": "映射",
+  "@mainWindowNavMappings": {
+    "description": "Mappings navigation item"
+  },
+  "autoSwitcherStatusNever": "从未",
+  "@autoSwitcherStatusNever": {
+    "description": "Never value for last update"
+  },
+  "mainWindowNavSettings": "设置",
+  "@mainWindowNavSettings": {
+    "description": "Settings navigation item"
+  },
+  "mainWindowStatusConnected": "已连接",
+  "@mainWindowStatusConnected": {
+    "description": "Connected status in main window"
+  },
+  "autoSwitcherStatusUpdateStatus": "更新状态",
+  "@autoSwitcherStatusUpdateStatus": {
+    "description": "Update status label"
+  },
+  "mainWindowStatusDisconnected": "已断开",
+  "@mainWindowStatusDisconnected": {
+    "description": "Disconnected status in main window"
+  },
+  "autoSwitcherStatusNoUpdatesYet": "尚无更新",
+  "@autoSwitcherStatusNoUpdatesYet": {
+    "description": "No updates yet message"
+  },
+  "mainWindowWindowControlMinimize": "最小化",
+  "@mainWindowWindowControlMinimize": {
+    "description": "Minimize window button"
+  },
+  "autoSwitcherStatusSuccess": "成功",
+  "@autoSwitcherStatusSuccess": {
+    "description": "Success update status"
+  },
+  "authLoadingStartingAuthentication": "正在启动验证...",
+  "@authLoadingStartingAuthentication": {
+    "description": "Starting authentication loading message"
+  },
+  "mainWindowWindowControlMaximize": "最大化",
+  "@mainWindowWindowControlMaximize": {
+    "description": "Maximize window button"
+  },
+  "autoSwitcherStatusFailed": "失败",
+  "@autoSwitcherStatusFailed": {
+    "description": "Failed update status"
+  },
+  "authLoadingLoggingOut": "正在登出...",
+  "@authLoadingLoggingOut": {
+    "description": "Logging out loading message"
+  },
+  "settingsSavedSuccessfully": "设置已成功保存",
+  "@settingsSavedSuccessfully": {
+    "description": "Settings saved success message"
+  },
+  "autoSwitcherStatusSystemState": "系统状态",
+  "@autoSwitcherStatusSystemState": {
+    "description": "System state label"
+  },
+  "mainWindowWindowControlClose": "关闭",
+  "@mainWindowWindowControlClose": {
+    "description": "Close window button"
+  },
+  "authLoadingCheckingStatus": "正在检查验证状态...",
+  "@authLoadingCheckingStatus": {
+    "description": "Checking status loading message"
+  },
+  "settingsRetry": "重试",
+  "@settingsRetry": {
+    "description": "Retry button"
+  },
+  "autoSwitcherStatusNotInitialized": "未初始化",
+  "@autoSwitcherStatusNotInitialized": {
+    "description": "Not initialized system state"
+  },
+  "mainWindowFooterReady": "就绪",
+  "@mainWindowFooterReady": {
+    "description": "Ready status in footer"
+  },
+  "authErrorTokenRefreshFailed": "令牌刷新失败：",
+  "@authErrorTokenRefreshFailed": {
+    "description": "Token refresh failed error message"
+  },
+  "settingsAutoSwitcher": "自动切换",
+  "@settingsAutoSwitcher": {
+    "description": "Auto switcher settings section"
+  },
+  "autoSwitcherStatusIdle": "空闲",
+  "@autoSwitcherStatusIdle": {
+    "description": "Idle system state"
+  },
+  "updateDialogTitle": "更新可用",
+  "@updateDialogTitle": {
+    "description": "Update dialog title"
+  },
+  "settingsMonitoring": "监控",
+  "@settingsMonitoring": {
+    "description": "Monitoring settings section"
+  },
+  "autoSwitcherStatusDetectingProcess": "检测进程中",
+  "@autoSwitcherStatusDetectingProcess": {
+    "description": "Detecting process system state"
+  },
+  "categoryMappingTitle": "分类映射",
+  "@categoryMappingTitle": {
+    "description": "Category mappings page title"
+  },
+  "updateDialogWhatsNew": "新功能：",
+  "@updateDialogWhatsNew": {
+    "description": "What's new label in update dialog"
+  },
+  "settingsScanIntervalLabel": "扫描间隔",
+  "@settingsScanIntervalLabel": {
+    "description": "Scan interval setting label"
+  },
+  "autoSwitcherStatusSearchingMapping": "搜索映射中",
+  "@autoSwitcherStatusSearchingMapping": {
+    "description": "Searching mapping system state"
+  },
+  "categoryMappingSubtitle": "管理进程到分类的映射以实现自动切换",
+  "@categoryMappingSubtitle": {
+    "description": "Category mappings page subtitle"
+  },
+  "updateDialogDownloadComplete": "下载完成！准备安装。",
+  "@updateDialogDownloadComplete": {
+    "description": "Download complete message"
+  },
+  "settingsScanIntervalDescription": "检查哪个应用程序具有焦点的频率",
+  "@settingsScanIntervalDescription": {
+    "description": "Scan interval setting description"
+  },
+  "autoSwitcherStatusUpdatingCategory": "更新分类中",
+  "@autoSwitcherStatusUpdatingCategory": {
+    "description": "Updating category system state"
+  },
+  "categoryMappingAddMappingButton": "添加映射",
+  "@categoryMappingAddMappingButton": {
+    "description": "Add mapping button"
+  },
+  "updateDialogDownloadFailed": "下载失败：",
+  "@updateDialogDownloadFailed": {
+    "description": "Download failed error message"
+  },
+  "settingsDebounceTimeLabel": "防抖时间",
+  "@settingsDebounceTimeLabel": {
+    "description": "Debounce time setting label"
+  },
+  "autoSwitcherStatusWaitingDebounce": "等待中（防抖）",
+  "@autoSwitcherStatusWaitingDebounce": {
+    "description": "Waiting debounce system state"
+  },
+  "categoryMappingErrorDialogTitle": "错误",
+  "@categoryMappingErrorDialogTitle": {
+    "description": "Error dialog title"
+  },
+  "updateDialogRemindLater": "稍后提醒",
+  "@updateDialogRemindLater": {
+    "description": "Remind later button"
+  },
+  "settingsDebounceTimeDescription": "应用更改后切换分类前的等待时间（防止快速切换）",
+  "@settingsDebounceTimeDescription": {
+    "description": "Debounce time setting description"
+  },
+  "autoSwitcherStatusError": "错误",
+  "@autoSwitcherStatusError": {
+    "description": "Error system state"
+  },
+  "categoryMappingStatsTotalMappings": "总映射数",
+  "@categoryMappingStatsTotalMappings": {
+    "description": "Total mappings stat label"
+  },
+  "updateDialogDownloadUpdate": "下载更新",
+  "@updateDialogDownloadUpdate": {
+    "description": "Download update button"
+  },
+  "settingsAutoStartMonitoringLabel": "自动开始监控",
+  "@settingsAutoStartMonitoringLabel": {
+    "description": "Auto start monitoring setting label"
+  },
+  "autoSwitcherControlsHeader": "控制",
+  "@autoSwitcherControlsHeader": {
+    "description": "Controls section header"
+  },
+  "categoryMappingStatsUserDefined": "用户定义",
+  "@categoryMappingStatsUserDefined": {
+    "description": "User defined mappings stat label"
+  },
+  "updateDialogCancel": "取消",
+  "@updateDialogCancel": {
+    "description": "Cancel button in update dialog"
+  },
+  "settingsAutoStartMonitoringSubtitle": "TKit 启动时开始监控活动应用程序",
+  "@settingsAutoStartMonitoringSubtitle": {
+    "description": "Auto start monitoring setting subtitle"
+  },
+  "autoSwitcherControlsStopMonitoring": "停止监控",
+  "@autoSwitcherControlsStopMonitoring": {
+    "description": "Stop monitoring button"
+  },
+  "categoryMappingStatsPresets": "预设",
+  "@categoryMappingStatsPresets": {
+    "description": "Presets stat label"
+  },
+  "updateDialogLater": "稍后",
+  "@updateDialogLater": {
+    "description": "Later button in update dialog"
+  },
+  "settingsFallbackBehavior": "回退行为",
+  "@settingsFallbackBehavior": {
+    "description": "Fallback behavior settings section"
+  },
+  "autoSwitcherControlsStartMonitoring": "开始监控",
+  "@autoSwitcherControlsStartMonitoring": {
+    "description": "Start monitoring button"
+  },
+  "categoryMappingErrorLoading": "加载映射时出错",
+  "@categoryMappingErrorLoading": {
+    "description": "Error loading mappings message"
+  },
+  "updateDialogInstallRestart": "安装并重启",
+  "@updateDialogInstallRestart": {
+    "description": "Install and restart button"
+  },
+  "settingsFallbackBehaviorLabel": "未找到映射时",
+  "@settingsFallbackBehaviorLabel": {
+    "description": "Fallback behavior setting label"
+  },
+  "autoSwitcherControlsManualUpdate": "手动更新",
+  "@autoSwitcherControlsManualUpdate": {
+    "description": "Manual update button"
+  },
+  "categoryMappingRetryButton": "重试",
+  "@categoryMappingRetryButton": {
+    "description": "Retry button"
+  },
+  "updateDialogToday": "今天",
+  "@updateDialogToday": {
+    "description": "Today text for date display"
+  },
+  "settingsFallbackBehaviorDescription": "选择聚焦的应用没有分类映射时的行为",
+  "@settingsFallbackBehaviorDescription": {
+    "description": "Fallback behavior setting description"
+  },
+  "categoryMappingDeleteDialogTitle": "删除映射",
+  "@categoryMappingDeleteDialogTitle": {
+    "description": "Delete mapping dialog title"
+  },
+  "autoSwitcherControlsMonitoringStatus": "监控状态",
+  "@autoSwitcherControlsMonitoringStatus": {
+    "description": "Monitoring status label"
+  },
+  "updateDialogYesterday": "昨天",
+  "@updateDialogYesterday": {
+    "description": "Yesterday text for date display"
+  },
+  "settingsCustomCategory": "自定义分类",
+  "@settingsCustomCategory": {
+    "description": "Custom category settings section"
+  },
+  "categoryMappingDeleteDialogMessage": "确定要删除此映射吗？",
+  "@categoryMappingDeleteDialogMessage": {
+    "description": "Delete mapping confirmation message"
+  },
+  "autoSwitcherControlsActive": "活动",
+  "@autoSwitcherControlsActive": {
+    "description": "Active monitoring status"
+  },
+  "updateDialogDaysAgo": "{days}天前",
+  "@updateDialogDaysAgo": {
+    "description": "Days ago text for date display",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsCustomCategoryHint": "搜索分类...",
+  "@settingsCustomCategoryHint": {
+    "description": "Custom category search hint"
+  },
+  "categoryMappingDeleteDialogConfirm": "删除",
+  "@categoryMappingDeleteDialogConfirm": {
+    "description": "Delete confirmation button"
+  },
+  "autoSwitcherControlsInactive": "非活动",
+  "@autoSwitcherControlsInactive": {
+    "description": "Inactive monitoring status"
+  },
+  "updateDialogVersion": "版本 {version}",
+  "@updateDialogVersion": {
+    "description": "Version text for update dialog",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryMappingDeleteDialogCancel": "取消",
+  "@categoryMappingDeleteDialogCancel": {
+    "description": "Cancel delete button"
+  },
+  "settingsCategorySearchUnavailable": "分类搜索将在 Twitch API 模块完成后可用",
+  "@settingsCategorySearchUnavailable": {
+    "description": "Category search unavailable message"
+  },
+  "autoSwitcherControlsActiveDescription": "根据聚焦的进程自动更新分类",
+  "@autoSwitcherControlsActiveDescription": {
+    "description": "Active monitoring description"
+  },
+  "updateDialogPublished": "发布于 {date}",
+  "@updateDialogPublished": {
+    "description": "Published date text for update dialog",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryMappingAddDialogEditTitle": "编辑映射",
+  "@categoryMappingAddDialogEditTitle": {
+    "description": "Edit mapping dialog title"
+  },
+  "settingsApplication": "应用程序",
+  "@settingsApplication": {
+    "description": "Application settings section"
+  },
+  "autoSwitcherControlsInactiveDescription": "开始监控以启用自动分类更新",
+  "@autoSwitcherControlsInactiveDescription": {
+    "description": "Inactive monitoring description"
+  },
+  "welcomeStepLanguage": "语言",
+  "@welcomeStepLanguage": {
+    "description": "Language setup step"
+  },
+  "categoryMappingAddDialogAddTitle": "添加新映射",
+  "@categoryMappingAddDialogAddTitle": {
+    "description": "Add new mapping dialog title"
+  },
+  "categoryMappingAddDialogClose": "关闭",
+  "@categoryMappingAddDialogClose": {
+    "description": "Close button for add/edit mapping dialog"
+  },
+  "categoryMappingAddDialogProcessName": "进程名称",
+  "@categoryMappingAddDialogProcessName": {
+    "description": "Process name field label"
+  },
+  "categoryMappingAddDialogExecutablePath": "可执行文件路径（可选）",
+  "@categoryMappingAddDialogExecutablePath": {
+    "description": "Executable path field label"
+  },
+  "categoryMappingAddDialogCategoryId": "TWITCH 分类 ID",
+  "@categoryMappingAddDialogCategoryId": {
+    "description": "Twitch category ID field label"
+  },
+  "categoryMappingAddDialogCategoryName": "TWITCH 分类名称",
+  "@categoryMappingAddDialogCategoryName": {
+    "description": "Twitch category name field label"
+  },
+  "categoryMappingAddDialogCancel": "取消",
+  "@categoryMappingAddDialogCancel": {
+    "description": "Cancel button in add/edit mapping dialog"
+  },
+  "categoryMappingAddDialogUpdate": "更新",
+  "@categoryMappingAddDialogUpdate": {
+    "description": "Update button in edit mapping dialog"
+  },
+  "categoryMappingAddDialogAdd": "添加",
+  "@categoryMappingAddDialogAdd": {
+    "description": "Add button in add mapping dialog"
+  },
+  "settingsAutoStartWindowsLabel": "随 Windows 自动启动",
+  "@settingsAutoStartWindowsLabel": {
+    "description": "Auto-start with Windows setting label"
+  },
+  "categoryMappingAddDialogCloseTooltip": "关闭",
+  "@categoryMappingAddDialogCloseTooltip": {
+    "description": "Close dialog tooltip"
+  },
+  "welcomeStepTwitch": "Twitch",
+  "@welcomeStepTwitch": {
+    "description": "Twitch setup step"
+  },
+  "settingsAutoStartWindowsSubtitle": "Windows 启动时自动启动 TKit",
+  "@settingsAutoStartWindowsSubtitle": {
+    "description": "Auto-start with Windows setting subtitle"
+  },
+  "categoryMappingAddDialogProcessNameLabel": "进程名称",
+  "@categoryMappingAddDialogProcessNameLabel": {
+    "description": "Process name field label"
+  },
+  "welcomeLanguageStepTitle": "步骤 1：选择您的语言",
+  "@welcomeLanguageStepTitle": {
+    "description": "Language step title"
+  },
+  "settingsStartMinimizedLabel": "启动时最小化",
+  "@settingsStartMinimizedLabel": {
+    "description": "Start minimized setting label"
+  },
+  "categoryMappingAddDialogProcessNameHint": "例如：League of Legends.exe",
+  "@categoryMappingAddDialogProcessNameHint": {
+    "description": "Process name field hint"
+  },
+  "welcomeLanguageChangeLater": "您可以稍后在设置中更改。",
+  "@welcomeLanguageChangeLater": {
+    "description": "Language change later message"
+  },
+  "settingsStartMinimizedSubtitle": "将 TKit 最小化到系统托盘启动",
+  "@settingsStartMinimizedSubtitle": {
+    "description": "Start minimized setting subtitle"
+  },
+  "categoryMappingAddDialogProcessNameRequired": "进程名称为必填项",
+  "@categoryMappingAddDialogProcessNameRequired": {
+    "description": "Process name required validation message"
+  },
+  "welcomeTwitchStepTitle": "步骤 2：连接到 TWITCH",
+  "@welcomeTwitchStepTitle": {
+    "description": "Twitch step title"
+  },
+  "settingsMinimizeToTrayLabel": "最小化到系统托盘",
+  "@settingsMinimizeToTrayLabel": {
+    "description": "Minimize to tray setting label"
+  },
+  "categoryMappingAddDialogExecutablePathLabel": "可执行文件路径（可选）",
+  "@categoryMappingAddDialogExecutablePathLabel": {
+    "description": "Executable path field label"
+  },
+  "welcomeTwitchConnectionTitle": "Twitch 连接",
+  "@welcomeTwitchConnectionTitle": {
+    "description": "Twitch connection title"
+  },
+  "settingsMinimizeToTraySubtitle": "关闭或最小化时让 TKit 在后台运行",
+  "@settingsMinimizeToTraySubtitle": {
+    "description": "Minimize to tray setting subtitle"
+  },
+  "categoryMappingAddDialogExecutablePathHint": "例如：C:\\Games\\LeagueOfLegends\\Game\\League of Legends.exe",
+  "@categoryMappingAddDialogExecutablePathHint": {
+    "description": "Executable path field hint"
+  },
+  "welcomeTwitchConnectedAs": "已连接为 {username}",
+  "@welcomeTwitchConnectedAs": {
+    "description": "Connected as username message",
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsShowNotificationsLabel": "显示通知",
+  "@settingsShowNotificationsLabel": {
+    "description": "Show notifications setting label"
+  },
+  "categoryMappingAddDialogCategoryIdLabel": "TWITCH 分类 ID",
+  "@categoryMappingAddDialogCategoryIdLabel": {
+    "description": "Category ID field label"
+  },
+  "welcomeTwitchDescription": "连接您的 Twitch 账户以启用基于活动应用程序的自动分类切换。",
+  "@welcomeTwitchDescription": {
+    "description": "Twitch connection description"
+  },
+  "settingsShowNotificationsSubtitle": "分类更新时显示通知",
+  "@settingsShowNotificationsSubtitle": {
+    "description": "Show notifications setting subtitle"
+  },
+  "settingsNotifyMissingCategoryLabel": "缺少分类时通知",
+  "@settingsNotifyMissingCategoryLabel": {
+    "description": "Notify on missing category setting label"
+  },
+  "settingsNotifyMissingCategorySubtitle": "未找到游戏或应用程序的映射时显示通知",
+  "@settingsNotifyMissingCategorySubtitle": {
+    "description": "Notify on missing category setting subtitle"
+  },
+  "categoryMappingAddDialogCategoryIdHint": "例如：21779",
+  "@categoryMappingAddDialogCategoryIdHint": {
+    "description": "Category ID field hint"
+  },
+  "welcomeTwitchOptionalInfo": "此步骤是可选的。您可以跳过并稍后在设置中进行配置。",
+  "@welcomeTwitchOptionalInfo": {
+    "description": "Twitch step optional info"
+  },
+  "settingsKeyboardShortcuts": "键盘快捷键",
+  "@settingsKeyboardShortcuts": {
+    "description": "Keyboard shortcuts settings section"
+  },
+  "categoryMappingAddDialogCategoryIdRequired": "分类 ID 为必填项",
+  "@categoryMappingAddDialogCategoryIdRequired": {
+    "description": "Category ID required validation message"
+  },
+  "welcomeTwitchAuthorizeButton": "使用 TWITCH 授权",
+  "@welcomeTwitchAuthorizeButton": {
+    "description": "Authorize with Twitch button"
+  },
+  "settingsManualUpdateHotkeyLabel": "手动更新快捷键",
+  "@settingsManualUpdateHotkeyLabel": {
+    "description": "Manual update hotkey setting label"
+  },
+  "categoryMappingAddDialogCategoryNameLabel": "TWITCH 分类名称",
+  "@categoryMappingAddDialogCategoryNameLabel": {
+    "description": "Category name field label"
+  },
+  "welcomeButtonNext": "下一步",
+  "@welcomeButtonNext": {
+    "description": "Next button"
+  },
+  "settingsManualUpdateHotkeyDescription": "触发手动分类更新",
+  "@settingsManualUpdateHotkeyDescription": {
+    "description": "Manual update hotkey setting description"
+  },
+  "categoryMappingAddDialogCategoryNameHint": "例如：League of Legends",
+  "@categoryMappingAddDialogCategoryNameHint": {
+    "description": "Category name field hint"
+  },
+  "welcomeButtonBack": "返回",
+  "@welcomeButtonBack": {
+    "description": "Back button"
+  },
+  "settingsUnsavedChanges": "您有未保存的更改",
+  "@settingsUnsavedChanges": {
+    "description": "Unsaved changes warning"
+  },
+  "categoryMappingAddDialogCategoryNameRequired": "分类名称为必填项",
+  "@categoryMappingAddDialogCategoryNameRequired": {
+    "description": "Category name required validation message"
+  },
+  "settingsDiscard": "放弃",
+  "@settingsDiscard": {
+    "description": "Discard changes button"
+  },
+  "categoryMappingAddDialogTip": "提示：使用 Twitch 分类搜索查找正确的 ID 和名称",
+  "@categoryMappingAddDialogTip": {
+    "description": "Tip for finding category ID and name"
+  },
+  "settingsSave": "保存",
+  "@settingsSave": {
+    "description": "Save settings button"
+  },
+  "categoryMappingAddDialogCancelButton": "取消",
+  "@categoryMappingAddDialogCancelButton": {
+    "description": "Cancel button in add/edit dialog"
+  },
+  "settingsTwitchConnection": "Twitch 连接",
+  "@settingsTwitchConnection": {
+    "description": "Twitch connection settings section"
+  },
+  "categoryMappingAddDialogUpdateButton": "更新",
+  "@categoryMappingAddDialogUpdateButton": {
+    "description": "Update button in edit dialog"
+  },
+  "settingsTwitchStatusConnected": "已连接",
+  "@settingsTwitchStatusConnected": {
+    "description": "Twitch connected status"
+  },
+  "categoryMappingAddDialogAddButton": "添加",
+  "@categoryMappingAddDialogAddButton": {
+    "description": "Add button in add dialog"
+  },
+  "settingsTwitchStatusNotConnected": "未连接",
+  "@settingsTwitchStatusNotConnected": {
+    "description": "Twitch not connected status"
+  },
+  "categoryMappingListEmpty": "尚无分类映射",
+  "@categoryMappingListEmpty": {
+    "description": "Empty mappings list message"
+  },
+  "categoryMappingListEmptyTitle": "尚无分类映射",
+  "@categoryMappingListEmptyTitle": {
+    "description": "Empty mappings list title"
+  },
+  "settingsTwitchLoggedInAs": "已登录为：",
+  "@settingsTwitchLoggedInAs": {
+    "description": "Logged in as label"
+  },
+  "categoryMappingListEmptySubtitle": "添加您的第一个映射以开始",
+  "@categoryMappingListEmptySubtitle": {
+    "description": "Empty mappings list subtitle"
+  },
+  "settingsTwitchDisconnect": "断开连接",
+  "@settingsTwitchDisconnect": {
+    "description": "Disconnect from Twitch button"
+  },
+  "categoryMappingListColumnProcessName": "进程名称",
+  "@categoryMappingListColumnProcessName": {
+    "description": "Process name column header"
+  },
+  "settingsTwitchConnectDescription": "连接您的 Twitch 账户以启用自动分类切换。",
+  "@settingsTwitchConnectDescription": {
+    "description": "Twitch connect description"
+  },
+  "categoryMappingListColumnCategory": "分类",
+  "@categoryMappingListColumnCategory": {
+    "description": "Category column header"
+  },
+  "settingsTwitchConnect": "连接到 Twitch",
+  "@settingsTwitchConnect": {
+    "description": "Connect to Twitch button"
+  },
+  "categoryMappingListColumnLastUsed": "最后使用",
+  "@categoryMappingListColumnLastUsed": {
+    "description": "Last used column header"
+  },
+  "hotkeyInputCancel": "取消",
+  "@hotkeyInputCancel": {
+    "description": "Cancel hotkey input button"
+  },
+  "categoryMappingListColumnType": "类型",
+  "@categoryMappingListColumnType": {
+    "description": "Type column header"
+  },
+  "hotkeyInputChange": "更改",
+  "@hotkeyInputChange": {
+    "description": "Change hotkey button"
+  },
+  "categoryMappingListColumnActions": "操作",
+  "@categoryMappingListColumnActions": {
+    "description": "Actions column header"
+  },
+  "hotkeyInputClearHotkey": "清除快捷键",
+  "@hotkeyInputClearHotkey": {
+    "description": "Clear hotkey button"
+  },
+  "categoryMappingListIdPrefix": "ID：",
+  "@categoryMappingListIdPrefix": {
+    "description": "ID prefix for category display"
+  },
+  "categoryMappingListCategoryId": "ID：{categoryId}",
+  "@categoryMappingListCategoryId": {
+    "description": "Category ID display format",
+    "placeholders": {
+      "categoryId": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryMappingListNever": "从未",
+  "@categoryMappingListNever": {
+    "description": "Never used text for last used column"
+  },
+  "categoryMappingListJustNow": "刚刚",
+  "@categoryMappingListJustNow": {
+    "description": "Just now time text for recent activity"
+  },
+  "categoryMappingListMinutesAgo": "{minutes}分钟前",
+  "@categoryMappingListMinutesAgo": {
+    "description": "Minutes ago time format",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "categoryMappingListHoursAgo": "{hours}小时前",
+  "@categoryMappingListHoursAgo": {
+    "description": "Hours ago time format",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "categoryMappingListDaysAgo": "{days}天前",
+  "@categoryMappingListDaysAgo": {
+    "description": "Days ago time format",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "hotkeyInputSetHotkey": "设置快捷键",
+  "@hotkeyInputSetHotkey": {
+    "description": "Set hotkey button"
+  },
+  "categoryMappingListNeverUsed": "从未",
+  "@categoryMappingListNeverUsed": {
+    "description": "Never used text"
+  },
+  "categoryMappingListTypeUser": "用户",
+  "@categoryMappingListTypeUser": {
+    "description": "User type label"
+  },
+  "categoryMappingListTypePreset": "预设",
+  "@categoryMappingListTypePreset": {
+    "description": "Preset type label"
+  },
+  "categoryMappingListEditTooltip": "编辑映射",
+  "@categoryMappingListEditTooltip": {
+    "description": "Edit mapping tooltip"
+  },
+  "categoryMappingListDeleteTooltip": "删除映射",
+  "@categoryMappingListDeleteTooltip": {
+    "description": "Delete mapping tooltip"
+  },
+  "categoryMappingListTimeJustNow": "刚刚",
+  "@categoryMappingListTimeJustNow": {
+    "description": "Just now time text"
+  },
+  "categoryMappingProviderSuccessAdded": "映射已成功添加",
+  "@categoryMappingProviderSuccessAdded": {
+    "description": "Mapping added success message"
+  },
+  "categoryMappingProviderSuccessUpdated": "映射已成功更新",
+  "@categoryMappingProviderSuccessUpdated": {
+    "description": "Mapping updated success message"
+  },
+  "categoryMappingProviderSuccessDeleted": "映射已成功删除",
+  "@categoryMappingProviderSuccessDeleted": {
+    "description": "Mapping deleted success message"
+  },
+  "commonCancel": "取消",
+  "@commonCancel": {
+    "description": "Common cancel button"
+  },
+  "commonOk": "确定",
+  "@commonOk": {
+    "description": "Common OK button"
+  },
+  "commonConfirm": "确认",
+  "@commonConfirm": {
+    "description": "Common confirm button"
+  },
+  "autoSwitcherProviderErrorPrefix": "失败",
+  "@autoSwitcherProviderErrorPrefix": {
+    "description": "Error message prefix for auto switcher operations"
+  },
+  "autoSwitcherProviderStartMonitoring": "开始监控",
+  "@autoSwitcherProviderStartMonitoring": {
+    "description": "Start monitoring operation text"
+  },
+  "autoSwitcherProviderStopMonitoring": "停止监控",
+  "@autoSwitcherProviderStopMonitoring": {
+    "description": "Stop monitoring operation text"
+  },
+  "autoSwitcherProviderManualUpdate": "执行手动更新",
+  "@autoSwitcherProviderManualUpdate": {
+    "description": "Manual update operation text"
+  },
+  "autoSwitcherProviderLoadHistory": "加载历史记录",
+  "@autoSwitcherProviderLoadHistory": {
+    "description": "Load history operation text"
+  },
+  "autoSwitcherProviderClearHistory": "清除历史记录",
+  "@autoSwitcherProviderClearHistory": {
+    "description": "Clear history operation text"
+  },
+  "autoSwitcherProviderSuccessCategoryUpdated": "分类已成功更新",
+  "@autoSwitcherProviderSuccessCategoryUpdated": {
+    "description": "Success message for category update"
+  },
+  "autoSwitcherProviderSuccessHistoryCleared": "历史记录已成功清除",
+  "@autoSwitcherProviderSuccessHistoryCleared": {
+    "description": "Success message for clearing history"
+  },
+  "autoSwitcherProviderErrorUnknown": "未知错误",
+  "@autoSwitcherProviderErrorUnknown": {
+    "description": "Unknown error message"
+  },
+  "settingsFactoryReset": "恢复出厂设置",
+  "@settingsFactoryReset": {
+    "description": "Factory reset settings section"
+  },
+  "settingsFactoryResetDescription": "将所有设置和数据重置为出厂默认值",
+  "@settingsFactoryResetDescription": {
+    "description": "Factory reset description"
+  },
+  "settingsFactoryResetButton": "重置为出厂默认值",
+  "@settingsFactoryResetButton": {
+    "description": "Factory reset button text"
+  },
+  "settingsFactoryResetDialogTitle": "恢复出厂设置",
+  "@settingsFactoryResetDialogTitle": {
+    "description": "Factory reset dialog title"
+  },
+  "settingsFactoryResetDialogMessage": "所有设置、本地数据库和本地创建的所有分类都将丢失。您确定要继续吗？",
+  "@settingsFactoryResetDialogMessage": {
+    "description": "Factory reset confirmation message"
+  },
+  "settingsFactoryResetDialogConfirm": "重置",
+  "@settingsFactoryResetDialogConfirm": {
+    "description": "Factory reset confirm button"
+  },
+  "settingsFactoryResetSuccess": "应用程序已成功重置为出厂默认值。请重新启动应用程序。",
+  "@settingsFactoryResetSuccess": {
+    "description": "Factory reset success message"
+  },
+  "settingsUpdates": "更新",
+  "@settingsUpdates": {
+    "description": "Updates settings section"
+  },
+  "settingsUpdateChannelLabel": "更新频道",
+  "@settingsUpdateChannelLabel": {
+    "description": "Update channel setting label"
+  },
+  "settingsUpdateChannelDescription": "选择您想要接收的更新类型",
+  "@settingsUpdateChannelDescription": {
+    "description": "Update channel setting description"
+  },
+  "settingsUpdateChannelChanged": "更新频道已更改为{channel}。正在检查更新...",
+  "@settingsUpdateChannelChanged": {
+    "description": "Update channel changed confirmation message",
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "updateChannelStable": "稳定版",
+  "@updateChannelStable": {
+    "description": "Stable update channel name"
+  },
+  "updateChannelStableDesc": "推荐给大多数用户。仅稳定版本。",
+  "@updateChannelStableDesc": {
+    "description": "Stable update channel description"
+  },
+  "updateChannelRc": "Release Candidate",
+  "@updateChannelRc": {
+    "description": "Release candidate update channel name"
+  },
+  "updateChannelRcDesc": "稳定版发布前的最终测试功能。",
+  "@updateChannelRcDesc": {
+    "description": "Release candidate update channel description"
+  },
+  "updateChannelBeta": "Beta",
+  "@updateChannelBeta": {
+    "description": "Beta update channel name"
+  },
+  "updateChannelBetaDesc": "大部分稳定的新功能。可能有错误。",
+  "@updateChannelBetaDesc": {
+    "description": "Beta update channel description"
+  },
+  "updateChannelDev": "开发版",
+  "@updateChannelDev": {
+    "description": "Development update channel name"
+  },
+  "updateChannelDevDesc": "最前沿功能。预计会有错误和不稳定性。",
+  "@updateChannelDevDesc": {
+    "description": "Development update channel description"
+  },
+  "fallbackBehaviorDoNothing": "不执行任何操作",
+  "@fallbackBehaviorDoNothing": {
+    "description": "Do nothing fallback behavior option"
+  },
+  "fallbackBehaviorJustChatting": "Just Chatting",
+  "@fallbackBehaviorJustChatting": {
+    "description": "Just Chatting fallback behavior option"
+  },
+  "fallbackBehaviorCustom": "自定义分类",
+  "@fallbackBehaviorCustom": {
+    "description": "Custom category fallback behavior option"
+  },
+  "unknownGameDialogTitle": "Game Not Mapped",
+  "@unknownGameDialogTitle": {
+    "description": "Unknown game dialog title"
+  },
+  "unknownGameDialogSubtitle": "Select a Twitch category for \"{processName}\"",
+  "@unknownGameDialogSubtitle": {
+    "description": "Unknown game dialog subtitle",
+    "placeholders": {
+      "processName": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameDialogClose": "Close",
+  "@unknownGameDialogClose": {
+    "description": "Close button tooltip"
+  },
+  "unknownGameDialogSearchLabel": "SEARCH TWITCH CATEGORIES",
+  "@unknownGameDialogSearchLabel": {
+    "description": "Search section label"
+  },
+  "unknownGameDialogSearchHint": "Type game name...",
+  "@unknownGameDialogSearchHint": {
+    "description": "Search input hint text"
+  },
+  "unknownGameDialogOptionsHeader": "OPTIONS",
+  "@unknownGameDialogOptionsHeader": {
+    "description": "Options section header"
+  },
+  "unknownGameDialogSaveLocallyLabel": "Save mapping locally",
+  "@unknownGameDialogSaveLocallyLabel": {
+    "description": "Save locally checkbox label"
+  },
+  "unknownGameDialogContributeLabel": "Contribute to community mappings",
+  "@unknownGameDialogContributeLabel": {
+    "description": "Contribute to community checkbox label"
+  },
+  "unknownGameDialogContributeSubtitle": "Help others by sharing this mapping on GitHub",
+  "@unknownGameDialogContributeSubtitle": {
+    "description": "Contribute to community checkbox subtitle"
+  },
+  "unknownGameDialogSearchError": "Search Error",
+  "@unknownGameDialogSearchError": {
+    "description": "Search error message title"
+  },
+  "unknownGameDialogSearchPrompt": "Search for a Twitch category above",
+  "@unknownGameDialogSearchPrompt": {
+    "description": "Prompt to search for categories"
+  },
+  "unknownGameDialogNoResults": "No categories found",
+  "@unknownGameDialogNoResults": {
+    "description": "No search results message"
+  },
+  "unknownGameDialogIgnore": "Ignore",
+  "@unknownGameDialogIgnore": {
+    "description": "Ignore button text"
+  },
+  "unknownGameDialogSkip": "Skip",
+  "@unknownGameDialogSkip": {
+    "description": "Skip button text"
+  },
+  "unknownGameDialogSave": "Save",
+  "@unknownGameDialogSave": {
+    "description": "Save button text"
+  },
+  "settingsPageTitle": "设置",
+  "@settingsPageTitle": {
+    "description": "Settings page title"
+  },
+  "settingsPageDescription": "配置应用程序行为和首选项",
+  "@settingsPageDescription": {
+    "description": "Settings page description"
+  },
+  "welcomeStepBehavior": "行为",
+  "@welcomeStepBehavior": {
+    "description": "Behavior setup step"
+  },
+  "welcomeBehaviorStepTitle": "步骤3：应用程序行为",
+  "@welcomeBehaviorStepTitle": {
+    "description": "Behavior step title"
+  },
+  "welcomeBehaviorTitle": "应用程序行为",
+  "@welcomeBehaviorTitle": {
+    "description": "Behavior section title"
+  },
+  "welcomeBehaviorDescription": "配置TKit启动和最小化时的行为。",
+  "@welcomeBehaviorDescription": {
+    "description": "Behavior section description"
+  },
+  "welcomeBehaviorOptionalInfo": "这些设置可以随时在设置中更改。",
+  "@welcomeBehaviorOptionalInfo": {
+    "description": "Behavior step optional info"
+  },
+  "settingsWindowControlsPositionLabel": "窗口控件位置",
+  "@settingsWindowControlsPositionLabel": {
+    "description": "Window controls position setting label"
+  },
+  "settingsWindowControlsPositionDescription": "选择窗口控件（最小化、最大化、关闭）出现的位置",
+  "@settingsWindowControlsPositionDescription": {
+    "description": "Window controls position setting description"
+  },
+  "windowControlsPositionLeft": "左",
+  "@windowControlsPositionLeft": {
+    "description": "Left position for window controls"
+  },
+  "windowControlsPositionCenter": "中",
+  "@windowControlsPositionCenter": {
+    "description": "Center position for window controls"
+  },
+  "windowControlsPositionRight": "右",
+  "@windowControlsPositionRight": {
+    "description": "Right position for window controls"
+  },
+  "versionStatusUpToDate": "已是最新",
+  "@versionStatusUpToDate": {
+    "description": "Version status tooltip when up to date"
+  },
+  "versionStatusUpdateAvailable": "有可用更新",
+  "@versionStatusUpdateAvailable": {
+    "description": "Version status tooltip when update is available"
+  },
+  "versionStatusCheckFailed": "更新检查失败：{error}",
+  "@versionStatusCheckFailed": {
+    "description": "Version status tooltip when check failed with error",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "versionStatusNotInitialized": "更新服务未初始化",
+  "@versionStatusNotInitialized": {
+    "description": "Version status tooltip when service is not initialized"
+  },
+  "versionStatusPlatformNotSupported": "此平台不支持更新",
+  "@versionStatusPlatformNotSupported": {
+    "description": "Version status tooltip when platform doesn't support updates"
+  }
+}

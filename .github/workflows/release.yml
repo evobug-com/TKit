@@ -1,0 +1,107 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+      - 'v*.*.*-*'
+
+env:
+  FLUTTER_VERSION: '3.35.0'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run code generation
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Build Windows app
+        run: flutter build windows --release
+
+      - name: Get version from tag
+        id: get_version
+        shell: bash
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Building version $VERSION"
+
+          # Detect if this is a prerelease
+          if [[ "$VERSION" =~ -alpha|-beta|-rc|-dev ]]; then
+            echo "IS_PRERELEASE=true" >> $GITHUB_OUTPUT
+            echo "This is a prerelease"
+
+            # Determine channel
+            if [[ "$VERSION" =~ -dev ]]; then
+              echo "CHANNEL=dev" >> $GITHUB_OUTPUT
+            elif [[ "$VERSION" =~ -beta ]]; then
+              echo "CHANNEL=beta" >> $GITHUB_OUTPUT
+            elif [[ "$VERSION" =~ -alpha ]]; then
+              echo "CHANNEL=alpha" >> $GITHUB_OUTPUT
+            elif [[ "$VERSION" =~ -rc ]]; then
+              echo "CHANNEL=rc" >> $GITHUB_OUTPUT
+            else
+              echo "CHANNEL=stable" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "IS_PRERELEASE=false" >> $GITHUB_OUTPUT
+            echo "CHANNEL=stable" >> $GITHUB_OUTPUT
+            echo "This is a stable release"
+          fi
+
+      - name: Setup Inno Setup
+        run: |
+          choco install innosetup -y
+
+      - name: Create installer with Inno Setup
+        run: |
+          set VERSION=${{ steps.get_version.outputs.VERSION }}
+          iscc windows\installer.iss
+        shell: cmd
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: build\windows\TKit-Setup-${{ steps.get_version.outputs.VERSION }}.exe
+
+      - name: Extract changelog for version
+        id: changelog
+        shell: bash
+        run: |
+          VERSION=${{ steps.get_version.outputs.VERSION }}
+          # Extract changelog section for this version
+          CHANGELOG=$(awk "/^## \[$VERSION\]/{flag=1;next}/^## \[/{flag=0}flag" CHANGELOG.md | sed '/^$/d')
+
+          # If no changelog found, use default
+          if [ -z "$CHANGELOG" ]; then
+            CHANGELOG="Release version $VERSION"
+          fi
+
+          # Save to file to handle multiline
+          echo "$CHANGELOG" > changelog.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build\windows\TKit-Setup-${{ steps.get_version.outputs.VERSION }}.exe
+          body_path: changelog.txt
+          draft: false
+          prerelease: ${{ steps.get_version.outputs.IS_PRERELEASE }}
+          name: ${{ steps.get_version.outputs.CHANNEL == 'stable' && format('Release {0}', steps.get_version.outputs.VERSION) || format('{0} {1}', steps.get_version.outputs.CHANNEL, steps.get_version.outputs.VERSION) }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
