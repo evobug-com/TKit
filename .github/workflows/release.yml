@@ -52,9 +52,6 @@ jobs:
       - name: Build Windows app
         run: flutter build windows --release
 
-      - name: Create MSIX package
-        run: dart run msix:create
-
       - name: Get version from tag
         id: get_version
         shell: bash
@@ -86,6 +83,14 @@ jobs:
             echo "This is a stable release"
           fi
 
+      - name: Create MSIX package
+        run: dart run msix:create
+
+      - name: Rename MSIX file
+        shell: bash
+        run: |
+          mv build/windows/x64/runner/Release/tkit.msix build/windows/x64/runner/Release/TKit-Setup-${{ steps.get_version.outputs.VERSION }}.msix
+
       - name: Setup Inno Setup
         run: |
           choco install innosetup -y
@@ -100,7 +105,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-msix
-          path: build/windows/x64/runner/Release/*.msix
+          path: build/windows/x64/runner/Release/TKit-Setup-${{ steps.get_version.outputs.VERSION }}.msix
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -128,7 +133,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            build/windows/x64/runner/Release/*.msix
+            build/windows/x64/runner/Release/TKit-Setup-${{ steps.get_version.outputs.VERSION }}.msix
             build/windows/TKit-Setup-${{ steps.get_version.outputs.VERSION }}.exe
           body_path: changelog.txt
           draft: false
