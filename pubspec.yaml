@@ -74,6 +74,40 @@ dev_dependencies:
   integration_test:
     sdk: flutter
 
+  # MSIX packaging
+  msix: ^3.16.12
+
 flutter:
   uses-material-design: true
   generate: true
+
+msix_config:
+  # App Identity
+  display_name: TKit - Twitch Toolkit
+  publisher_display_name: evobug.com
+  identity_name: com.evobug.tkit
+  publisher: CN=evobug
+  install_certificate: false
+
+  # Version (format: a.b.c.d)
+  msix_version: 1.0.0.0
+
+  # Branding
+  logo_path: windows\runner\resources\app_icon.ico
+
+  # Capabilities - only what's needed
+  # Note: runFullTrust is automatically added by msix package for desktop apps
+  capabilities: internetClient
+
+  # Localization
+  languages: en-us
+
+  # Platform
+  architecture: x64
+  os_min_version: 10.0.17763.0  # Windows 10 1809+
+
+  # Distribution
+  store: false  # Set to true when publishing to Microsoft Store
+
+  # Protocol handlers (for twitch:// URLs in future)
+  # protocol_activation: twitch

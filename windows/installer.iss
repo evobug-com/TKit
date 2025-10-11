@@ -17,6 +17,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
+DisableProgramGroupPage=yes
 AllowNoIcons=yes
 ; LicenseFile=..\LICENSE
 OutputDir=..\build\windows
@@ -25,16 +26,26 @@ SetupIconFile=Runner\resources\app_icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+WizardResizable=yes
+WizardSizePercent=100,100
+DisableWelcomePage=no
 PrivilegesRequired=admin
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
+UninstallDisplayIcon={app}\{#MyAppExeName}
+UsePreviousAppDir=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
+[Messages]
+WelcomeLabel2=This will install [name/ver] on your computer.%n%nTKit is a productivity tool that helps you manage your time and tasks efficiently.%n%nIt is recommended that you close all other applications before continuing.
+FinishedHeadingLabel=Setup has finished installing [name] on your computer
+FinishedLabel=The application may be launched by selecting the installed shortcuts.
+
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "startup"; Description: "Launch at Windows startup"; GroupDescription: "Additional options:"; Flags: unchecked
+Name: "desktopicon"; Description: "Create a &desktop shortcut"; GroupDescription: "Additional shortcuts:"; Flags: unchecked
+Name: "startup"; Description: "Run TKit automatically when Windows starts"; GroupDescription: "Startup options:"
 
 [Files]
 Source: "..\build\windows\x64\runner\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs

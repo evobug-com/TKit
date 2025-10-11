@@ -52,6 +52,9 @@ jobs:
       - name: Build Windows app
         run: flutter build windows --release
 
+      - name: Create MSIX package
+        run: dart run msix:create
+
       - name: Get version from tag
         id: get_version
         shell: bash
@@ -96,6 +99,12 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
+          name: windows-msix
+          path: build/windows/x64/runner/Release/*.msix
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
           name: windows-installer
           path: build/windows/TKit-Setup-${{ steps.get_version.outputs.VERSION }}.exe
 
@@ -118,7 +127,9 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: build/windows/TKit-Setup-${{ steps.get_version.outputs.VERSION }}.exe
+          files: |
+            build/windows/x64/runner/Release/*.msix
+            build/windows/TKit-Setup-${{ steps.get_version.outputs.VERSION }}.exe
           body_path: changelog.txt
           draft: false
           prerelease: ${{ steps.get_version.outputs.IS_PRERELEASE }}
