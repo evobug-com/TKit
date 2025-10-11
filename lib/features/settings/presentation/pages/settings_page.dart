@@ -196,7 +196,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
             children: [
               // Scrollable content
               SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(24, _hasChanges ? 80 : 24, 24, 24),
+                padding: EdgeInsets.fromLTRB(16, _hasChanges ? 70 : 16, 16, 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -205,24 +205,25 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                       l10n.settingsPageTitle,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         letterSpacing: 1.2,
-                        fontSize: 12,
+                        fontSize: 11,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 3),
                     Text(
                       l10n.settingsPageDescription,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: TKitColors.textMuted,
+                        fontSize: 12,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 14),
 
                     // Auto Switcher Settings
                     _buildSection(l10n.settingsAutoSwitcher, [
                       // Monitoring Settings
                       _buildSubsectionTitle(l10n.settingsMonitoring),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 8),
                       SettingsSlider(
                         label: l10n.settingsScanIntervalLabel,
                         description: l10n.settingsScanIntervalDescription,
@@ -238,7 +239,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                           );
                         },
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 10),
                       SettingsSlider(
                         label: l10n.settingsDebounceTimeLabel,
                         description: l10n.settingsDebounceTimeDescription,
@@ -252,7 +253,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                           );
                         },
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 14),
 
                       // Auto Start Monitoring
                       SettingsCheckbox(
@@ -267,11 +268,11 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                           );
                         },
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 14),
 
                       // Fallback Behavior
                       _buildSubsectionTitle(l10n.settingsFallbackBehavior),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 8),
                       SettingsDropdown<FallbackBehavior>(
                         label: l10n.settingsFallbackBehaviorLabel,
                         description: l10n.settingsFallbackBehaviorDescription,
@@ -294,7 +295,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                       ),
                       if (settings.fallbackBehavior ==
                           FallbackBehavior.custom) ...[
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 10),
                         TextField(
                           decoration: InputDecoration(
                             labelText: l10n.settingsCustomCategory,
@@ -319,7 +320,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                         ),
                       ],
                     ]),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 20),
 
                     // Application Settings
                     _buildSection(l10n.settingsApplication, [
@@ -395,7 +396,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                           );
                         },
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                       SettingsCheckbox(
                         label: l10n.settingsAutoStartWindowsLabel,
                         subtitle: l10n.settingsAutoStartWindowsSubtitle,
@@ -408,7 +409,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                           );
                         },
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                       SettingsCheckbox(
                         label: l10n.settingsStartMinimizedLabel,
                         subtitle: l10n.settingsStartMinimizedSubtitle,
@@ -419,7 +420,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                           );
                         },
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                       SettingsCheckbox(
                         label: l10n.settingsMinimizeToTrayLabel,
                         subtitle: l10n.settingsMinimizeToTraySubtitle,
@@ -430,7 +431,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                           );
                         },
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                       SettingsCheckbox(
                         label: l10n.settingsShowNotificationsLabel,
                         subtitle: l10n.settingsShowNotificationsSubtitle,
@@ -443,7 +444,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                           );
                         },
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                       SettingsCheckbox(
                         label: l10n.settingsNotifyMissingCategoryLabel,
                         subtitle: l10n.settingsNotifyMissingCategorySubtitle,
@@ -456,7 +457,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                           );
                         },
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 10),
                       CustomDropdown<WindowControlsPosition>(
                         label: l10n.settingsWindowControlsPositionLabel,
                         description: l10n.settingsWindowControlsPositionDescription,
@@ -482,7 +483,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                         },
                       ),
                     ]),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 20),
 
                     // Updates
                     _buildSection(l10n.settingsUpdates, [
@@ -528,7 +529,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                         },
                       ),
                     ]),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 20),
 
                     // Keyboard Shortcuts
                     _buildSection(l10n.settingsKeyboardShortcuts, [
@@ -546,11 +547,11 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                         },
                       ),
                     ]),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 20),
 
                     // Twitch Authentication
                     _buildTwitchAuthSection(context),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 20),
 
                     // Factory Reset
                     _buildFactoryResetSection(context),
@@ -622,13 +623,14 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
           title.toUpperCase(),
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
             letterSpacing: 0.5,
+            fontSize: 11,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 10),
         Card(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: children,
@@ -643,6 +645,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
     return Text(
       title,
       style: Theme.of(context).textTheme.titleSmall?.copyWith(
+        fontSize: 13,
         fontWeight: FontWeight.w600,
         color: Theme.of(context).colorScheme.primary,
       ),
@@ -664,13 +667,14 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
               l10n.settingsTwitchConnection.toUpperCase(),
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
                 letterSpacing: 0.5,
+                fontSize: 11,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -694,15 +698,16 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
                     if (isAuthenticated && authState is Authenticated) ...[
                       Text(
                         l10n.settingsTwitchLoggedInAs,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: TKitColors.textMuted,
+                          fontSize: 12,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Row(
                         children: [
                           Icon(
@@ -724,7 +729,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 8),
                       FutureBuilder<DateTime?>(
                         future: authProvider.getTokenExpiration(),
                         builder: (context, snapshot) {
@@ -766,7 +771,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                           return const SizedBox.shrink();
                         },
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 12),
                       Row(
                         children: [
                           Expanded(
@@ -791,9 +796,10 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                         l10n.settingsTwitchConnectDescription,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: TKitColors.textMuted,
+                          fontSize: 12,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 12),
                       Row(
                         children: [
                           Expanded(
@@ -855,27 +861,30 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
           l10n.settingsFactoryReset.toUpperCase(),
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
             letterSpacing: 0.5,
+            fontSize: 11,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 10),
         Card(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Icon(
                   Icons.warning_amber_rounded,
-                  size: 48,
+                  size: 40,
                   color: TKitColors.warning,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 Text(
                   l10n.settingsFactoryResetDescription,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 13,
+                  ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 Row(
                   children: [
                     Expanded(

@@ -194,11 +194,11 @@ class _HotkeyInputState extends State<HotkeyInput> {
                     ),
                   ),
                   if (widget.description != null) ...[
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2),
                     Text(
                       widget.description!,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 11,
                         color: theme.colorScheme.onSurface.withOpacity(0.6),
                       ),
                     ),
@@ -206,56 +206,67 @@ class _HotkeyInputState extends State<HotkeyInput> {
                 ],
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 12),
 
             // Display current or recording state
             if (_isRecording) ...[
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(6),
                   border: Border.all(
                     color: theme.colorScheme.primary,
                     width: 2,
                   ),
                 ),
                 child: SizedBox(
-                  width: 200,
+                  width: 180,
                   child: HotKeyRecorder(
                     onHotKeyRecorded: _handleHotKeyRecorded,
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               IconButton(
-                icon: const Icon(Icons.close),
+                icon: const Icon(Icons.close, size: 18),
                 tooltip: AppLocalizations.of(context)!.hotkeyInputCancel,
                 onPressed: _stopRecording,
-              ),
-            ] else if (widget.currentHotkey != null && widget.currentHotkey!.isNotEmpty) ...[
-              HotkeyDisplay(hotkeyString: widget.currentHotkey!),
-              const SizedBox(width: 8),
-              TextButton(
-                onPressed: _startRecording,
-                child: Text(AppLocalizations.of(context)!.hotkeyInputChange),
-              ),
-              const SizedBox(width: 4),
-              IconButton(
-                icon: const Icon(Icons.clear, size: 20),
-                tooltip: AppLocalizations.of(context)!.hotkeyInputClearHotkey,
-                onPressed: _clearHotkey,
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(
                   minWidth: 32,
                   minHeight: 32,
                 ),
               ),
+            ] else if (widget.currentHotkey != null && widget.currentHotkey!.isNotEmpty) ...[
+              HotkeyDisplay(hotkeyString: widget.currentHotkey!),
+              const SizedBox(width: 6),
+              TextButton(
+                onPressed: _startRecording,
+                child: Text(
+                  AppLocalizations.of(context)!.hotkeyInputChange,
+                  style: const TextStyle(fontSize: 13),
+                ),
+              ),
+              const SizedBox(width: 4),
+              IconButton(
+                icon: const Icon(Icons.clear, size: 18),
+                tooltip: AppLocalizations.of(context)!.hotkeyInputClearHotkey,
+                onPressed: _clearHotkey,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(
+                  minWidth: 28,
+                  minHeight: 28,
+                ),
+              ),
             ] else ...[
               TextButton.icon(
                 onPressed: _startRecording,
-                icon: const Icon(Icons.keyboard, size: 16),
-                label: Text(AppLocalizations.of(context)!.hotkeyInputSetHotkey),
+                icon: const Icon(Icons.keyboard, size: 14),
+                label: Text(
+                  AppLocalizations.of(context)!.hotkeyInputSetHotkey,
+                  style: const TextStyle(fontSize: 13),
+                ),
               ),
             ],
           ],

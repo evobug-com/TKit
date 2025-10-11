@@ -18,12 +18,25 @@ class SettingsCheckbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
-      title: Text(label),
-      subtitle: subtitle != null ? Text(subtitle!) : null,
+      title: Text(
+        label,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          fontSize: 14,
+        ),
+      ),
+      subtitle: subtitle != null
+          ? Text(
+              subtitle!,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                fontSize: 11,
+              ),
+            )
+          : null,
       value: value,
       onChanged: onChanged,
       contentPadding: EdgeInsets.zero,
       controlAffinity: ListTileControlAffinity.leading,
+      dense: true,
     );
   }
 }

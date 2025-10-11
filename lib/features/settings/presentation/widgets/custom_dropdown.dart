@@ -24,22 +24,28 @@ class CustomDropdown<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: Theme.of(context).textTheme.titleMedium),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            fontSize: 14,
+          ),
+        ),
         if (description != null) ...[
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           Text(
             description!,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              fontSize: 11,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
             ),
           ),
         ],
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         InkWell(
           onTap: () => _showDropdownDialog(context),
           borderRadius: BorderRadius.circular(4),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             decoration: BoxDecoration(
               border: Border.all(
                 color: Theme.of(context).colorScheme.outline,
@@ -54,13 +60,16 @@ class CustomDropdown<T> extends StatelessWidget {
                     children: [
                       Text(
                         selectedItem.title,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontSize: 14,
+                        ),
                       ),
                       if (selectedItem.subtitle != null) ...[
                         const SizedBox(height: 2),
                         Text(
                           selectedItem.subtitle!,
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontSize: 11,
                             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                           ),
                           maxLines: 1,
@@ -73,6 +82,7 @@ class CustomDropdown<T> extends StatelessWidget {
                 const SizedBox(width: 8),
                 Icon(
                   Icons.arrow_drop_down,
+                  size: 20,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
               ],
@@ -95,17 +105,19 @@ class CustomDropdown<T> extends StatelessWidget {
               children: [
                 // Header
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(12),
                   child: Row(
                     children: [
                       Expanded(
                         child: Text(
                           label,
-                          style: Theme.of(context).textTheme.titleLarge,
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.close),
+                        icon: const Icon(Icons.close, size: 20),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                     ],
@@ -127,7 +139,7 @@ class CustomDropdown<T> extends StatelessWidget {
                           Navigator.of(context).pop();
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3)
@@ -142,14 +154,16 @@ class CustomDropdown<T> extends StatelessWidget {
                                     Text(
                                       item.title,
                                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                        fontSize: 14,
                                         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                                       ),
                                     ),
                                     if (item.subtitle != null) ...[
-                                      const SizedBox(height: 4),
+                                      const SizedBox(height: 3),
                                       Text(
                                         item.subtitle!,
                                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                          fontSize: 11,
                                           color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                                         ),
                                       ),
@@ -161,6 +175,7 @@ class CustomDropdown<T> extends StatelessWidget {
                                 const SizedBox(width: 8),
                                 Icon(
                                   Icons.check,
+                                  size: 20,
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                               ],
