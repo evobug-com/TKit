@@ -73,7 +73,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-installer
-          path: build\windows\TKit-Setup-${{ steps.get_version.outputs.VERSION }}.exe
+          path: build/windows/TKit-Setup-${{ steps.get_version.outputs.VERSION }}.exe
 
       - name: Extract changelog for version
         id: changelog
@@ -94,7 +94,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: build\windows\TKit-Setup-${{ steps.get_version.outputs.VERSION }}.exe
+          files: build/windows/TKit-Setup-${{ steps.get_version.outputs.VERSION }}.exe
           body_path: changelog.txt
           draft: false
           prerelease: ${{ steps.get_version.outputs.IS_PRERELEASE }}
