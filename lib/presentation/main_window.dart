@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import '../shared/theme/colors.dart';
 import '../shared/theme/text_styles.dart';
 import '../core/routing/app_router.dart';
 import '../core/config/app_config.dart';
 import '../core/utils/dev_utils.dart';
+import '../core/utils/app_logger.dart';
 import '../features/auth/presentation/providers/auth_provider.dart';
 import '../features/auth/presentation/states/auth_state.dart';
 import '../features/settings/presentation/providers/settings_provider.dart';
@@ -32,6 +35,8 @@ class MainWindow extends StatefulWidget {
 }
 
 class _MainWindowState extends State<MainWindow> {
+  bool _isLogScreenOpen = false;
+
   @override
   void initState() {
     super.initState();
@@ -77,47 +82,82 @@ class _MainWindowState extends State<MainWindow> {
     }
   }
 
+  /// Toggle the Talker logs screen (press F2)
+  void _toggleLogsScreen(BuildContext context) {
+    final navigatorContext = widget.router.navigatorKey.currentContext;
+    if (navigatorContext == null) return;
+
+    if (_isLogScreenOpen) {
+      // Close the log screen
+      Navigator.of(navigatorContext).pop();
+      setState(() => _isLogScreenOpen = false);
+    } else {
+      // Open the log screen
+      final logger = context.read<AppLogger>();
+      Navigator.of(navigatorContext)
+          .push(
+        MaterialPageRoute(
+          builder: (context) => TalkerScreen(talker: logger.talker),
+        ),
+      )
+          .then((_) {
+        // Reset flag when screen is closed by other means (back button, etc)
+        setState(() => _isLogScreenOpen = false);
+      });
+      setState(() => _isLogScreenOpen = true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<SettingsProvider>(
-      builder: (context, settingsProvider, child) {
-        // Determine if frameless mode is enabled
-        final useFrameless = settingsProvider.state is SettingsLoaded
-            ? (settingsProvider.state as SettingsLoaded)
-                .settings
-                .useFramelessWindow
-            : settingsProvider.state is SettingsSaved
-            ? (settingsProvider.state as SettingsSaved)
-                .settings
-                .useFramelessWindow
-            : false; // Default to false
-
-        final scaffold = Scaffold(
-          backgroundColor: TKitColors.background,
-          body: Column(
-            children: [
-              // Custom header with tabs and window controls
-              _buildHeader(context),
-
-              // Main content area - full width
-              Expanded(child: widget.child),
-
-              // Minimal footer
-              _buildFooter(),
-            ],
-          ),
-        );
-
-        // Apply border radius if frameless mode is enabled
-        if (useFrameless) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: scaffold,
-          );
-        }
-
-        return scaffold;
+    return CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.f2): () =>
+            _toggleLogsScreen(context),
       },
+      child: Focus(
+        autofocus: true,
+        child: Consumer<SettingsProvider>(
+          builder: (context, settingsProvider, child) {
+            // Determine if frameless mode is enabled
+            final useFrameless = settingsProvider.state is SettingsLoaded
+                ? (settingsProvider.state as SettingsLoaded)
+                    .settings
+                    .useFramelessWindow
+                : settingsProvider.state is SettingsSaved
+                ? (settingsProvider.state as SettingsSaved)
+                    .settings
+                    .useFramelessWindow
+                : false; // Default to false
+
+            final scaffold = Scaffold(
+              backgroundColor: TKitColors.background,
+              body: Column(
+                children: [
+                  // Custom header with tabs and window controls
+                  _buildHeader(context),
+
+                  // Main content area - full width
+                  Expanded(child: widget.child),
+
+                  // Minimal footer
+                  _buildFooter(),
+                ],
+              ),
+            );
+
+            // Apply border radius if frameless mode is enabled
+            if (useFrameless) {
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: scaffold,
+              );
+            }
+
+            return scaffold;
+          },
+        ),
+      ),
     );
   }
 

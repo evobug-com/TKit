@@ -16,10 +16,6 @@ void main() {
       expect(identical(logger1, logger2), true);
     });
 
-    test('should provide logger instance', () {
-      expect(logger.logger, isNotNull);
-    });
-
     test('should provide talker instance', () {
       expect(logger.talker, isNotNull);
     });
@@ -162,18 +158,12 @@ void main() {
       });
     });
 
-    group('Talker integration', () {
-      test('should expose talker for advanced usage', () {
+    group('Direct talker access', () {
+      test('should expose talker for direct access', () {
         final talker = logger.talker;
 
         expect(() => talker.info('Direct talker call'), returnsNormally);
-        expect(() => talker.error('Talker error'), returnsNormally);
-      });
-
-      test('should expose logger for direct access', () {
-        final directLogger = logger.logger;
-
-        expect(() => directLogger.i('Direct logger call'), returnsNormally);
+        expect(() => talker.error('Direct error call'), returnsNormally);
       });
     });
   });

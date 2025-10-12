@@ -3,18 +3,17 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
+import 'dart:async' as _i5;
 
 import 'package:dartz/dartz.dart' as _i2;
-import 'package:logger/logger.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:talker/talker.dart' as _i3;
-import 'package:tkit/core/errors/failure.dart' as _i7;
-import 'package:tkit/core/utils/app_logger.dart' as _i9;
+import 'package:tkit/core/errors/failure.dart' as _i6;
+import 'package:tkit/core/utils/app_logger.dart' as _i8;
 import 'package:tkit/features/twitch_api/domain/entities/twitch_category.dart'
-    as _i8;
+    as _i7;
 import 'package:tkit/features/twitch_api/domain/usecases/search_categories_usecase.dart'
-    as _i5;
+    as _i4;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -40,44 +39,39 @@ class _FakeTalker_1 extends _i1.SmartFake implements _i3.Talker {
     : super(parent, parentInvocation);
 }
 
-class _FakeLogger_2 extends _i1.SmartFake implements _i4.Logger {
-  _FakeLogger_2(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
 /// A class which mocks [SearchCategoriesUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockSearchCategoriesUseCase extends _i1.Mock
-    implements _i5.SearchCategoriesUseCase {
+    implements _i4.SearchCategoriesUseCase {
   MockSearchCategoriesUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i2.Either<_i7.Failure, List<_i8.TwitchCategory>>> call(
+  _i5.Future<_i2.Either<_i6.Failure, List<_i7.TwitchCategory>>> call(
     String? query, {
     int? first = 20,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#call, [query], {#first: first}),
             returnValue:
-                _i6.Future<
-                  _i2.Either<_i7.Failure, List<_i8.TwitchCategory>>
+                _i5.Future<
+                  _i2.Either<_i6.Failure, List<_i7.TwitchCategory>>
                 >.value(
-                  _FakeEither_0<_i7.Failure, List<_i8.TwitchCategory>>(
+                  _FakeEither_0<_i6.Failure, List<_i7.TwitchCategory>>(
                     this,
                     Invocation.method(#call, [query], {#first: first}),
                   ),
                 ),
           )
-          as _i6.Future<_i2.Either<_i7.Failure, List<_i8.TwitchCategory>>>);
+          as _i5.Future<_i2.Either<_i6.Failure, List<_i7.TwitchCategory>>>);
 }
 
 /// A class which mocks [AppLogger].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAppLogger extends _i1.Mock implements _i9.AppLogger {
+class MockAppLogger extends _i1.Mock implements _i8.AppLogger {
   MockAppLogger() {
     _i1.throwOnMissingStub(this);
   }
@@ -89,14 +83,6 @@ class MockAppLogger extends _i1.Mock implements _i9.AppLogger {
             returnValue: _FakeTalker_1(this, Invocation.getter(#talker)),
           )
           as _i3.Talker);
-
-  @override
-  _i4.Logger get logger =>
-      (super.noSuchMethod(
-            Invocation.getter(#logger),
-            returnValue: _FakeLogger_2(this, Invocation.getter(#logger)),
-          )
-          as _i4.Logger);
 
   @override
   void debug(String? message, [dynamic error, StackTrace? stackTrace]) =>

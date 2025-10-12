@@ -3,13 +3,12 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
+import 'dart:async' as _i4;
 
-import 'package:logger/logger.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:shared_preferences/src/shared_preferences_legacy.dart' as _i4;
+import 'package:shared_preferences/src/shared_preferences_legacy.dart' as _i3;
 import 'package:talker/talker.dart' as _i2;
-import 'package:tkit/core/utils/app_logger.dart' as _i6;
+import 'package:tkit/core/utils/app_logger.dart' as _i5;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -30,15 +29,10 @@ class _FakeTalker_0 extends _i1.SmartFake implements _i2.Talker {
     : super(parent, parentInvocation);
 }
 
-class _FakeLogger_1 extends _i1.SmartFake implements _i3.Logger {
-  _FakeLogger_1(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
 /// A class which mocks [SharedPreferences].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSharedPreferences extends _i1.Mock implements _i4.SharedPreferences {
+class MockSharedPreferences extends _i1.Mock implements _i3.SharedPreferences {
   @override
   Set<String> getKeys() =>
       (super.noSuchMethod(
@@ -106,91 +100,91 @@ class MockSharedPreferences extends _i1.Mock implements _i4.SharedPreferences {
           as List<String>?);
 
   @override
-  _i5.Future<bool> setBool(String? key, bool? value) =>
+  _i4.Future<bool> setBool(String? key, bool? value) =>
       (super.noSuchMethod(
             Invocation.method(#setBool, [key, value]),
-            returnValue: _i5.Future<bool>.value(false),
-            returnValueForMissingStub: _i5.Future<bool>.value(false),
+            returnValue: _i4.Future<bool>.value(false),
+            returnValueForMissingStub: _i4.Future<bool>.value(false),
           )
-          as _i5.Future<bool>);
+          as _i4.Future<bool>);
 
   @override
-  _i5.Future<bool> setInt(String? key, int? value) =>
+  _i4.Future<bool> setInt(String? key, int? value) =>
       (super.noSuchMethod(
             Invocation.method(#setInt, [key, value]),
-            returnValue: _i5.Future<bool>.value(false),
-            returnValueForMissingStub: _i5.Future<bool>.value(false),
+            returnValue: _i4.Future<bool>.value(false),
+            returnValueForMissingStub: _i4.Future<bool>.value(false),
           )
-          as _i5.Future<bool>);
+          as _i4.Future<bool>);
 
   @override
-  _i5.Future<bool> setDouble(String? key, double? value) =>
+  _i4.Future<bool> setDouble(String? key, double? value) =>
       (super.noSuchMethod(
             Invocation.method(#setDouble, [key, value]),
-            returnValue: _i5.Future<bool>.value(false),
-            returnValueForMissingStub: _i5.Future<bool>.value(false),
+            returnValue: _i4.Future<bool>.value(false),
+            returnValueForMissingStub: _i4.Future<bool>.value(false),
           )
-          as _i5.Future<bool>);
+          as _i4.Future<bool>);
 
   @override
-  _i5.Future<bool> setString(String? key, String? value) =>
+  _i4.Future<bool> setString(String? key, String? value) =>
       (super.noSuchMethod(
             Invocation.method(#setString, [key, value]),
-            returnValue: _i5.Future<bool>.value(false),
-            returnValueForMissingStub: _i5.Future<bool>.value(false),
+            returnValue: _i4.Future<bool>.value(false),
+            returnValueForMissingStub: _i4.Future<bool>.value(false),
           )
-          as _i5.Future<bool>);
+          as _i4.Future<bool>);
 
   @override
-  _i5.Future<bool> setStringList(String? key, List<String>? value) =>
+  _i4.Future<bool> setStringList(String? key, List<String>? value) =>
       (super.noSuchMethod(
             Invocation.method(#setStringList, [key, value]),
-            returnValue: _i5.Future<bool>.value(false),
-            returnValueForMissingStub: _i5.Future<bool>.value(false),
+            returnValue: _i4.Future<bool>.value(false),
+            returnValueForMissingStub: _i4.Future<bool>.value(false),
           )
-          as _i5.Future<bool>);
+          as _i4.Future<bool>);
 
   @override
-  _i5.Future<bool> remove(String? key) =>
+  _i4.Future<bool> remove(String? key) =>
       (super.noSuchMethod(
             Invocation.method(#remove, [key]),
-            returnValue: _i5.Future<bool>.value(false),
-            returnValueForMissingStub: _i5.Future<bool>.value(false),
+            returnValue: _i4.Future<bool>.value(false),
+            returnValueForMissingStub: _i4.Future<bool>.value(false),
           )
-          as _i5.Future<bool>);
+          as _i4.Future<bool>);
 
   @override
-  _i5.Future<bool> commit() =>
+  _i4.Future<bool> commit() =>
       (super.noSuchMethod(
             Invocation.method(#commit, []),
-            returnValue: _i5.Future<bool>.value(false),
-            returnValueForMissingStub: _i5.Future<bool>.value(false),
+            returnValue: _i4.Future<bool>.value(false),
+            returnValueForMissingStub: _i4.Future<bool>.value(false),
           )
-          as _i5.Future<bool>);
+          as _i4.Future<bool>);
 
   @override
-  _i5.Future<bool> clear() =>
+  _i4.Future<bool> clear() =>
       (super.noSuchMethod(
             Invocation.method(#clear, []),
-            returnValue: _i5.Future<bool>.value(false),
-            returnValueForMissingStub: _i5.Future<bool>.value(false),
+            returnValue: _i4.Future<bool>.value(false),
+            returnValueForMissingStub: _i4.Future<bool>.value(false),
           )
-          as _i5.Future<bool>);
+          as _i4.Future<bool>);
 
   @override
-  _i5.Future<void> reload() =>
+  _i4.Future<void> reload() =>
       (super.noSuchMethod(
             Invocation.method(#reload, []),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
           )
-          as _i5.Future<void>);
+          as _i4.Future<void>);
 }
 
 /// A class which mocks [AppLogger].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAppLogger extends _i1.Mock implements _i6.AppLogger {
+class MockAppLogger extends _i1.Mock implements _i5.AppLogger {
   @override
   _i2.Talker get talker =>
       (super.noSuchMethod(
@@ -202,18 +196,6 @@ class MockAppLogger extends _i1.Mock implements _i6.AppLogger {
             ),
           )
           as _i2.Talker);
-
-  @override
-  _i3.Logger get logger =>
-      (super.noSuchMethod(
-            Invocation.getter(#logger),
-            returnValue: _FakeLogger_1(this, Invocation.getter(#logger)),
-            returnValueForMissingStub: _FakeLogger_1(
-              this,
-              Invocation.getter(#logger),
-            ),
-          )
-          as _i3.Logger);
 
   @override
   void debug(String? message, [dynamic error, StackTrace? stackTrace]) =>

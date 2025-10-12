@@ -3,14 +3,13 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i7;
+import 'dart:async' as _i6;
 
-import 'package:logger/logger.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:talker/talker.dart' as _i4;
-import 'package:tkit/core/utils/app_logger.dart' as _i8;
+import 'package:tkit/core/utils/app_logger.dart' as _i7;
 import 'package:tkit/features/twitch_api/data/datasources/twitch_api_remote_datasource.dart'
-    as _i6;
+    as _i5;
 import 'package:tkit/features/twitch_api/data/models/twitch_category_model.dart'
     as _i3;
 import 'package:tkit/features/twitch_api/data/models/twitch_user_model.dart'
@@ -47,16 +46,11 @@ class _FakeTalker_2 extends _i1.SmartFake implements _i4.Talker {
     : super(parent, parentInvocation);
 }
 
-class _FakeLogger_3 extends _i1.SmartFake implements _i5.Logger {
-  _FakeLogger_3(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
 /// A class which mocks [TwitchApiRemoteDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockTwitchApiRemoteDataSource extends _i1.Mock
-    implements _i6.TwitchApiRemoteDataSource {
+    implements _i5.TwitchApiRemoteDataSource {
   MockTwitchApiRemoteDataSource() {
     _i1.throwOnMissingStub(this);
   }
@@ -68,20 +62,20 @@ class MockTwitchApiRemoteDataSource extends _i1.Mock
   );
 
   @override
-  _i7.Future<List<_i3.TwitchCategoryModel>> searchCategories(
+  _i6.Future<List<_i3.TwitchCategoryModel>> searchCategories(
     String? query, {
     int? first = 20,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#searchCategories, [query], {#first: first}),
-            returnValue: _i7.Future<List<_i3.TwitchCategoryModel>>.value(
+            returnValue: _i6.Future<List<_i3.TwitchCategoryModel>>.value(
               <_i3.TwitchCategoryModel>[],
             ),
           )
-          as _i7.Future<List<_i3.TwitchCategoryModel>>);
+          as _i6.Future<List<_i3.TwitchCategoryModel>>);
 
   @override
-  _i7.Future<void> updateChannelCategory(
+  _i6.Future<void> updateChannelCategory(
     String? broadcasterId,
     String? categoryId,
   ) =>
@@ -90,79 +84,79 @@ class MockTwitchApiRemoteDataSource extends _i1.Mock
               broadcasterId,
               categoryId,
             ]),
-            returnValue: _i7.Future<void>.value(),
-            returnValueForMissingStub: _i7.Future<void>.value(),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
           )
-          as _i7.Future<void>);
+          as _i6.Future<void>);
 
   @override
-  _i7.Future<_i2.TwitchUserModel> getCurrentUser() =>
+  _i6.Future<_i2.TwitchUserModel> getCurrentUser() =>
       (super.noSuchMethod(
             Invocation.method(#getCurrentUser, []),
-            returnValue: _i7.Future<_i2.TwitchUserModel>.value(
+            returnValue: _i6.Future<_i2.TwitchUserModel>.value(
               _FakeTwitchUserModel_0(
                 this,
                 Invocation.method(#getCurrentUser, []),
               ),
             ),
           )
-          as _i7.Future<_i2.TwitchUserModel>);
+          as _i6.Future<_i2.TwitchUserModel>);
 
   @override
-  _i7.Future<_i3.TwitchCategoryModel> getCategoryById(String? categoryId) =>
+  _i6.Future<_i3.TwitchCategoryModel> getCategoryById(String? categoryId) =>
       (super.noSuchMethod(
             Invocation.method(#getCategoryById, [categoryId]),
-            returnValue: _i7.Future<_i3.TwitchCategoryModel>.value(
+            returnValue: _i6.Future<_i3.TwitchCategoryModel>.value(
               _FakeTwitchCategoryModel_1(
                 this,
                 Invocation.method(#getCategoryById, [categoryId]),
               ),
             ),
           )
-          as _i7.Future<_i3.TwitchCategoryModel>);
+          as _i6.Future<_i3.TwitchCategoryModel>);
 
   @override
-  _i7.Future<List<_i3.TwitchCategoryModel>> getGamesByIds(
+  _i6.Future<List<_i3.TwitchCategoryModel>> getGamesByIds(
     List<String>? categoryIds,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getGamesByIds, [categoryIds]),
-            returnValue: _i7.Future<List<_i3.TwitchCategoryModel>>.value(
+            returnValue: _i6.Future<List<_i3.TwitchCategoryModel>>.value(
               <_i3.TwitchCategoryModel>[],
             ),
           )
-          as _i7.Future<List<_i3.TwitchCategoryModel>>);
+          as _i6.Future<List<_i3.TwitchCategoryModel>>);
 
   @override
-  _i7.Future<List<_i3.TwitchCategoryModel>> getGamesByNames(
+  _i6.Future<List<_i3.TwitchCategoryModel>> getGamesByNames(
     List<String>? gameNames,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getGamesByNames, [gameNames]),
-            returnValue: _i7.Future<List<_i3.TwitchCategoryModel>>.value(
+            returnValue: _i6.Future<List<_i3.TwitchCategoryModel>>.value(
               <_i3.TwitchCategoryModel>[],
             ),
           )
-          as _i7.Future<List<_i3.TwitchCategoryModel>>);
+          as _i6.Future<List<_i3.TwitchCategoryModel>>);
 
   @override
-  _i7.Future<List<_i3.TwitchCategoryModel>> getTopGames({
+  _i6.Future<List<_i3.TwitchCategoryModel>> getTopGames({
     int? first = 20,
     String? after,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#getTopGames, [], {#first: first, #after: after}),
-            returnValue: _i7.Future<List<_i3.TwitchCategoryModel>>.value(
+            returnValue: _i6.Future<List<_i3.TwitchCategoryModel>>.value(
               <_i3.TwitchCategoryModel>[],
             ),
           )
-          as _i7.Future<List<_i3.TwitchCategoryModel>>);
+          as _i6.Future<List<_i3.TwitchCategoryModel>>);
 }
 
 /// A class which mocks [AppLogger].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAppLogger extends _i1.Mock implements _i8.AppLogger {
+class MockAppLogger extends _i1.Mock implements _i7.AppLogger {
   MockAppLogger() {
     _i1.throwOnMissingStub(this);
   }
@@ -174,14 +168,6 @@ class MockAppLogger extends _i1.Mock implements _i8.AppLogger {
             returnValue: _FakeTalker_2(this, Invocation.getter(#talker)),
           )
           as _i4.Talker);
-
-  @override
-  _i5.Logger get logger =>
-      (super.noSuchMethod(
-            Invocation.getter(#logger),
-            returnValue: _FakeLogger_3(this, Invocation.getter(#logger)),
-          )
-          as _i5.Logger);
 
   @override
   void debug(String? message, [dynamic error, StackTrace? stackTrace]) =>

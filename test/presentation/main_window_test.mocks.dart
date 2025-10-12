@@ -520,6 +520,32 @@ class MockGitHubUpdateService extends _i1.Mock
           as _i5.Future<bool>);
 
   @override
+  bool isVersionIgnored(String? version) =>
+      (super.noSuchMethod(
+            Invocation.method(#isVersionIgnored, [version]),
+            returnValue: false,
+          )
+          as bool);
+
+  @override
+  _i5.Future<void> ignoreUpdate() =>
+      (super.noSuchMethod(
+            Invocation.method(#ignoreUpdate, []),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> clearIgnoredVersions() =>
+      (super.noSuchMethod(
+            Invocation.method(#clearIgnoredVersions, []),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
   void dismissUpdate() => super.noSuchMethod(
     Invocation.method(#dismissUpdate, []),
     returnValueForMissingStub: null,

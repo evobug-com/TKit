@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update indicator remains visible even when version is ignored
 - Installation type detection (MSIX vs EXE) for automatic installer matching
 - Download buttons with version badges in README for all release channels
+- F2 to toggle log window visibility
 
 #### Changed
 - Update "Ignore" behavior: now version-specific and persistent across restarts

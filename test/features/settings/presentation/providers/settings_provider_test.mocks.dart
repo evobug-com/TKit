@@ -3,22 +3,21 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
+import 'dart:async' as _i5;
 
 import 'package:dartz/dartz.dart' as _i2;
-import 'package:logger/logger.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:talker/talker.dart' as _i3;
-import 'package:tkit/core/errors/failure.dart' as _i7;
-import 'package:tkit/core/utils/app_logger.dart' as _i11;
+import 'package:tkit/core/errors/failure.dart' as _i6;
+import 'package:tkit/core/utils/app_logger.dart' as _i10;
 import 'package:tkit/features/settings/domain/entities/app_settings.dart'
-    as _i8;
+    as _i7;
 import 'package:tkit/features/settings/domain/usecases/get_settings_usecase.dart'
-    as _i5;
+    as _i4;
 import 'package:tkit/features/settings/domain/usecases/update_settings_usecase.dart'
-    as _i9;
+    as _i8;
 import 'package:tkit/features/settings/domain/usecases/watch_settings_usecase.dart'
-    as _i10;
+    as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -44,83 +43,78 @@ class _FakeTalker_1 extends _i1.SmartFake implements _i3.Talker {
     : super(parent, parentInvocation);
 }
 
-class _FakeLogger_2 extends _i1.SmartFake implements _i4.Logger {
-  _FakeLogger_2(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
 /// A class which mocks [GetSettingsUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockGetSettingsUseCase extends _i1.Mock
-    implements _i5.GetSettingsUseCase {
+    implements _i4.GetSettingsUseCase {
   @override
-  _i6.Future<_i2.Either<_i7.Failure, _i8.AppSettings>> call() =>
+  _i5.Future<_i2.Either<_i6.Failure, _i7.AppSettings>> call() =>
       (super.noSuchMethod(
             Invocation.method(#call, []),
             returnValue:
-                _i6.Future<_i2.Either<_i7.Failure, _i8.AppSettings>>.value(
-                  _FakeEither_0<_i7.Failure, _i8.AppSettings>(
+                _i5.Future<_i2.Either<_i6.Failure, _i7.AppSettings>>.value(
+                  _FakeEither_0<_i6.Failure, _i7.AppSettings>(
                     this,
                     Invocation.method(#call, []),
                   ),
                 ),
             returnValueForMissingStub:
-                _i6.Future<_i2.Either<_i7.Failure, _i8.AppSettings>>.value(
-                  _FakeEither_0<_i7.Failure, _i8.AppSettings>(
+                _i5.Future<_i2.Either<_i6.Failure, _i7.AppSettings>>.value(
+                  _FakeEither_0<_i6.Failure, _i7.AppSettings>(
                     this,
                     Invocation.method(#call, []),
                   ),
                 ),
           )
-          as _i6.Future<_i2.Either<_i7.Failure, _i8.AppSettings>>);
+          as _i5.Future<_i2.Either<_i6.Failure, _i7.AppSettings>>);
 }
 
 /// A class which mocks [UpdateSettingsUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockUpdateSettingsUseCase extends _i1.Mock
-    implements _i9.UpdateSettingsUseCase {
+    implements _i8.UpdateSettingsUseCase {
   @override
-  _i6.Future<_i2.Either<_i7.Failure, void>> call(_i8.AppSettings? settings) =>
+  _i5.Future<_i2.Either<_i6.Failure, void>> call(_i7.AppSettings? settings) =>
       (super.noSuchMethod(
             Invocation.method(#call, [settings]),
-            returnValue: _i6.Future<_i2.Either<_i7.Failure, void>>.value(
-              _FakeEither_0<_i7.Failure, void>(
+            returnValue: _i5.Future<_i2.Either<_i6.Failure, void>>.value(
+              _FakeEither_0<_i6.Failure, void>(
                 this,
                 Invocation.method(#call, [settings]),
               ),
             ),
             returnValueForMissingStub:
-                _i6.Future<_i2.Either<_i7.Failure, void>>.value(
-                  _FakeEither_0<_i7.Failure, void>(
+                _i5.Future<_i2.Either<_i6.Failure, void>>.value(
+                  _FakeEither_0<_i6.Failure, void>(
                     this,
                     Invocation.method(#call, [settings]),
                   ),
                 ),
           )
-          as _i6.Future<_i2.Either<_i7.Failure, void>>);
+          as _i5.Future<_i2.Either<_i6.Failure, void>>);
 }
 
 /// A class which mocks [WatchSettingsUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockWatchSettingsUseCase extends _i1.Mock
-    implements _i10.WatchSettingsUseCase {
+    implements _i9.WatchSettingsUseCase {
   @override
-  _i6.Stream<_i8.AppSettings> call() =>
+  _i5.Stream<_i7.AppSettings> call() =>
       (super.noSuchMethod(
             Invocation.method(#call, []),
-            returnValue: _i6.Stream<_i8.AppSettings>.empty(),
-            returnValueForMissingStub: _i6.Stream<_i8.AppSettings>.empty(),
+            returnValue: _i5.Stream<_i7.AppSettings>.empty(),
+            returnValueForMissingStub: _i5.Stream<_i7.AppSettings>.empty(),
           )
-          as _i6.Stream<_i8.AppSettings>);
+          as _i5.Stream<_i7.AppSettings>);
 }
 
 /// A class which mocks [AppLogger].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAppLogger extends _i1.Mock implements _i11.AppLogger {
+class MockAppLogger extends _i1.Mock implements _i10.AppLogger {
   @override
   _i3.Talker get talker =>
       (super.noSuchMethod(
@@ -132,18 +126,6 @@ class MockAppLogger extends _i1.Mock implements _i11.AppLogger {
             ),
           )
           as _i3.Talker);
-
-  @override
-  _i4.Logger get logger =>
-      (super.noSuchMethod(
-            Invocation.getter(#logger),
-            returnValue: _FakeLogger_2(this, Invocation.getter(#logger)),
-            returnValueForMissingStub: _FakeLogger_2(
-              this,
-              Invocation.getter(#logger),
-            ),
-          )
-          as _i4.Logger);
 
   @override
   void debug(String? message, [dynamic error, StackTrace? stackTrace]) =>

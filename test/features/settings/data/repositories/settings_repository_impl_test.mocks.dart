@@ -3,14 +3,13 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
+import 'dart:async' as _i5;
 
-import 'package:logger/logger.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:talker/talker.dart' as _i3;
-import 'package:tkit/core/utils/app_logger.dart' as _i7;
+import 'package:tkit/core/utils/app_logger.dart' as _i6;
 import 'package:tkit/features/settings/data/datasources/settings_local_datasource.dart'
-    as _i5;
+    as _i4;
 import 'package:tkit/features/settings/data/models/app_settings_model.dart'
     as _i2;
 
@@ -39,61 +38,56 @@ class _FakeTalker_1 extends _i1.SmartFake implements _i3.Talker {
     : super(parent, parentInvocation);
 }
 
-class _FakeLogger_2 extends _i1.SmartFake implements _i4.Logger {
-  _FakeLogger_2(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
 /// A class which mocks [SettingsLocalDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockSettingsLocalDataSource extends _i1.Mock
-    implements _i5.SettingsLocalDataSource {
+    implements _i4.SettingsLocalDataSource {
   @override
-  _i6.Future<_i2.AppSettingsModel> getSettings() =>
+  _i5.Future<_i2.AppSettingsModel> getSettings() =>
       (super.noSuchMethod(
             Invocation.method(#getSettings, []),
-            returnValue: _i6.Future<_i2.AppSettingsModel>.value(
+            returnValue: _i5.Future<_i2.AppSettingsModel>.value(
               _FakeAppSettingsModel_0(
                 this,
                 Invocation.method(#getSettings, []),
               ),
             ),
-            returnValueForMissingStub: _i6.Future<_i2.AppSettingsModel>.value(
+            returnValueForMissingStub: _i5.Future<_i2.AppSettingsModel>.value(
               _FakeAppSettingsModel_0(
                 this,
                 Invocation.method(#getSettings, []),
               ),
             ),
           )
-          as _i6.Future<_i2.AppSettingsModel>);
+          as _i5.Future<_i2.AppSettingsModel>);
 
   @override
-  _i6.Future<void> saveSettings(_i2.AppSettingsModel? settings) =>
+  _i5.Future<void> saveSettings(_i2.AppSettingsModel? settings) =>
       (super.noSuchMethod(
             Invocation.method(#saveSettings, [settings]),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i6.Stream<_i2.AppSettingsModel> watchSettings() =>
+  _i5.Stream<_i2.AppSettingsModel> watchSettings() =>
       (super.noSuchMethod(
             Invocation.method(#watchSettings, []),
-            returnValue: _i6.Stream<_i2.AppSettingsModel>.empty(),
-            returnValueForMissingStub: _i6.Stream<_i2.AppSettingsModel>.empty(),
+            returnValue: _i5.Stream<_i2.AppSettingsModel>.empty(),
+            returnValueForMissingStub: _i5.Stream<_i2.AppSettingsModel>.empty(),
           )
-          as _i6.Stream<_i2.AppSettingsModel>);
+          as _i5.Stream<_i2.AppSettingsModel>);
 
   @override
-  _i6.Future<void> clearSettings() =>
+  _i5.Future<void> clearSettings() =>
       (super.noSuchMethod(
             Invocation.method(#clearSettings, []),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i5.Future<void>);
 
   @override
   void dispose() => super.noSuchMethod(
@@ -105,7 +99,7 @@ class MockSettingsLocalDataSource extends _i1.Mock
 /// A class which mocks [AppLogger].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAppLogger extends _i1.Mock implements _i7.AppLogger {
+class MockAppLogger extends _i1.Mock implements _i6.AppLogger {
   @override
   _i3.Talker get talker =>
       (super.noSuchMethod(
@@ -117,18 +111,6 @@ class MockAppLogger extends _i1.Mock implements _i7.AppLogger {
             ),
           )
           as _i3.Talker);
-
-  @override
-  _i4.Logger get logger =>
-      (super.noSuchMethod(
-            Invocation.getter(#logger),
-            returnValue: _FakeLogger_2(this, Invocation.getter(#logger)),
-            returnValueForMissingStub: _FakeLogger_2(
-              this,
-              Invocation.getter(#logger),
-            ),
-          )
-          as _i4.Logger);
 
   @override
   void debug(String? message, [dynamic error, StackTrace? stackTrace]) =>

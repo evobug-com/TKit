@@ -3,20 +3,19 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
+import 'dart:async' as _i5;
 
 import 'package:dartz/dartz.dart' as _i2;
-import 'package:logger/logger.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:talker/talker.dart' as _i3;
-import 'package:tkit/core/errors/failure.dart' as _i7;
-import 'package:tkit/core/utils/app_logger.dart' as _i10;
+import 'package:tkit/core/errors/failure.dart' as _i6;
+import 'package:tkit/core/utils/app_logger.dart' as _i9;
 import 'package:tkit/features/process_detection/domain/entities/process_info.dart'
-    as _i8;
+    as _i7;
 import 'package:tkit/features/process_detection/domain/usecases/get_focused_process_usecase.dart'
-    as _i5;
+    as _i4;
 import 'package:tkit/features/process_detection/domain/usecases/watch_process_changes_usecase.dart'
-    as _i9;
+    as _i8;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -42,57 +41,52 @@ class _FakeTalker_1 extends _i1.SmartFake implements _i3.Talker {
     : super(parent, parentInvocation);
 }
 
-class _FakeLogger_2 extends _i1.SmartFake implements _i4.Logger {
-  _FakeLogger_2(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
 /// A class which mocks [GetFocusedProcessUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockGetFocusedProcessUseCase extends _i1.Mock
-    implements _i5.GetFocusedProcessUseCase {
+    implements _i4.GetFocusedProcessUseCase {
   MockGetFocusedProcessUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i2.Either<_i7.Failure, _i8.ProcessInfo?>> call() =>
+  _i5.Future<_i2.Either<_i6.Failure, _i7.ProcessInfo?>> call() =>
       (super.noSuchMethod(
             Invocation.method(#call, []),
             returnValue:
-                _i6.Future<_i2.Either<_i7.Failure, _i8.ProcessInfo?>>.value(
-                  _FakeEither_0<_i7.Failure, _i8.ProcessInfo?>(
+                _i5.Future<_i2.Either<_i6.Failure, _i7.ProcessInfo?>>.value(
+                  _FakeEither_0<_i6.Failure, _i7.ProcessInfo?>(
                     this,
                     Invocation.method(#call, []),
                   ),
                 ),
           )
-          as _i6.Future<_i2.Either<_i7.Failure, _i8.ProcessInfo?>>);
+          as _i5.Future<_i2.Either<_i6.Failure, _i7.ProcessInfo?>>);
 }
 
 /// A class which mocks [WatchProcessChangesUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockWatchProcessChangesUseCase extends _i1.Mock
-    implements _i9.WatchProcessChangesUseCase {
+    implements _i8.WatchProcessChangesUseCase {
   MockWatchProcessChangesUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Stream<_i8.ProcessInfo?> call(Duration? scanInterval) =>
+  _i5.Stream<_i7.ProcessInfo?> call(Duration? scanInterval) =>
       (super.noSuchMethod(
             Invocation.method(#call, [scanInterval]),
-            returnValue: _i6.Stream<_i8.ProcessInfo?>.empty(),
+            returnValue: _i5.Stream<_i7.ProcessInfo?>.empty(),
           )
-          as _i6.Stream<_i8.ProcessInfo?>);
+          as _i5.Stream<_i7.ProcessInfo?>);
 }
 
 /// A class which mocks [AppLogger].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAppLogger extends _i1.Mock implements _i10.AppLogger {
+class MockAppLogger extends _i1.Mock implements _i9.AppLogger {
   MockAppLogger() {
     _i1.throwOnMissingStub(this);
   }
@@ -104,14 +98,6 @@ class MockAppLogger extends _i1.Mock implements _i10.AppLogger {
             returnValue: _FakeTalker_1(this, Invocation.getter(#talker)),
           )
           as _i3.Talker);
-
-  @override
-  _i4.Logger get logger =>
-      (super.noSuchMethod(
-            Invocation.getter(#logger),
-            returnValue: _FakeLogger_2(this, Invocation.getter(#logger)),
-          )
-          as _i4.Logger);
 
   @override
   void debug(String? message, [dynamic error, StackTrace? stackTrace]) =>

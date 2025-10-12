@@ -463,6 +463,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+  group_button:
+    dependency: transitive
+    description:
+      name: group_button
+      sha256: "0610fcf28ed122bfb4b410fce161a390f7f2531d55d1d65c5375982001415940"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.3.4"
   hotkey_manager:
     dependency: "direct main"
     description:
@@ -636,14 +644,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.6"
-  logger:
-    dependency: "direct main"
-    description:
-      name: logger
-      sha256: a7967e31b703831a893bbc3c3dd11db08126fe5f369b5c648a36f821979f5be3
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.6.2"
   logging:
     dependency: transitive
     description:
@@ -924,6 +924,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.0"
+  share_plus:
+    dependency: transitive
+    description:
+      name: share_plus
+      sha256: "3424e9d5c22fd7f7590254ba09465febd6f8827c8b19a44350de4ac31d92d3a6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "12.0.0"
+  share_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: share_plus_platform_interface
+      sha256: "88023e53a13429bd65d8e85e11a9b484f49d4c190abbd96c7932b74d6927cc9a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.0"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -1110,6 +1126,14 @@ packages:
     description:
       name: talker
       sha256: "82de443cadfb6c41d457e7774c7890a91c73af3c2f17f3f7c01670bb58d5f5a1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.2"
+  talker_flutter:
+    dependency: "direct main"
+    description:
+      name: talker_flutter
+      sha256: "4f7a8d739237a3a3c8ba4dddcdbc1f9d9dec143811641dbafebd6b70f947f8ca"
       url: "https://pub.dev"
     source: hosted
     version: "5.0.2"

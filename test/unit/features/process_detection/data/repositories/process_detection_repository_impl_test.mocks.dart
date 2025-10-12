@@ -3,16 +3,15 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
+import 'dart:async' as _i4;
 
-import 'package:logger/logger.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:talker/talker.dart' as _i2;
-import 'package:tkit/core/utils/app_logger.dart' as _i7;
+import 'package:tkit/core/utils/app_logger.dart' as _i6;
 import 'package:tkit/features/process_detection/data/datasources/process_detection_platform_datasource.dart'
-    as _i4;
+    as _i3;
 import 'package:tkit/features/process_detection/data/models/process_info_model.dart'
-    as _i6;
+    as _i5;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -33,41 +32,36 @@ class _FakeTalker_0 extends _i1.SmartFake implements _i2.Talker {
     : super(parent, parentInvocation);
 }
 
-class _FakeLogger_1 extends _i1.SmartFake implements _i3.Logger {
-  _FakeLogger_1(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
 /// A class which mocks [ProcessDetectionPlatformDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockProcessDetectionPlatformDataSource extends _i1.Mock
-    implements _i4.ProcessDetectionPlatformDataSource {
+    implements _i3.ProcessDetectionPlatformDataSource {
   MockProcessDetectionPlatformDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<_i6.ProcessInfoModel?> getFocusedProcess() =>
+  _i4.Future<_i5.ProcessInfoModel?> getFocusedProcess() =>
       (super.noSuchMethod(
             Invocation.method(#getFocusedProcess, []),
-            returnValue: _i5.Future<_i6.ProcessInfoModel?>.value(),
+            returnValue: _i4.Future<_i5.ProcessInfoModel?>.value(),
           )
-          as _i5.Future<_i6.ProcessInfoModel?>);
+          as _i4.Future<_i5.ProcessInfoModel?>);
 
   @override
-  _i5.Future<bool> isAvailable() =>
+  _i4.Future<bool> isAvailable() =>
       (super.noSuchMethod(
             Invocation.method(#isAvailable, []),
-            returnValue: _i5.Future<bool>.value(false),
+            returnValue: _i4.Future<bool>.value(false),
           )
-          as _i5.Future<bool>);
+          as _i4.Future<bool>);
 }
 
 /// A class which mocks [AppLogger].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAppLogger extends _i1.Mock implements _i7.AppLogger {
+class MockAppLogger extends _i1.Mock implements _i6.AppLogger {
   MockAppLogger() {
     _i1.throwOnMissingStub(this);
   }
@@ -79,14 +73,6 @@ class MockAppLogger extends _i1.Mock implements _i7.AppLogger {
             returnValue: _FakeTalker_0(this, Invocation.getter(#talker)),
           )
           as _i2.Talker);
-
-  @override
-  _i3.Logger get logger =>
-      (super.noSuchMethod(
-            Invocation.getter(#logger),
-            returnValue: _FakeLogger_1(this, Invocation.getter(#logger)),
-          )
-          as _i3.Logger);
 
   @override
   void debug(String? message, [dynamic error, StackTrace? stackTrace]) =>
