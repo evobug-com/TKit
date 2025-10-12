@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:tkit/features/auth/data/datasources/token_local_datasource.dart';
 import 'package:tkit/features/auth/data/datasources/twitch_auth_remote_datasource.dart';
 import 'package:tkit/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:tkit/features/auth/domain/usecases/authenticate_usecase.dart';
 import 'package:tkit/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:tkit/features/auth/domain/usecases/check_auth_status_usecase.dart';
 import 'package:tkit/features/auth/domain/usecases/refresh_token_usecase.dart';
@@ -27,7 +26,6 @@ void main() {
     late TokenLocalDataSource localDataSource;
     late TwitchAuthRemoteDataSource remoteDataSource;
     late AuthRepositoryImpl repository;
-    late AuthenticateUseCase authenticateUseCase;
     late LogoutUseCase logoutUseCase;
     late CheckAuthStatusUseCase checkAuthStatusUseCase;
     late RefreshTokenUseCase refreshTokenUseCase;
@@ -42,7 +40,6 @@ void main() {
       remoteDataSource = TwitchAuthRemoteDataSource(mockDio);
       repository = AuthRepositoryImpl(remoteDataSource, localDataSource);
 
-      authenticateUseCase = AuthenticateUseCase(repository);
       logoutUseCase = LogoutUseCase(repository);
       checkAuthStatusUseCase = CheckAuthStatusUseCase(repository);
       refreshTokenUseCase = RefreshTokenUseCase(repository);
@@ -126,7 +123,6 @@ void main() {
 
       setUp(() {
         authProvider = AuthProvider(
-          authenticateUseCase,
           logoutUseCase,
           checkAuthStatusUseCase,
           refreshTokenUseCase,

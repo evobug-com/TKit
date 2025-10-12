@@ -19,56 +19,6 @@ class AuthRepositoryImpl implements IAuthRepository {
   AuthRepositoryImpl(this._remoteDataSource, this._localDataSource);
 
   @override
-  Future<Either<Failure, TwitchUser>> authenticate() async {
-    try {
-      _logger.info('Starting OAuth authentication flow');
-
-      // 1. Generate auth URL and launch browser
-      final authUrl = _remoteDataSource.generateAuthUrl();
-      await _remoteDataSource.launchAuthUrl(authUrl);
-
-      // 2. Start local server and wait for callback (returns token directly from implicit flow)
-      final token = await _remoteDataSource.startLocalServerAndWaitForCallback();
-
-      // 3. Get user info
-      final user = await _remoteDataSource.getCurrentUser(token.accessToken);
-
-      // 4. Save token and user locally
-      await _localDataSource.saveToken(token);
-      await _localDataSource.saveUser(user);
-
-      _logger.info('Authentication successful for user: ${user.login}');
-      return Right(user.toEntity());
-    } on AuthException catch (e) {
-      _logger.error('Authentication failed', e);
-      return Left(
-        AuthFailure(
-          message: e.message,
-          code: e.code,
-          originalError: e.originalError,
-        ),
-      );
-    } on CacheException catch (e) {
-      _logger.error('Cache error during authentication', e);
-      return Left(
-        CacheFailure(
-          message: e.message,
-          code: e.code,
-          originalError: e.originalError,
-        ),
-      );
-    } catch (e) {
-      _logger.error('Unexpected error during authentication', e);
-      return Left(
-        UnknownFailure(
-          message: 'An unexpected error occurred during authentication',
-          originalError: e,
-        ),
-      );
-    }
-  }
-
-  @override
   Future<Either<Failure, DeviceCodeResponse>> initiateDeviceCodeAuth() async {
     try {
       _logger.info('Initiating Device Code Flow');

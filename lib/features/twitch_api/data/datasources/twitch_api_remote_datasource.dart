@@ -14,6 +14,10 @@ class TwitchApiRemoteDataSource {
   // Token provider callback - will be set by the repository
   String? Function()? _tokenProvider;
 
+  // Refresh token callback - will be set by the repository
+  // Returns new access token after refresh, or null if refresh fails
+  Future<String?> Function()? _refreshTokenCallback;
+
   TwitchApiRemoteDataSource(this._dio, this._logger) {
     _configureDio();
   }
@@ -22,6 +26,12 @@ class TwitchApiRemoteDataSource {
   /// This allows the auth module to provide fresh tokens
   void setTokenProvider(String? Function() provider) {
     _tokenProvider = provider;
+  }
+
+  /// Set the refresh token callback
+  /// This allows the data source to force token refresh on 401 errors
+  void setRefreshTokenCallback(Future<String?> Function() callback) {
+    _refreshTokenCallback = callback;
   }
 
   /// Configure Dio with base URL and interceptors
@@ -83,11 +93,45 @@ class TwitchApiRemoteDataSource {
             }
           }
 
-          // Handle unauthorized (401) - token might be expired
+          // Handle unauthorized (401) - token expired or invalid
           if (error.response?.statusCode == 401) {
-            _logger.error('Unauthorized - token may be expired');
-            // The auth module should handle token refresh
-            // We'll just propagate the error
+            _logger.warning('Unauthorized (401) - attempting token refresh');
+
+            // Only retry once to avoid infinite loops
+            final isRetry = error.requestOptions.extra['_tokenRefreshRetry'] == true;
+            if (!isRetry && _refreshTokenCallback != null) {
+              try {
+                // Force token refresh
+                final newToken = await _refreshTokenCallback!();
+
+                if (newToken != null) {
+                  _logger.info('Token refreshed successfully, retrying request');
+
+                  // Mark this request as a retry to prevent infinite loops
+                  error.requestOptions.extra['_tokenRefreshRetry'] = true;
+
+                  // Update the authorization header with new token
+                  error.requestOptions.headers['Authorization'] = 'Bearer $newToken';
+
+                  // Retry the request
+                  try {
+                    final response = await _dio.fetch(error.requestOptions);
+                    return handler.resolve(response);
+                  } catch (e) {
+                    _logger.error('Retry after token refresh failed', e);
+                    return handler.next(error);
+                  }
+                } else {
+                  _logger.error('Token refresh returned null - refresh failed');
+                }
+              } catch (e) {
+                _logger.error('Token refresh failed', e);
+              }
+            } else if (isRetry) {
+              _logger.error('Request failed with 401 after token refresh - not retrying again');
+            } else {
+              _logger.error('No refresh token callback configured');
+            }
           }
 
           return handler.next(error);

@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import '../../data/datasources/token_local_datasource.dart';
 import '../../data/models/device_code_response.dart';
 import '../../domain/repositories/i_auth_repository.dart';
-import '../../domain/usecases/authenticate_usecase.dart';
 import '../../domain/usecases/check_auth_status_usecase.dart';
 import '../../domain/usecases/get_current_user_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
@@ -11,7 +10,6 @@ import '../states/auth_state.dart';
 
 /// Provider for managing authentication state
 class AuthProvider extends ChangeNotifier {
-  final AuthenticateUseCase _authenticateUseCase;
   final LogoutUseCase _logoutUseCase;
   final CheckAuthStatusUseCase _checkAuthStatusUseCase;
   final RefreshTokenUseCase _refreshTokenUseCase;
@@ -24,7 +22,6 @@ class AuthProvider extends ChangeNotifier {
   AuthState get state => _state;
 
   AuthProvider(
-    this._authenticateUseCase,
     this._logoutUseCase,
     this._checkAuthStatusUseCase,
     this._refreshTokenUseCase,
@@ -36,19 +33,6 @@ class AuthProvider extends ChangeNotifier {
   void _updateState(AuthState newState) {
     _state = newState;
     notifyListeners();
-  }
-
-  /// Authenticate user
-  Future<void> authenticate() async {
-    _updateState(const AuthLoading(message: null));
-
-    final result = await _authenticateUseCase();
-
-    result.fold(
-      (failure) =>
-          _updateState(AuthError(message: failure.message, code: failure.code)),
-      (user) => _updateState(Authenticated(user)),
-    );
   }
 
   /// Logout user

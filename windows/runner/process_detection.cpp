@@ -1,5 +1,6 @@
 #include "process_detection.h"
 #include <psapi.h>
+#include <tlhelp32.h>
 #include <sstream>
 #include <iomanip>
 
@@ -35,6 +36,30 @@ std::string EscapeJson(const std::string& str) {
     return oss.str();
 }
 
+// Fallback method to get process name using CreateToolhelp32Snapshot
+// This works even when OpenProcess fails (e.g., elevated processes)
+std::string GetProcessNameByPID(DWORD pid) {
+    HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (hSnapshot == INVALID_HANDLE_VALUE) {
+        return "Unknown";
+    }
+
+    PROCESSENTRY32W pe32;
+    pe32.dwSize = sizeof(PROCESSENTRY32W);
+
+    if (Process32FirstW(hSnapshot, &pe32)) {
+        do {
+            if (pe32.th32ProcessID == pid) {
+                CloseHandle(hSnapshot);
+                return WideToUtf8(std::wstring(pe32.szExeFile));
+            }
+        } while (Process32NextW(hSnapshot, &pe32));
+    }
+
+    CloseHandle(hSnapshot);
+    return "Unknown";
+}
+
 std::optional<ProcessInfo> GetFocusedProcessInfo() {
     // Get the foreground window
     HWND hwnd = GetForegroundWindow();
@@ -42,22 +67,47 @@ std::optional<ProcessInfo> GetFocusedProcessInfo() {
         return std::nullopt;
     }
 
+    // For some applications (especially games), the foreground window might be a child
+    // Get the root owner window to ensure we have the main application window
+    HWND rootWindow = GetAncestor(hwnd, GA_ROOTOWNER);
+    if (rootWindow != NULL) {
+        hwnd = rootWindow;
+    }
+
     ProcessInfo info;
 
     // Get process ID
     GetWindowThreadProcessId(hwnd, &info.pid);
+
+    // Validate that we got a valid PID (not system process)
+    if (info.pid == 0 || info.pid == 4) {
+        // PID 0 = Idle, PID 4 = System - these are not real applications
+        return std::nullopt;
+    }
 
     // Get window title
     wchar_t windowTitle[256];
     GetWindowTextW(hwnd, windowTitle, sizeof(windowTitle) / sizeof(wchar_t));
     info.windowTitle = WideToUtf8(std::wstring(windowTitle));
 
-    // Open process to get more information
+    // Try to open process with full permissions first
     HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, info.pid);
+
+    // If that fails (elevated/protected process), try with limited permissions
     if (hProcess == NULL) {
-        // Can't get process info (likely elevated process)
-        // Return what we have
-        info.processName = "Unknown";
+        hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, info.pid);
+    }
+
+    if (hProcess == NULL) {
+        // Still can't get process info (likely elevated process with anti-cheat)
+        // Try fallback method using CreateToolhelp32Snapshot
+        info.processName = GetProcessNameByPID(info.pid);
+
+        // Filter out system process names
+        if (info.processName == "[System Process]" || info.processName == "System") {
+            info.processName = "Unknown";
+        }
+
         info.executablePath = "";
         return info;
     }
@@ -91,10 +141,28 @@ std::optional<ProcessInfo> GetFocusedProcessInfo() {
             } else {
                 info.processName = info.executablePath;
             }
+        } else {
+            // Last resort: use CreateToolhelp32Snapshot
+            info.processName = GetProcessNameByPID(info.pid);
+
+            // Filter out system process names
+            if (info.processName == "[System Process]" || info.processName == "System") {
+                info.processName = "Unknown";
+            }
         }
     }
 
     CloseHandle(hProcess);
+
+    // Final validation: ensure we have a process name
+    if (info.processName.empty()) {
+        info.processName = GetProcessNameByPID(info.pid);
+
+        // Filter out system process names
+        if (info.processName == "[System Process]" || info.processName == "System") {
+            info.processName = "Unknown";
+        }
+    }
 
     return info;
 }

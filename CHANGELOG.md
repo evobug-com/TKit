@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### TKit
+
+#### Changed
+- Removed fuzzy matching for process names in auto-switcher (exact match only)
+- Removed Implicit Flow in OAuth
+
+#### Fixed
+- Avoid twitch token to expire (missing token refresh)
+- Fallback detection of some games (e.g., Helldivers 2)
+
 ## [0.0.1-dev.4] - 2025-10-12
 
 ### TKit

@@ -7,7 +7,6 @@ import 'package:tkit/features/auth/data/datasources/token_local_datasource.dart'
 import 'package:tkit/features/auth/domain/entities/twitch_token.dart';
 import 'package:tkit/features/auth/domain/entities/twitch_user.dart';
 import 'package:tkit/features/auth/domain/repositories/i_auth_repository.dart';
-import 'package:tkit/features/auth/domain/usecases/authenticate_usecase.dart';
 import 'package:tkit/features/auth/domain/usecases/check_auth_status_usecase.dart';
 import 'package:tkit/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:tkit/features/auth/domain/usecases/logout_usecase.dart';
@@ -18,7 +17,6 @@ import 'package:tkit/features/auth/presentation/states/auth_state.dart';
 import 'auth_provider_test.mocks.dart';
 
 @GenerateMocks([
-  AuthenticateUseCase,
   LogoutUseCase,
   CheckAuthStatusUseCase,
   RefreshTokenUseCase,
@@ -28,7 +26,6 @@ import 'auth_provider_test.mocks.dart';
 ])
 void main() {
   late AuthProvider authProvider;
-  late MockAuthenticateUseCase mockAuthenticateUseCase;
   late MockLogoutUseCase mockLogoutUseCase;
   late MockCheckAuthStatusUseCase mockCheckAuthStatusUseCase;
   late MockRefreshTokenUseCase mockRefreshTokenUseCase;
@@ -37,7 +34,6 @@ void main() {
   late MockIAuthRepository mockAuthRepository;
 
   setUp(() {
-    mockAuthenticateUseCase = MockAuthenticateUseCase();
     mockLogoutUseCase = MockLogoutUseCase();
     mockCheckAuthStatusUseCase = MockCheckAuthStatusUseCase();
     mockRefreshTokenUseCase = MockRefreshTokenUseCase();
@@ -46,7 +42,6 @@ void main() {
     mockAuthRepository = MockIAuthRepository();
 
     authProvider = AuthProvider(
-      mockAuthenticateUseCase,
       mockLogoutUseCase,
       mockCheckAuthStatusUseCase,
       mockRefreshTokenUseCase,
@@ -76,52 +71,6 @@ void main() {
 
     test('initial state should be AuthInitial', () {
       expect(authProvider.state, isA<AuthInitial>());
-    });
-
-    group('authenticate', () {
-      test('should emit [AuthLoading, Authenticated] when authenticate succeeds',
-          () async {
-        // arrange
-        when(mockAuthenticateUseCase())
-            .thenAnswer((_) async => const Right(tUser));
-
-        // act
-        final states = <AuthState>[];
-        authProvider.addListener(() {
-          states.add(authProvider.state);
-        });
-
-        await authProvider.authenticate();
-
-        // assert
-        expect(states.length, 2);
-        expect(states[0], isA<AuthLoading>());
-        expect(states[1], isA<Authenticated>());
-        expect((states[1] as Authenticated).user, tUser);
-        verify(mockAuthenticateUseCase()).called(1);
-      });
-
-      test('should emit [AuthLoading, AuthError] when authenticate fails',
-          () async {
-        // arrange
-        when(mockAuthenticateUseCase()).thenAnswer(
-          (_) async => const Left(AuthFailure(message: 'Auth failed')),
-        );
-
-        // act
-        final states = <AuthState>[];
-        authProvider.addListener(() {
-          states.add(authProvider.state);
-        });
-
-        await authProvider.authenticate();
-
-        // assert
-        expect(states.length, 2);
-        expect(states[0], isA<AuthLoading>());
-        expect(states[1], isA<AuthError>());
-        expect((states[1] as AuthError).message, 'Auth failed');
-      });
     });
 
     group('logout', () {

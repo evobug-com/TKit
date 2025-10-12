@@ -320,20 +320,6 @@ class MockIAuthRepository extends _i1.Mock implements _i2.IAuthRepository {
   }
 
   @override
-  _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser>> authenticate() =>
-      (super.noSuchMethod(
-            Invocation.method(#authenticate, []),
-            returnValue:
-                _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser>>.value(
-                  _FakeEither_1<_i6.Failure, _i7.TwitchUser>(
-                    this,
-                    Invocation.method(#authenticate, []),
-                  ),
-                ),
-          )
-          as _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser>>);
-
-  @override
   _i5.Future<_i3.Either<_i6.Failure, _i16.DeviceCodeResponse>>
   initiateDeviceCodeAuth() =>
       (super.noSuchMethod(

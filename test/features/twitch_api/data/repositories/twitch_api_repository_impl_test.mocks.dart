@@ -62,6 +62,13 @@ class MockTwitchApiRemoteDataSource extends _i1.Mock
   );
 
   @override
+  void setRefreshTokenCallback(_i6.Future<String?> Function()? callback) =>
+      super.noSuchMethod(
+        Invocation.method(#setRefreshTokenCallback, [callback]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
   _i6.Future<List<_i3.TwitchCategoryModel>> searchCategories(
     String? query, {
     int? first = 20,

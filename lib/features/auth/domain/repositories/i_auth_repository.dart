@@ -7,10 +7,6 @@ import '../entities/twitch_user.dart';
 /// Abstract repository interface for authentication operations
 /// Defines the contract that the data layer must implement
 abstract class IAuthRepository {
-  /// Initiates the OAuth 2.0 authentication flow with PKCE (legacy - Implicit Flow)
-  /// Returns `Either<Failure, TwitchUser>` on success with user info
-  Future<Either<Failure, TwitchUser>> authenticate();
-
   /// Initiates Device Code Flow authentication
   /// Returns `Either<Failure, DeviceCodeResponse>` with device code and user code
   Future<Either<Failure, DeviceCodeResponse>> initiateDeviceCodeAuth();

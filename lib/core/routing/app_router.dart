@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tkit/features/auth/presentation/pages/auth_page.dart';
 import 'package:tkit/features/auto_switcher/presentation/pages/auto_switcher_page.dart';
 import 'package:tkit/features/category_mapping/presentation/pages/category_mapping_editor_page.dart';
 import 'package:tkit/features/settings/presentation/pages/settings_page.dart';
@@ -91,7 +90,5 @@ class AppRouter extends RootStackRouter {
           transitionsBuilder: _buildDirectionalSlideTransition,
           duration: const Duration(milliseconds: 250),
         ),
-        // Auth (used as dialog)
-        AutoRoute(page: AuthRoute.page),
       ];
 }

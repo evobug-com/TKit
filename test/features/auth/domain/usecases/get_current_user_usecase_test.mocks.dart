@@ -9,9 +9,9 @@ import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:tkit/core/errors/failure.dart' as _i5;
 import 'package:tkit/features/auth/data/models/device_code_response.dart'
-    as _i7;
+    as _i6;
 import 'package:tkit/features/auth/domain/entities/twitch_token.dart' as _i8;
-import 'package:tkit/features/auth/domain/entities/twitch_user.dart' as _i6;
+import 'package:tkit/features/auth/domain/entities/twitch_user.dart' as _i7;
 import 'package:tkit/features/auth/domain/repositories/i_auth_repository.dart'
     as _i3;
 
@@ -43,44 +43,30 @@ class MockIAuthRepository extends _i1.Mock implements _i3.IAuthRepository {
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, _i6.TwitchUser>> authenticate() =>
-      (super.noSuchMethod(
-            Invocation.method(#authenticate, []),
-            returnValue:
-                _i4.Future<_i2.Either<_i5.Failure, _i6.TwitchUser>>.value(
-                  _FakeEither_0<_i5.Failure, _i6.TwitchUser>(
-                    this,
-                    Invocation.method(#authenticate, []),
-                  ),
-                ),
-          )
-          as _i4.Future<_i2.Either<_i5.Failure, _i6.TwitchUser>>);
-
-  @override
-  _i4.Future<_i2.Either<_i5.Failure, _i7.DeviceCodeResponse>>
+  _i4.Future<_i2.Either<_i5.Failure, _i6.DeviceCodeResponse>>
   initiateDeviceCodeAuth() =>
       (super.noSuchMethod(
             Invocation.method(#initiateDeviceCodeAuth, []),
             returnValue:
                 _i4.Future<
-                  _i2.Either<_i5.Failure, _i7.DeviceCodeResponse>
+                  _i2.Either<_i5.Failure, _i6.DeviceCodeResponse>
                 >.value(
-                  _FakeEither_0<_i5.Failure, _i7.DeviceCodeResponse>(
+                  _FakeEither_0<_i5.Failure, _i6.DeviceCodeResponse>(
                     this,
                     Invocation.method(#initiateDeviceCodeAuth, []),
                   ),
                 ),
           )
-          as _i4.Future<_i2.Either<_i5.Failure, _i7.DeviceCodeResponse>>);
+          as _i4.Future<_i2.Either<_i5.Failure, _i6.DeviceCodeResponse>>);
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, _i6.TwitchUser>>
+  _i4.Future<_i2.Either<_i5.Failure, _i7.TwitchUser>>
   authenticateWithDeviceCode(String? deviceCode) =>
       (super.noSuchMethod(
             Invocation.method(#authenticateWithDeviceCode, [deviceCode]),
             returnValue:
-                _i4.Future<_i2.Either<_i5.Failure, _i6.TwitchUser>>.value(
-                  _FakeEither_0<_i5.Failure, _i6.TwitchUser>(
+                _i4.Future<_i2.Either<_i5.Failure, _i7.TwitchUser>>.value(
+                  _FakeEither_0<_i5.Failure, _i7.TwitchUser>(
                     this,
                     Invocation.method(#authenticateWithDeviceCode, [
                       deviceCode,
@@ -88,7 +74,7 @@ class MockIAuthRepository extends _i1.Mock implements _i3.IAuthRepository {
                   ),
                 ),
           )
-          as _i4.Future<_i2.Either<_i5.Failure, _i6.TwitchUser>>);
+          as _i4.Future<_i2.Either<_i5.Failure, _i7.TwitchUser>>);
 
   @override
   _i4.Future<_i2.Either<_i5.Failure, void>> logout() =>
@@ -145,16 +131,16 @@ class MockIAuthRepository extends _i1.Mock implements _i3.IAuthRepository {
           as _i4.Future<_i2.Either<_i5.Failure, _i8.TwitchToken?>>);
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, _i6.TwitchUser?>> getCurrentUser() =>
+  _i4.Future<_i2.Either<_i5.Failure, _i7.TwitchUser?>> getCurrentUser() =>
       (super.noSuchMethod(
             Invocation.method(#getCurrentUser, []),
             returnValue:
-                _i4.Future<_i2.Either<_i5.Failure, _i6.TwitchUser?>>.value(
-                  _FakeEither_0<_i5.Failure, _i6.TwitchUser?>(
+                _i4.Future<_i2.Either<_i5.Failure, _i7.TwitchUser?>>.value(
+                  _FakeEither_0<_i5.Failure, _i7.TwitchUser?>(
                     this,
                     Invocation.method(#getCurrentUser, []),
                   ),
                 ),
           )
-          as _i4.Future<_i2.Either<_i5.Failure, _i6.TwitchUser?>>);
+          as _i4.Future<_i2.Either<_i5.Failure, _i7.TwitchUser?>>);
 }

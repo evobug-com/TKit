@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:dio/dio.dart';
@@ -22,7 +21,6 @@ import 'features/auth/data/datasources/twitch_auth_remote_datasource.dart';
 import 'features/auth/data/repositories/auth_repository_impl.dart';
 import 'features/auth/domain/repositories/i_auth_repository.dart';
 import 'features/auth/presentation/states/auth_state.dart';
-import 'features/auth/domain/usecases/authenticate_usecase.dart';
 import 'features/auth/domain/usecases/check_auth_status_usecase.dart';
 import 'features/auth/domain/usecases/get_current_user_usecase.dart'
     as auth_get_user;
@@ -238,10 +236,43 @@ void main() async {
       logger,
     );
 
-    // Configure token provider for Twitch API
-    // This caches the token in memory and provides it to the API datasource
+    // Configure token provider for Twitch API with automatic refresh
+    // This checks token expiration and refreshes automatically
     String? cachedAccessToken;
+    DateTime? tokenExpiresAt;
+    bool isRefreshing = false;
+
     twitchApiRepository.setTokenProvider(() {
+      // Check if token is expired or expiring soon (within 5 minutes)
+      if (tokenExpiresAt != null) {
+        final now = DateTime.now();
+        final fiveMinutesFromNow = now.add(const Duration(minutes: 5));
+
+        if (fiveMinutesFromNow.isAfter(tokenExpiresAt!)) {
+          // Token is expired or expiring soon - refresh it
+          if (!isRefreshing) {
+            isRefreshing = true;
+            logger.info('Token expiring soon, attempting automatic refresh');
+
+            // Trigger refresh asynchronously (don't block the provider)
+            authRepository.refreshToken().then((result) {
+              result.fold(
+                (failure) {
+                  logger.error('Automatic token refresh failed: ${failure.message}');
+                  isRefreshing = false;
+                },
+                (newToken) {
+                  cachedAccessToken = newToken.accessToken;
+                  tokenExpiresAt = newToken.expiresAt;
+                  isRefreshing = false;
+                  logger.info('Token automatically refreshed successfully');
+                },
+              );
+            });
+          }
+        }
+      }
+
       return cachedAccessToken;
     });
 
@@ -249,8 +280,34 @@ void main() async {
     tokenLocalDataSource.getToken().then((token) {
       if (token != null) {
         cachedAccessToken = token.accessToken;
-        logger.debug('Initial access token loaded for Twitch API');
+        tokenExpiresAt = token.expiresAt;
+        logger.debug('Initial access token loaded for Twitch API (expires: $tokenExpiresAt)');
       }
+    });
+
+    // Configure refresh token callback for 401 error handling
+    // This forces a synchronous token refresh when API calls fail with 401
+    twitchApiRepository.setRefreshTokenCallback(() async {
+      logger.info('Force token refresh requested (401 error interceptor)');
+
+      final result = await authRepository.refreshToken();
+
+      return result.fold(
+        (failure) {
+          logger.error('Force token refresh failed: ${failure.message}');
+          cachedAccessToken = null;
+          tokenExpiresAt = null;
+          isRefreshing = false;
+          return null;
+        },
+        (newToken) {
+          cachedAccessToken = newToken.accessToken;
+          tokenExpiresAt = newToken.expiresAt;
+          isRefreshing = false;
+          logger.info('Force token refresh successful');
+          return newToken.accessToken;
+        },
+      );
     });
 
     // Mapping importer (requires twitch API repository)
@@ -265,7 +322,6 @@ void main() async {
     // 5. Use Cases
     // -------------------------------------------------------------------------
     // Auth use cases
-    final authenticateUseCase = AuthenticateUseCase(authRepository);
     final checkAuthStatusUseCase = CheckAuthStatusUseCase(authRepository);
     final getCurrentUserUseCase = auth_get_user.GetCurrentUserUseCase(
       authRepository,
@@ -374,7 +430,6 @@ void main() async {
     // 6. Providers
     // -------------------------------------------------------------------------
     final authProvider = AuthProvider(
-      authenticateUseCase,
       logoutUseCase,
       checkAuthStatusUseCase,
       refreshTokenUseCase,
@@ -634,7 +689,6 @@ void main() async {
           ),
 
           // Use cases
-          Provider<AuthenticateUseCase>.value(value: authenticateUseCase),
           Provider<CheckAuthStatusUseCase>.value(value: checkAuthStatusUseCase),
           Provider<auth_get_user.GetCurrentUserUseCase>.value(
             value: getCurrentUserUseCase,

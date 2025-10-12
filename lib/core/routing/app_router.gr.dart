@@ -11,55 +11,6 @@
 part of 'app_router.dart';
 
 /// generated route for
-/// [AuthPage]
-class AuthRoute extends PageRouteInfo<AuthRouteArgs> {
-  AuthRoute({
-    Key? key,
-    VoidCallback? onAuthSuccess,
-    List<PageRouteInfo>? children,
-  }) : super(
-         AuthRoute.name,
-         args: AuthRouteArgs(key: key, onAuthSuccess: onAuthSuccess),
-         initialChildren: children,
-       );
-
-  static const String name = 'AuthRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      final args = data.argsAs<AuthRouteArgs>(
-        orElse: () => const AuthRouteArgs(),
-      );
-      return AuthPage(key: args.key, onAuthSuccess: args.onAuthSuccess);
-    },
-  );
-}
-
-class AuthRouteArgs {
-  const AuthRouteArgs({this.key, this.onAuthSuccess});
-
-  final Key? key;
-
-  final VoidCallback? onAuthSuccess;
-
-  @override
-  String toString() {
-    return 'AuthRouteArgs{key: $key, onAuthSuccess: $onAuthSuccess}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! AuthRouteArgs) return false;
-    return key == other.key && onAuthSuccess == other.onAuthSuccess;
-  }
-
-  @override
-  int get hashCode => key.hashCode ^ onAuthSuccess.hashCode;
-}
-
-/// generated route for
 /// [AutoSwitcherPage]
 class AutoSwitcherRoute extends PageRouteInfo<void> {
   const AutoSwitcherRoute({List<PageRouteInfo>? children})

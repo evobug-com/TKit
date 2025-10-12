@@ -26,6 +26,13 @@ class TwitchApiRepositoryImpl implements ITwitchApiRepository {
     _remoteDataSource.setTokenProvider(provider);
   }
 
+  /// Set the refresh token callback for the remote data source
+  /// This should be called during initialization to enable automatic
+  /// token refresh on 401 errors
+  void setRefreshTokenCallback(Future<String?> Function() callback) {
+    _remoteDataSource.setRefreshTokenCallback(callback);
+  }
+
   @override
   Future<Either<Failure, List<TwitchCategory>>> searchCategories(
     String query, {
