@@ -422,10 +422,12 @@ class _UpdateDialogState extends State<_UpdateDialog> {
         if (!_isDownloading && !_isInstalling) ...[
           AccentButton(
             text: 'Ignore',
-            onPressed: () {
-              // Ignore this update
-              context.read<GitHubUpdateService>().dismissUpdate();
-              Navigator.of(context).pop();
+            onPressed: () async {
+              // Ignore this update version - won't auto-show dialog again, but indicator stays visible
+              await context.read<GitHubUpdateService>().ignoreUpdate();
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
             },
           ),
           const SizedBox(width: 8),

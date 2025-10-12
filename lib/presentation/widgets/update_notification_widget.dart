@@ -43,7 +43,8 @@ class _UpdateNotificationWidgetState extends State<UpdateNotificationWidget> {
       if (update != null && mounted && !_showDialog) {
         setState(() {
           _currentUpdate = update;
-          _shouldShowDialog = true;
+          // Only show auto-dialog if this version is not ignored
+          _shouldShowDialog = !_updateService.isVersionIgnored(update.version);
         });
       }
     });

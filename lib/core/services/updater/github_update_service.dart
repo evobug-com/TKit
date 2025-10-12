@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../config/app_config.dart';
 import '../../utils/app_logger.dart';
 import '../../../features/settings/domain/entities/update_channel.dart';
@@ -13,6 +14,8 @@ import 'utils/installation_detector.dart';
 
 /// Service for checking and managing application updates from GitHub Releases
 class GitHubUpdateService {
+  static const String _ignoredVersionsKey = 'ignored_update_versions';
+
   final Dio _dio;
   final AppLogger _logger;
   Future<UpdateChannel> Function()? _channelProvider;
@@ -25,6 +28,7 @@ class GitHubUpdateService {
   bool _isInitialized = false;
   DateTime? _lastCheckTime;
   CancelToken? _downloadCancelToken;
+  Set<String> _ignoredVersions = {};
 
   GitHubUpdateService(this._dio, this._logger) {
     _updateAvailableController = StreamController<UpdateInfo?>.broadcast();
@@ -63,6 +67,9 @@ class GitHubUpdateService {
         _logger.info('Updates not supported on this platform');
         return;
       }
+
+      // Load ignored versions from persistent storage
+      await _loadIgnoredVersions();
 
       // Detect installation type
       final installationType = InstallationDetector.detect();
@@ -219,6 +226,14 @@ class GitHubUpdateService {
         AppConfig.appVersion,
       )) {
         _logger.info('Update available: ${updateInfo.version}');
+
+        // Check if this version is ignored
+        if (isVersionIgnored(updateInfo.version)) {
+          _logger.info('Update version ${updateInfo.version} is ignored - update indicator will show but auto-dialog will not');
+        }
+
+        // Always set current update and emit to stream
+        // The UpdateNotificationWidget will check if it's ignored before showing dialog
         _currentUpdateValue = updateInfo;
         _updateAvailableController.add(updateInfo);
         return updateInfo;
@@ -369,7 +384,52 @@ class GitHubUpdateService {
     }
   }
 
-  /// Dismiss the current update notification
+  /// Load ignored versions from persistent storage
+  Future<void> _loadIgnoredVersions() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final ignoredList = prefs.getStringList(_ignoredVersionsKey) ?? [];
+      _ignoredVersions = ignoredList.toSet();
+      _logger.info('Loaded ${_ignoredVersions.length} ignored version(s): ${_ignoredVersions.join(", ")}');
+    } catch (e, stackTrace) {
+      _logger.error('Failed to load ignored versions', e, stackTrace);
+    }
+  }
+
+  /// Save ignored versions to persistent storage
+  Future<void> _saveIgnoredVersions() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setStringList(_ignoredVersionsKey, _ignoredVersions.toList());
+      _logger.info('Saved ${_ignoredVersions.length} ignored version(s)');
+    } catch (e, stackTrace) {
+      _logger.error('Failed to save ignored versions', e, stackTrace);
+    }
+  }
+
+  /// Check if a version is ignored
+  bool isVersionIgnored(String version) {
+    return _ignoredVersions.contains(version);
+  }
+
+  /// Ignore the current update version (don't show auto-dialog, but keep indicator visible)
+  Future<void> ignoreUpdate() async {
+    if (_currentUpdateValue != null) {
+      _ignoredVersions.add(_currentUpdateValue!.version);
+      await _saveIgnoredVersions();
+      _logger.info('Ignored update version: ${_currentUpdateValue!.version}');
+      // Note: We don't clear _currentUpdateValue here, so the indicator stays visible
+    }
+  }
+
+  /// Clear ignored versions (for settings/debugging)
+  Future<void> clearIgnoredVersions() async {
+    _ignoredVersions.clear();
+    await _saveIgnoredVersions();
+    _logger.info('Cleared all ignored versions');
+  }
+
+  /// Dismiss the current update notification (temporary, until next check)
   void dismissUpdate() {
     _currentUpdateValue = null;
     _updateAvailableController.add(null);
