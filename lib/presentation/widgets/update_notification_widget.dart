@@ -5,6 +5,7 @@ import 'package:tkit/l10n/app_localizations.dart';
 import '../../core/services/updater/github_update_service.dart';
 import '../../core/services/updater/models/update_info.dart';
 import '../../core/services/updater/models/download_progress.dart';
+import '../../core/utils/app_logger.dart';
 import '../../shared/theme/colors.dart';
 import '../../shared/theme/text_styles.dart';
 import '../../shared/widgets/buttons/primary_button.dart';
@@ -28,6 +29,7 @@ class UpdateNotificationWidget extends StatefulWidget {
 
 class _UpdateNotificationWidgetState extends State<UpdateNotificationWidget> {
   late final GitHubUpdateService _updateService;
+  late final AppLogger _logger;
   UpdateInfo? _currentUpdate;
   DownloadProgress? _downloadProgress;
   bool _showDialog = false;
@@ -37,14 +39,17 @@ class _UpdateNotificationWidgetState extends State<UpdateNotificationWidget> {
   void initState() {
     super.initState();
     _updateService = context.read<GitHubUpdateService>();
+    _logger = context.read<AppLogger>();
 
     // Listen for available updates
     _updateService.updateAvailable.listen((update) {
       if (update != null && mounted && !_showDialog) {
+        _logger.info('[UpdateWidget] Update available: ${update.version}');
         setState(() {
           _currentUpdate = update;
           // Only show auto-dialog if this version is not ignored
           _shouldShowDialog = !_updateService.isVersionIgnored(update.version);
+          _logger.info('[UpdateWidget] Should show dialog: $_shouldShowDialog (ignored: ${_updateService.isVersionIgnored(update.version)})');
         });
       }
     });
@@ -52,6 +57,7 @@ class _UpdateNotificationWidgetState extends State<UpdateNotificationWidget> {
     // Listen for download progress
     _updateService.downloadProgress.listen((progress) {
       if (mounted) {
+        _logger.debug('[UpdateWidget] Download progress: ${progress.status.name} - ${progress.progressPercentage}');
         setState(() {
           _downloadProgress = progress;
         });
@@ -76,6 +82,8 @@ class _UpdateNotificationWidgetState extends State<UpdateNotificationWidget> {
   void _showUpdateDialog() {
     if (_currentUpdate == null || _showDialog) return;
 
+    _logger.info('[UpdateWidget] Showing update dialog for version ${_currentUpdate!.version}');
+
     // Use navigator key context if available, otherwise fall back to widget context
     final dialogContext = widget.navigatorKey?.currentContext ?? context;
 
@@ -91,21 +99,25 @@ class _UpdateNotificationWidgetState extends State<UpdateNotificationWidget> {
         onInstall: _handleInstall,
       ),
     ).then((_) {
+      _logger.info('[UpdateWidget] Update dialog closed');
       _showDialog = false;
     });
   }
 
   Future<void> _handleDownload() async {
     if (_currentUpdate == null) return;
+    _logger.info('[UpdateWidget] Download button clicked');
     await _updateService.downloadUpdate(_currentUpdate!);
   }
 
   void _handleDismiss() {
+    _logger.info('[UpdateWidget] Dismiss button clicked');
     _updateService.dismissUpdate();
     Navigator.of(context).pop();
   }
 
   Future<void> _handleInstall(String filePath) async {
+    _logger.info('[UpdateWidget] Install button clicked - DEPRECATED HANDLER');
     final file = await _updateService.downloadUpdate(_currentUpdate!);
     if (file != null) {
       await _updateService.installUpdate(file);
@@ -339,10 +351,18 @@ class _UpdateDialogState extends State<_UpdateDialog> {
             text: l10n.updateDialogInstallRestart,
             icon: Icons.install_desktop,
             onPressed: () async {
+              final logger = context.read<AppLogger>();
               final service = context.read<GitHubUpdateService>();
+
+              logger.info('[UpdateDialog] Install & Restart button clicked');
+
+              // Download will return cached file if already downloaded
               final file = await service.downloadUpdate(widget.updateInfo);
               if (file != null) {
+                logger.info('[UpdateDialog] Downloaded file ready: ${file.path}');
                 await service.installUpdate(file);
+              } else {
+                logger.error('[UpdateDialog] Failed to get installer file');
               }
             },
           ),

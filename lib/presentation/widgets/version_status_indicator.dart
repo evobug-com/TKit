@@ -6,6 +6,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import '../../core/services/updater/github_update_service.dart';
 import '../../core/services/updater/models/download_progress.dart';
+import '../../core/utils/app_logger.dart';
 import '../../l10n/app_localizations.dart';
 import '../../shared/theme/colors.dart';
 import '../../shared/theme/text_styles.dart';
@@ -160,10 +161,16 @@ class _VersionStatusIndicatorState extends State<VersionStatusIndicator> {
   }
 
   void _showUpdateDialog(BuildContext context) {
+    final logger = context.read<AppLogger>();
     final updateService = context.read<GitHubUpdateService>();
     final updateInfo = updateService.currentUpdate;
 
-    if (updateInfo == null) return;
+    if (updateInfo == null) {
+      logger.warning('[VersionIndicator] Attempted to show update dialog but no update available');
+      return;
+    }
+
+    logger.info('[VersionIndicator] Showing update dialog for version ${updateInfo.version}');
 
     // Use navigator key context if available, otherwise fall back to widget context
     final dialogContext = widget.navigatorKey?.currentContext ?? context;
@@ -172,7 +179,9 @@ class _VersionStatusIndicatorState extends State<VersionStatusIndicator> {
       context: dialogContext,
       barrierDismissible: false,
       builder: (context) => _UpdateDialog(updateInfo: updateInfo),
-    );
+    ).then((_) {
+      logger.info('[VersionIndicator] Update dialog closed');
+    });
   }
 
   @override
@@ -272,17 +281,23 @@ class _UpdateDialogState extends State<_UpdateDialog> {
   }
 
   Future<void> _downloadAndInstall() async {
+    final logger = context.read<AppLogger>();
     final updateService = context.read<GitHubUpdateService>();
+
+    logger.info('[VersionIndicator] Download & Install clicked for version ${widget.updateInfo.version}');
 
     setState(() {
       _isDownloading = true;
     });
+
+    logger.info('[VersionIndicator] Starting download...');
 
     // Download the update
     final file = await updateService.downloadUpdate(widget.updateInfo);
 
     if (file == null) {
       // Download failed
+      logger.error('[VersionIndicator] Download failed');
       if (mounted) {
         setState(() {
           _isDownloading = false;
@@ -297,16 +312,21 @@ class _UpdateDialogState extends State<_UpdateDialog> {
       return;
     }
 
+    logger.info('[VersionIndicator] Download completed: ${file.path}');
+
     setState(() {
       _downloadedFile = file;
       _isDownloading = false;
       _isInstalling = true;
     });
 
+    logger.info('[VersionIndicator] Starting installation...');
+
     // Install the update
     final success = await updateService.installUpdate(file);
 
     if (!success && mounted) {
+      logger.error('[VersionIndicator] Installation failed');
       setState(() {
         _isInstalling = false;
       });
@@ -316,6 +336,8 @@ class _UpdateDialogState extends State<_UpdateDialog> {
           backgroundColor: TKitColors.error,
         ),
       );
+    } else {
+      logger.info('[VersionIndicator] Installation started successfully, app will exit');
     }
     // If successful, the app will close automatically
   }

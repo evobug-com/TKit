@@ -249,10 +249,21 @@ class GitHubUpdateService {
     }
   }
 
+  File? _downloadedFile;
+
   /// Download the update installer
   Future<File?> downloadUpdate(UpdateInfo updateInfo) async {
     try {
-      _logger.info('Starting download: ${updateInfo.assetName}');
+      // If already downloaded, return the cached file
+      if (_downloadedFile != null && _downloadedFile!.existsSync()) {
+        _logger.info('Update already downloaded: ${_downloadedFile!.path}');
+        return _downloadedFile;
+      }
+
+      _logger.info('=== STARTING UPDATE DOWNLOAD ===');
+      _logger.info('Asset name: ${updateInfo.assetName}');
+      _logger.info('Download URL: ${updateInfo.downloadUrl}');
+      _logger.info('File size: ${updateInfo.fileSize} bytes');
 
       // Reset download progress
       _currentDownloadProgress = DownloadProgress(
@@ -264,6 +275,7 @@ class GitHubUpdateService {
       // Create temp directory
       final tempDir = Directory.systemTemp.createTempSync('tkit_update_');
       final savePath = '${tempDir.path}${Platform.pathSeparator}${updateInfo.assetName}';
+      _logger.info('Save path: $savePath');
 
       _downloadCancelToken = CancelToken();
 
@@ -295,7 +307,12 @@ class GitHubUpdateService {
       );
       _downloadProgressController.add(_currentDownloadProgress);
 
-      _logger.info('Download completed: $savePath');
+      // Cache the downloaded file for reuse
+      _downloadedFile = file;
+
+      _logger.info('=== DOWNLOAD COMPLETED ===');
+      _logger.info('File path: $savePath');
+      _logger.info('File size: ${file.lengthSync()} bytes');
       return file;
     } catch (e, stackTrace) {
       _logger.error('Failed to download update', e, stackTrace);
@@ -323,63 +340,78 @@ class GitHubUpdateService {
   /// Install the downloaded update
   Future<bool> installUpdate(File installerFile) async {
     try {
-      _logger.info('Starting update installation: ${installerFile.path}');
+      _logger.info('=== STARTING UPDATE INSTALLATION ===');
+      _logger.info('Installer file path: ${installerFile.path}');
+      _logger.info('File exists: ${installerFile.existsSync()}');
 
       if (!installerFile.existsSync()) {
+        _logger.error('Installer file not found at: ${installerFile.path}');
         throw Exception('Installer file not found');
       }
 
+      _logger.info('File size: ${installerFile.lengthSync()} bytes');
+
       // Launch the installer based on file type
       final fileName = installerFile.path.toLowerCase();
+      _logger.info('Detected file extension: ${fileName.substring(fileName.lastIndexOf('.'))}');
 
       if (fileName.endsWith('.msix')) {
-        // For MSIX files, use PowerShell to install
+        // For MSIX files, use cmd.exe to launch with default handler
         // This opens the Windows App Installer UI
-        _logger.info('Installing MSIX package via PowerShell');
+        _logger.info('Launching MSIX package via cmd.exe...');
+        _logger.info('Command: cmd.exe /c start "" "${installerFile.path}"');
 
-        await Process.start(
-          'powershell.exe',
+        final process = await Process.start(
+          'cmd.exe',
           [
-            '-Command',
-            'Start-Process',
-            '-FilePath',
-            '"${installerFile.path}"',
-            '-Verb',
-            'Open'
+            '/c',
+            'start',
+            '""',
+            installerFile.path,
           ],
           mode: ProcessStartMode.detached,
         );
+
+        _logger.info('CMD process started with PID: ${process.pid}');
       } else if (fileName.endsWith('.exe')) {
         // For .exe files, launch with silent install flags if supported
-        _logger.info('Installing EXE installer');
+        _logger.info('Launching EXE installer...');
 
-        await Process.start(
+        final process = await Process.start(
           installerFile.path,
           ['/VERYSILENT', '/NORESTART'],
           mode: ProcessStartMode.detached,
         );
+
+        _logger.info('EXE process started with PID: ${process.pid}');
       } else {
         // For other file types, just open them with default handler
-        _logger.info('Opening installer with default handler');
+        _logger.info('Opening installer with default handler...');
 
-        await Process.start(
+        final process = await Process.start(
           'cmd.exe',
           ['/c', 'start', '""', installerFile.path],
           mode: ProcessStartMode.detached,
         );
+
+        _logger.info('Process started with PID: ${process.pid}');
       }
 
       _logger.info('Installer launched successfully');
+      _logger.info('Application will exit in 2 seconds...');
 
       // Exit the current application to allow update
       // Give the installer process time to fully start before exiting
       Future.delayed(const Duration(seconds: 2), () {
+        _logger.info('Exiting application for update installation');
         exit(0);
       });
 
       return true;
     } catch (e, stackTrace) {
-      _logger.error('Failed to install update', e, stackTrace);
+      _logger.error('=== UPDATE INSTALLATION FAILED ===');
+      _logger.error('Error: $e');
+      _logger.error('Stack trace: $stackTrace');
       return false;
     }
   }
