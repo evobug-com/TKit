@@ -539,7 +539,7 @@ class _MainWindowState extends State<MainWindow> {
                 channel: _getChannelFromVersion(AppConfig.appVersion),
               ),
               const SizedBox(width: 6),
-              const VersionStatusIndicator(),
+              VersionStatusIndicator(navigatorKey: widget.router.navigatorKey),
             ],
           ),
         ],

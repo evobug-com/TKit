@@ -539,9 +539,18 @@ class AppDatabase extends _$AppDatabase {
 
       if (from == 3 && to >= 4) {
         // Migration v3 → v4: Add isEnabled field
-        await customStatement(
-          'ALTER TABLE category_mappings ADD COLUMN is_enabled INTEGER NOT NULL DEFAULT 1',
-        );
+        // Check if column already exists to make migration idempotent
+        final result = await customSelect(
+          'PRAGMA table_info(category_mappings)',
+        ).get();
+
+        final hasIsEnabled = result.any((row) => row.data['name'] == 'is_enabled');
+
+        if (!hasIsEnabled) {
+          await customStatement(
+            'ALTER TABLE category_mappings ADD COLUMN is_enabled INTEGER NOT NULL DEFAULT 1',
+          );
+        }
       }
     },
   );

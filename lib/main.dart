@@ -1148,6 +1148,7 @@ class _TKitAppState extends State<TKitApp> {
           builder: (context, child) {
             // Wrap all routes with MainWindow and UpdateNotificationWidget
             return UpdateNotificationWidget(
+              navigatorKey: _appRouter.navigatorKey,
               child: MainWindow(
                 router: _appRouter,
                 child: child ?? const SizedBox.shrink(),

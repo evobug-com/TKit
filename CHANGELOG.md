@@ -9,9 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.1-dev.2] - 2025-10-12
 
+## TKit
 ### Added
 - Icon for tray and the app
-- Msix installer 
+
 - Avoid closing settings when changes are unsaved/undiscarded
 - Theme tab in settings to turn frameless mode on/off
 - Enabled checkbox in mappings
@@ -26,7 +27,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Save in settings not disappearing after saving
 - Ignored applications don't throw notifications anymore
 
+## Installer
+
+### Added
+- Msix installer
+
+### Changed
+- Logo for Inno Setup installer
+- Changed installer name to TKit
+
+
 ## [0.0.1-dev.1] - 2025-10-11
+
+## TKit
 
 ### Added
 - Initial release of TKit (Twitch Toolkit)

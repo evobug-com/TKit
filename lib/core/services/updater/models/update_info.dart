@@ -1,3 +1,5 @@
+import '../utils/installation_detector.dart';
+
 /// Information about an available update
 class UpdateInfo {
   final String version;
@@ -16,9 +18,12 @@ class UpdateInfo {
     required this.publishedAt,
   });
 
-  factory UpdateInfo.fromGitHubRelease(Map<String, dynamic> release) {
+  factory UpdateInfo.fromGitHubRelease(
+    Map<String, dynamic> release, {
+    InstallationType? installationType,
+  }) {
     final assets = release['assets'] as List;
-    final windowsAsset = _findWindowsAsset(assets);
+    final windowsAsset = _findWindowsAsset(assets, installationType);
 
     return UpdateInfo(
       version: _parseVersion(release['tag_name'] as String),
@@ -35,7 +40,45 @@ class UpdateInfo {
     return tagName.startsWith('v') ? tagName.substring(1) : tagName;
   }
 
-  static Map<String, dynamic> _findWindowsAsset(List assets) {
+  static Map<String, dynamic> _findWindowsAsset(
+    List assets,
+    InstallationType? installationType,
+  ) {
+    // Determine preferred extension based on installation type
+    final preferredExtension = installationType != null
+        ? InstallationDetector.getPreferredExtension(installationType)
+        : null;
+
+    // First try to find asset matching the installation type
+    if (preferredExtension != null) {
+      for (final asset in assets) {
+        final name = (asset['name'] as String).toLowerCase();
+        if (name.endsWith(preferredExtension)) {
+          return asset as Map<String, dynamic>;
+        }
+      }
+    }
+
+    // Fallback for unknown installations: prefer MSIX (safer, sandboxed)
+    if (installationType == InstallationType.unknown) {
+      // Try MSIX first
+      for (final asset in assets) {
+        final name = (asset['name'] as String).toLowerCase();
+        if (name.endsWith('.msix')) {
+          return asset as Map<String, dynamic>;
+        }
+      }
+
+      // Then try EXE
+      for (final asset in assets) {
+        final name = (asset['name'] as String).toLowerCase();
+        if (name.endsWith('.exe')) {
+          return asset as Map<String, dynamic>;
+        }
+      }
+    }
+
+    // Final fallback: find any Windows asset
     for (final asset in assets) {
       final name = (asset['name'] as String).toLowerCase();
       if (name.endsWith('.exe') ||
@@ -45,6 +88,7 @@ class UpdateInfo {
         return asset as Map<String, dynamic>;
       }
     }
+
     throw Exception('No Windows asset found in release');
   }
 }

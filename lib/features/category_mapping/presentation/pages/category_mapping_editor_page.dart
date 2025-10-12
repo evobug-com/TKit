@@ -60,17 +60,22 @@ class _CategoryMappingEditorContent extends StatelessWidget {
           Expanded(
             child: Consumer<CategoryMappingProvider>(
               builder: (context, provider, child) {
+                // Capture localizations and messages before the callback
+                final l10n = AppLocalizations.of(context)!;
+                final errorMsg = provider.errorMessage;
+                final successMsg = provider.successMessage;
+
                 // Handle success/error messages
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (provider.successMessage != null) {
-                    Toast.success(context, provider.successMessage!);
+                  if (successMsg != null) {
+                    Toast.success(context, successMsg);
                     provider.clearMessages();
-                  } else if (provider.errorMessage != null) {
+                  } else if (errorMsg != null) {
                     showDialog(
                       context: context,
-                      builder: (context) => ErrorDialog(
-                        title: AppLocalizations.of(context)!.categoryMappingErrorDialogTitle,
-                        message: provider.errorMessage!,
+                      builder: (dialogContext) => ErrorDialog(
+                        title: l10n.categoryMappingErrorDialogTitle,
+                        message: errorMsg,
                       ),
                     );
                     provider.clearMessages();
@@ -191,13 +196,14 @@ class _CategoryMappingEditorContent extends StatelessWidget {
   }
 
   Future<void> _handleDelete(BuildContext context, int id) async {
+    final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => ConfirmDialog(
-        title: AppLocalizations.of(context)!.categoryMappingDeleteDialogTitle,
-        message: AppLocalizations.of(context)!.categoryMappingDeleteDialogMessage,
-        confirmText: AppLocalizations.of(context)!.categoryMappingDeleteDialogConfirm,
-        cancelText: AppLocalizations.of(context)!.categoryMappingDeleteDialogCancel,
+      builder: (dialogContext) => ConfirmDialog(
+        title: l10n.categoryMappingDeleteDialogTitle,
+        message: l10n.categoryMappingDeleteDialogMessage,
+        confirmText: l10n.categoryMappingDeleteDialogConfirm,
+        cancelText: l10n.categoryMappingDeleteDialogCancel,
       ),
     );
 

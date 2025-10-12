@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import '../../core/services/updater/github_update_service.dart';
 import '../../core/services/updater/models/update_info.dart';
 import '../../core/services/updater/models/download_progress.dart';
+import '../../shared/theme/colors.dart';
+import '../../shared/theme/text_styles.dart';
+import '../../shared/widgets/buttons/primary_button.dart';
+import '../../shared/widgets/buttons/accent_button.dart';
 
 /// Widget that displays update notifications and handles the update process
 class UpdateNotificationWidget extends StatefulWidget {
   final Widget child;
+  final GlobalKey<NavigatorState>? navigatorKey;
 
   const UpdateNotificationWidget({
     super.key,
     required this.child,
+    this.navigatorKey,
   });
 
   @override
@@ -24,6 +31,7 @@ class _UpdateNotificationWidgetState extends State<UpdateNotificationWidget> {
   UpdateInfo? _currentUpdate;
   DownloadProgress? _downloadProgress;
   bool _showDialog = false;
+  bool _shouldShowDialog = false;
 
   @override
   void initState() {
@@ -35,8 +43,8 @@ class _UpdateNotificationWidgetState extends State<UpdateNotificationWidget> {
       if (update != null && mounted && !_showDialog) {
         setState(() {
           _currentUpdate = update;
+          _shouldShowDialog = true;
         });
-        _showUpdateDialog();
       }
     });
 
@@ -50,12 +58,29 @@ class _UpdateNotificationWidgetState extends State<UpdateNotificationWidget> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Show dialog from here if flag is set and we have a Navigator
+    if (_shouldShowDialog) {
+      _shouldShowDialog = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && !_showDialog) {
+          _showUpdateDialog();
+        }
+      });
+    }
+  }
+
   void _showUpdateDialog() {
     if (_currentUpdate == null || _showDialog) return;
 
+    // Use navigator key context if available, otherwise fall back to widget context
+    final dialogContext = widget.navigatorKey?.currentContext ?? context;
+
     _showDialog = true;
     showDialog(
-      context: context,
+      context: dialogContext,
       barrierDismissible: false,
       builder: (context) => _UpdateDialog(
         updateInfo: _currentUpdate!,
@@ -171,11 +196,25 @@ class _UpdateDialogState extends State<_UpdateDialog> {
             const SizedBox(height: 8),
             Container(
               constraints: const BoxConstraints(maxHeight: 200),
-              child: SingleChildScrollView(
-                child: Text(
-                  widget.updateInfo.releaseNotes,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.9),
+              decoration: BoxDecoration(
+                color: TKitColors.surface,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: TKitColors.border),
+              ),
+              child: Markdown(
+                data: widget.updateInfo.releaseNotes,
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(12),
+                styleSheet: MarkdownStyleSheet(
+                  p: TKitTextStyles.bodyMedium,
+                  h1: TKitTextStyles.heading2,
+                  h2: TKitTextStyles.heading3,
+                  h3: TKitTextStyles.heading4,
+                  code: TKitTextStyles.code,
+                  listBullet: TKitTextStyles.bodyMedium,
+                  a: TKitTextStyles.bodyMedium.copyWith(
+                    color: TKitColors.accentBright,
+                    decoration: TextDecoration.underline,
                   ),
                 ),
               ),
@@ -266,42 +305,38 @@ class _UpdateDialogState extends State<_UpdateDialog> {
       ),
       actions: [
         if (progress == null || progress.status == DownloadStatus.idle) ...[
-          TextButton(
+          AccentButton(
+            text: l10n.updateDialogRemindLater,
             onPressed: widget.onDismiss,
-            child: Text(
-              l10n.updateDialogRemindLater,
-              style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.7)),
-            ),
           ),
           const SizedBox(width: 8),
-          FilledButton.icon(
+          PrimaryButton(
+            text: l10n.updateDialogDownloadUpdate,
+            icon: Icons.download,
             onPressed: () {
               setState(() => _isDownloading = true);
               widget.onDownload();
             },
-            icon: const Icon(Icons.download),
-            label: Text(l10n.updateDialogDownloadUpdate),
           ),
         ],
         if (progress != null && progress.isDownloading) ...[
-          FilledButton(
+          AccentButton(
+            text: l10n.updateDialogCancel,
             onPressed: () {
               context.read<GitHubUpdateService>().cancelDownload();
               Navigator.of(context).pop();
             },
-            child: Text(l10n.updateDialogCancel),
           ),
         ],
         if (progress != null && progress.isCompleted) ...[
-          TextButton(
+          AccentButton(
+            text: l10n.updateDialogLater,
             onPressed: widget.onDismiss,
-            child: Text(
-              l10n.updateDialogLater,
-              style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.7)),
-            ),
           ),
           const SizedBox(width: 8),
-          FilledButton.icon(
+          PrimaryButton(
+            text: l10n.updateDialogInstallRestart,
+            icon: Icons.install_desktop,
             onPressed: () async {
               final service = context.read<GitHubUpdateService>();
               final file = await service.downloadUpdate(widget.updateInfo);
@@ -309,8 +344,6 @@ class _UpdateDialogState extends State<_UpdateDialog> {
                 await service.installUpdate(file);
               }
             },
-            icon: const Icon(Icons.install_desktop),
-            label: Text(l10n.updateDialogInstallRestart),
           ),
         ],
       ],

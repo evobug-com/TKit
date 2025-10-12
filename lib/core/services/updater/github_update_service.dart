@@ -9,6 +9,7 @@ import '../../../features/settings/domain/entities/update_channel.dart';
 import 'models/update_info.dart';
 import 'models/download_progress.dart';
 import 'utils/version_comparator.dart';
+import 'utils/installation_detector.dart';
 
 /// Service for checking and managing application updates from GitHub Releases
 class GitHubUpdateService {
@@ -63,6 +64,10 @@ class GitHubUpdateService {
         return;
       }
 
+      // Detect installation type
+      final installationType = InstallationDetector.detect();
+      _logger.info('Detected installation type: ${InstallationDetector.getDescription(installationType)}');
+
       _isInitialized = true;
       _logger.info('GitHub update service initialized successfully');
 
@@ -103,6 +108,15 @@ class GitHubUpdateService {
       _logger.info('Checking for updates from GitHub (channel: ${channel.value})');
       _lastCheckTime = DateTime.now();
 
+      // Detect current installation type
+      final installationType = InstallationDetector.detect();
+      _logger.debug('Using installation type: ${InstallationDetector.getDescription(installationType)}');
+
+      // In debug mode or unknown installations, log a warning
+      if (installationType == InstallationType.unknown) {
+        _logger.warning('Running in debug/development mode - update checks are for testing only');
+      }
+
       UpdateInfo? updateInfo;
 
       if (channel == UpdateChannel.stable) {
@@ -134,7 +148,10 @@ class GitHubUpdateService {
         }
 
         final release = response.data as Map<String, dynamic>;
-        updateInfo = UpdateInfo.fromGitHubRelease(release);
+        updateInfo = UpdateInfo.fromGitHubRelease(
+          release,
+          installationType: installationType,
+        );
       } else {
         // For other channels, fetch all releases and find the latest matching channel
         final url = 'https://api.github.com/repos/${AppConfig.githubOwner}/${AppConfig.githubRepo}/releases';
@@ -174,7 +191,10 @@ class GitHubUpdateService {
           // Check if this version is acceptable for the channel
           if (channel.acceptsVersion(version)) {
             try {
-              updateInfo = UpdateInfo.fromGitHubRelease(releaseData);
+              updateInfo = UpdateInfo.fromGitHubRelease(
+                releaseData,
+                installationType: installationType,
+              );
               break;
             } catch (e) {
               _logger.warning('Failed to parse release: $tagName', e);
@@ -191,6 +211,7 @@ class GitHubUpdateService {
 
       _logger.info('Latest version from GitHub: ${updateInfo.version}');
       _logger.info('Current version: ${AppConfig.appVersion}');
+      _logger.info('Selected installer: ${updateInfo.assetName}');
 
       // Compare versions
       if (VersionComparator.isGreaterThan(
@@ -293,26 +314,51 @@ class GitHubUpdateService {
         throw Exception('Installer file not found');
       }
 
-      // Launch the installer
-      // For .exe files, launch with silent install flags if supported
+      // Launch the installer based on file type
       final fileName = installerFile.path.toLowerCase();
 
-      List<String> args = [];
-      if (fileName.endsWith('.exe')) {
-        // Common silent install arguments (adjust based on your installer)
-        args = ['/VERYSILENT', '/NORESTART'];
-      }
+      if (fileName.endsWith('.msix')) {
+        // For MSIX files, use PowerShell to install
+        // This opens the Windows App Installer UI
+        _logger.info('Installing MSIX package via PowerShell');
 
-      await Process.start(
-        installerFile.path,
-        args,
-        mode: ProcessStartMode.detached,
-      );
+        await Process.start(
+          'powershell.exe',
+          [
+            '-Command',
+            'Start-Process',
+            '-FilePath',
+            '"${installerFile.path}"',
+            '-Verb',
+            'Open'
+          ],
+          mode: ProcessStartMode.detached,
+        );
+      } else if (fileName.endsWith('.exe')) {
+        // For .exe files, launch with silent install flags if supported
+        _logger.info('Installing EXE installer');
+
+        await Process.start(
+          installerFile.path,
+          ['/VERYSILENT', '/NORESTART'],
+          mode: ProcessStartMode.detached,
+        );
+      } else {
+        // For other file types, just open them with default handler
+        _logger.info('Opening installer with default handler');
+
+        await Process.start(
+          'cmd.exe',
+          ['/c', 'start', '""', installerFile.path],
+          mode: ProcessStartMode.detached,
+        );
+      }
 
       _logger.info('Installer launched successfully');
 
       // Exit the current application to allow update
-      Future.delayed(const Duration(seconds: 1), () {
+      // Give the installer process time to fully start before exiting
+      Future.delayed(const Duration(seconds: 2), () {
         exit(0);
       });
 
