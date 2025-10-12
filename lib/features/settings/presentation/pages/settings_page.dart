@@ -84,7 +84,8 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
       // Clear the window controls preview after saving
       context.read<WindowControlsPreviewProvider>().clearPreview();
       // Update the original window controls position after saving
-      _originalWindowControlsPosition = _currentSettings!.windowControlsPosition;
+      _originalWindowControlsPosition =
+          _currentSettings!.windowControlsPosition;
     }
   }
 
@@ -144,10 +145,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                 children: [
                   Icon(Icons.error_outline, size: 48, color: TKitColors.error),
                   const VSpace.lg(),
-                  Text(
-                    state.message,
-                    style: TKitTextStyles.bodyMedium,
-                  ),
+                  Text(state.message, style: TKitTextStyles.bodyMedium),
                   const VSpace.lg(),
                   PrimaryButton(
                     text: l10n.settingsRetry,
@@ -164,34 +162,39 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
           if (!_isInitialized) {
             if (state is SettingsLoaded) {
               _currentSettings = state.settings;
-              _originalWindowControlsPosition = state.settings.windowControlsPosition;
+              _originalWindowControlsPosition =
+                  state.settings.windowControlsPosition;
               _isInitialized = true;
             } else if (state is SettingsSaving) {
               _currentSettings = state.settings;
-              _originalWindowControlsPosition = state.settings.windowControlsPosition;
+              _originalWindowControlsPosition =
+                  state.settings.windowControlsPosition;
               _isInitialized = true;
             } else if (state is SettingsSaved) {
               _currentSettings = state.settings;
-              _originalWindowControlsPosition = state.settings.windowControlsPosition;
+              _originalWindowControlsPosition =
+                  state.settings.windowControlsPosition;
               _isInitialized = true;
             } else if (state is SettingsError &&
                 state.currentSettings != null) {
               _currentSettings = state.currentSettings;
-              _originalWindowControlsPosition = state.currentSettings!.windowControlsPosition;
+              _originalWindowControlsPosition =
+                  state.currentSettings!.windowControlsPosition;
               _isInitialized = true;
             } else {
               _currentSettings = AppSettings.defaults(
                 appVersion: AppConfig.appVersion,
               );
-              _originalWindowControlsPosition = _currentSettings!.windowControlsPosition;
+              _originalWindowControlsPosition =
+                  _currentSettings!.windowControlsPosition;
               _isInitialized = true;
             }
           }
 
           // Use _currentSettings for all UI rendering
-          final settings = _currentSettings ?? AppSettings.defaults(
-            appVersion: AppConfig.appVersion,
-          );
+          final settings =
+              _currentSettings ??
+              AppSettings.defaults(appVersion: AppConfig.appVersion);
           final l10n = AppLocalizations.of(context)!;
 
           return Stack(
@@ -302,7 +305,10 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                             onTap: () {
                               // TODO: Open category search dialog
                               // This will be implemented when Module 4 (Twitch API) is available
-                              Toast.info(context, l10n.settingsCategorySearchUnavailable);
+                              Toast.info(
+                                context,
+                                l10n.settingsCategorySearchUnavailable,
+                              );
                             },
                           ),
                         ),
@@ -366,11 +372,18 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
 
                                 // Wait for the next frame to let the app rebuild with new locale
                                 if (context.mounted) {
-                                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                                  WidgetsBinding.instance.addPostFrameCallback((
+                                    _,
+                                  ) {
                                     if (context.mounted) {
                                       // Get the updated localization with the new language
-                                      final newL10n = AppLocalizations.of(context)!;
-                                      Toast.success(context, newL10n.languageChangeNotice);
+                                      final newL10n = AppLocalizations.of(
+                                        context,
+                                      )!;
+                                      Toast.success(
+                                        context,
+                                        newL10n.languageChangeNotice,
+                                      );
                                     }
                                   });
                                 }
@@ -443,7 +456,8 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                       const SizedBox(height: 10),
                       CustomDropdown<WindowControlsPosition>(
                         label: l10n.settingsWindowControlsPositionLabel,
-                        description: l10n.settingsWindowControlsPositionDescription,
+                        description:
+                            l10n.settingsWindowControlsPositionDescription,
                         value: settings.windowControlsPosition,
                         items: WindowControlsPosition.values
                             .map(
@@ -457,11 +471,15 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                         onChanged: (value) {
                           if (value != null) {
                             // Update local state to track changes
-                            final updatedSettings = settings.copyWith(windowControlsPosition: value);
+                            final updatedSettings = settings.copyWith(
+                              windowControlsPosition: value,
+                            );
                             _updateSettings(updatedSettings);
 
                             // Set preview position (not saved to database yet)
-                            context.read<WindowControlsPreviewProvider>().setPreviewPosition(value);
+                            context
+                                .read<WindowControlsPreviewProvider>()
+                                .setPreviewPosition(value);
                           }
                         },
                       ),
@@ -485,22 +503,32 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                             .toList(),
                         onChanged: (value) async {
                           if (value != null) {
-                            final updatedSettings = settings.copyWith(updateChannel: value);
+                            final updatedSettings = settings.copyWith(
+                              updateChannel: value,
+                            );
                             _updateSettings(updatedSettings);
 
                             // Save settings immediately
-                            await context.read<SettingsProvider>().updateSettings(updatedSettings);
+                            await context
+                                .read<SettingsProvider>()
+                                .updateSettings(updatedSettings);
 
                             // Trigger update check with new channel
                             if (context.mounted) {
-                              final updateService = context.read<GitHubUpdateService>();
+                              final updateService = context
+                                  .read<GitHubUpdateService>();
                               await updateService.checkForUpdates(
                                 silent: false,
                                 channel: value,
                               );
 
                               if (context.mounted) {
-                                Toast.success(context, l10n.settingsUpdateChannelChanged(value.localizedName(context)));
+                                Toast.success(
+                                  context,
+                                  l10n.settingsUpdateChannelChanged(
+                                    value.localizedName(context),
+                                  ),
+                                );
                               }
                             }
                           }
@@ -599,13 +627,12 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
       children: [
         Text(
           title.toUpperCase(),
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-            letterSpacing: 0.5,
-            fontSize: 11,
-            fontWeight: FontWeight.bold,
+          style: TKitTextStyles.labelSmall.copyWith(
+            letterSpacing: 1.0,
+            color: TKitColors.textSecondary,
           ),
         ),
-        const SizedBox(height: 10),
+        VSpace.md(),
         Island.standard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -619,11 +646,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
   Widget _buildSubsectionTitle(String title) {
     return Text(
       title,
-      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-        fontSize: 13,
-        fontWeight: FontWeight.w600,
-        color: Theme.of(context).colorScheme.primary,
-      ),
+      style: TKitTextStyles.labelLarge.copyWith(color: TKitColors.accent),
     );
   }
 
@@ -640,13 +663,12 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
           children: [
             Text(
               l10n.settingsTwitchConnection.toUpperCase(),
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                letterSpacing: 0.5,
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
+              style: TKitTextStyles.labelSmall.copyWith(
+                letterSpacing: 1.0,
+                color: TKitColors.textSecondary,
               ),
             ),
-            const SizedBox(height: 10),
+            VSpace.md(),
             Island.standard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -663,42 +685,38 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                           shape: BoxShape.circle,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      HSpace.md(),
                       Text(
-                        isAuthenticated ? l10n.settingsTwitchStatusConnected : l10n.settingsTwitchStatusNotConnected,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.w600),
+                        isAuthenticated
+                            ? l10n.settingsTwitchStatusConnected
+                            : l10n.settingsTwitchStatusNotConnected,
+                        style: TKitTextStyles.labelLarge,
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  VSpace.md(),
                   if (isAuthenticated && authState is Authenticated) ...[
                     Text(
                       l10n.settingsTwitchLoggedInAs,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: TKitColors.textMuted,
-                        fontSize: 12,
-                      ),
+                      style: TKitTextStyles.caption,
                     ),
-                    const SizedBox(height: 6),
+                    VSpace.xs(),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.person,
                           size: 16,
                           color: TKitColors.accent,
                         ),
-                        const SizedBox(width: 8),
+                        HSpace.sm(),
                         Text(
                           authState.user.displayName,
-                          style: Theme.of(context).textTheme.bodyLarge
-                              ?.copyWith(fontWeight: FontWeight.w500),
+                          style: TKitTextStyles.bodyMedium,
                         ),
-                        const SizedBox(width: 8),
+                        HSpace.sm(),
                         Text(
                           '(@${authState.user.login})',
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: TKitColors.textMuted),
+                          style: TKitTextStyles.caption,
                         ),
                       ],
                     ),
@@ -716,11 +734,14 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                           if (isExpired) {
                             expiryText = 'Expired';
                           } else if (timeRemaining.inDays > 0) {
-                            expiryText = 'Expires in ${timeRemaining.inDays}d ${timeRemaining.inHours % 24}h';
+                            expiryText =
+                                'Expires in ${timeRemaining.inDays}d ${timeRemaining.inHours % 24}h';
                           } else if (timeRemaining.inHours > 0) {
-                            expiryText = 'Expires in ${timeRemaining.inHours}h ${timeRemaining.inMinutes % 60}m';
+                            expiryText =
+                                'Expires in ${timeRemaining.inHours}h ${timeRemaining.inMinutes % 60}m';
                           } else {
-                            expiryText = 'Expires in ${timeRemaining.inMinutes}m';
+                            expiryText =
+                                'Expires in ${timeRemaining.inMinutes}m';
                           }
 
                           return Row(
@@ -728,13 +749,17 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                               Icon(
                                 Icons.schedule,
                                 size: 14,
-                                color: isExpired ? TKitColors.error : TKitColors.textMuted,
+                                color: isExpired
+                                    ? TKitColors.error
+                                    : TKitColors.textMuted,
                               ),
-                              const SizedBox(width: 6),
+                              HSpace.xs(),
                               Text(
                                 expiryText,
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: isExpired ? TKitColors.error : TKitColors.textMuted,
+                                style: TKitTextStyles.caption.copyWith(
+                                  color: isExpired
+                                      ? TKitColors.error
+                                      : TKitColors.textMuted,
                                   fontStyle: FontStyle.italic,
                                 ),
                               ),
@@ -763,48 +788,44 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                   ] else ...[
                     Text(
                       l10n.settingsTwitchConnectDescription,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: TKitColors.textMuted,
-                        fontSize: 12,
-                      ),
+                      style: TKitTextStyles.caption,
                     ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: PrimaryButton(
-                            text: l10n.settingsTwitchConnect,
-                            icon: Icons.link,
-                            onPressed: isLoading
-                                ? null
-                                : () async {
-                                    // Initiate Device Code Flow
-                                    final authProvider = context.read<AuthProvider>();
-                                    final deviceCodeResponse = await authProvider.initiateDeviceCodeAuth();
+                    VSpace.md(),
+                    PrimaryButton(
+                      text: l10n.settingsTwitchConnect,
+                      icon: Icons.link,
+                      isLoading: isLoading,
+                      onPressed: isLoading
+                          ? null
+                          : () async {
+                              final authProvider = context.read<AuthProvider>();
+                              final deviceCodeResponse = await authProvider
+                                  .initiateDeviceCodeAuth();
 
-                                    if (deviceCodeResponse != null && context.mounted) {
-                                      // Show Device Code auth page
-                                      showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (dialogContext) => DeviceCodeAuthPage(
-                                          deviceCodeResponse: deviceCodeResponse,
-                                          onSuccess: () {
-                                            // Close dialog and refresh auth state
-                                            Navigator.of(dialogContext).pop();
-                                            context.read<AuthProvider>().checkAuthStatus();
-                                          },
-                                          onCancel: () {
-                                            // Close dialog
-                                            Navigator.of(dialogContext).pop();
-                                          },
-                                        ),
-                                      );
-                                    }
-                                  },
-                          ),
-                        ),
-                      ],
+                              if (deviceCodeResponse != null &&
+                                  context.mounted) {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (dialogContext) =>
+                                      DeviceCodeAuthPage(
+                                        deviceCodeResponse: deviceCodeResponse,
+                                        onSuccess: () {
+                                          Navigator.of(dialogContext).pop();
+                                          context
+                                              .read<AuthProvider>()
+                                              .checkAuthStatus();
+                                        },
+                                        onCancel: () {
+                                          Navigator.of(dialogContext).pop();
+                                          context
+                                              .read<AuthProvider>()
+                                              .checkAuthStatus();
+                                        },
+                                      ),
+                                );
+                              }
+                            },
                     ),
                   ],
                 ],
@@ -823,40 +844,31 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
       children: [
         Text(
           l10n.settingsFactoryReset.toUpperCase(),
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-            letterSpacing: 0.5,
-            fontSize: 11,
-            fontWeight: FontWeight.bold,
+          style: TKitTextStyles.labelSmall.copyWith(
+            letterSpacing: 1.0,
+            color: TKitColors.textSecondary,
           ),
         ),
-        const SizedBox(height: 10),
+        VSpace.md(),
         Island.standard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
+              const Icon(
                 Icons.warning_amber_rounded,
                 size: 40,
                 color: TKitColors.warning,
               ),
-              const SizedBox(height: 12),
+              VSpace.md(),
               Text(
                 l10n.settingsFactoryResetDescription,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontSize: 13,
-                ),
+                style: TKitTextStyles.bodyMedium,
               ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: AccentButton(
-                      text: l10n.settingsFactoryResetButton,
-                      icon: Icons.restore,
-                      onPressed: () => _showFactoryResetDialog(context),
-                    ),
-                  ),
-                ],
+              VSpace.md(),
+              AccentButton(
+                text: l10n.settingsFactoryResetButton,
+                icon: Icons.restore,
+                onPressed: () => _showFactoryResetDialog(context),
               ),
             ],
           ),
@@ -872,10 +884,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
       builder: (dialogContext) => AlertDialog(
         title: Row(
           children: [
-            Icon(
-              Icons.warning_amber_rounded,
-              color: TKitColors.warning,
-            ),
+            Icon(Icons.warning_amber_rounded, color: TKitColors.warning),
             const SizedBox(width: 8),
             Text(l10n.settingsFactoryResetDialogTitle),
           ],
@@ -906,9 +915,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        builder: (context) => const Center(child: CircularProgressIndicator()),
       );
     }
 
