@@ -7,6 +7,7 @@ import '../../../../shared/widgets/layout/spacer.dart';
 import '../../../../shared/widgets/buttons/primary_button.dart';
 import '../../../../shared/widgets/buttons/accent_button.dart';
 import '../../domain/entities/category_mapping.dart';
+import '../../data/utils/path_normalizer.dart';
 
 /// Dialog for adding or editing a category mapping
 class AddMappingDialog extends StatefulWidget {
@@ -42,6 +43,13 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
     _categoryNameController = TextEditingController(
       text: widget.mapping?.twitchCategoryName ?? '',
     );
+
+    // Listen to executable path changes to update path preview
+    _executablePathController.addListener(() {
+      setState(() {
+        // Trigger rebuild to update path preview
+      });
+    });
   }
 
   @override
@@ -213,6 +221,10 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         contentPadding: const EdgeInsets.all(TKitSpacing.sm),
                       ),
                     ),
+                    const VSpace.sm(),
+
+                    // Privacy-safe path preview
+                    _buildPathPreview(),
                     const VSpace.md(),
 
                     // Category ID
@@ -372,15 +384,118 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
     );
   }
 
+  Widget _buildPathPreview() {
+    final executablePath = _executablePathController.text.trim();
+
+    // Only show preview if path is provided
+    if (executablePath.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    // Extract normalized path
+    final normalizedPath = PathNormalizer.extractGamePath(executablePath);
+    final hasRecognizedPath = normalizedPath != null;
+
+    return Container(
+      padding: const EdgeInsets.all(TKitSpacing.sm),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: hasRecognizedPath ? TKitColors.success : TKitColors.warning,
+        ),
+        color: hasRecognizedPath
+            ? TKitColors.success.withValues(alpha: 0.05)
+            : TKitColors.warning.withValues(alpha: 0.05),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            hasRecognizedPath ? Icons.check_circle_outline : Icons.info_outline,
+            size: 16,
+            color: hasRecognizedPath ? TKitColors.success : TKitColors.warning,
+          ),
+          const HSpace.xs(),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  hasRecognizedPath
+                      ? 'Privacy-Safe Path'
+                      : 'Custom Location',
+                  style: TKitTextStyles.labelSmall.copyWith(
+                    color: TKitColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11,
+                  ),
+                ),
+                const VSpace.xs(),
+                if (hasRecognizedPath) ...[
+                  Text(
+                    normalizedPath,
+                    style: TKitTextStyles.caption.copyWith(
+                      color: TKitColors.textSecondary,
+                      fontFamily: 'monospace',
+                      fontSize: 10,
+                    ),
+                  ),
+                  const VSpace.xs(),
+                  Text(
+                    'Only game folder names stored',
+                    style: TKitTextStyles.caption.copyWith(
+                      color: TKitColors.textMuted,
+                      fontSize: 10,
+                    ),
+                  ),
+                ] else ...[
+                  Text(
+                    'Path not stored for privacy',
+                    style: TKitTextStyles.caption.copyWith(
+                      color: TKitColors.textMuted,
+                      fontSize: 10,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _handleSubmit() {
     if (_formKey.currentState!.validate()) {
       final now = DateTime.now();
+
+      // Extract normalized path from the executable path
+      final executablePath = _executablePathController.text.trim().isEmpty
+          ? null
+          : _executablePathController.text.trim();
+
+      String? normalizedPath;
+      if (executablePath != null) {
+        normalizedPath = PathNormalizer.extractGamePath(executablePath);
+      }
+
+      // Build list of normalized install paths
+      List<String> normalizedPaths = [];
+
+      // If editing, preserve existing paths
+      if (widget.mapping != null) {
+        normalizedPaths = List.from(widget.mapping!.normalizedInstallPaths);
+      }
+
+      // Add new path if it's valid and not already in the list
+      if (normalizedPath != null && !normalizedPaths.contains(normalizedPath)) {
+        normalizedPaths.add(normalizedPath);
+      }
+
       final mapping = CategoryMapping(
         id: widget.mapping?.id,
         processName: _processNameController.text.trim(),
-        executablePath: _executablePathController.text.trim().isEmpty
-            ? null
-            : _executablePathController.text.trim(),
+        executablePath: executablePath,
+        normalizedInstallPaths: normalizedPaths,
         twitchCategoryId: _categoryIdController.text.trim(),
         twitchCategoryName: _categoryNameController.text.trim(),
         createdAt: widget.mapping?.createdAt ?? now,

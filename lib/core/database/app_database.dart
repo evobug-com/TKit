@@ -14,11 +14,24 @@ part 'app_database.g.dart';
 /// - lastApiFetch: When category data was fetched from Twitch API
 /// - cacheExpiresAt: When this mapping must be refreshed (lastApiFetch + 24h)
 /// - manualOverride: User-created mappings that persist indefinitely (but Twitch data still refreshes)
+///
+/// Privacy-Preserving Path Tracking:
+/// - normalizedInstallPaths: JSON array of privacy-safe installation paths
+///   (e.g., ["steamapps/common/dota 2", "epic games/dota 2"])
+/// - Only stores game-identifying path segments, never usernames or personal folders
+/// - executablePath: Deprecated, kept for backward compatibility
 @DataClassName('CategoryMappingEntity')
 class CategoryMappings extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get processName => text()();
+
+  /// @deprecated Use normalizedInstallPaths instead
   TextColumn get executablePath => text().nullable()();
+
+  /// JSON array of normalized, privacy-safe installation paths
+  /// Example: ["steamapps/common/dota 2", "program files (x86)/ea games/battlefield"]
+  TextColumn get normalizedInstallPaths => text().nullable()();
+
   TextColumn get twitchCategoryId => text()();
   TextColumn get twitchCategoryName => text()();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
@@ -68,10 +81,19 @@ class TopGamesCache extends Table {
 }
 
 /// Community Mappings table - stores crowdsourced game mappings from GitHub
+///
+/// Privacy-Preserving Path Tracking:
+/// - normalizedInstallPaths: JSON array of common privacy-safe installation paths
+///   reported by the community (e.g., ["steamapps/common/dota 2"])
 @DataClassName('CommunityMappingEntity')
 class CommunityMappings extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get processName => text()();
+
+  /// JSON array of normalized, privacy-safe installation paths from community
+  /// Example: ["steamapps/common/dota 2", "program files (x86)/ea games/battlefield"]
+  TextColumn get normalizedInstallPaths => text().nullable()();
+
   TextColumn get twitchCategoryId => text()();
   TextColumn get twitchCategoryName => text()();
   IntColumn get verificationCount => integer().withDefault(const Constant(1))();
@@ -99,7 +121,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.test(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   static LazyDatabase _openConnection() {
     return LazyDatabase(() async {
@@ -553,6 +575,43 @@ class AppDatabase extends _$AppDatabase {
             'ALTER TABLE category_mappings ADD COLUMN is_enabled INTEGER NOT NULL DEFAULT 1',
           );
         }
+      }
+
+      if (from == 4 && to >= 5) {
+        // Migration v4 → v5: Add normalizedInstallPaths for privacy-preserving path tracking
+        // Check if column already exists to make migration idempotent
+        final categoryMappingsInfo = await customSelect(
+          'PRAGMA table_info(category_mappings)',
+        ).get();
+
+        final hasNormalizedPaths = categoryMappingsInfo.any(
+          (row) => row.data['name'] == 'normalized_install_paths',
+        );
+
+        if (!hasNormalizedPaths) {
+          await customStatement(
+            'ALTER TABLE category_mappings ADD COLUMN normalized_install_paths TEXT',
+          );
+        }
+
+        // Also add to community_mappings table
+        final communityMappingsInfo = await customSelect(
+          'PRAGMA table_info(community_mappings)',
+        ).get();
+
+        final hasNormalizedPathsCommunity = communityMappingsInfo.any(
+          (row) => row.data['name'] == 'normalized_install_paths',
+        );
+
+        if (!hasNormalizedPathsCommunity) {
+          await customStatement(
+            'ALTER TABLE community_mappings ADD COLUMN normalized_install_paths TEXT',
+          );
+        }
+
+        // Note: We don't auto-migrate executablePath to normalizedInstallPaths
+        // because we need PathNormalizer to extract privacy-safe paths.
+        // The app will handle this migration on-the-fly when mappings are accessed.
       }
     },
   );

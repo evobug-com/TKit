@@ -44,6 +44,17 @@ class $CategoryMappingsTable extends CategoryMappings
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _normalizedInstallPathsMeta =
+      const VerificationMeta('normalizedInstallPaths');
+  @override
+  late final GeneratedColumn<String> normalizedInstallPaths =
+      GeneratedColumn<String>(
+        'normalized_install_paths',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _twitchCategoryIdMeta = const VerificationMeta(
     'twitchCategoryId',
   );
@@ -148,6 +159,7 @@ class $CategoryMappingsTable extends CategoryMappings
     id,
     processName,
     executablePath,
+    normalizedInstallPaths,
     twitchCategoryId,
     twitchCategoryName,
     createdAt,
@@ -189,6 +201,15 @@ class $CategoryMappingsTable extends CategoryMappings
         executablePath.isAcceptableOrUnknown(
           data['executable_path']!,
           _executablePathMeta,
+        ),
+      );
+    }
+    if (data.containsKey('normalized_install_paths')) {
+      context.handle(
+        _normalizedInstallPathsMeta,
+        normalizedInstallPaths.isAcceptableOrUnknown(
+          data['normalized_install_paths']!,
+          _normalizedInstallPathsMeta,
         ),
       );
     }
@@ -285,6 +306,10 @@ class $CategoryMappingsTable extends CategoryMappings
         DriftSqlType.string,
         data['${effectivePrefix}executable_path'],
       ),
+      normalizedInstallPaths: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}normalized_install_paths'],
+      ),
       twitchCategoryId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}twitch_category_id'],
@@ -330,7 +355,13 @@ class CategoryMappingEntity extends DataClass
     implements Insertable<CategoryMappingEntity> {
   final int id;
   final String processName;
+
+  /// @deprecated Use normalizedInstallPaths instead
   final String? executablePath;
+
+  /// JSON array of normalized, privacy-safe installation paths
+  /// Example: ["steamapps/common/dota 2", "program files (x86)/ea games/battlefield"]
+  final String? normalizedInstallPaths;
   final String twitchCategoryId;
   final String twitchCategoryName;
   final DateTime createdAt;
@@ -343,6 +374,7 @@ class CategoryMappingEntity extends DataClass
     required this.id,
     required this.processName,
     this.executablePath,
+    this.normalizedInstallPaths,
     required this.twitchCategoryId,
     required this.twitchCategoryName,
     required this.createdAt,
@@ -359,6 +391,11 @@ class CategoryMappingEntity extends DataClass
     map['process_name'] = Variable<String>(processName);
     if (!nullToAbsent || executablePath != null) {
       map['executable_path'] = Variable<String>(executablePath);
+    }
+    if (!nullToAbsent || normalizedInstallPaths != null) {
+      map['normalized_install_paths'] = Variable<String>(
+        normalizedInstallPaths,
+      );
     }
     map['twitch_category_id'] = Variable<String>(twitchCategoryId);
     map['twitch_category_name'] = Variable<String>(twitchCategoryName);
@@ -380,6 +417,9 @@ class CategoryMappingEntity extends DataClass
       executablePath: executablePath == null && nullToAbsent
           ? const Value.absent()
           : Value(executablePath),
+      normalizedInstallPaths: normalizedInstallPaths == null && nullToAbsent
+          ? const Value.absent()
+          : Value(normalizedInstallPaths),
       twitchCategoryId: Value(twitchCategoryId),
       twitchCategoryName: Value(twitchCategoryName),
       createdAt: Value(createdAt),
@@ -402,6 +442,9 @@ class CategoryMappingEntity extends DataClass
       id: serializer.fromJson<int>(json['id']),
       processName: serializer.fromJson<String>(json['processName']),
       executablePath: serializer.fromJson<String?>(json['executablePath']),
+      normalizedInstallPaths: serializer.fromJson<String?>(
+        json['normalizedInstallPaths'],
+      ),
       twitchCategoryId: serializer.fromJson<String>(json['twitchCategoryId']),
       twitchCategoryName: serializer.fromJson<String>(
         json['twitchCategoryName'],
@@ -421,6 +464,9 @@ class CategoryMappingEntity extends DataClass
       'id': serializer.toJson<int>(id),
       'processName': serializer.toJson<String>(processName),
       'executablePath': serializer.toJson<String?>(executablePath),
+      'normalizedInstallPaths': serializer.toJson<String?>(
+        normalizedInstallPaths,
+      ),
       'twitchCategoryId': serializer.toJson<String>(twitchCategoryId),
       'twitchCategoryName': serializer.toJson<String>(twitchCategoryName),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -436,6 +482,7 @@ class CategoryMappingEntity extends DataClass
     int? id,
     String? processName,
     Value<String?> executablePath = const Value.absent(),
+    Value<String?> normalizedInstallPaths = const Value.absent(),
     String? twitchCategoryId,
     String? twitchCategoryName,
     DateTime? createdAt,
@@ -450,6 +497,9 @@ class CategoryMappingEntity extends DataClass
     executablePath: executablePath.present
         ? executablePath.value
         : this.executablePath,
+    normalizedInstallPaths: normalizedInstallPaths.present
+        ? normalizedInstallPaths.value
+        : this.normalizedInstallPaths,
     twitchCategoryId: twitchCategoryId ?? this.twitchCategoryId,
     twitchCategoryName: twitchCategoryName ?? this.twitchCategoryName,
     createdAt: createdAt ?? this.createdAt,
@@ -468,6 +518,9 @@ class CategoryMappingEntity extends DataClass
       executablePath: data.executablePath.present
           ? data.executablePath.value
           : this.executablePath,
+      normalizedInstallPaths: data.normalizedInstallPaths.present
+          ? data.normalizedInstallPaths.value
+          : this.normalizedInstallPaths,
       twitchCategoryId: data.twitchCategoryId.present
           ? data.twitchCategoryId.value
           : this.twitchCategoryId,
@@ -497,6 +550,7 @@ class CategoryMappingEntity extends DataClass
           ..write('id: $id, ')
           ..write('processName: $processName, ')
           ..write('executablePath: $executablePath, ')
+          ..write('normalizedInstallPaths: $normalizedInstallPaths, ')
           ..write('twitchCategoryId: $twitchCategoryId, ')
           ..write('twitchCategoryName: $twitchCategoryName, ')
           ..write('createdAt: $createdAt, ')
@@ -514,6 +568,7 @@ class CategoryMappingEntity extends DataClass
     id,
     processName,
     executablePath,
+    normalizedInstallPaths,
     twitchCategoryId,
     twitchCategoryName,
     createdAt,
@@ -530,6 +585,7 @@ class CategoryMappingEntity extends DataClass
           other.id == this.id &&
           other.processName == this.processName &&
           other.executablePath == this.executablePath &&
+          other.normalizedInstallPaths == this.normalizedInstallPaths &&
           other.twitchCategoryId == this.twitchCategoryId &&
           other.twitchCategoryName == this.twitchCategoryName &&
           other.createdAt == this.createdAt &&
@@ -544,6 +600,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
   final Value<int> id;
   final Value<String> processName;
   final Value<String?> executablePath;
+  final Value<String?> normalizedInstallPaths;
   final Value<String> twitchCategoryId;
   final Value<String> twitchCategoryName;
   final Value<DateTime> createdAt;
@@ -556,6 +613,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     this.id = const Value.absent(),
     this.processName = const Value.absent(),
     this.executablePath = const Value.absent(),
+    this.normalizedInstallPaths = const Value.absent(),
     this.twitchCategoryId = const Value.absent(),
     this.twitchCategoryName = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -569,6 +627,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     this.id = const Value.absent(),
     required String processName,
     this.executablePath = const Value.absent(),
+    this.normalizedInstallPaths = const Value.absent(),
     required String twitchCategoryId,
     required String twitchCategoryName,
     this.createdAt = const Value.absent(),
@@ -585,6 +644,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     Expression<int>? id,
     Expression<String>? processName,
     Expression<String>? executablePath,
+    Expression<String>? normalizedInstallPaths,
     Expression<String>? twitchCategoryId,
     Expression<String>? twitchCategoryName,
     Expression<DateTime>? createdAt,
@@ -598,6 +658,8 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
       if (id != null) 'id': id,
       if (processName != null) 'process_name': processName,
       if (executablePath != null) 'executable_path': executablePath,
+      if (normalizedInstallPaths != null)
+        'normalized_install_paths': normalizedInstallPaths,
       if (twitchCategoryId != null) 'twitch_category_id': twitchCategoryId,
       if (twitchCategoryName != null)
         'twitch_category_name': twitchCategoryName,
@@ -614,6 +676,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     Value<int>? id,
     Value<String>? processName,
     Value<String?>? executablePath,
+    Value<String?>? normalizedInstallPaths,
     Value<String>? twitchCategoryId,
     Value<String>? twitchCategoryName,
     Value<DateTime>? createdAt,
@@ -627,6 +690,8 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
       id: id ?? this.id,
       processName: processName ?? this.processName,
       executablePath: executablePath ?? this.executablePath,
+      normalizedInstallPaths:
+          normalizedInstallPaths ?? this.normalizedInstallPaths,
       twitchCategoryId: twitchCategoryId ?? this.twitchCategoryId,
       twitchCategoryName: twitchCategoryName ?? this.twitchCategoryName,
       createdAt: createdAt ?? this.createdAt,
@@ -649,6 +714,11 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     }
     if (executablePath.present) {
       map['executable_path'] = Variable<String>(executablePath.value);
+    }
+    if (normalizedInstallPaths.present) {
+      map['normalized_install_paths'] = Variable<String>(
+        normalizedInstallPaths.value,
+      );
     }
     if (twitchCategoryId.present) {
       map['twitch_category_id'] = Variable<String>(twitchCategoryId.value);
@@ -683,6 +753,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
           ..write('id: $id, ')
           ..write('processName: $processName, ')
           ..write('executablePath: $executablePath, ')
+          ..write('normalizedInstallPaths: $normalizedInstallPaths, ')
           ..write('twitchCategoryId: $twitchCategoryId, ')
           ..write('twitchCategoryName: $twitchCategoryName, ')
           ..write('createdAt: $createdAt, ')
@@ -2008,6 +2079,17 @@ class $CommunityMappingsTable extends CommunityMappings
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _normalizedInstallPathsMeta =
+      const VerificationMeta('normalizedInstallPaths');
+  @override
+  late final GeneratedColumn<String> normalizedInstallPaths =
+      GeneratedColumn<String>(
+        'normalized_install_paths',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _twitchCategoryIdMeta = const VerificationMeta(
     'twitchCategoryId',
   );
@@ -2079,6 +2161,7 @@ class $CommunityMappingsTable extends CommunityMappings
   List<GeneratedColumn> get $columns => [
     id,
     processName,
+    normalizedInstallPaths,
     twitchCategoryId,
     twitchCategoryName,
     verificationCount,
@@ -2111,6 +2194,15 @@ class $CommunityMappingsTable extends CommunityMappings
       );
     } else if (isInserting) {
       context.missing(_processNameMeta);
+    }
+    if (data.containsKey('normalized_install_paths')) {
+      context.handle(
+        _normalizedInstallPathsMeta,
+        normalizedInstallPaths.isAcceptableOrUnknown(
+          data['normalized_install_paths']!,
+          _normalizedInstallPathsMeta,
+        ),
+      );
     }
     if (data.containsKey('twitch_category_id')) {
       context.handle(
@@ -2185,6 +2277,10 @@ class $CommunityMappingsTable extends CommunityMappings
         DriftSqlType.string,
         data['${effectivePrefix}process_name'],
       )!,
+      normalizedInstallPaths: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}normalized_install_paths'],
+      ),
       twitchCategoryId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}twitch_category_id'],
@@ -2222,6 +2318,10 @@ class CommunityMappingEntity extends DataClass
     implements Insertable<CommunityMappingEntity> {
   final int id;
   final String processName;
+
+  /// JSON array of normalized, privacy-safe installation paths from community
+  /// Example: ["steamapps/common/dota 2", "program files (x86)/ea games/battlefield"]
+  final String? normalizedInstallPaths;
   final String twitchCategoryId;
   final String twitchCategoryName;
   final int verificationCount;
@@ -2231,6 +2331,7 @@ class CommunityMappingEntity extends DataClass
   const CommunityMappingEntity({
     required this.id,
     required this.processName,
+    this.normalizedInstallPaths,
     required this.twitchCategoryId,
     required this.twitchCategoryName,
     required this.verificationCount,
@@ -2243,6 +2344,11 @@ class CommunityMappingEntity extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['process_name'] = Variable<String>(processName);
+    if (!nullToAbsent || normalizedInstallPaths != null) {
+      map['normalized_install_paths'] = Variable<String>(
+        normalizedInstallPaths,
+      );
+    }
     map['twitch_category_id'] = Variable<String>(twitchCategoryId);
     map['twitch_category_name'] = Variable<String>(twitchCategoryName);
     map['verification_count'] = Variable<int>(verificationCount);
@@ -2258,6 +2364,9 @@ class CommunityMappingEntity extends DataClass
     return CommunityMappingsCompanion(
       id: Value(id),
       processName: Value(processName),
+      normalizedInstallPaths: normalizedInstallPaths == null && nullToAbsent
+          ? const Value.absent()
+          : Value(normalizedInstallPaths),
       twitchCategoryId: Value(twitchCategoryId),
       twitchCategoryName: Value(twitchCategoryName),
       verificationCount: Value(verificationCount),
@@ -2277,6 +2386,9 @@ class CommunityMappingEntity extends DataClass
     return CommunityMappingEntity(
       id: serializer.fromJson<int>(json['id']),
       processName: serializer.fromJson<String>(json['processName']),
+      normalizedInstallPaths: serializer.fromJson<String?>(
+        json['normalizedInstallPaths'],
+      ),
       twitchCategoryId: serializer.fromJson<String>(json['twitchCategoryId']),
       twitchCategoryName: serializer.fromJson<String>(
         json['twitchCategoryName'],
@@ -2293,6 +2405,9 @@ class CommunityMappingEntity extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'processName': serializer.toJson<String>(processName),
+      'normalizedInstallPaths': serializer.toJson<String?>(
+        normalizedInstallPaths,
+      ),
       'twitchCategoryId': serializer.toJson<String>(twitchCategoryId),
       'twitchCategoryName': serializer.toJson<String>(twitchCategoryName),
       'verificationCount': serializer.toJson<int>(verificationCount),
@@ -2305,6 +2420,7 @@ class CommunityMappingEntity extends DataClass
   CommunityMappingEntity copyWith({
     int? id,
     String? processName,
+    Value<String?> normalizedInstallPaths = const Value.absent(),
     String? twitchCategoryId,
     String? twitchCategoryName,
     int? verificationCount,
@@ -2314,6 +2430,9 @@ class CommunityMappingEntity extends DataClass
   }) => CommunityMappingEntity(
     id: id ?? this.id,
     processName: processName ?? this.processName,
+    normalizedInstallPaths: normalizedInstallPaths.present
+        ? normalizedInstallPaths.value
+        : this.normalizedInstallPaths,
     twitchCategoryId: twitchCategoryId ?? this.twitchCategoryId,
     twitchCategoryName: twitchCategoryName ?? this.twitchCategoryName,
     verificationCount: verificationCount ?? this.verificationCount,
@@ -2327,6 +2446,9 @@ class CommunityMappingEntity extends DataClass
       processName: data.processName.present
           ? data.processName.value
           : this.processName,
+      normalizedInstallPaths: data.normalizedInstallPaths.present
+          ? data.normalizedInstallPaths.value
+          : this.normalizedInstallPaths,
       twitchCategoryId: data.twitchCategoryId.present
           ? data.twitchCategoryId.value
           : this.twitchCategoryId,
@@ -2349,6 +2471,7 @@ class CommunityMappingEntity extends DataClass
     return (StringBuffer('CommunityMappingEntity(')
           ..write('id: $id, ')
           ..write('processName: $processName, ')
+          ..write('normalizedInstallPaths: $normalizedInstallPaths, ')
           ..write('twitchCategoryId: $twitchCategoryId, ')
           ..write('twitchCategoryName: $twitchCategoryName, ')
           ..write('verificationCount: $verificationCount, ')
@@ -2363,6 +2486,7 @@ class CommunityMappingEntity extends DataClass
   int get hashCode => Object.hash(
     id,
     processName,
+    normalizedInstallPaths,
     twitchCategoryId,
     twitchCategoryName,
     verificationCount,
@@ -2376,6 +2500,7 @@ class CommunityMappingEntity extends DataClass
       (other is CommunityMappingEntity &&
           other.id == this.id &&
           other.processName == this.processName &&
+          other.normalizedInstallPaths == this.normalizedInstallPaths &&
           other.twitchCategoryId == this.twitchCategoryId &&
           other.twitchCategoryName == this.twitchCategoryName &&
           other.verificationCount == this.verificationCount &&
@@ -2388,6 +2513,7 @@ class CommunityMappingsCompanion
     extends UpdateCompanion<CommunityMappingEntity> {
   final Value<int> id;
   final Value<String> processName;
+  final Value<String?> normalizedInstallPaths;
   final Value<String> twitchCategoryId;
   final Value<String> twitchCategoryName;
   final Value<int> verificationCount;
@@ -2397,6 +2523,7 @@ class CommunityMappingsCompanion
   const CommunityMappingsCompanion({
     this.id = const Value.absent(),
     this.processName = const Value.absent(),
+    this.normalizedInstallPaths = const Value.absent(),
     this.twitchCategoryId = const Value.absent(),
     this.twitchCategoryName = const Value.absent(),
     this.verificationCount = const Value.absent(),
@@ -2407,6 +2534,7 @@ class CommunityMappingsCompanion
   CommunityMappingsCompanion.insert({
     this.id = const Value.absent(),
     required String processName,
+    this.normalizedInstallPaths = const Value.absent(),
     required String twitchCategoryId,
     required String twitchCategoryName,
     this.verificationCount = const Value.absent(),
@@ -2419,6 +2547,7 @@ class CommunityMappingsCompanion
   static Insertable<CommunityMappingEntity> custom({
     Expression<int>? id,
     Expression<String>? processName,
+    Expression<String>? normalizedInstallPaths,
     Expression<String>? twitchCategoryId,
     Expression<String>? twitchCategoryName,
     Expression<int>? verificationCount,
@@ -2429,6 +2558,8 @@ class CommunityMappingsCompanion
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (processName != null) 'process_name': processName,
+      if (normalizedInstallPaths != null)
+        'normalized_install_paths': normalizedInstallPaths,
       if (twitchCategoryId != null) 'twitch_category_id': twitchCategoryId,
       if (twitchCategoryName != null)
         'twitch_category_name': twitchCategoryName,
@@ -2442,6 +2573,7 @@ class CommunityMappingsCompanion
   CommunityMappingsCompanion copyWith({
     Value<int>? id,
     Value<String>? processName,
+    Value<String?>? normalizedInstallPaths,
     Value<String>? twitchCategoryId,
     Value<String>? twitchCategoryName,
     Value<int>? verificationCount,
@@ -2452,6 +2584,8 @@ class CommunityMappingsCompanion
     return CommunityMappingsCompanion(
       id: id ?? this.id,
       processName: processName ?? this.processName,
+      normalizedInstallPaths:
+          normalizedInstallPaths ?? this.normalizedInstallPaths,
       twitchCategoryId: twitchCategoryId ?? this.twitchCategoryId,
       twitchCategoryName: twitchCategoryName ?? this.twitchCategoryName,
       verificationCount: verificationCount ?? this.verificationCount,
@@ -2469,6 +2603,11 @@ class CommunityMappingsCompanion
     }
     if (processName.present) {
       map['process_name'] = Variable<String>(processName.value);
+    }
+    if (normalizedInstallPaths.present) {
+      map['normalized_install_paths'] = Variable<String>(
+        normalizedInstallPaths.value,
+      );
     }
     if (twitchCategoryId.present) {
       map['twitch_category_id'] = Variable<String>(twitchCategoryId.value);
@@ -2496,6 +2635,7 @@ class CommunityMappingsCompanion
     return (StringBuffer('CommunityMappingsCompanion(')
           ..write('id: $id, ')
           ..write('processName: $processName, ')
+          ..write('normalizedInstallPaths: $normalizedInstallPaths, ')
           ..write('twitchCategoryId: $twitchCategoryId, ')
           ..write('twitchCategoryName: $twitchCategoryName, ')
           ..write('verificationCount: $verificationCount, ')
@@ -2538,6 +2678,7 @@ typedef $$CategoryMappingsTableCreateCompanionBuilder =
       Value<int> id,
       required String processName,
       Value<String?> executablePath,
+      Value<String?> normalizedInstallPaths,
       required String twitchCategoryId,
       required String twitchCategoryName,
       Value<DateTime> createdAt,
@@ -2552,6 +2693,7 @@ typedef $$CategoryMappingsTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String> processName,
       Value<String?> executablePath,
+      Value<String?> normalizedInstallPaths,
       Value<String> twitchCategoryId,
       Value<String> twitchCategoryName,
       Value<DateTime> createdAt,
@@ -2583,6 +2725,11 @@ class $$CategoryMappingsTableFilterComposer
 
   ColumnFilters<String> get executablePath => $composableBuilder(
     column: $table.executablePath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get normalizedInstallPaths => $composableBuilder(
+    column: $table.normalizedInstallPaths,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2651,6 +2798,11 @@ class $$CategoryMappingsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get normalizedInstallPaths => $composableBuilder(
+    column: $table.normalizedInstallPaths,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get twitchCategoryId => $composableBuilder(
     column: $table.twitchCategoryId,
     builder: (column) => ColumnOrderings(column),
@@ -2711,6 +2863,11 @@ class $$CategoryMappingsTableAnnotationComposer
 
   GeneratedColumn<String> get executablePath => $composableBuilder(
     column: $table.executablePath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get normalizedInstallPaths => $composableBuilder(
+    column: $table.normalizedInstallPaths,
     builder: (column) => column,
   );
 
@@ -2791,6 +2948,7 @@ class $$CategoryMappingsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> processName = const Value.absent(),
                 Value<String?> executablePath = const Value.absent(),
+                Value<String?> normalizedInstallPaths = const Value.absent(),
                 Value<String> twitchCategoryId = const Value.absent(),
                 Value<String> twitchCategoryName = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
@@ -2803,6 +2961,7 @@ class $$CategoryMappingsTableTableManager
                 id: id,
                 processName: processName,
                 executablePath: executablePath,
+                normalizedInstallPaths: normalizedInstallPaths,
                 twitchCategoryId: twitchCategoryId,
                 twitchCategoryName: twitchCategoryName,
                 createdAt: createdAt,
@@ -2817,6 +2976,7 @@ class $$CategoryMappingsTableTableManager
                 Value<int> id = const Value.absent(),
                 required String processName,
                 Value<String?> executablePath = const Value.absent(),
+                Value<String?> normalizedInstallPaths = const Value.absent(),
                 required String twitchCategoryId,
                 required String twitchCategoryName,
                 Value<DateTime> createdAt = const Value.absent(),
@@ -2829,6 +2989,7 @@ class $$CategoryMappingsTableTableManager
                 id: id,
                 processName: processName,
                 executablePath: executablePath,
+                normalizedInstallPaths: normalizedInstallPaths,
                 twitchCategoryId: twitchCategoryId,
                 twitchCategoryName: twitchCategoryName,
                 createdAt: createdAt,
@@ -3550,6 +3711,7 @@ typedef $$CommunityMappingsTableCreateCompanionBuilder =
     CommunityMappingsCompanion Function({
       Value<int> id,
       required String processName,
+      Value<String?> normalizedInstallPaths,
       required String twitchCategoryId,
       required String twitchCategoryName,
       Value<int> verificationCount,
@@ -3561,6 +3723,7 @@ typedef $$CommunityMappingsTableUpdateCompanionBuilder =
     CommunityMappingsCompanion Function({
       Value<int> id,
       Value<String> processName,
+      Value<String?> normalizedInstallPaths,
       Value<String> twitchCategoryId,
       Value<String> twitchCategoryName,
       Value<int> verificationCount,
@@ -3585,6 +3748,11 @@ class $$CommunityMappingsTableFilterComposer
 
   ColumnFilters<String> get processName => $composableBuilder(
     column: $table.processName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get normalizedInstallPaths => $composableBuilder(
+    column: $table.normalizedInstallPaths,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3638,6 +3806,11 @@ class $$CommunityMappingsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get normalizedInstallPaths => $composableBuilder(
+    column: $table.normalizedInstallPaths,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get twitchCategoryId => $composableBuilder(
     column: $table.twitchCategoryId,
     builder: (column) => ColumnOrderings(column),
@@ -3683,6 +3856,11 @@ class $$CommunityMappingsTableAnnotationComposer
 
   GeneratedColumn<String> get processName => $composableBuilder(
     column: $table.processName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get normalizedInstallPaths => $composableBuilder(
+    column: $table.normalizedInstallPaths,
     builder: (column) => column,
   );
 
@@ -3755,6 +3933,7 @@ class $$CommunityMappingsTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> processName = const Value.absent(),
+                Value<String?> normalizedInstallPaths = const Value.absent(),
                 Value<String> twitchCategoryId = const Value.absent(),
                 Value<String> twitchCategoryName = const Value.absent(),
                 Value<int> verificationCount = const Value.absent(),
@@ -3764,6 +3943,7 @@ class $$CommunityMappingsTableTableManager
               }) => CommunityMappingsCompanion(
                 id: id,
                 processName: processName,
+                normalizedInstallPaths: normalizedInstallPaths,
                 twitchCategoryId: twitchCategoryId,
                 twitchCategoryName: twitchCategoryName,
                 verificationCount: verificationCount,
@@ -3775,6 +3955,7 @@ class $$CommunityMappingsTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 required String processName,
+                Value<String?> normalizedInstallPaths = const Value.absent(),
                 required String twitchCategoryId,
                 required String twitchCategoryName,
                 Value<int> verificationCount = const Value.absent(),
@@ -3784,6 +3965,7 @@ class $$CommunityMappingsTableTableManager
               }) => CommunityMappingsCompanion.insert(
                 id: id,
                 processName: processName,
+                normalizedInstallPaths: normalizedInstallPaths,
                 twitchCategoryId: twitchCategoryId,
                 twitchCategoryName: twitchCategoryName,
                 verificationCount: verificationCount,

@@ -12,6 +12,11 @@ CategoryMappingModel _$CategoryMappingModelFromJson(
   id: (json['id'] as num?)?.toInt(),
   processName: json['processName'] as String,
   executablePath: json['executablePath'] as String?,
+  normalizedInstallPaths:
+      (json['normalizedInstallPaths'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
   twitchCategoryId: json['twitchCategoryId'] as String,
   twitchCategoryName: json['twitchCategoryName'] as String,
   createdAt: DateTime.parse(json['createdAt'] as String),
@@ -30,6 +35,7 @@ Map<String, dynamic> _$CategoryMappingModelToJson(
   'id': instance.id,
   'processName': instance.processName,
   'executablePath': instance.executablePath,
+  'normalizedInstallPaths': instance.normalizedInstallPaths,
   'twitchCategoryId': instance.twitchCategoryId,
   'twitchCategoryName': instance.twitchCategoryName,
   'createdAt': instance.createdAt.toIso8601String(),

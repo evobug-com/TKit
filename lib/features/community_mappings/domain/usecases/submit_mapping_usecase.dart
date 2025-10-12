@@ -26,6 +26,7 @@ class SubmitMappingUseCase {
     required String twitchCategoryId,
     required String twitchCategoryName,
     String? windowTitle,
+    String? normalizedInstallPath,
   }) async {
     // Validation
     if (processName.trim().isEmpty) {
@@ -60,6 +61,7 @@ class SubmitMappingUseCase {
       twitchCategoryId: twitchCategoryId.trim(),
       twitchCategoryName: twitchCategoryName.trim(),
       windowTitle: windowTitle?.trim(),
+      normalizedInstallPath: normalizedInstallPath,
     );
   }
 }

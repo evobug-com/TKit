@@ -32,6 +32,7 @@ class MappingSubmissionDataSource {
     required String twitchCategoryId,
     required String twitchCategoryName,
     String? windowTitle,
+    String? normalizedInstallPath,
     bool isExistingMapping = false,
     int? existingVerificationCount,
   }) async {
@@ -59,12 +60,14 @@ class MappingSubmissionDataSource {
               twitchCategoryName: twitchCategoryName,
               currentVerificationCount: existingVerificationCount ?? 1,
               windowTitle: windowTitle,
+              normalizedInstallPath: normalizedInstallPath,
             )
           : _buildIssueBody(
               processName: processName,
               twitchCategoryId: twitchCategoryId,
               twitchCategoryName: twitchCategoryName,
               windowTitle: windowTitle,
+              normalizedInstallPath: normalizedInstallPath,
             );
 
       final issueTitle = isVerification
@@ -83,6 +86,10 @@ class MappingSubmissionDataSource {
           'body': issueBody,
           'labels': labels,
           'isVerification': isVerification,
+          'processName': processName,
+          'twitchCategoryId': twitchCategoryId,
+          'twitchCategoryName': twitchCategoryName,
+          if (normalizedInstallPath != null) 'normalizedInstallPath': normalizedInstallPath,
         }),
         options: Options(
           headers: {'Content-Type': 'application/json'},
@@ -157,6 +164,7 @@ class MappingSubmissionDataSource {
     required String twitchCategoryId,
     required String twitchCategoryName,
     String? windowTitle,
+    String? normalizedInstallPath,
   }) {
     final buffer = StringBuffer();
 
@@ -174,12 +182,19 @@ class MappingSubmissionDataSource {
       buffer.writeln('**Window Title:** $windowTitle');
     }
 
+    if (normalizedInstallPath != null && normalizedInstallPath.isNotEmpty) {
+      buffer.writeln('**Installation Path:** `$normalizedInstallPath`');
+    }
+
     buffer.writeln();
     buffer.writeln('### JSON for mappings.json');
     buffer.writeln();
     buffer.writeln('```json');
     buffer.writeln('{');
     buffer.writeln('  "processName": "$processName",');
+    if (normalizedInstallPath != null && normalizedInstallPath.isNotEmpty) {
+      buffer.writeln('  "normalizedInstallPaths": ["$normalizedInstallPath"],');
+    }
     buffer.writeln('  "twitchCategoryId": "$twitchCategoryId",');
     buffer.writeln('  "twitchCategoryName": "$twitchCategoryName",');
     buffer.writeln('  "verificationCount": 1,');
@@ -206,6 +221,7 @@ class MappingSubmissionDataSource {
     required String twitchCategoryName,
     required int currentVerificationCount,
     String? windowTitle,
+    String? normalizedInstallPath,
   }) {
     final buffer = StringBuffer();
 
@@ -227,6 +243,10 @@ class MappingSubmissionDataSource {
       buffer.writeln('**Window Title:** $windowTitle');
     }
 
+    if (normalizedInstallPath != null && normalizedInstallPath.isNotEmpty) {
+      buffer.writeln('**Installation Path:** `$normalizedInstallPath`');
+    }
+
     buffer.writeln();
     buffer.writeln('### Action Required');
     buffer.writeln();
@@ -243,6 +263,9 @@ class MappingSubmissionDataSource {
     buffer.writeln('```json');
     buffer.writeln('{');
     buffer.writeln('  "processName": "$processName",');
+    if (normalizedInstallPath != null && normalizedInstallPath.isNotEmpty) {
+      buffer.writeln('  "normalizedInstallPaths": ["$normalizedInstallPath"],');
+    }
     buffer.writeln('  "twitchCategoryId": "$twitchCategoryId",');
     buffer.writeln('  "twitchCategoryName": "$twitchCategoryName",');
     buffer.writeln('  "verificationCount": ${currentVerificationCount + 1},');

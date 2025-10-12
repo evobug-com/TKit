@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import '../../../../core/database/app_database.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../models/category_mapping_model.dart';
+import '../utils/path_normalizer.dart';
 
 /// Local data source for category mappings using Drift DAO
 ///
@@ -12,13 +13,14 @@ class CategoryMappingLocalDataSource {
 
   CategoryMappingLocalDataSource(this.database);
 
-  /// Find a mapping by process name with fuzzy matching
+  /// Find a mapping by process name and path with fuzzy matching
   ///
-  /// Implements a multi-step matching strategy:
-  /// 1. Exact match on process name
-  /// 2. Exact match on normalized process name (lowercase, no .exe, no spaces/dashes)
-  /// 3. Fuzzy match using Levenshtein distance (≤ 3)
-  /// 4. Match by executable path if provided
+  /// Implements a multi-step matching strategy with privacy-preserving path matching:
+  /// 1. Exact match: processName + path in normalizedInstallPaths array
+  /// 2. Exact match: processName only
+  /// 3. Normalized match: processName (lowercase, no .exe, no spaces/dashes)
+  /// 4. Fuzzy match: Levenshtein distance (≤ 3)
+  /// 5. Legacy: Match by deprecated executablePath if provided (backward compatibility)
   ///
   /// Returns the best match or null if no suitable match found
   Future<CategoryMappingModel?> findMapping(
@@ -26,20 +28,41 @@ class CategoryMappingLocalDataSource {
     String? executablePath,
   ) async {
     try {
-      // Step 1: Try exact match first
-      final exactMatches = await (database.select(
-        database.categoryMappings,
-      )..where((tbl) => tbl.processName.equals(processName))).get();
+      // Extract normalized path from executablePath for matching
+      String? normalizedPath;
+      if (executablePath != null && executablePath.isNotEmpty) {
+        normalizedPath = PathNormalizer.extractGamePath(executablePath);
+      }
+
+      final allMappings = await database
+          .select(database.categoryMappings)
+          .get();
+
+      // Step 1: Try exact match with processName + normalizedPath
+      if (normalizedPath != null) {
+        for (final mapping in allMappings) {
+          // Check if this mapping has the normalized path in its array
+          if (mapping.processName == processName &&
+              mapping.normalizedInstallPaths != null) {
+            final model = CategoryMappingModel.fromDbEntity(mapping);
+            if (model.normalizedInstallPaths.contains(normalizedPath)) {
+              return model;
+            }
+          }
+        }
+      }
+
+      // Step 2: Try exact match on process name only
+      final exactMatches = allMappings
+          .where((m) => m.processName == processName)
+          .toList();
 
       if (exactMatches.isNotEmpty) {
         return CategoryMappingModel.fromDbEntity(exactMatches.first);
       }
 
-      // Step 2: Try normalized exact match
+      // Step 3: Try normalized exact match
       final normalizedInput = _normalizeProcessName(processName);
-      final allMappings = await database
-          .select(database.categoryMappings)
-          .get();
 
       for (final mapping in allMappings) {
         final normalizedMapping = _normalizeProcessName(mapping.processName);
@@ -48,7 +71,7 @@ class CategoryMappingLocalDataSource {
         }
       }
 
-      // Step 3: Fuzzy matching with Levenshtein distance
+      // Step 4: Fuzzy matching with Levenshtein distance
       CategoryMappingEntity? bestMatch;
       int bestDistance = 4; // Only accept distance ≤ 3
 
@@ -68,7 +91,7 @@ class CategoryMappingLocalDataSource {
         return CategoryMappingModel.fromDbEntity(bestMatch);
       }
 
-      // Step 4: Try matching by executable path if provided
+      // Step 5: Legacy - Try matching by deprecated executablePath (backward compatibility)
       if (executablePath != null && executablePath.isNotEmpty) {
         final pathMatch =
             await (database.select(database.categoryMappings)

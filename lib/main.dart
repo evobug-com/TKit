@@ -931,17 +931,22 @@ class _TKitAppState extends State<TKitApp> {
             final saveLocally = result['saveLocally'] as bool? ?? false;
             final contributeToCommunity = result['contributeToCommunity'] as bool? ?? false;
             final isEnabled = result['isEnabled'] as bool? ?? true;
+            final normalizedPath = result['normalizedInstallPath'] as String?;
 
             logger.info('User selected category: ${category.name} (ID: ${category.id}) for process: $processName');
 
             // Submit to community if requested
             if (contributeToCommunity) {
               try {
+                // Normalize process name: remove .exe extension for cross-platform compatibility
+                final normalizedProcessName = processName.toLowerCase().replaceAll('.exe', '');
+
                 final submitResult = await submitMappingUseCase(
-                  processName: processName,
+                  processName: normalizedProcessName,
                   twitchCategoryId: category.id,
                   twitchCategoryName: category.name,
                   windowTitle: null,
+                  normalizedInstallPath: normalizedPath,
                 );
 
                 submitResult.fold(
@@ -962,6 +967,7 @@ class _TKitAppState extends State<TKitApp> {
                 final mapping = CategoryMapping(
                   processName: processName,
                   executablePath: executablePath,
+                  normalizedInstallPaths: normalizedPath != null ? [normalizedPath] : [],
                   twitchCategoryId: category.id,
                   twitchCategoryName: category.name,
                   createdAt: DateTime.now(),
@@ -1049,6 +1055,7 @@ class _TKitAppState extends State<TKitApp> {
         final saveLocally = result['saveLocally'] as bool;
         final contributeToCommunity = result['contributeToCommunity'] as bool;
         final isEnabled = result['isEnabled'] as bool? ?? true;
+        final normalizedPath = result['normalizedInstallPath'] as String?;
 
         logger.info(
           'User selected category: ${category.name} (ID: ${category.id}) '
@@ -1058,11 +1065,15 @@ class _TKitAppState extends State<TKitApp> {
         // Submit to community if requested
         if (contributeToCommunity) {
           try {
+            // Normalize process name: remove .exe extension for cross-platform compatibility
+            final normalizedProcessName = processName.toLowerCase().replaceAll('.exe', '');
+
             final result = await submitMappingUseCase(
-              processName: processName,
+              processName: normalizedProcessName,
               twitchCategoryId: category.id,
               twitchCategoryName: category.name,
               windowTitle: windowTitle,
+              normalizedInstallPath: normalizedPath,
             );
 
             result.fold(
@@ -1101,6 +1112,7 @@ class _TKitAppState extends State<TKitApp> {
           mappingToReturn = CategoryMapping(
             processName: processName,
             executablePath: executablePath,
+            normalizedInstallPaths: normalizedPath != null ? [normalizedPath] : [],
             twitchCategoryId: category.id,
             twitchCategoryName: category.name,
             createdAt: DateTime.now(),

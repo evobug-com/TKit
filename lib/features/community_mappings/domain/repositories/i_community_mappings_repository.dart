@@ -29,6 +29,7 @@ abstract class ICommunityMappingsRepository {
     required String twitchCategoryId,
     required String twitchCategoryName,
     String? windowTitle,
+    String? normalizedInstallPath,
   });
 
   /// Find a community mapping by process name

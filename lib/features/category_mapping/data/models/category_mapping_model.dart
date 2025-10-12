@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../../../../core/database/app_database.dart';
@@ -9,12 +10,15 @@ part 'category_mapping_model.g.dart';
 ///
 /// This model extends the domain entity and provides JSON serialization
 /// capabilities and conversion to/from Drift database entities.
+///
+/// Handles serialization of normalizedInstallPaths array to/from JSON in database.
 @JsonSerializable()
 class CategoryMappingModel extends CategoryMapping {
   const CategoryMappingModel({
     super.id,
     required super.processName,
     super.executablePath,
+    super.normalizedInstallPaths = const [],
     required super.twitchCategoryId,
     required super.twitchCategoryName,
     required super.createdAt,
@@ -31,6 +35,7 @@ class CategoryMappingModel extends CategoryMapping {
       id: entity.id,
       processName: entity.processName,
       executablePath: entity.executablePath,
+      normalizedInstallPaths: entity.normalizedInstallPaths,
       twitchCategoryId: entity.twitchCategoryId,
       twitchCategoryName: entity.twitchCategoryName,
       createdAt: entity.createdAt,
@@ -44,10 +49,26 @@ class CategoryMappingModel extends CategoryMapping {
 
   /// Create from Drift database entity
   factory CategoryMappingModel.fromDbEntity(CategoryMappingEntity dbEntity) {
+    // Parse normalizedInstallPaths from JSON string
+    List<String> paths = [];
+    if (dbEntity.normalizedInstallPaths != null &&
+        dbEntity.normalizedInstallPaths!.isNotEmpty) {
+      try {
+        final decoded = jsonDecode(dbEntity.normalizedInstallPaths!);
+        if (decoded is List) {
+          paths = decoded.cast<String>();
+        }
+      } catch (e) {
+        // If parsing fails, leave empty list
+        paths = [];
+      }
+    }
+
     return CategoryMappingModel(
       id: dbEntity.id,
       processName: dbEntity.processName,
       executablePath: dbEntity.executablePath,
+      normalizedInstallPaths: paths,
       twitchCategoryId: dbEntity.twitchCategoryId,
       twitchCategoryName: dbEntity.twitchCategoryName,
       createdAt: dbEntity.createdAt,
@@ -72,6 +93,7 @@ class CategoryMappingModel extends CategoryMapping {
       id: id,
       processName: processName,
       executablePath: executablePath,
+      normalizedInstallPaths: normalizedInstallPaths,
       twitchCategoryId: twitchCategoryId,
       twitchCategoryName: twitchCategoryName,
       createdAt: createdAt,
@@ -85,10 +107,17 @@ class CategoryMappingModel extends CategoryMapping {
 
   /// Convert to Drift companion for insert/update
   CategoryMappingsCompanion toCompanion() {
+    // Serialize normalizedInstallPaths to JSON string
+    String? pathsJson;
+    if (normalizedInstallPaths.isNotEmpty) {
+      pathsJson = jsonEncode(normalizedInstallPaths);
+    }
+
     return CategoryMappingsCompanion.insert(
       id: id != null ? Value(id!) : const Value.absent(),
       processName: processName,
       executablePath: Value(executablePath),
+      normalizedInstallPaths: Value(pathsJson),
       twitchCategoryId: twitchCategoryId,
       twitchCategoryName: twitchCategoryName,
       createdAt: Value(createdAt),

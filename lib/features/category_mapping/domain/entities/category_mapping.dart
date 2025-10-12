@@ -10,10 +10,24 @@ import 'package:equatable/equatable.dart';
 /// - `lastApiFetch`: Timestamp of when category data was fetched from Twitch API
 /// - `cacheExpiresAt`: Timestamp when this mapping must be refreshed (lastApiFetch + 24h)
 /// - `manualOverride`: User-created mappings that never expire (but Twitch data still refreshes)
+///
+/// Privacy-Preserving Path Tracking:
+/// - `normalizedInstallPaths`: List of privacy-safe installation path segments
+///   (e.g., ["steamapps/common/dota 2", "epic games/dota 2"])
+/// - Only stores game-identifying path segments, never usernames or personal folders
+/// - Supports multiple paths for games installed on different platforms
 class CategoryMapping extends Equatable {
   final int? id;
   final String processName;
+
+  /// @deprecated Use normalizedInstallPaths instead. Kept for backward compatibility.
   final String? executablePath;
+
+  /// List of normalized, privacy-safe installation path segments.
+  /// Multiple paths support the same game on different platforms (Steam, Epic, etc.)
+  /// Example: ["steamapps/common/dota 2", "epic games/dota 2"]
+  final List<String> normalizedInstallPaths;
+
   final String twitchCategoryId;
   final String twitchCategoryName;
   final DateTime createdAt;
@@ -37,6 +51,7 @@ class CategoryMapping extends Equatable {
     this.id,
     required this.processName,
     this.executablePath,
+    this.normalizedInstallPaths = const [],
     required this.twitchCategoryId,
     required this.twitchCategoryName,
     required this.createdAt,
@@ -51,6 +66,7 @@ class CategoryMapping extends Equatable {
     int? id,
     String? processName,
     String? executablePath,
+    List<String>? normalizedInstallPaths,
     String? twitchCategoryId,
     String? twitchCategoryName,
     DateTime? createdAt,
@@ -64,6 +80,7 @@ class CategoryMapping extends Equatable {
       id: id ?? this.id,
       processName: processName ?? this.processName,
       executablePath: executablePath ?? this.executablePath,
+      normalizedInstallPaths: normalizedInstallPaths ?? this.normalizedInstallPaths,
       twitchCategoryId: twitchCategoryId ?? this.twitchCategoryId,
       twitchCategoryName: twitchCategoryName ?? this.twitchCategoryName,
       createdAt: createdAt ?? this.createdAt,
@@ -88,6 +105,7 @@ class CategoryMapping extends Equatable {
     id,
     processName,
     executablePath,
+    normalizedInstallPaths,
     twitchCategoryId,
     twitchCategoryName,
     createdAt,

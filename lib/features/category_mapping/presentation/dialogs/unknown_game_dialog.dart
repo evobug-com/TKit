@@ -13,6 +13,7 @@ import '../../../twitch_api/domain/entities/twitch_category.dart';
 import '../../../twitch_api/presentation/providers/twitch_api_provider.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/states/auth_state.dart';
+import '../../data/utils/path_normalizer.dart';
 
 /// Dialog shown when an unmapped game is detected
 ///
@@ -172,6 +173,10 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
           Expanded(child: _buildSearchResults(context)),
           const VSpace.xl(),
 
+          // Privacy-safe path info
+          _buildPathInfo(context),
+          const VSpace.md(),
+
           // Options
           Container(
             padding: const EdgeInsets.all(TKitSpacing.lg),
@@ -222,6 +227,86 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
                   contentPadding: EdgeInsets.zero,
                   dense: true,
                 ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPathInfo(BuildContext context) {
+    // Extract normalized path for display
+    final normalizedPath = widget.executablePath != null
+        ? PathNormalizer.extractGamePath(widget.executablePath!)
+        : null;
+
+    final hasRecognizedPath = normalizedPath != null;
+
+    return Container(
+      padding: const EdgeInsets.all(TKitSpacing.md),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: hasRecognizedPath ? TKitColors.success : TKitColors.warning,
+        ),
+        color: hasRecognizedPath
+            ? TKitColors.success.withValues(alpha: 0.05)
+            : TKitColors.warning.withValues(alpha: 0.05),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            hasRecognizedPath ? Icons.check_circle_outline : Icons.info_outline,
+            size: 18,
+            color: hasRecognizedPath ? TKitColors.success : TKitColors.warning,
+          ),
+          const HSpace.sm(),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  hasRecognizedPath
+                      ? 'Privacy-Safe Path Detected'
+                      : 'Custom Installation Location',
+                  style: TKitTextStyles.labelSmall.copyWith(
+                    color: TKitColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const VSpace.xs(),
+                if (hasRecognizedPath) ...[
+                  Text(
+                    'Path to be stored: $normalizedPath',
+                    style: TKitTextStyles.caption.copyWith(
+                      color: TKitColors.textSecondary,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                  const VSpace.xs(),
+                  Text(
+                    'Only game folder names are stored. Your username and personal folders are not included.',
+                    style: TKitTextStyles.caption.copyWith(
+                      color: TKitColors.textMuted,
+                    ),
+                  ),
+                ] else ...[
+                  Text(
+                    'Process: ${widget.processName}',
+                    style: TKitTextStyles.caption.copyWith(
+                      color: TKitColors.textSecondary,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                  const VSpace.xs(),
+                  Text(
+                    'For privacy, only the process name will be stored. Path matching will not be available.',
+                    style: TKitTextStyles.caption.copyWith(
+                      color: TKitColors.textMuted,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -408,6 +493,11 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
   void _handleSave() {
     if (_selectedCategory == null) return;
 
+    // Extract normalized path
+    final normalizedPath = widget.executablePath != null
+        ? PathNormalizer.extractGamePath(widget.executablePath!)
+        : null;
+
     // Create mapping result
     final result = {
       'category': _selectedCategory!,
@@ -415,6 +505,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
       'contributeToCommunity': _contributeToCommunity,
       'processName': widget.processName,
       'executablePath': widget.executablePath,
+      'normalizedInstallPath': normalizedPath,
       'windowTitle': widget.windowTitle,
       'isEnabled': true, // Explicitly enabled
     };
@@ -423,6 +514,11 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
   }
 
   void _handleIgnore() {
+    // Extract normalized path
+    final normalizedPath = widget.executablePath != null
+        ? PathNormalizer.extractGamePath(widget.executablePath!)
+        : null;
+
     // Create a disabled mapping with IGNORE category
     final result = {
       'category': const TwitchCategory(
@@ -433,6 +529,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
       'contributeToCommunity': false, // Don't contribute ignored processes
       'processName': widget.processName,
       'executablePath': widget.executablePath,
+      'normalizedInstallPath': normalizedPath,
       'windowTitle': widget.windowTitle,
       'isEnabled': false, // Disabled mapping
     };
