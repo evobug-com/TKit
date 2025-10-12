@@ -10,16 +10,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### TKit
 
 #### Added
-- Added markdown display for changelog
-- Added dialog to run auto update
+- Persistent storage for ignored update versions using SharedPreferences
+- Update indicator remains visible even when version is ignored
+- Installation type detection (MSIX vs EXE) for automatic installer matching
+- Download buttons with version badges in README for all release channels
 
 #### Changed
-- Autoupdate: Ignore ignores THIS version, won't autos-how again, but indicator stays visible. Later - closes dialog, will show again later
+- Update "Ignore" behavior: now version-specific and persistent across restarts
+- Auto-dialog skips ignored versions but indicator stays visible for manual updates
+- MSIX installer launches via PowerShell for proper process detachment
+- Improved installer comparison in README with clearer recommendations
 
-### Installer
+#### Fixed
+- MSIX installer now launches correctly when app closes during update
+- Update exit delay increased to 2 seconds to ensure installer fully starts
 
-### Changed
-- Application name to "TKit" for Msix installer
+### Documentation
+
+#### Added
+- RELEASE_GUIDE.md with comprehensive release process documentation
+- Version naming conventions for all release channels
+- Asset naming requirements for consistent downloads
+- Installer comparison table in README
+- Download links for stable and pre-release channels
+
+#### Changed
+- Simplified download section in README for better clarity
+- Reorganized installation instructions with side-by-side comparison
 
 
 ## [0.0.1-dev.2] - 2025-10-12
