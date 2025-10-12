@@ -1,12 +1,14 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/text_styles.dart';
+import '../../../../shared/theme/spacing.dart';
+import '../../../../shared/widgets/layout/spacer.dart';
 import '../../../../shared/widgets/buttons/primary_button.dart';
 import '../../../../shared/widgets/buttons/accent_button.dart';
 import '../../../../shared/widgets/indicators/loading_indicator.dart';
+import '../../../../shared/widgets/forms/search_field.dart';
 import '../../../twitch_api/domain/entities/twitch_category.dart';
 import '../../../twitch_api/presentation/providers/twitch_api_provider.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
@@ -37,7 +39,6 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
   TwitchCategory? _selectedCategory;
   bool _contributeToCommunity = true; // Default: ON
   bool _saveLocally = true;
-  Timer? _debounceTimer;
 
   static const _searchDebounceDelay = Duration(milliseconds: 500);
 
@@ -50,39 +51,22 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
     // Trigger initial search after delay
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (searchQuery.isNotEmpty) {
-        _performSearch(searchQuery);
+        final authProvider = context.read<AuthProvider>();
+        if (authProvider.state is Authenticated) {
+          context.read<TwitchApiProvider>().searchCategories(searchQuery);
+        } else {
+          context.read<TwitchApiProvider>().setError(
+            'Please authenticate with Twitch to search for categories',
+          );
+        }
       }
     });
   }
 
   @override
   void dispose() {
-    _debounceTimer?.cancel();
     _searchController.dispose();
     super.dispose();
-  }
-
-  /// Perform search with debouncing
-  void _performSearch(String query) {
-    // Cancel previous timer
-    _debounceTimer?.cancel();
-
-    // Check auth status first
-    final authProvider = context.read<AuthProvider>();
-    if (authProvider.state is! Authenticated) {
-      // Not authenticated, show error
-      context.read<TwitchApiProvider>().setError(
-        'Please authenticate with Twitch to search for categories',
-      );
-      return;
-    }
-
-    // Start new timer
-    _debounceTimer = Timer(_searchDebounceDelay, () {
-      if (query.trim().isNotEmpty) {
-        context.read<TwitchApiProvider>().searchCategories(query);
-      }
-    });
   }
 
   @override
@@ -113,7 +97,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
   Widget _buildHeader(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(TKitSpacing.xxl),
       decoration: const BoxDecoration(
         border: Border(bottom: BorderSide(color: TKitColors.border)),
         color: TKitColors.surfaceVariant,
@@ -121,13 +105,13 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
       child: Row(
         children: [
           const Icon(Icons.help_outline, color: TKitColors.accent, size: 24),
-          const SizedBox(width: 12),
+          const HSpace.md(),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(l10n.unknownGameDialogTitle, style: TKitTextStyles.heading3),
-                const SizedBox(height: 4),
+                const VSpace.xs(),
                 Text(
                   l10n.unknownGameDialogSubtitle(widget.processName),
                   style: TKitTextStyles.bodySmall.copyWith(
@@ -151,7 +135,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
   Widget _buildContent(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(TKitSpacing.xxl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -163,47 +147,13 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
               letterSpacing: 1.0,
             ),
           ),
-          const SizedBox(height: 8),
-          TextField(
+          const VSpace.sm(),
+          SearchField(
             controller: _searchController,
+            hintText: l10n.unknownGameDialogSearchHint,
             autofocus: true,
-            style: TKitTextStyles.bodyMedium.copyWith(
-              color: TKitColors.textPrimary,
-            ),
-            decoration: InputDecoration(
-              hintText: l10n.unknownGameDialogSearchHint,
-              hintStyle: TKitTextStyles.bodyMedium.copyWith(
-                color: TKitColors.textMuted,
-              ),
-              prefixIcon: const Icon(Icons.search, color: TKitColors.accent),
-              filled: true,
-              fillColor: TKitColors.background,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.zero,
-                borderSide: const BorderSide(color: TKitColors.border),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.zero,
-                borderSide: const BorderSide(color: TKitColors.border),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.zero,
-                borderSide: const BorderSide(
-                  color: TKitColors.accent,
-                  width: 2,
-                ),
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 12,
-              ),
-            ),
-            onChanged: (value) {
-              _performSearch(value);
-            },
-            onSubmitted: (value) {
-              // Cancel debounce and search immediately
-              _debounceTimer?.cancel();
+            debounceDuration: _searchDebounceDelay,
+            onSearch: (value) {
               if (value.trim().isNotEmpty) {
                 final authProvider = context.read<AuthProvider>();
                 if (authProvider.state is Authenticated) {
@@ -216,15 +166,15 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
               }
             },
           ),
-          const SizedBox(height: 20),
+          const VSpace.xl(),
 
           // Results
           Expanded(child: _buildSearchResults(context)),
-          const SizedBox(height: 20),
+          const VSpace.xl(),
 
           // Options
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(TKitSpacing.lg),
             decoration: BoxDecoration(
               border: Border.all(color: TKitColors.border),
               color: TKitColors.background,
@@ -239,7 +189,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
                     letterSpacing: 1.0,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const VSpace.md(),
                 CheckboxListTile(
                   value: _saveLocally,
                   onChanged: (value) =>
@@ -299,14 +249,14 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
                   size: 48,
                   color: TKitColors.error,
                 ),
-                const SizedBox(height: 12),
+                const VSpace.md(),
                 Text(
                   l10n.unknownGameDialogSearchError,
                   style: TKitTextStyles.bodyMedium.copyWith(
                     color: TKitColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const VSpace.xs(),
                 Text(
                   provider.errorMessage!,
                   style: TKitTextStyles.bodySmall.copyWith(
@@ -356,8 +306,8 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
                 onTap: () => setState(() => _selectedCategory = category),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
+                    horizontal: TKitSpacing.lg,
+                    vertical: TKitSpacing.md,
                   ),
                   decoration: BoxDecoration(
                     color: isSelected
@@ -380,7 +330,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
                             : TKitColors.textMuted,
                         size: 20,
                       ),
-                      const SizedBox(width: 12),
+                      const HSpace.md(),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -396,7 +346,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
                                     : FontWeight.normal,
                               ),
                             ),
-                            const SizedBox(height: 2),
+                            const SizedBox(height: TKitSpacing.headerGap),
                             Text(
                               'ID: ${category.id}',
                               style: TKitTextStyles.caption.copyWith(
@@ -420,7 +370,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
   Widget _buildFooter(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(TKitSpacing.xxl),
       decoration: const BoxDecoration(
         border: Border(top: BorderSide(color: TKitColors.border)),
       ),
@@ -441,7 +391,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
                 onPressed: () => Navigator.of(context).pop(),
                 width: 120,
               ),
-              const SizedBox(width: 12),
+              const HSpace.md(),
               PrimaryButton(
                 text: l10n.unknownGameDialogSave,
                 icon: Icons.check,

@@ -156,6 +156,12 @@ abstract class AppLocalizations {
   /// **'Hello'**
   String get hello;
 
+  /// Native name of this language
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageNativeName;
+
   /// English language name
   ///
   /// In en, this message translates to:

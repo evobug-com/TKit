@@ -30,6 +30,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get hello => 'こんにちは';
 
   @override
+  String get languageNativeName => '日本語';
+
+  @override
   String get languageEnglish => 'English';
 
   @override

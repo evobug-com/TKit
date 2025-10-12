@@ -30,6 +30,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get hello => '你好';
 
   @override
+  String get languageNativeName => '中文';
+
+  @override
   String get languageEnglish => 'English';
 
   @override

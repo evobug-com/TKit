@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/text_styles.dart';
+import '../../../../shared/theme/spacing.dart';
+import '../../../../shared/widgets/layout/island.dart';
+import '../../../../shared/widgets/layout/spacer.dart';
 import '../../../../shared/widgets/buttons/primary_button.dart';
 import '../../../../shared/widgets/buttons/accent_button.dart';
 import '../../../../shared/widgets/hotkey_display.dart';
@@ -29,18 +32,13 @@ class ControlPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        border: Border.all(color: AppColors.border, width: 1),
-      ),
+    return Island.comfortable(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Header
-          Text(l10n.autoSwitcherControlsHeader, style: AppTextStyles.heading3),
-          const SizedBox(height: 24),
+          Text(l10n.autoSwitcherControlsHeader, style: TKitTextStyles.heading3),
+          const VSpace.xxl(),
 
           // Monitoring control
           if (isMonitoring)
@@ -56,7 +54,7 @@ class ControlPanel extends StatelessWidget {
               isLoading: isLoading,
             ),
 
-          const SizedBox(height: 16),
+          const VSpace.lg(),
 
           // Manual update button with hotkey display
           Column(
@@ -67,19 +65,19 @@ class ControlPanel extends StatelessWidget {
                 text: l10n.autoSwitcherControlsManualUpdate,
               ),
               if (manualUpdateHotkey != null && manualUpdateHotkey!.isNotEmpty) ...[
-                const SizedBox(height: 8),
+                const VSpace.sm(),
                 Center(
                   child: HotkeyDisplay(
                     hotkeyString: manualUpdateHotkey!,
                     keySize: 24,
-                    fontSize: 10,
+                    fontSize: 11,
                   ),
                 ),
               ],
             ],
           ),
 
-          const SizedBox(height: 24),
+          const VSpace.xxl(),
 
           // Status info
           _buildStatusInfo(context),
@@ -90,50 +88,48 @@ class ControlPanel extends StatelessWidget {
 
   Widget _buildStatusInfo(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        border: Border.all(color: AppColors.border, width: 1),
-      ),
+    return Island(
+      padding: const EdgeInsets.all(TKitSpacing.lg),
+      backgroundColor: TKitColors.background,
+      borderColor: TKitColors.border,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             l10n.autoSwitcherControlsMonitoringStatus,
-            style: AppTextStyles.caption.copyWith(
-              color: AppColors.textSecondary,
+            style: TKitTextStyles.caption.copyWith(
+              color: TKitColors.textSecondary,
               letterSpacing: 0.5,
             ),
           ),
-          const SizedBox(height: 8),
+          const VSpace.sm(),
           Row(
             children: [
               Container(
                 width: 8,
                 height: 8,
                 decoration: BoxDecoration(
-                  color: isMonitoring ? AppColors.success : AppColors.textMuted,
+                  color: isMonitoring ? TKitColors.success : TKitColors.textMuted,
                 ),
               ),
-              const SizedBox(width: 8),
+              const HSpace.sm(),
               Text(
                 isMonitoring ? l10n.autoSwitcherControlsActive : l10n.autoSwitcherControlsInactive,
-                style: AppTextStyles.body.copyWith(
+                style: TKitTextStyles.bodyMedium.copyWith(
                   color: isMonitoring
-                      ? AppColors.success
-                      : AppColors.textSecondary,
+                      ? TKitColors.success
+                      : TKitColors.textSecondary,
                   fontWeight: FontWeight.w600,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const VSpace.md(),
           Text(
             isMonitoring
                 ? l10n.autoSwitcherControlsActiveDescription
                 : l10n.autoSwitcherControlsInactiveDescription,
-            style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
+            style: TKitTextStyles.caption.copyWith(color: TKitColors.textMuted),
           ),
         ],
       ),

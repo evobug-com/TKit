@@ -30,6 +30,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get hello => '안녕하세요';
 
   @override
+  String get languageNativeName => '한국어';
+
+  @override
   String get languageEnglish => 'English';
 
   @override

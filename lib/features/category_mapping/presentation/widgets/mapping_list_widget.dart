@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/text_styles.dart';
+import '../../../../shared/theme/spacing.dart';
+import '../../../../shared/widgets/layout/spacer.dart';
 import '../../domain/entities/category_mapping.dart';
 
 /// Widget to display the list of category mappings in a DataTable
@@ -30,7 +32,7 @@ class MappingListWidget extends StatelessWidget {
               size: 48,
               color: TKitColors.textMuted,
             ),
-            const SizedBox(height: 12),
+            const VSpace.md(),
             Text(
               l10n.categoryMappingListEmpty,
               style: TKitTextStyles.bodyMedium.copyWith(
@@ -38,7 +40,7 @@ class MappingListWidget extends StatelessWidget {
                 fontSize: 14,
               ),
             ),
-            const SizedBox(height: 6),
+            const VSpace.sm(),
             Text(
               l10n.categoryMappingListEmptySubtitle,
               style: TKitTextStyles.bodySmall.copyWith(
@@ -84,7 +86,7 @@ class MappingListWidget extends StatelessWidget {
             dataRowMinHeight: 52,
             dataRowMaxHeight: 64,
             columnSpacing: 24,
-            horizontalMargin: 12,
+            horizontalMargin: TKitSpacing.md,
             columns: [
               DataColumn(label: Text(l10n.categoryMappingListColumnProcessName)),
               DataColumn(label: Text(l10n.categoryMappingListColumnCategory)),
@@ -142,8 +144,8 @@ class MappingListWidget extends StatelessWidget {
                   DataCell(
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 6,
-                        vertical: 3,
+                        horizontal: TKitSpacing.sm,
+                        vertical: TKitSpacing.xs,
                       ),
                       decoration: BoxDecoration(
                         color: mapping.manualOverride
@@ -158,7 +160,6 @@ class MappingListWidget extends StatelessWidget {
                       child: Text(
                         mapping.manualOverride ? l10n.categoryMappingListTypeUser : l10n.categoryMappingListTypePreset,
                         style: TKitTextStyles.caption.copyWith(
-                          fontSize: 10,
                           color: mapping.manualOverride
                               ? TKitColors.accent
                               : TKitColors.textMuted,
@@ -177,7 +178,7 @@ class MappingListWidget extends StatelessWidget {
                           hoverColor: TKitColors.accent.withValues(alpha: 0.2),
                           onPressed: () => onEdit(mapping),
                           tooltip: l10n.categoryMappingListEditTooltip,
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(TKitSpacing.sm),
                           constraints: const BoxConstraints(
                             minWidth: 32,
                             minHeight: 32,
@@ -189,7 +190,7 @@ class MappingListWidget extends StatelessWidget {
                           hoverColor: TKitColors.error.withValues(alpha: 0.2),
                           onPressed: () => onDelete(mapping.id!),
                           tooltip: l10n.categoryMappingListDeleteTooltip,
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(TKitSpacing.sm),
                           constraints: const BoxConstraints(
                             minWidth: 32,
                             minHeight: 32,

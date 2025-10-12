@@ -2,6 +2,15 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../shared/theme/colors.dart';
+import '../../../../shared/theme/text_styles.dart';
+import '../../../../shared/theme/spacing.dart';
+import '../../../../shared/widgets/layout/page_header.dart';
+import '../../../../shared/widgets/layout/spacer.dart';
+import '../../../../shared/widgets/layout/island.dart';
+import '../../../../shared/widgets/feedback/toast.dart';
+import '../../../../shared/widgets/indicators/loading_indicator.dart';
+import '../../../../shared/widgets/buttons/buttons.dart';
+import '../../../../shared/widgets/forms/form_field_wrapper.dart';
 import '../../../../core/config/app_config.dart';
 import '../../../../core/services/language_service.dart';
 import '../../../../core/services/locale_provider.dart';
@@ -114,27 +123,17 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (state is SettingsSaved) {
               final l10n = AppLocalizations.of(context)!;
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(l10n.settingsSavedSuccessfully),
-                  backgroundColor: Colors.green,
-                ),
-              );
+              Toast.success(context, l10n.settingsSavedSuccessfully);
               setState(() {
                 _hasChanges = false;
                 _isInitialized = false;
               });
             } else if (state is SettingsError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.red,
-                ),
-              );
+              Toast.error(context, state.message);
             }
           });
           if (state is SettingsLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: LoadingIndicator());
           }
 
           if (state is SettingsError && state.currentSettings == null) {
@@ -143,15 +142,18 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error_outline, size: 48, color: Colors.red),
-                  const SizedBox(height: 16),
-                  Text(state.message),
-                  const SizedBox(height: 16),
-                  FilledButton(
+                  Icon(Icons.error_outline, size: 48, color: TKitColors.error),
+                  const VSpace.lg(),
+                  Text(
+                    state.message,
+                    style: TKitTextStyles.bodyMedium,
+                  ),
+                  const VSpace.lg(),
+                  PrimaryButton(
+                    text: l10n.settingsRetry,
                     onPressed: () {
                       context.read<SettingsProvider>().loadSettings();
                     },
-                    child: Text(l10n.settingsRetry),
                   ),
                 ],
               ),
@@ -196,28 +198,21 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
             children: [
               // Scrollable content
               SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(16, _hasChanges ? 70 : 16, 16, 16),
+                padding: EdgeInsets.fromLTRB(
+                  TKitSpacing.pagePadding,
+                  _hasChanges ? 70 : TKitSpacing.pagePadding,
+                  TKitSpacing.pagePadding,
+                  TKitSpacing.pagePadding,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Page Header - minimal (matching Auto Switcher)
-                    Text(
-                      l10n.settingsPageTitle,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        letterSpacing: 1.2,
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    // Page Header
+                    PageHeader(
+                      title: l10n.settingsPageTitle,
+                      subtitle: l10n.settingsPageDescription,
                     ),
-                    const SizedBox(height: 3),
-                    Text(
-                      l10n.settingsPageDescription,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: TKitColors.textMuted,
-                        fontSize: 12,
-                      ),
-                    ),
-                    const SizedBox(height: 14),
+                    const VSpace.lg(),
 
                     // Auto Switcher Settings
                     _buildSection(l10n.settingsAutoSwitcher, [
@@ -296,27 +291,20 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                       if (settings.fallbackBehavior ==
                           FallbackBehavior.custom) ...[
                         const SizedBox(height: 10),
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: l10n.settingsCustomCategory,
+                        FormFieldWrapper(
+                          label: l10n.settingsCustomCategory,
+                          child: TKitTextField(
                             hintText: l10n.settingsCustomCategoryHint,
-                            border: const OutlineInputBorder(),
+                            controller: TextEditingController(
+                              text: settings.customFallbackCategoryName ?? '',
+                            ),
+                            readOnly: true,
+                            onTap: () {
+                              // TODO: Open category search dialog
+                              // This will be implemented when Module 4 (Twitch API) is available
+                              Toast.info(context, l10n.settingsCategorySearchUnavailable);
+                            },
                           ),
-                          controller: TextEditingController(
-                            text: settings.customFallbackCategoryName ?? '',
-                          ),
-                          readOnly: true,
-                          onTap: () {
-                            // TODO: Open category search dialog
-                            // This will be implemented when Module 4 (Twitch API) is available
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  l10n.settingsCategorySearchUnavailable,
-                                ),
-                              ),
-                            );
-                          },
                         ),
                       ],
                     ]),
@@ -382,12 +370,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                                     if (context.mounted) {
                                       // Get the updated localization with the new language
                                       final newL10n = AppLocalizations.of(context)!;
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: Text(newL10n.languageChangeNotice),
-                                          backgroundColor: Colors.green,
-                                        ),
-                                      );
+                                      Toast.success(context, newL10n.languageChangeNotice);
                                     }
                                   });
                                 }
@@ -517,12 +500,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                               );
 
                               if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(l10n.settingsUpdateChannelChanged(value.localizedName(context))),
-                                    backgroundColor: Colors.green,
-                                  ),
-                                );
+                                Toast.success(context, l10n.settingsUpdateChannelChanged(value.localizedName(context)));
                               }
                             }
                           }
@@ -565,7 +543,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                   left: 0,
                   right: 0,
                   child: Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(TKitSpacing.lg),
                     decoration: BoxDecoration(
                       color: TKitColors.surfaceVariant,
                       border: const Border(
@@ -595,14 +573,14 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                           ),
                         ),
                         const Spacer(),
-                        TextButton(
+                        AccentButton(
+                          text: l10n.settingsDiscard,
                           onPressed: _discardChanges,
-                          child: Text(l10n.settingsDiscard),
                         ),
                         const SizedBox(width: 8),
-                        FilledButton(
+                        PrimaryButton(
+                          text: l10n.settingsSave,
                           onPressed: _saveSettings,
-                          child: Text(l10n.settingsSave),
                         ),
                       ],
                     ),
@@ -628,13 +606,10 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
           ),
         ),
         const SizedBox(height: 10),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: children,
-            ),
+        Island.standard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
           ),
         ),
       ],
@@ -672,178 +647,167 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
               ),
             ),
             const SizedBox(height: 10),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+            Island.standard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          color: isAuthenticated
+                              ? TKitColors.success
+                              : TKitColors.textDisabled,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        isAuthenticated ? l10n.settingsTwitchStatusConnected : l10n.settingsTwitchStatusNotConnected,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  if (isAuthenticated && authState is Authenticated) ...[
+                    Text(
+                      l10n.settingsTwitchLoggedInAs,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: TKitColors.textMuted,
+                        fontSize: 12,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
                     Row(
                       children: [
-                        Container(
-                          width: 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: isAuthenticated
-                                ? TKitColors.success
-                                : TKitColors.textDisabled,
-                            shape: BoxShape.circle,
-                          ),
+                        Icon(
+                          Icons.person,
+                          size: 16,
+                          color: TKitColors.accent,
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: 8),
                         Text(
-                          isAuthenticated ? l10n.settingsTwitchStatusConnected : l10n.settingsTwitchStatusNotConnected,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w600),
+                          authState.user.displayName,
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          '(@${authState.user.login})',
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: TKitColors.textMuted),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),
-                    if (isAuthenticated && authState is Authenticated) ...[
-                      Text(
-                        l10n.settingsTwitchLoggedInAs,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: TKitColors.textMuted,
-                          fontSize: 12,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.person,
-                            size: 16,
-                            color: TKitColors.accent,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            authState.user.displayName,
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(fontWeight: FontWeight.w500),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            '(@${authState.user.login})',
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(color: TKitColors.textMuted),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      FutureBuilder<DateTime?>(
-                        future: authProvider.getTokenExpiration(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData && snapshot.data != null) {
-                            final expiresAt = snapshot.data!;
-                            final now = DateTime.now();
-                            final isExpired = expiresAt.isBefore(now);
-                            final timeRemaining = expiresAt.difference(now);
+                    const SizedBox(height: 8),
+                    FutureBuilder<DateTime?>(
+                      future: authProvider.getTokenExpiration(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data != null) {
+                          final expiresAt = snapshot.data!;
+                          final now = DateTime.now();
+                          final isExpired = expiresAt.isBefore(now);
+                          final timeRemaining = expiresAt.difference(now);
 
-                            String expiryText;
-                            if (isExpired) {
-                              expiryText = 'Expired';
-                            } else if (timeRemaining.inDays > 0) {
-                              expiryText = 'Expires in ${timeRemaining.inDays}d ${timeRemaining.inHours % 24}h';
-                            } else if (timeRemaining.inHours > 0) {
-                              expiryText = 'Expires in ${timeRemaining.inHours}h ${timeRemaining.inMinutes % 60}m';
-                            } else {
-                              expiryText = 'Expires in ${timeRemaining.inMinutes}m';
-                            }
-
-                            return Row(
-                              children: [
-                                Icon(
-                                  Icons.schedule,
-                                  size: 14,
-                                  color: isExpired ? TKitColors.error : TKitColors.textMuted,
-                                ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  expiryText,
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: isExpired ? TKitColors.error : TKitColors.textMuted,
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                ),
-                              ],
-                            );
+                          String expiryText;
+                          if (isExpired) {
+                            expiryText = 'Expired';
+                          } else if (timeRemaining.inDays > 0) {
+                            expiryText = 'Expires in ${timeRemaining.inDays}d ${timeRemaining.inHours % 24}h';
+                          } else if (timeRemaining.inHours > 0) {
+                            expiryText = 'Expires in ${timeRemaining.inHours}h ${timeRemaining.inMinutes % 60}m';
+                          } else {
+                            expiryText = 'Expires in ${timeRemaining.inMinutes}m';
                           }
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: isLoading
-                                  ? null
-                                  : () {
-                                      context.read<AuthProvider>().logout();
-                                    },
-                              icon: const Icon(Icons.logout, size: 16),
-                              label: Text(l10n.settingsTwitchDisconnect),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: TKitColors.error,
-                                side: const BorderSide(color: TKitColors.error),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ] else ...[
-                      Text(
-                        l10n.settingsTwitchConnectDescription,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: TKitColors.textMuted,
-                          fontSize: 12,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: FilledButton.icon(
-                              onPressed: isLoading
-                                  ? null
-                                  : () async {
-                                      // Initiate Device Code Flow
-                                      final authProvider = context.read<AuthProvider>();
-                                      final deviceCodeResponse = await authProvider.initiateDeviceCodeAuth();
 
-                                      if (deviceCodeResponse != null && context.mounted) {
-                                        // Show Device Code auth page
-                                        showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (dialogContext) => DeviceCodeAuthPage(
-                                            deviceCodeResponse: deviceCodeResponse,
-                                            onSuccess: () {
-                                              // Close dialog and refresh auth state
-                                              Navigator.of(dialogContext).pop();
-                                              context.read<AuthProvider>().checkAuthStatus();
-                                            },
-                                            onCancel: () {
-                                              // Close dialog
-                                              Navigator.of(dialogContext).pop();
-                                            },
-                                          ),
-                                        );
-                                      }
-                                    },
-                              icon: const Icon(Icons.link, size: 16),
-                              label: Text(l10n.settingsTwitchConnect),
-                              style: FilledButton.styleFrom(
-                                backgroundColor: TKitColors.accent,
-                                foregroundColor: TKitColors.textPrimary,
+                          return Row(
+                            children: [
+                              Icon(
+                                Icons.schedule,
+                                size: 14,
+                                color: isExpired ? TKitColors.error : TKitColors.textMuted,
                               ),
-                            ),
+                              const SizedBox(width: 6),
+                              Text(
+                                expiryText,
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: isExpired ? TKitColors.error : TKitColors.textMuted,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: AccentButton(
+                            text: l10n.settingsTwitchDisconnect,
+                            icon: Icons.logout,
+                            onPressed: isLoading
+                                ? null
+                                : () {
+                                    context.read<AuthProvider>().logout();
+                                  },
                           ),
-                        ],
+                        ),
+                      ],
+                    ),
+                  ] else ...[
+                    Text(
+                      l10n.settingsTwitchConnectDescription,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: TKitColors.textMuted,
+                        fontSize: 12,
                       ),
-                    ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: PrimaryButton(
+                            text: l10n.settingsTwitchConnect,
+                            icon: Icons.link,
+                            onPressed: isLoading
+                                ? null
+                                : () async {
+                                    // Initiate Device Code Flow
+                                    final authProvider = context.read<AuthProvider>();
+                                    final deviceCodeResponse = await authProvider.initiateDeviceCodeAuth();
+
+                                    if (deviceCodeResponse != null && context.mounted) {
+                                      // Show Device Code auth page
+                                      showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (dialogContext) => DeviceCodeAuthPage(
+                                          deviceCodeResponse: deviceCodeResponse,
+                                          onSuccess: () {
+                                            // Close dialog and refresh auth state
+                                            Navigator.of(dialogContext).pop();
+                                            context.read<AuthProvider>().checkAuthStatus();
+                                          },
+                                          onCancel: () {
+                                            // Close dialog
+                                            Navigator.of(dialogContext).pop();
+                                          },
+                                        ),
+                                      );
+                                    }
+                                  },
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
-                ),
+                ],
               ),
             ),
           ],
@@ -866,42 +830,35 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
           ),
         ),
         const SizedBox(height: 10),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.warning_amber_rounded,
-                  size: 40,
-                  color: TKitColors.warning,
+        Island.standard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                size: 40,
+                color: TKitColors.warning,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.settingsFactoryResetDescription,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontSize: 13,
                 ),
-                const SizedBox(height: 12),
-                Text(
-                  l10n.settingsFactoryResetDescription,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontSize: 13,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () => _showFactoryResetDialog(context),
-                        icon: const Icon(Icons.restore, size: 16),
-                        label: Text(l10n.settingsFactoryResetButton),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: TKitColors.error,
-                          side: const BorderSide(color: TKitColors.error),
-                        ),
-                      ),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: AccentButton(
+                      text: l10n.settingsFactoryResetButton,
+                      icon: Icons.restore,
+                      onPressed: () => _showFactoryResetDialog(context),
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ],
@@ -925,19 +882,16 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
         ),
         content: Text(l10n.settingsFactoryResetDialogMessage),
         actions: [
-          TextButton(
+          AccentButton(
+            text: l10n.commonCancel,
             onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(l10n.commonCancel),
           ),
-          FilledButton(
+          PrimaryButton(
+            text: l10n.settingsFactoryResetDialogConfirm,
             onPressed: () async {
               Navigator.of(dialogContext).pop();
               await _performFactoryReset(context);
             },
-            style: FilledButton.styleFrom(
-              backgroundColor: TKitColors.error,
-            ),
-            child: Text(l10n.settingsFactoryResetDialogConfirm),
           ),
         ],
       ),
@@ -977,24 +931,13 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
         (failure) {
           // Show error message
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(failure.message),
-                backgroundColor: Colors.red,
-              ),
-            );
+            Toast.error(context, failure.message);
           }
         },
         (_) {
           // Show success message
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(l10n.settingsFactoryResetSuccess),
-                backgroundColor: Colors.green,
-                duration: const Duration(seconds: 5),
-              ),
-            );
+            Toast.success(context, l10n.settingsFactoryResetSuccess);
           }
         },
       );
@@ -1006,12 +949,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
 
       // Show error message
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: ${e.toString()}'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        Toast.error(context, 'Error: ${e.toString()}');
       }
     }
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/text_styles.dart';
+import '../../../../shared/theme/spacing.dart';
+import '../../../../shared/widgets/layout/spacer.dart';
 import '../../../../shared/widgets/buttons/primary_button.dart';
 import '../../../../shared/widgets/buttons/accent_button.dart';
 import '../../domain/entities/category_mapping.dart';
@@ -71,7 +73,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
           children: [
             // Header
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(TKitSpacing.lg),
               decoration: const BoxDecoration(
                 border: Border(bottom: BorderSide(color: TKitColors.border)),
                 color: TKitColors.surfaceVariant,
@@ -83,10 +85,10 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                     color: TKitColors.accent,
                     size: 20,
                   ),
-                  const SizedBox(width: 10),
+                  const HSpace.sm(),
                   Text(
                     isEditMode ? l10n.categoryMappingAddDialogEditTitle : l10n.categoryMappingAddDialogAddTitle,
-                    style: TKitTextStyles.heading3.copyWith(fontSize: 15),
+                    style: TKitTextStyles.heading3,
                   ),
                   const Spacer(),
                   IconButton(
@@ -101,7 +103,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
 
             // Form
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(TKitSpacing.lg),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -116,7 +118,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         letterSpacing: 1.0,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const VSpace.sm(),
                     TextFormField(
                       controller: _processNameController,
                       style: TKitTextStyles.bodyMedium.copyWith(
@@ -154,10 +156,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                           borderRadius: BorderRadius.zero,
                           borderSide: const BorderSide(color: TKitColors.error),
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 10,
-                        ),
+                        contentPadding: const EdgeInsets.all(TKitSpacing.sm),
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -166,7 +165,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 14),
+                    const VSpace.md(),
 
                     // Executable Path (Optional)
                     Text(
@@ -177,7 +176,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         letterSpacing: 1.0,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const VSpace.sm(),
                     TextFormField(
                       controller: _executablePathController,
                       style: TKitTextStyles.bodyMedium.copyWith(
@@ -211,13 +210,10 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                             width: 2,
                           ),
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 10,
-                        ),
+                        contentPadding: const EdgeInsets.all(TKitSpacing.sm),
                       ),
                     ),
-                    const SizedBox(height: 14),
+                    const VSpace.md(),
 
                     // Category ID
                     Text(
@@ -228,7 +224,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         letterSpacing: 1.0,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const VSpace.sm(),
                     TextFormField(
                       controller: _categoryIdController,
                       style: TKitTextStyles.bodyMedium.copyWith(
@@ -266,10 +262,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                           borderRadius: BorderRadius.zero,
                           borderSide: const BorderSide(color: TKitColors.error),
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 10,
-                        ),
+                        contentPadding: const EdgeInsets.all(TKitSpacing.sm),
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -278,7 +271,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 14),
+                    const VSpace.md(),
 
                     // Category Name
                     Text(
@@ -289,7 +282,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         letterSpacing: 1.0,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const VSpace.sm(),
                     TextFormField(
                       controller: _categoryNameController,
                       style: TKitTextStyles.bodyMedium.copyWith(
@@ -327,10 +320,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                           borderRadius: BorderRadius.zero,
                           borderSide: const BorderSide(color: TKitColors.error),
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 10,
-                        ),
+                        contentPadding: const EdgeInsets.all(TKitSpacing.sm),
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -339,7 +329,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 6),
+                    const VSpace.sm(),
                     Text(
                       l10n.categoryMappingAddDialogTip,
                       style: TKitTextStyles.caption.copyWith(
@@ -354,7 +344,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
 
             // Footer
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(TKitSpacing.lg),
               decoration: const BoxDecoration(
                 border: Border(top: BorderSide(color: TKitColors.border)),
               ),
@@ -366,7 +356,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                     onPressed: () => Navigator.of(context).pop(),
                     width: 110,
                   ),
-                  const SizedBox(width: 10),
+                  const HSpace.sm(),
                   PrimaryButton(
                     text: isEditMode ? l10n.categoryMappingAddDialogUpdate : l10n.categoryMappingAddDialogAdd,
                     icon: isEditMode ? Icons.check : Icons.add,

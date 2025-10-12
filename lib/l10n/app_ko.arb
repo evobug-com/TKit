@@ -28,6 +28,10 @@
   "@hello": {
     "description": "Hello greeting"
   },
+  "languageNativeName": "한국어",
+  "@languageNativeName": {
+    "description": "Native name of this language"
+  },
   "languageEnglish": "English",
   "@languageEnglish": {
     "description": "English language name"

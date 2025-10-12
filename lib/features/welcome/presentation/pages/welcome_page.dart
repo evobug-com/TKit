@@ -7,6 +7,12 @@ import '../../../../core/services/language_service.dart';
 import '../../../../core/routing/app_router.dart';
 import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/text_styles.dart';
+import '../../../../shared/theme/spacing.dart';
+import '../../../../shared/widgets/layout/spacer.dart';
+import '../../../../shared/widgets/layout/island.dart';
+import '../../../../shared/widgets/buttons/primary_button.dart';
+import '../../../../shared/widgets/buttons/accent_button.dart';
+import '../../../../shared/widgets/indicators/loading_indicator.dart';
 import '../../../../core/config/app_config.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/states/auth_state.dart';
@@ -149,7 +155,7 @@ class _WelcomePageState extends State<WelcomePage>
             // Header section
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: TKitSpacing.xxl, horizontal: TKitSpacing.xxl),
               decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: TKitColors.border, width: 1),
@@ -215,7 +221,7 @@ class _WelcomePageState extends State<WelcomePage>
               child: FadeTransition(
                 opacity: _fadeAnimation,
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(TKitSpacing.xxl),
                   child: Center(
                     child: Container(
                       constraints: const BoxConstraints(maxWidth: 560),
@@ -233,7 +239,7 @@ class _WelcomePageState extends State<WelcomePage>
             // Footer with action buttons
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(TKitSpacing.xxl),
               decoration: const BoxDecoration(
                 border: Border(
                   top: BorderSide(color: TKitColors.border, width: 1),
@@ -318,7 +324,6 @@ class _WelcomePageState extends State<WelcomePage>
           child: Text(
             label.toUpperCase(),
             style: TKitTextStyles.bodySmall.copyWith(
-              fontSize: 10,
               letterSpacing: 0.5,
               fontWeight: FontWeight.w600,
               color: isActive ? TKitColors.textPrimary : TKitColors.textMuted,
@@ -345,7 +350,7 @@ class _WelcomePageState extends State<WelcomePage>
         const SizedBox(height: 16),
 
         Container(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(TKitSpacing.xxl),
           decoration: BoxDecoration(
             color: TKitColors.surface,
             border: Border.all(
@@ -402,7 +407,7 @@ class _WelcomePageState extends State<WelcomePage>
             const SizedBox(height: 16),
 
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(TKitSpacing.xxl),
               decoration: BoxDecoration(
                 color: TKitColors.surface,
                 border: Border.all(
@@ -443,7 +448,7 @@ class _WelcomePageState extends State<WelcomePage>
                   // Status or description
                   if (isAuthenticated) ...[
                     Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(TKitSpacing.lg),
                       decoration: BoxDecoration(
                         color: TKitColors.success.withOpacity(0.1),
                         border: Border.all(
@@ -487,42 +492,37 @@ class _WelcomePageState extends State<WelcomePage>
                         height: 1.5,
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const VSpace.xxl(),
 
                     // Authorize button
-                    SizedBox(
-                      width: double.infinity,
-                      height: 44,
-                      child: _ActionButton(
-                        onPressed: isLoading
-                            ? null
-                            : () async {
-                                // Initiate Device Code Flow
-                                final authProvider = context.read<AuthProvider>();
-                                final deviceCodeResponse = await authProvider.initiateDeviceCodeAuth();
+                    PrimaryButton(
+                      text: l10n.welcomeTwitchAuthorizeButton,
+                      icon: Icons.link,
+                      onPressed: isLoading
+                          ? null
+                          : () async {
+                              // Initiate Device Code Flow
+                              final authProvider = context.read<AuthProvider>();
+                              final deviceCodeResponse = await authProvider.initiateDeviceCodeAuth();
 
-                                if (deviceCodeResponse != null && context.mounted) {
-                                  // Show Device Code auth page
-                                  showDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (dialogContext) => DeviceCodeAuthPage(
-                                      deviceCodeResponse: deviceCodeResponse,
-                                      onSuccess: () {
-                                        Navigator.of(dialogContext).pop();
-                                        context.read<AuthProvider>().checkAuthStatus();
-                                      },
-                                      onCancel: () {
-                                        Navigator.of(dialogContext).pop();
-                                      },
-                                    ),
-                                  );
-                                }
-                              },
-                        label: l10n.welcomeTwitchAuthorizeButton,
-                        icon: Icons.link,
-                        isPrimary: true,
-                      ),
+                              if (deviceCodeResponse != null && context.mounted) {
+                                // Show Device Code auth page
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (dialogContext) => DeviceCodeAuthPage(
+                                    deviceCodeResponse: deviceCodeResponse,
+                                    onSuccess: () {
+                                      Navigator.of(dialogContext).pop();
+                                      context.read<AuthProvider>().checkAuthStatus();
+                                    },
+                                    onCancel: () {
+                                      Navigator.of(dialogContext).pop();
+                                    },
+                                  ),
+                                );
+                              }
+                            },
                     ),
                   ],
                 ],
@@ -541,7 +541,7 @@ class _WelcomePageState extends State<WelcomePage>
 
         if (settingsState is! SettingsLoaded) {
           // Show loading or initialize settings
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: LoadingIndicator());
         }
 
         final settings = settingsState.settings;
@@ -561,7 +561,7 @@ class _WelcomePageState extends State<WelcomePage>
             const SizedBox(height: 16),
 
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(TKitSpacing.xxl),
               decoration: BoxDecoration(
                 color: TKitColors.surface,
                 border: Border.all(
@@ -684,10 +684,10 @@ class _WelcomePageState extends State<WelcomePage>
                           Icons.arrow_drop_down,
                           color: TKitColors.textSecondary,
                         ),
-                        style: TKitTextStyles.body.copyWith(
+                        style: TKitTextStyles.bodyMedium.copyWith(
                           color: TKitColors.textPrimary,
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.md, vertical: TKitSpacing.sm),
                         items: WindowControlsPosition.values.map((position) {
                           return DropdownMenuItem<WindowControlsPosition>(
                             value: position,
@@ -730,27 +730,11 @@ class _WelcomePageState extends State<WelcomePage>
   }
 
   Widget _buildLanguageDropdown(AppLocalizations l10n) {
-    // Build language map dynamically from supported locales
-    // Using a map to retrieve the correct language name property
-    final languageNameGetters = {
-      'en': (AppLocalizations l) => l.languageEnglish,
-      'cs': (AppLocalizations l) => l.languageCzech,
-      'de': (AppLocalizations l) => l.languageGerman,
-      'es': (AppLocalizations l) => l.languageSpanish,
-      'fr': (AppLocalizations l) => l.languageFrench,
-      'ja': (AppLocalizations l) => l.languageJapanese,
-      'ko': (AppLocalizations l) => l.languageKorean,
-      'pl': (AppLocalizations l) => l.languagePolish,
-      'pt': (AppLocalizations l) => l.languagePortuguese,
-      'zh': (AppLocalizations l) => l.languageChinese,
-    };
-
+    // Build language map dynamically from supported locales using languageNativeName
     final languages = Map.fromEntries(
       AppLocalizations.supportedLocales.map((locale) {
         final localizations = lookupAppLocalizations(locale);
-        final getter = languageNameGetters[locale.languageCode];
-        final languageName = getter != null ? getter(localizations) : locale.languageCode;
-        return MapEntry(locale.languageCode, languageName);
+        return MapEntry(locale.languageCode, localizations.languageNativeName);
       }),
     );
 
@@ -771,10 +755,10 @@ class _WelcomePageState extends State<WelcomePage>
             Icons.arrow_drop_down,
             color: TKitColors.textSecondary,
           ),
-          style: TKitTextStyles.body.copyWith(
+          style: TKitTextStyles.bodyMedium.copyWith(
             color: TKitColors.textPrimary,
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.md, vertical: TKitSpacing.sm),
           items: languages.entries.map((entry) {
             return DropdownMenuItem<String>(
               value: entry.key,
@@ -794,15 +778,10 @@ class _WelcomePageState extends State<WelcomePage>
   Widget _buildFooterButtons(AppLocalizations l10n) {
     if (_currentStep == 0) {
       // Step 1: Next button
-      return SizedBox(
-        width: double.infinity,
-        height: 44,
-        child: _ActionButton(
-          onPressed: _goToNextStep,
-          label: l10n.welcomeButtonNext,
-          icon: Icons.arrow_forward,
-          isPrimary: true,
-        ),
+      return PrimaryButton(
+        text: l10n.welcomeButtonNext,
+        icon: Icons.arrow_forward,
+        onPressed: _goToNextStep,
       );
     } else if (_currentStep == 1) {
       // Step 2: Back and Next buttons
@@ -810,24 +789,17 @@ class _WelcomePageState extends State<WelcomePage>
         children: [
           SizedBox(
             width: 120,
-            height: 44,
-            child: _ActionButton(
+            child: AccentButton(
+              text: l10n.welcomeButtonBack,
               onPressed: _goToPreviousStep,
-              label: l10n.welcomeButtonBack,
-              icon: Icons.arrow_back,
-              isPrimary: false,
             ),
           ),
-          const SizedBox(width: 12),
+          const HSpace.md(),
           Expanded(
-            child: SizedBox(
-              height: 44,
-              child: _ActionButton(
-                onPressed: _goToNextStep,
-                label: l10n.welcomeButtonNext,
-                icon: Icons.arrow_forward,
-                isPrimary: true,
-              ),
+            child: PrimaryButton(
+              text: l10n.welcomeButtonNext,
+              icon: Icons.arrow_forward,
+              onPressed: _goToNextStep,
             ),
           ),
         ],
@@ -838,124 +810,21 @@ class _WelcomePageState extends State<WelcomePage>
         children: [
           SizedBox(
             width: 120,
-            height: 44,
-            child: _ActionButton(
+            child: AccentButton(
+              text: l10n.welcomeButtonBack,
               onPressed: _goToPreviousStep,
-              label: l10n.welcomeButtonBack,
-              icon: Icons.arrow_back,
-              isPrimary: false,
             ),
           ),
-          const SizedBox(width: 12),
+          const HSpace.md(),
           Expanded(
-            child: SizedBox(
-              height: 44,
-              child: _ActionButton(
-                onPressed: _onComplete,
-                label: l10n.continueButton.toUpperCase(),
-                icon: Icons.check,
-                isPrimary: true,
-              ),
+            child: PrimaryButton(
+              text: l10n.continueButton.toUpperCase(),
+              icon: Icons.check,
+              onPressed: _onComplete,
             ),
           ),
         ],
       );
     }
-  }
-}
-
-/// Action button with hover effects
-class _ActionButton extends StatefulWidget {
-  final VoidCallback? onPressed;
-  final String label;
-  final IconData? icon;
-  final bool isPrimary;
-
-  const _ActionButton({
-    required this.onPressed,
-    required this.label,
-    this.icon,
-    required this.isPrimary,
-  });
-
-  @override
-  State<_ActionButton> createState() => _ActionButtonState();
-}
-
-class _ActionButtonState extends State<_ActionButton> {
-  bool _isHovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final isEnabled = widget.onPressed != null;
-
-    return MouseRegion(
-      cursor: isEnabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
-      onEnter: (_) {
-        if (isEnabled) {
-          setState(() => _isHovered = true);
-        }
-      },
-      onExit: (_) => setState(() => _isHovered = false),
-      child: GestureDetector(
-        onTap: isEnabled ? widget.onPressed : null,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          decoration: BoxDecoration(
-            color: widget.isPrimary
-                ? (!isEnabled
-                    ? TKitColors.accentDim
-                    : (_isHovered ? TKitColors.accentHover : TKitColors.accent))
-                : (_isHovered ? TKitColors.surfaceVariant : Colors.transparent),
-            border: Border.all(
-              color: widget.isPrimary ? Colors.transparent : TKitColors.border,
-              width: 1,
-            ),
-          ),
-          child: Center(
-            child: AnimatedOpacity(
-              opacity: isEnabled ? 1.0 : 0.5,
-              duration: const Duration(milliseconds: 200),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (widget.icon != null && widget.label.toUpperCase().contains('BACK')) ...[
-                    Icon(
-                      widget.icon,
-                      size: 16,
-                      color: widget.isPrimary
-                          ? TKitColors.textPrimary
-                          : TKitColors.textSecondary,
-                    ),
-                    const SizedBox(width: 8),
-                  ],
-                  Text(
-                    widget.label,
-                    style: TKitTextStyles.button.copyWith(
-                      color: widget.isPrimary
-                          ? TKitColors.textPrimary
-                          : TKitColors.textSecondary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      letterSpacing: 1.2,
-                    ),
-                  ),
-                  if (widget.icon != null && !widget.label.toUpperCase().contains('BACK')) ...[
-                    const SizedBox(width: 8),
-                    Icon(
-                      widget.icon,
-                      size: 16,
-                      color: widget.isPrimary
-                          ? TKitColors.textPrimary
-                          : TKitColors.textSecondary,
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

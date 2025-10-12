@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/text_styles.dart';
+import '../../../../shared/theme/spacing.dart';
+import '../../../../shared/widgets/layout/spacer.dart';
 import '../../domain/entities/orchestration_status.dart';
 import 'update_status_indicator.dart';
 
@@ -17,20 +19,19 @@ class StatusDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(TKitSpacing.lg),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        border: Border.all(color: AppColors.borderSubtle, width: 1),
+        color: TKitColors.surface,
+        border: Border.all(color: TKitColors.border, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Header - minimal
-          Text(l10n.autoSwitcherStatusHeader, style: AppTextStyles.heading3.copyWith(
+          Text(l10n.autoSwitcherStatusHeader, style: TKitTextStyles.labelSmall.copyWith(
             letterSpacing: 1.2,
-            fontSize: 11,
           )),
-          const SizedBox(height: 12),
+          const VSpace.md(),
 
           // Current Process
           _buildStatusItem(
@@ -38,11 +39,11 @@ class StatusDashboard extends StatelessWidget {
             label: l10n.autoSwitcherStatusCurrentProcess,
             value: status?.currentProcess ?? l10n.autoSwitcherStatusNone,
             valueColor: status?.currentProcess != null
-                ? AppColors.textPrimary
-                : AppColors.textMuted,
+                ? TKitColors.textPrimary
+                : TKitColors.textMuted,
           ),
 
-          const SizedBox(height: 12),
+          const VSpace.md(),
 
           // Matched Category
           _buildStatusItem(
@@ -50,11 +51,11 @@ class StatusDashboard extends StatelessWidget {
             label: l10n.autoSwitcherStatusMatchedCategory,
             value: status?.matchedCategory ?? l10n.autoSwitcherStatusNone,
             valueColor: status?.matchedCategory != null
-                ? AppColors.textPrimary
-                : AppColors.textMuted,
+                ? TKitColors.textPrimary
+                : TKitColors.textMuted,
           ),
 
-          const SizedBox(height: 12),
+          const VSpace.md(),
 
           // Last Update Time
           _buildStatusItem(
@@ -63,15 +64,15 @@ class StatusDashboard extends StatelessWidget {
             value: status?.lastUpdateTime != null
                 ? _formatTimestamp(status!.lastUpdateTime!)
                 : l10n.autoSwitcherStatusNever,
-            valueColor: AppColors.textSecondary,
+            valueColor: TKitColors.textSecondary,
           ),
 
-          const SizedBox(height: 12),
+          const VSpace.md(),
 
           // Update Status
           _buildUpdateStatus(context),
 
-          const SizedBox(height: 16),
+          const VSpace.lg(),
 
           // Orchestration State
           _buildOrchestrationState(context),
@@ -91,17 +92,16 @@ class StatusDashboard extends StatelessWidget {
       children: [
         Text(
           label,
-          style: AppTextStyles.caption.copyWith(
-            color: AppColors.textMuted,
+          style: TKitTextStyles.caption.copyWith(
+            color: TKitColors.textMuted,
             letterSpacing: 0.8,
-            fontSize: 10,
           ),
         ),
-        const SizedBox(height: 3),
+        const SizedBox(height: TKitSpacing.headerGap),
         Text(
           value,
-          style: AppTextStyles.bodySmall.copyWith(
-            color: valueColor ?? AppColors.textPrimary,
+          style: TKitTextStyles.bodySmall.copyWith(
+            color: valueColor ?? TKitColors.textPrimary,
             fontWeight: FontWeight.w500,
             fontSize: 12,
           ),
@@ -118,7 +118,7 @@ class StatusDashboard extends StatelessWidget {
         context,
         label: l10n.autoSwitcherStatusUpdateStatus,
         value: l10n.autoSwitcherStatusNoUpdatesYet,
-        valueColor: AppColors.textMuted,
+        valueColor: TKitColors.textMuted,
       );
     }
 
@@ -126,26 +126,26 @@ class StatusDashboard extends StatelessWidget {
         ? UpdateStatusType.success
         : UpdateStatusType.error;
     final statusText = lastSuccess ? l10n.autoSwitcherStatusSuccess : l10n.autoSwitcherStatusFailed;
-    final statusColor = lastSuccess ? AppColors.success : AppColors.error;
+    final statusColor = lastSuccess ? TKitColors.success : TKitColors.error;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           l10n.autoSwitcherStatusUpdateStatus,
-          style: AppTextStyles.caption.copyWith(
-            color: AppColors.textSecondary,
+          style: TKitTextStyles.caption.copyWith(
+            color: TKitColors.textSecondary,
             letterSpacing: 0.5,
           ),
         ),
-        const SizedBox(height: 4),
+        const VSpace.xs(),
         Row(
           children: [
             UpdateStatusIndicator(status: indicator),
-            const SizedBox(width: 8),
+            const HSpace.sm(),
             Text(
               statusText,
-              style: AppTextStyles.body.copyWith(
+              style: TKitTextStyles.body.copyWith(
                 color: statusColor,
                 fontWeight: FontWeight.w600,
               ),
@@ -153,10 +153,10 @@ class StatusDashboard extends StatelessWidget {
           ],
         ),
         if (!lastSuccess && status?.errorMessage != null) ...[
-          const SizedBox(height: 4),
+          const VSpace.xs(),
           Text(
             status!.errorMessage!,
-            style: AppTextStyles.caption.copyWith(color: AppColors.error),
+            style: TKitTextStyles.caption.copyWith(color: TKitColors.error),
           ),
         ],
       ],
@@ -166,30 +166,29 @@ class StatusDashboard extends StatelessWidget {
   Widget _buildOrchestrationState(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(TKitSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.surfaceVariant,
-        border: Border.all(color: AppColors.borderSubtle, width: 1),
+        color: TKitColors.surface,
+        border: Border.all(color: TKitColors.border, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             l10n.autoSwitcherStatusSystemState,
-            style: AppTextStyles.caption.copyWith(
-              color: AppColors.textMuted,
+            style: TKitTextStyles.caption.copyWith(
+              color: TKitColors.textMuted,
               letterSpacing: 0.8,
-              fontSize: 10,
             ),
           ),
-          const SizedBox(height: 6),
+          const VSpace.sm(),
           Row(
             children: [
               UpdateStatusIndicator(status: _getOrchestrationStatusIndicator()),
-              const SizedBox(width: 6),
+              const HSpace.sm(),
               Text(
                 _getOrchestrationStateText(context),
-                style: AppTextStyles.bodySmall.copyWith(
+                style: TKitTextStyles.bodySmall.copyWith(
                   color: _getOrchestrationStateColor(),
                   fontWeight: FontWeight.w500,
                   fontSize: 12,
@@ -236,16 +235,16 @@ class StatusDashboard extends StatelessWidget {
   }
 
   Color _getOrchestrationStateColor() {
-    if (status == null) return AppColors.textMuted;
+    if (status == null) return TKitColors.textMuted;
     switch (status!.state) {
       case OrchestrationState.idle:
-        return AppColors.textMuted;
+        return TKitColors.textMuted;
       case OrchestrationState.error:
-        return AppColors.error;
+        return TKitColors.error;
       case OrchestrationState.updatingCategory:
-        return AppColors.accent;
+        return TKitColors.accent;
       default:
-        return AppColors.textSecondary;
+        return TKitColors.textSecondary;
     }
   }
 

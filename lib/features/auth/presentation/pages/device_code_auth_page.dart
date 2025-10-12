@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
+import '../../../../shared/widgets/buttons/buttons.dart';
 import '../../data/models/device_code_response.dart';
 import '../providers/auth_provider.dart';
 
@@ -149,10 +150,11 @@ class _DeviceCodeAuthPageState extends State<DeviceCodeAuthPage> {
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.close),
+                TKitIconButton(
+                  icon: Icons.close,
                   onPressed: widget.onCancel,
                   tooltip: l10n.authDeviceCodeCancel,
+                  showBorder: false,
                 ),
               ],
             ),
@@ -193,17 +195,10 @@ class _DeviceCodeAuthPageState extends State<DeviceCodeAuthPage> {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  FilledButton.icon(
+                  PrimaryButton(
+                    text: l10n.authDeviceCodeOpenBrowser,
+                    icon: Icons.open_in_browser,
                     onPressed: _openBrowser,
-                    icon: const Icon(Icons.open_in_browser, size: 18),
-                    label: Text(l10n.authDeviceCodeOpenBrowser),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: TKitColors.accent,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 16,
-                      ),
-                    ),
                   ),
                 ],
               ),
@@ -254,26 +249,12 @@ class _DeviceCodeAuthPageState extends State<DeviceCodeAuthPage> {
                   const SizedBox(width: 12),
                   Column(
                     children: [
-                      FilledButton.icon(
+                      PrimaryButton(
+                        text: _codeCopied
+                            ? l10n.authDeviceCodeCopied
+                            : l10n.authDeviceCodeCopyCode,
+                        icon: _codeCopied ? Icons.check : Icons.copy,
                         onPressed: _copyCode,
-                        icon: Icon(
-                          _codeCopied ? Icons.check : Icons.copy,
-                          size: 18,
-                        ),
-                        label: Text(
-                          _codeCopied
-                              ? l10n.authDeviceCodeCopied
-                              : l10n.authDeviceCodeCopyCode,
-                        ),
-                        style: FilledButton.styleFrom(
-                          backgroundColor: _codeCopied
-                              ? TKitColors.success
-                              : TKitColors.accent,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 16,
-                          ),
-                        ),
                       ),
                     ],
                   ),

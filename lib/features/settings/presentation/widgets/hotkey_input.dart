@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import '../../../../shared/widgets/hotkey_display.dart';
+import '../../../../shared/widgets/buttons/accent_button.dart';
 
 /// Widget for recording and displaying keyboard shortcuts
 class HotkeyInput extends StatefulWidget {
@@ -241,12 +242,10 @@ class _HotkeyInputState extends State<HotkeyInput> {
             ] else if (widget.currentHotkey != null && widget.currentHotkey!.isNotEmpty) ...[
               HotkeyDisplay(hotkeyString: widget.currentHotkey!),
               const SizedBox(width: 6),
-              TextButton(
+              AccentButton(
+                text: AppLocalizations.of(context)!.hotkeyInputChange,
                 onPressed: _startRecording,
-                child: Text(
-                  AppLocalizations.of(context)!.hotkeyInputChange,
-                  style: const TextStyle(fontSize: 13),
-                ),
+                width: 80,
               ),
               const SizedBox(width: 4),
               IconButton(
@@ -260,13 +259,11 @@ class _HotkeyInputState extends State<HotkeyInput> {
                 ),
               ),
             ] else ...[
-              TextButton.icon(
+              AccentButton(
+                text: AppLocalizations.of(context)!.hotkeyInputSetHotkey,
+                icon: Icons.keyboard,
                 onPressed: _startRecording,
-                icon: const Icon(Icons.keyboard, size: 14),
-                label: Text(
-                  AppLocalizations.of(context)!.hotkeyInputSetHotkey,
-                  style: const TextStyle(fontSize: 13),
-                ),
+                width: 120,
               ),
             ],
           ],

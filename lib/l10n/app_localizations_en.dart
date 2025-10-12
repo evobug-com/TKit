@@ -30,6 +30,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hello => 'Hello';
 
   @override
+  String get languageNativeName => 'English';
+
+  @override
   String get languageEnglish => 'English';
 
   @override

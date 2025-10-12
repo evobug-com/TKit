@@ -30,6 +30,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get hello => 'Bonjour';
 
   @override
+  String get languageNativeName => 'Français';
+
+  @override
   String get languageEnglish => 'English';
 
   @override

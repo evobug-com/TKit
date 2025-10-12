@@ -30,6 +30,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get hello => 'Ahoj';
 
   @override
+  String get languageNativeName => 'Čeština';
+
+  @override
   String get languageEnglish => 'English';
 
   @override

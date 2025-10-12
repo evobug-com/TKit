@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
-import '../../../../shared/theme/text_styles.dart';
+import '../../../../shared/theme/spacing.dart';
+import '../../../../shared/widgets/layout/page_header.dart';
+import '../../../../shared/widgets/layout/spacer.dart';
+import '../../../../shared/widgets/feedback/toast.dart';
 import '../../../settings/presentation/providers/settings_provider.dart';
 import '../../../settings/presentation/states/settings_state.dart';
 import '../../domain/usecases/get_orchestration_status_usecase.dart';
@@ -68,25 +71,18 @@ class _AutoSwitcherPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: TKitColors.background,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(TKitSpacing.pagePadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Page Header - minimal
-            Text(AppLocalizations.of(context)!.autoSwitcherPageTitle, style: AppTextStyles.heading2.copyWith(
-              letterSpacing: 1.2,
-              fontSize: 12,
-            )),
-            const SizedBox(height: 4),
-            Text(
-              AppLocalizations.of(context)!.autoSwitcherPageDescription,
-              style: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.textMuted,
-              ),
+            // Page Header
+            PageHeader(
+              title: AppLocalizations.of(context)!.autoSwitcherPageTitle,
+              subtitle: AppLocalizations.of(context)!.autoSwitcherPageDescription,
             ),
-            const SizedBox(height: 20),
+            const VSpace.lg(),
 
             // Two-column layout
             Expanded(
@@ -105,30 +101,17 @@ class _AutoSwitcherPageContent extends StatelessWidget {
                     builder: (context, provider, child) {
                       final state = provider.state;
 
-                      // Show snackbar for errors
+                      // Show toast for errors
                       if (state is UpdateError) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(state.errorMessage),
-                              backgroundColor: AppColors.error,
-                              behavior: SnackBarBehavior.floating,
-                            ),
-                          );
+                          Toast.error(context, state.errorMessage);
                         });
                       }
 
                       // Show success message
                       if (state is UpdateSuccess && state.message != null) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(state.message!),
-                              backgroundColor: AppColors.success,
-                              behavior: SnackBarBehavior.floating,
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
+                          Toast.success(context, state.message!);
                         });
                       }
 
@@ -142,7 +125,7 @@ class _AutoSwitcherPageContent extends StatelessWidget {
                           // Left column - Status Dashboard (2/3 width)
                           Expanded(flex: 2, child: StatusDashboard(status: status)),
 
-                          const SizedBox(width: 16),
+                          const HSpace.lg(),
 
                           // Right column - Control Panel (1/3 width)
                           Expanded(

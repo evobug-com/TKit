@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../shared/theme/spacing.dart';
 
 /// Reusable dropdown widget for settings
 class SettingsDropdown<T> extends StatelessWidget {
@@ -33,7 +34,7 @@ class SettingsDropdown<T> extends StatelessWidget {
           ),
         ),
         if (description != null) ...[
-          const SizedBox(height: 2),
+          const SizedBox(height: TKitSpacing.headerGap),
           Text(
             description!,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -42,12 +43,12 @@ class SettingsDropdown<T> extends StatelessWidget {
             ),
           ),
         ],
-        const SizedBox(height: 6),
+        const SizedBox(height: TKitSpacing.sm),
         DropdownButtonFormField<T>(
           initialValue: value,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            contentPadding: EdgeInsets.symmetric(horizontal: TKitSpacing.md, vertical: TKitSpacing.lg),
           ),
           items: items,
           onChanged: onChanged,

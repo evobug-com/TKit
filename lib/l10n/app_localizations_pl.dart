@@ -30,6 +30,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get hello => 'Witaj';
 
   @override
+  String get languageNativeName => 'Polski';
+
+  @override
   String get languageEnglish => 'English';
 
   @override

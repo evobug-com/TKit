@@ -6,9 +6,9 @@ import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/text_styles.dart';
 import '../../../../shared/widgets/cards/panel_card.dart';
 import '../../../../shared/widgets/indicators/loading_indicator.dart';
+import '../../../../shared/widgets/buttons/buttons.dart';
 import '../providers/auth_provider.dart';
 import '../states/auth_state.dart';
-import '../widgets/auth_button.dart';
 import '../widgets/auth_status_indicator.dart';
 
 /// Authentication page with Twitch branding
@@ -124,11 +124,10 @@ class _AuthPageContent extends StatelessWidget {
             style: TKitTextStyles.heading2,
           ),
           const Spacer(),
-          IconButton(
-            icon: const Icon(Icons.close, color: TKitColors.textSecondary),
+          TKitIconButton(
+            icon: Icons.close,
             onPressed: () => Navigator.of(context).pop(),
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
+            showBorder: false,
           ),
         ],
       ),
@@ -207,12 +206,12 @@ class _AuthPageContent extends StatelessWidget {
               ),
             ],
             const SizedBox(height: 28),
-            AuthButton(
+            PrimaryButton(
+              text: AppLocalizations.of(context)!.authTryAgain,
+              icon: Icons.refresh,
               onPressed: () {
                 context.read<AuthProvider>().authenticate();
               },
-              text: AppLocalizations.of(context)!.authTryAgain,
-              icon: Icons.refresh,
             ),
           ],
         ),
@@ -309,28 +308,12 @@ class _AuthPageContent extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
-                SizedBox(
+                PrimaryButton(
+                  text: AppLocalizations.of(context)!.authConnectToTwitchButton,
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      context.read<AuthProvider>().authenticate();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Color(0xFF9147FF),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!.authConnectToTwitchButton,
-                      style: TKitTextStyles.bodyMedium.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF9147FF),
-                      ),
-                    ),
-                  ),
+                  onPressed: () {
+                    context.read<AuthProvider>().authenticate();
+                  },
                 ),
               ],
             ),
