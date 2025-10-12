@@ -9,7 +9,6 @@ import 'package:tkit/core/routing/app_router.dart';
 import 'package:tkit/core/services/updater/github_update_service.dart';
 import 'package:tkit/features/auth/data/datasources/token_local_datasource.dart';
 import 'package:tkit/features/auth/domain/repositories/i_auth_repository.dart';
-import 'package:tkit/features/auth/domain/usecases/authenticate_usecase.dart';
 import 'package:tkit/features/auth/domain/usecases/check_auth_status_usecase.dart';
 import 'package:tkit/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:tkit/features/auth/domain/usecases/logout_usecase.dart';
@@ -22,7 +21,6 @@ import 'package:tkit/shared/theme/app_theme.dart';
 import 'main_window_test.mocks.dart';
 
 @GenerateMocks([
-  AuthenticateUseCase,
   LogoutUseCase,
   CheckAuthStatusUseCase,
   RefreshTokenUseCase,

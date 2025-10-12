@@ -4,36 +4,34 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i5;
-import 'dart:io' as _i21;
+import 'dart:io' as _i20;
 
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:tkit/core/errors/failure.dart' as _i6;
-import 'package:tkit/core/services/updater/github_update_service.dart' as _i17;
+import 'package:tkit/core/services/updater/github_update_service.dart' as _i16;
 import 'package:tkit/core/services/updater/models/download_progress.dart'
-    as _i19;
-import 'package:tkit/core/services/updater/models/update_info.dart' as _i18;
+    as _i18;
+import 'package:tkit/core/services/updater/models/update_info.dart' as _i17;
 import 'package:tkit/features/auth/data/datasources/token_local_datasource.dart'
-    as _i13;
+    as _i12;
 import 'package:tkit/features/auth/data/models/device_code_response.dart'
-    as _i16;
-import 'package:tkit/features/auth/data/models/twitch_token_model.dart' as _i14;
-import 'package:tkit/features/auth/data/models/twitch_user_model.dart' as _i15;
-import 'package:tkit/features/auth/domain/entities/twitch_token.dart' as _i11;
-import 'package:tkit/features/auth/domain/entities/twitch_user.dart' as _i7;
+    as _i15;
+import 'package:tkit/features/auth/data/models/twitch_token_model.dart' as _i13;
+import 'package:tkit/features/auth/data/models/twitch_user_model.dart' as _i14;
+import 'package:tkit/features/auth/domain/entities/twitch_token.dart' as _i9;
+import 'package:tkit/features/auth/domain/entities/twitch_user.dart' as _i11;
 import 'package:tkit/features/auth/domain/repositories/i_auth_repository.dart'
     as _i2;
-import 'package:tkit/features/auth/domain/usecases/authenticate_usecase.dart'
-    as _i4;
 import 'package:tkit/features/auth/domain/usecases/check_auth_status_usecase.dart'
-    as _i9;
+    as _i7;
 import 'package:tkit/features/auth/domain/usecases/get_current_user_usecase.dart'
-    as _i12;
-import 'package:tkit/features/auth/domain/usecases/logout_usecase.dart' as _i8;
-import 'package:tkit/features/auth/domain/usecases/refresh_token_usecase.dart'
     as _i10;
+import 'package:tkit/features/auth/domain/usecases/logout_usecase.dart' as _i4;
+import 'package:tkit/features/auth/domain/usecases/refresh_token_usecase.dart'
+    as _i8;
 import 'package:tkit/features/settings/domain/entities/update_channel.dart'
-    as _i20;
+    as _i19;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -48,6 +46,7 @@ import 'package:tkit/features/settings/domain/entities/update_channel.dart'
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
+// ignore_for_file: invalid_use_of_internal_member
 
 class _FakeIAuthRepository_0 extends _i1.SmartFake
     implements _i2.IAuthRepository {
@@ -60,45 +59,10 @@ class _FakeEither_1<L, R> extends _i1.SmartFake implements _i3.Either<L, R> {
     : super(parent, parentInvocation);
 }
 
-/// A class which mocks [AuthenticateUseCase].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockAuthenticateUseCase extends _i1.Mock
-    implements _i4.AuthenticateUseCase {
-  MockAuthenticateUseCase() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i2.IAuthRepository get repository =>
-      (super.noSuchMethod(
-            Invocation.getter(#repository),
-            returnValue: _FakeIAuthRepository_0(
-              this,
-              Invocation.getter(#repository),
-            ),
-          )
-          as _i2.IAuthRepository);
-
-  @override
-  _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser>> call() =>
-      (super.noSuchMethod(
-            Invocation.method(#call, []),
-            returnValue:
-                _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser>>.value(
-                  _FakeEither_1<_i6.Failure, _i7.TwitchUser>(
-                    this,
-                    Invocation.method(#call, []),
-                  ),
-                ),
-          )
-          as _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser>>);
-}
-
 /// A class which mocks [LogoutUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLogoutUseCase extends _i1.Mock implements _i8.LogoutUseCase {
+class MockLogoutUseCase extends _i1.Mock implements _i4.LogoutUseCase {
   MockLogoutUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -132,7 +96,7 @@ class MockLogoutUseCase extends _i1.Mock implements _i8.LogoutUseCase {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockCheckAuthStatusUseCase extends _i1.Mock
-    implements _i9.CheckAuthStatusUseCase {
+    implements _i7.CheckAuthStatusUseCase {
   MockCheckAuthStatusUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -166,7 +130,7 @@ class MockCheckAuthStatusUseCase extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockRefreshTokenUseCase extends _i1.Mock
-    implements _i10.RefreshTokenUseCase {
+    implements _i8.RefreshTokenUseCase {
   MockRefreshTokenUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -183,25 +147,25 @@ class MockRefreshTokenUseCase extends _i1.Mock
           as _i2.IAuthRepository);
 
   @override
-  _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchToken>> call() =>
+  _i5.Future<_i3.Either<_i6.Failure, _i9.TwitchToken>> call() =>
       (super.noSuchMethod(
             Invocation.method(#call, []),
             returnValue:
-                _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchToken>>.value(
-                  _FakeEither_1<_i6.Failure, _i11.TwitchToken>(
+                _i5.Future<_i3.Either<_i6.Failure, _i9.TwitchToken>>.value(
+                  _FakeEither_1<_i6.Failure, _i9.TwitchToken>(
                     this,
                     Invocation.method(#call, []),
                   ),
                 ),
           )
-          as _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchToken>>);
+          as _i5.Future<_i3.Either<_i6.Failure, _i9.TwitchToken>>);
 }
 
 /// A class which mocks [GetCurrentUserUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockGetCurrentUserUseCase extends _i1.Mock
-    implements _i12.GetCurrentUserUseCase {
+    implements _i10.GetCurrentUserUseCase {
   MockGetCurrentUserUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -218,31 +182,31 @@ class MockGetCurrentUserUseCase extends _i1.Mock
           as _i2.IAuthRepository);
 
   @override
-  _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser?>> call() =>
+  _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchUser?>> call() =>
       (super.noSuchMethod(
             Invocation.method(#call, []),
             returnValue:
-                _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser?>>.value(
-                  _FakeEither_1<_i6.Failure, _i7.TwitchUser?>(
+                _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchUser?>>.value(
+                  _FakeEither_1<_i6.Failure, _i11.TwitchUser?>(
                     this,
                     Invocation.method(#call, []),
                   ),
                 ),
           )
-          as _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser?>>);
+          as _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchUser?>>);
 }
 
 /// A class which mocks [TokenLocalDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockTokenLocalDataSource extends _i1.Mock
-    implements _i13.TokenLocalDataSource {
+    implements _i12.TokenLocalDataSource {
   MockTokenLocalDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<void> saveToken(_i14.TwitchTokenModel? token) =>
+  _i5.Future<void> saveToken(_i13.TwitchTokenModel? token) =>
       (super.noSuchMethod(
             Invocation.method(#saveToken, [token]),
             returnValue: _i5.Future<void>.value(),
@@ -251,12 +215,12 @@ class MockTokenLocalDataSource extends _i1.Mock
           as _i5.Future<void>);
 
   @override
-  _i5.Future<_i14.TwitchTokenModel?> getToken() =>
+  _i5.Future<_i13.TwitchTokenModel?> getToken() =>
       (super.noSuchMethod(
             Invocation.method(#getToken, []),
-            returnValue: _i5.Future<_i14.TwitchTokenModel?>.value(),
+            returnValue: _i5.Future<_i13.TwitchTokenModel?>.value(),
           )
-          as _i5.Future<_i14.TwitchTokenModel?>);
+          as _i5.Future<_i13.TwitchTokenModel?>);
 
   @override
   _i5.Future<void> deleteToken() =>
@@ -276,7 +240,7 @@ class MockTokenLocalDataSource extends _i1.Mock
           as _i5.Future<bool>);
 
   @override
-  _i5.Future<void> saveUser(_i15.TwitchUserModel? user) =>
+  _i5.Future<void> saveUser(_i14.TwitchUserModel? user) =>
       (super.noSuchMethod(
             Invocation.method(#saveUser, [user]),
             returnValue: _i5.Future<void>.value(),
@@ -285,12 +249,12 @@ class MockTokenLocalDataSource extends _i1.Mock
           as _i5.Future<void>);
 
   @override
-  _i5.Future<_i15.TwitchUserModel?> getUser() =>
+  _i5.Future<_i14.TwitchUserModel?> getUser() =>
       (super.noSuchMethod(
             Invocation.method(#getUser, []),
-            returnValue: _i5.Future<_i15.TwitchUserModel?>.value(),
+            returnValue: _i5.Future<_i14.TwitchUserModel?>.value(),
           )
-          as _i5.Future<_i15.TwitchUserModel?>);
+          as _i5.Future<_i14.TwitchUserModel?>);
 
   @override
   _i5.Future<void> deleteUser() =>
@@ -320,30 +284,30 @@ class MockIAuthRepository extends _i1.Mock implements _i2.IAuthRepository {
   }
 
   @override
-  _i5.Future<_i3.Either<_i6.Failure, _i16.DeviceCodeResponse>>
+  _i5.Future<_i3.Either<_i6.Failure, _i15.DeviceCodeResponse>>
   initiateDeviceCodeAuth() =>
       (super.noSuchMethod(
             Invocation.method(#initiateDeviceCodeAuth, []),
             returnValue:
                 _i5.Future<
-                  _i3.Either<_i6.Failure, _i16.DeviceCodeResponse>
+                  _i3.Either<_i6.Failure, _i15.DeviceCodeResponse>
                 >.value(
-                  _FakeEither_1<_i6.Failure, _i16.DeviceCodeResponse>(
+                  _FakeEither_1<_i6.Failure, _i15.DeviceCodeResponse>(
                     this,
                     Invocation.method(#initiateDeviceCodeAuth, []),
                   ),
                 ),
           )
-          as _i5.Future<_i3.Either<_i6.Failure, _i16.DeviceCodeResponse>>);
+          as _i5.Future<_i3.Either<_i6.Failure, _i15.DeviceCodeResponse>>);
 
   @override
-  _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser>>
+  _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchUser>>
   authenticateWithDeviceCode(String? deviceCode) =>
       (super.noSuchMethod(
             Invocation.method(#authenticateWithDeviceCode, [deviceCode]),
             returnValue:
-                _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser>>.value(
-                  _FakeEither_1<_i6.Failure, _i7.TwitchUser>(
+                _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchUser>>.value(
+                  _FakeEither_1<_i6.Failure, _i11.TwitchUser>(
                     this,
                     Invocation.method(#authenticateWithDeviceCode, [
                       deviceCode,
@@ -351,7 +315,7 @@ class MockIAuthRepository extends _i1.Mock implements _i2.IAuthRepository {
                   ),
                 ),
           )
-          as _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser>>);
+          as _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchUser>>);
 
   @override
   _i5.Future<_i3.Either<_i6.Failure, void>> logout() =>
@@ -367,18 +331,18 @@ class MockIAuthRepository extends _i1.Mock implements _i2.IAuthRepository {
           as _i5.Future<_i3.Either<_i6.Failure, void>>);
 
   @override
-  _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchToken>> refreshToken() =>
+  _i5.Future<_i3.Either<_i6.Failure, _i9.TwitchToken>> refreshToken() =>
       (super.noSuchMethod(
             Invocation.method(#refreshToken, []),
             returnValue:
-                _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchToken>>.value(
-                  _FakeEither_1<_i6.Failure, _i11.TwitchToken>(
+                _i5.Future<_i3.Either<_i6.Failure, _i9.TwitchToken>>.value(
+                  _FakeEither_1<_i6.Failure, _i9.TwitchToken>(
                     this,
                     Invocation.method(#refreshToken, []),
                   ),
                 ),
           )
-          as _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchToken>>);
+          as _i5.Future<_i3.Either<_i6.Failure, _i9.TwitchToken>>);
 
   @override
   _i5.Future<_i3.Either<_i6.Failure, bool>> isAuthenticated() =>
@@ -394,58 +358,58 @@ class MockIAuthRepository extends _i1.Mock implements _i2.IAuthRepository {
           as _i5.Future<_i3.Either<_i6.Failure, bool>>);
 
   @override
-  _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchToken?>> getCurrentToken() =>
+  _i5.Future<_i3.Either<_i6.Failure, _i9.TwitchToken?>> getCurrentToken() =>
       (super.noSuchMethod(
             Invocation.method(#getCurrentToken, []),
             returnValue:
-                _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchToken?>>.value(
-                  _FakeEither_1<_i6.Failure, _i11.TwitchToken?>(
+                _i5.Future<_i3.Either<_i6.Failure, _i9.TwitchToken?>>.value(
+                  _FakeEither_1<_i6.Failure, _i9.TwitchToken?>(
                     this,
                     Invocation.method(#getCurrentToken, []),
                   ),
                 ),
           )
-          as _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchToken?>>);
+          as _i5.Future<_i3.Either<_i6.Failure, _i9.TwitchToken?>>);
 
   @override
-  _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser?>> getCurrentUser() =>
+  _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchUser?>> getCurrentUser() =>
       (super.noSuchMethod(
             Invocation.method(#getCurrentUser, []),
             returnValue:
-                _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser?>>.value(
-                  _FakeEither_1<_i6.Failure, _i7.TwitchUser?>(
+                _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchUser?>>.value(
+                  _FakeEither_1<_i6.Failure, _i11.TwitchUser?>(
                     this,
                     Invocation.method(#getCurrentUser, []),
                   ),
                 ),
           )
-          as _i5.Future<_i3.Either<_i6.Failure, _i7.TwitchUser?>>);
+          as _i5.Future<_i3.Either<_i6.Failure, _i11.TwitchUser?>>);
 }
 
 /// A class which mocks [GitHubUpdateService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockGitHubUpdateService extends _i1.Mock
-    implements _i17.GitHubUpdateService {
+    implements _i16.GitHubUpdateService {
   MockGitHubUpdateService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Stream<_i18.UpdateInfo?> get updateAvailable =>
+  _i5.Stream<_i17.UpdateInfo?> get updateAvailable =>
       (super.noSuchMethod(
             Invocation.getter(#updateAvailable),
-            returnValue: _i5.Stream<_i18.UpdateInfo?>.empty(),
+            returnValue: _i5.Stream<_i17.UpdateInfo?>.empty(),
           )
-          as _i5.Stream<_i18.UpdateInfo?>);
+          as _i5.Stream<_i17.UpdateInfo?>);
 
   @override
-  _i5.Stream<_i19.DownloadProgress> get downloadProgress =>
+  _i5.Stream<_i18.DownloadProgress> get downloadProgress =>
       (super.noSuchMethod(
             Invocation.getter(#downloadProgress),
-            returnValue: _i5.Stream<_i19.DownloadProgress>.empty(),
+            returnValue: _i5.Stream<_i18.DownloadProgress>.empty(),
           )
-          as _i5.Stream<_i19.DownloadProgress>);
+          as _i5.Stream<_i18.DownloadProgress>);
 
   @override
   bool get isInitialized =>
@@ -454,7 +418,7 @@ class MockGitHubUpdateService extends _i1.Mock
 
   @override
   void setChannelProvider(
-    _i5.Future<_i20.UpdateChannel> Function()? provider,
+    _i5.Future<_i19.UpdateChannel> Function()? provider,
   ) => super.noSuchMethod(
     Invocation.method(#setChannelProvider, [provider]),
     returnValueForMissingStub: null,
@@ -470,26 +434,26 @@ class MockGitHubUpdateService extends _i1.Mock
           as _i5.Future<void>);
 
   @override
-  _i5.Future<_i18.UpdateInfo?> checkForUpdates({
+  _i5.Future<_i17.UpdateInfo?> checkForUpdates({
     bool? silent = true,
-    _i20.UpdateChannel? channel = _i20.UpdateChannel.stable,
+    _i19.UpdateChannel? channel = _i19.UpdateChannel.stable,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#checkForUpdates, [], {
               #silent: silent,
               #channel: channel,
             }),
-            returnValue: _i5.Future<_i18.UpdateInfo?>.value(),
+            returnValue: _i5.Future<_i17.UpdateInfo?>.value(),
           )
-          as _i5.Future<_i18.UpdateInfo?>);
+          as _i5.Future<_i17.UpdateInfo?>);
 
   @override
-  _i5.Future<_i21.File?> downloadUpdate(_i18.UpdateInfo? updateInfo) =>
+  _i5.Future<_i20.File?> downloadUpdate(_i17.UpdateInfo? updateInfo) =>
       (super.noSuchMethod(
             Invocation.method(#downloadUpdate, [updateInfo]),
-            returnValue: _i5.Future<_i21.File?>.value(),
+            returnValue: _i5.Future<_i20.File?>.value(),
           )
-          as _i5.Future<_i21.File?>);
+          as _i5.Future<_i20.File?>);
 
   @override
   void cancelDownload() => super.noSuchMethod(
@@ -498,7 +462,7 @@ class MockGitHubUpdateService extends _i1.Mock
   );
 
   @override
-  _i5.Future<bool> installUpdate(_i21.File? installerFile) =>
+  _i5.Future<bool> installUpdate(_i20.File? installerFile) =>
       (super.noSuchMethod(
             Invocation.method(#installUpdate, [installerFile]),
             returnValue: _i5.Future<bool>.value(false),
