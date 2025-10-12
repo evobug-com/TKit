@@ -3,6 +3,10 @@
 #include <tlhelp32.h>
 #include <sstream>
 #include <iomanip>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <cctype>
 
 // Helper to convert wide string to UTF-8 string
 std::string WideToUtf8(const std::wstring& wstr) {
@@ -36,9 +40,20 @@ std::string EscapeJson(const std::string& str) {
     return oss.str();
 }
 
+// NOTE: Window title extraction removed intentionally.
+// Window titles vary by platform/language (e.g., "HELLDIVERS 2" vs "HELLDIVERS 2 (ヘルダイバー2)")
+// and cannot be reliably used for game detection across different regions.
+// We now rely exclusively on actual process names (e.g., "helldivers2.exe") which are consistent.
+
 // Fallback method to get process name using CreateToolhelp32Snapshot
-// This works even when OpenProcess fails (e.g., elevated processes)
+// This is the most reliable method and works even when OpenProcess fails (e.g., elevated/protected processes)
+// This should work for ALL running processes, including games with anti-cheat software
 std::string GetProcessNameByPID(DWORD pid) {
+    // System and Idle processes should not be processed
+    if (pid == 0 || pid == 4) {
+        return "Unknown";
+    }
+
     HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     if (hSnapshot == INVALID_HANDLE_VALUE) {
         return "Unknown";
@@ -51,13 +66,60 @@ std::string GetProcessNameByPID(DWORD pid) {
         do {
             if (pe32.th32ProcessID == pid) {
                 CloseHandle(hSnapshot);
-                return WideToUtf8(std::wstring(pe32.szExeFile));
+                std::string processName = WideToUtf8(std::wstring(pe32.szExeFile));
+
+                // Filter out system process names
+                if (processName == "[System Process]" || processName == "System") {
+                    return "Unknown";
+                }
+
+                return processName;
             }
         } while (Process32NextW(hSnapshot, &pe32));
     }
 
     CloseHandle(hSnapshot);
     return "Unknown";
+}
+
+// Alternative method using GetProcessImageFileName
+// Less reliable than CreateToolhelp32Snapshot, but can work in some edge cases
+std::string GetProcessImageFileNameByPID(DWORD pid) {
+    // System and Idle processes should not be processed
+    if (pid == 0 || pid == 4) {
+        return "";
+    }
+
+    HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, pid);
+    if (hProcess == NULL) {
+        return "";
+    }
+
+    wchar_t buffer[MAX_PATH];
+    DWORD size = MAX_PATH;
+
+    // Try GetProcessImageFileNameW
+    if (GetProcessImageFileNameW(hProcess, buffer, size) > 0) {
+        CloseHandle(hProcess);
+        std::wstring path(buffer);
+
+        // Extract just the filename from the path
+        size_t lastSlash = path.find_last_of(L"\\/");
+        if (lastSlash != std::wstring::npos) {
+            std::string processName = WideToUtf8(path.substr(lastSlash + 1));
+
+            // Filter out system process names
+            if (processName == "[System Process]" || processName == "System") {
+                return "";
+            }
+
+            return processName;
+        }
+        return WideToUtf8(path);
+    }
+
+    CloseHandle(hProcess);
+    return "";
 }
 
 std::optional<ProcessInfo> GetFocusedProcessInfo() {
@@ -67,23 +129,10 @@ std::optional<ProcessInfo> GetFocusedProcessInfo() {
         return std::nullopt;
     }
 
-    // For some applications (especially games), the foreground window might be a child
-    // Get the root owner window to ensure we have the main application window
-    HWND rootWindow = GetAncestor(hwnd, GA_ROOTOWNER);
-    if (rootWindow != NULL) {
-        hwnd = rootWindow;
-    }
-
     ProcessInfo info;
 
-    // Get process ID
+    // Get process ID from the foreground window
     GetWindowThreadProcessId(hwnd, &info.pid);
-
-    // Validate that we got a valid PID (not system process)
-    if (info.pid == 0 || info.pid == 4) {
-        // PID 0 = Idle, PID 4 = System - these are not real applications
-        return std::nullopt;
-    }
 
     // Get window title
     wchar_t windowTitle[256];
@@ -100,12 +149,20 @@ std::optional<ProcessInfo> GetFocusedProcessInfo() {
 
     if (hProcess == NULL) {
         // Still can't get process info (likely elevated process with anti-cheat)
-        // Try fallback method using CreateToolhelp32Snapshot
+        // Try multiple fallback methods in order of reliability
+
+        // Method 1: CreateToolhelp32Snapshot (most reliable, works for all processes)
         info.processName = GetProcessNameByPID(info.pid);
 
-        // Filter out system process names
-        if (info.processName == "[System Process]" || info.processName == "System") {
-            info.processName = "Unknown";
+        // Method 2: Try GetProcessImageFileName if toolhelp32 failed
+        if (info.processName == "Unknown" || info.processName == "[System Process]" || info.processName == "System") {
+            std::string imageName = GetProcessImageFileNameByPID(info.pid);
+            if (!imageName.empty() && imageName != "[System Process]" && imageName != "System") {
+                info.processName = imageName;
+            } else {
+                // If all methods fail, keep it as "Unknown" - DO NOT extract from window title
+                info.processName = "Unknown";
+            }
         }
 
         info.executablePath = "";
@@ -142,12 +199,18 @@ std::optional<ProcessInfo> GetFocusedProcessInfo() {
                 info.processName = info.executablePath;
             }
         } else {
-            // Last resort: use CreateToolhelp32Snapshot
+            // Use fallback methods in order of reliability
             info.processName = GetProcessNameByPID(info.pid);
 
-            // Filter out system process names
-            if (info.processName == "[System Process]" || info.processName == "System") {
-                info.processName = "Unknown";
+            // Try GetProcessImageFileName if toolhelp32 failed
+            if (info.processName == "Unknown" || info.processName == "[System Process]" || info.processName == "System") {
+                std::string imageName = GetProcessImageFileNameByPID(info.pid);
+                if (!imageName.empty() && imageName != "[System Process]" && imageName != "System") {
+                    info.processName = imageName;
+                } else {
+                    // Keep as "Unknown" if all methods fail
+                    info.processName = "Unknown";
+                }
             }
         }
     }
@@ -155,12 +218,18 @@ std::optional<ProcessInfo> GetFocusedProcessInfo() {
     CloseHandle(hProcess);
 
     // Final validation: ensure we have a process name
-    if (info.processName.empty()) {
+    if (info.processName.empty() || info.processName == "[System Process]" || info.processName == "System") {
+        // Try all fallback methods in order of reliability
         info.processName = GetProcessNameByPID(info.pid);
 
-        // Filter out system process names
-        if (info.processName == "[System Process]" || info.processName == "System") {
-            info.processName = "Unknown";
+        if (info.processName == "Unknown" || info.processName == "[System Process]" || info.processName == "System") {
+            std::string imageName = GetProcessImageFileNameByPID(info.pid);
+            if (!imageName.empty() && imageName != "[System Process]" && imageName != "System") {
+                info.processName = imageName;
+            } else {
+                // Keep as "Unknown" if all reliable methods fail
+                info.processName = "Unknown";
+            }
         }
     }
 
