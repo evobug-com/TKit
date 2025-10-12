@@ -5,7 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
-import '../../../../shared/widgets/buttons/buttons.dart';
+import '../../../../shared/theme/text_styles.dart';
+import '../../../../shared/theme/spacing.dart';
+import '../../../../shared/widgets/layout/spacer.dart';
+import '../../../../shared/widgets/layout/island.dart';
+import '../../../../shared/widgets/buttons/primary_button.dart';
+import '../../../../shared/widgets/buttons/icon_button.dart';
 import '../../data/models/device_code_response.dart';
 import '../providers/auth_provider.dart';
 
@@ -70,7 +75,9 @@ class _DeviceCodeAuthPageState extends State<DeviceCodeAuthPage> {
 
     try {
       final authProvider = context.read<AuthProvider>();
-      await authProvider.authenticateWithDeviceCode(widget.deviceCodeResponse.deviceCode);
+      await authProvider.authenticateWithDeviceCode(
+        widget.deviceCodeResponse.deviceCode,
+      );
 
       // Success!
       if (mounted) {
@@ -125,119 +132,97 @@ class _DeviceCodeAuthPageState extends State<DeviceCodeAuthPage> {
     final isExpired = _timeRemaining.inSeconds <= 0;
 
     return Dialog(
-      backgroundColor: TKitColors.surface,
+      backgroundColor: TKitColors.background,
       child: Container(
         width: 500,
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Header
-            Row(
-              children: [
-                Icon(
-                  Icons.tv,
-                  color: TKitColors.accent,
-                  size: 32,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    l10n.authDeviceCodeTitle,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                TKitIconButton(
-                  icon: Icons.close,
-                  onPressed: widget.onCancel,
-                  tooltip: l10n.authDeviceCodeCancel,
-                  showBorder: false,
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-
-            // Instructions
-            Text(
-              l10n.authDeviceCodeInstructions,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 24),
-
-            // Step 1: Go to URL
-            _buildStep(
-              context,
-              number: '1',
-              title: l10n.authDeviceCodeStep1,
-              child: Row(
+        child: Island.standard(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Header
+              Row(
                 children: [
+                  const Icon(
+                    Icons.tv,
+                    color: TKitColors.textSecondary,
+                    size: 24,
+                  ),
+                  HSpace.sm(),
                   Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        color: TKitColors.surfaceVariant,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: TKitColors.border),
-                      ),
-                      child: Text(
-                        widget.deviceCodeResponse.verificationUri,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontFamily: 'monospace',
-                          color: TKitColors.accent,
-                        ),
-                      ),
+                    child: Text(
+                      l10n.authDeviceCodeTitle,
+                      style: TKitTextStyles.heading1,
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  PrimaryButton(
-                    text: l10n.authDeviceCodeOpenBrowser,
-                    icon: Icons.open_in_browser,
-                    onPressed: _openBrowser,
+                  TKitIconButton(
+                    icon: Icons.close,
+                    onPressed: widget.onCancel,
+                    tooltip: l10n.authDeviceCodeCancel,
+                    showBorder: false,
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 20),
+              VSpace.xl(),
 
-            // Step 2: Enter code
-            _buildStep(
-              context,
-              number: '2',
-              title: l10n.authDeviceCodeStep2,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: TKitColors.surfaceVariant,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
+              // Instructions
+              Text(
+                l10n.authDeviceCodeInstructions,
+                style: TKitTextStyles.bodyMedium.copyWith(
+                  color: TKitColors.textSecondary,
+                ),
+              ),
+              VSpace.xl(),
+
+              // Step 1: Go to URL
+              _buildStep(
+                context,
+                number: '1',
+                title: l10n.authDeviceCodeStep1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    IslandVariant.standard(
+                      child: SelectableText(
+                        widget.deviceCodeResponse.verificationUri,
+                        style: TKitTextStyles.code.copyWith(
                           color: TKitColors.accent,
-                          width: 2,
                         ),
                       ),
+                    ),
+                    VSpace.md(),
+                    PrimaryButton(
+                      text: l10n.authDeviceCodeOpenBrowser,
+                      icon: Icons.open_in_browser,
+                      onPressed: _openBrowser,
+                    ),
+                  ],
+                ),
+              ),
+              VSpace.lg(),
+
+              // Step 2: Enter code
+              _buildStep(
+                context,
+                number: '2',
+                title: l10n.authDeviceCodeStep2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    IslandVariant.standard(
                       child: Column(
                         children: [
                           Text(
                             l10n.authDeviceCodeCodeLabel,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            style: TKitTextStyles.labelSmall.copyWith(
                               color: TKitColors.textMuted,
-                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          VSpace.sm(),
                           SelectableText(
                             widget.deviceCodeResponse.userCode,
-                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                            style: TKitTextStyles.heading1.copyWith(
                               fontFamily: 'monospace',
-                              fontWeight: FontWeight.bold,
                               letterSpacing: 4,
                               color: TKitColors.accent,
                             ),
@@ -245,107 +230,89 @@ class _DeviceCodeAuthPageState extends State<DeviceCodeAuthPage> {
                         ],
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    children: [
-                      PrimaryButton(
-                        text: _codeCopied
-                            ? l10n.authDeviceCodeCopied
-                            : l10n.authDeviceCodeCopyCode,
-                        icon: _codeCopied ? Icons.check : Icons.copy,
-                        onPressed: _copyCode,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Step 3: Authorize
-            _buildStep(
-              context,
-              number: '3',
-              title: l10n.authDeviceCodeStep3,
-            ),
-            const SizedBox(height: 24),
-
-            // Status and timer
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: isExpired
-                    ? TKitColors.error.withOpacity(0.1)
-                    : TKitColors.surfaceVariant,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: isExpired ? TKitColors.error : TKitColors.border,
-                ),
-              ),
-              child: Row(
-                children: [
-                  if (!isExpired) ...[
-                    SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation(TKitColors.accent),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.authDeviceCodeWaiting,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            l10n.authDeviceCodeExpiresIn(
-                              (_timeRemaining.inMinutes % 60).toString().padLeft(2, '0'),
-                              (_timeRemaining.inSeconds % 60).toString().padLeft(2, '0'),
-                            ),
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: TKitColors.textMuted,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ] else ...[
-                    Icon(Icons.error_outline, color: TKitColors.error),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        l10n.authDeviceCodeExpired,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: TKitColors.error,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                    VSpace.md(),
+                    PrimaryButton(
+                      text: _codeCopied
+                          ? l10n.authDeviceCodeCopied
+                          : l10n.authDeviceCodeCopyCode,
+                      icon: _codeCopied ? Icons.check : Icons.copy,
+                      onPressed: _copyCode,
                     ),
                   ],
-                ],
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
+              VSpace.lg(),
 
-            // Help text
-            Text(
-              l10n.authDeviceCodeHelp,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: TKitColors.textMuted,
-                fontStyle: FontStyle.italic,
+              // Step 3: Authorize
+              _buildStep(context, number: '3', title: l10n.authDeviceCodeStep3),
+              VSpace.xl(),
+
+              // Status and timer
+              IslandVariant.standard(
+                child: Row(
+                  children: [
+                    if (!isExpired) ...[
+                      const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation(TKitColors.accent),
+                        ),
+                      ),
+                      HSpace.md(),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              l10n.authDeviceCodeWaiting,
+                              style: TKitTextStyles.bodyMedium,
+                            ),
+                            VSpace.xs(),
+                            Text(
+                              l10n.authDeviceCodeExpiresIn(
+                                (_timeRemaining.inMinutes % 60)
+                                    .toString()
+                                    .padLeft(2, '0'),
+                                (_timeRemaining.inSeconds % 60)
+                                    .toString()
+                                    .padLeft(2, '0'),
+                              ),
+                              style: TKitTextStyles.caption,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ] else ...[
+                      const Icon(
+                        Icons.error_outline,
+                        color: TKitColors.error,
+                        size: 18,
+                      ),
+                      HSpace.md(),
+                      Expanded(
+                        child: Text(
+                          l10n.authDeviceCodeExpired,
+                          style: TKitTextStyles.bodyMedium.copyWith(
+                            color: TKitColors.error,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+              VSpace.md(),
+
+              // Help text
+              Text(
+                l10n.authDeviceCodeHelp,
+                style: TKitTextStyles.caption,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -361,37 +328,28 @@ class _DeviceCodeAuthPageState extends State<DeviceCodeAuthPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 32,
-          height: 32,
-          decoration: BoxDecoration(
+          width: 28,
+          height: 28,
+          decoration: const BoxDecoration(
             color: TKitColors.accent,
             shape: BoxShape.circle,
           ),
           child: Center(
             child: Text(
               number,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              style: TKitTextStyles.labelMedium.copyWith(
                 color: TKitColors.textPrimary,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ),
         ),
-        const SizedBox(width: 12),
+        HSpace.md(),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              if (child != null) ...[
-                const SizedBox(height: 8),
-                child,
-              ],
+              Text(title, style: TKitTextStyles.labelLarge),
+              if (child != null) ...[VSpace.sm(), child],
             ],
           ),
         ),

@@ -61,12 +61,15 @@ class AccentButton extends StatelessWidget {
                     Icon(icon, size: 14),
                     const SizedBox(width: 6),
                   ],
-                  Text(
-                    text,
-                    style: TKitTextStyles.buttonSmall.copyWith(
-                      color: onPressed == null
-                          ? TKitColors.textDisabled
-                          : TKitColors.accent,
+                  Flexible(
+                    child: Text(
+                      text,
+                      style: TKitTextStyles.buttonSmall.copyWith(
+                        color: onPressed == null
+                            ? TKitColors.textDisabled
+                            : TKitColors.accent,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
