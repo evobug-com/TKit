@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Installation type detection (MSIX vs EXE) for automatic installer matching
 - Download buttons with version badges in README for all release channels
 - F2 to toggle log window visibility
+- Toggle for Custom/Community mappings tab in Mappings section
 
 #### Changed
 - Update "Ignore" behavior: now version-specific and persistent across restarts
