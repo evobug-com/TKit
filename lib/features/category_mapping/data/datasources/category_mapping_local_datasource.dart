@@ -6,21 +6,20 @@ import '../utils/path_normalizer.dart';
 
 /// Local data source for category mappings using Drift DAO
 ///
-/// Provides CRUD operations and fuzzy matching capabilities using
-/// Levenshtein distance algorithm for finding similar process names.
+/// Provides CRUD operations and exact/normalized matching for finding mappings.
+/// No fuzzy matching to avoid false positives.
 class CategoryMappingLocalDataSource {
   final AppDatabase database;
 
   CategoryMappingLocalDataSource(this.database);
 
-  /// Find a mapping by process name and path with fuzzy matching
+  /// Find a mapping by process name and path
   ///
   /// Implements a multi-step matching strategy with privacy-preserving path matching:
   /// 1. Exact match: processName + path in normalizedInstallPaths array
   /// 2. Exact match: processName only
   /// 3. Normalized match: processName (lowercase, no .exe, no spaces/dashes)
-  /// 4. Fuzzy match: Levenshtein distance (≤ 3)
-  /// 5. Legacy: Match by deprecated executablePath if provided (backward compatibility)
+  /// 4. Legacy: Match by deprecated executablePath if provided (backward compatibility)
   ///
   /// Returns the best match or null if no suitable match found
   Future<CategoryMappingModel?> findMapping(
@@ -71,27 +70,7 @@ class CategoryMappingLocalDataSource {
         }
       }
 
-      // Step 4: Fuzzy matching with Levenshtein distance
-      CategoryMappingEntity? bestMatch;
-      int bestDistance = 4; // Only accept distance ≤ 3
-
-      for (final mapping in allMappings) {
-        final distance = _levenshteinDistance(
-          normalizedInput,
-          _normalizeProcessName(mapping.processName),
-        );
-
-        if (distance < bestDistance) {
-          bestDistance = distance;
-          bestMatch = mapping;
-        }
-      }
-
-      if (bestMatch != null) {
-        return CategoryMappingModel.fromDbEntity(bestMatch);
-      }
-
-      // Step 5: Legacy - Try matching by deprecated executablePath (backward compatibility)
+      // Step 4: Legacy - Try matching by deprecated executablePath (backward compatibility)
       if (executablePath != null && executablePath.isNotEmpty) {
         final pathMatch =
             await (database.select(database.categoryMappings)
@@ -144,24 +123,10 @@ class CategoryMappingLocalDataSource {
         // Insert new mapping
         await database.into(database.categoryMappings).insert(companion);
       } else {
-        // Update existing mapping
-        await database
-            .update(database.categoryMappings)
-            .replace(
-              CategoryMappingEntity(
-                id: mapping.id!,
-                processName: mapping.processName,
-                executablePath: mapping.executablePath,
-                twitchCategoryId: mapping.twitchCategoryId,
-                twitchCategoryName: mapping.twitchCategoryName,
-                createdAt: mapping.createdAt,
-                lastUsedAt: mapping.lastUsedAt,
-                lastApiFetch: mapping.lastApiFetch,
-                cacheExpiresAt: mapping.cacheExpiresAt,
-                manualOverride: mapping.manualOverride,
-                isEnabled: mapping.isEnabled,
-              ),
-            );
+        // Update existing mapping - use companion to preserve all fields
+        await (database.update(database.categoryMappings)
+              ..where((tbl) => tbl.id.equals(mapping.id!)))
+            .write(companion);
       }
     } catch (e) {
       throw CacheException(message: 'Failed to save mapping: ${e.toString()}');
@@ -248,47 +213,5 @@ class CategoryMappingLocalDataSource {
         message: 'Failed to delete expired mappings: ${e.toString()}',
       );
     }
-  }
-
-  /// Calculate Levenshtein distance between two strings
-  ///
-  /// The Levenshtein distance is the minimum number of single-character edits
-  /// (insertions, deletions, or substitutions) required to change one string
-  /// into another.
-  ///
-  /// This implementation uses dynamic programming for efficiency.
-  int _levenshteinDistance(String s1, String s2) {
-    if (s1 == s2) return 0;
-    if (s1.isEmpty) return s2.length;
-    if (s2.isEmpty) return s1.length;
-
-    // Create a matrix to store distances
-    final matrix = List.generate(
-      s1.length + 1,
-      (i) => List.generate(s2.length + 1, (j) => 0),
-    );
-
-    // Initialize first row and column
-    for (int i = 0; i <= s1.length; i++) {
-      matrix[i][0] = i;
-    }
-    for (int j = 0; j <= s2.length; j++) {
-      matrix[0][j] = j;
-    }
-
-    // Fill the matrix
-    for (int i = 1; i <= s1.length; i++) {
-      for (int j = 1; j <= s2.length; j++) {
-        final cost = s1[i - 1] == s2[j - 1] ? 0 : 1;
-
-        matrix[i][j] = [
-          matrix[i - 1][j] + 1, // deletion
-          matrix[i][j - 1] + 1, // insertion
-          matrix[i - 1][j - 1] + cost, // substitution
-        ].reduce((a, b) => a < b ? a : b);
-      }
-    }
-
-    return matrix[s1.length][s2.length];
   }
 }

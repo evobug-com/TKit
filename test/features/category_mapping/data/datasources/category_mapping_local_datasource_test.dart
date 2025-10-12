@@ -87,34 +87,6 @@ void main() {
       expect(result!.twitchCategoryId, '21779');
     });
 
-    test(
-      'should find match with fuzzy matching (Levenshtein distance)',
-      () async {
-        // Leagueee of Legends.exe (2 extra 'e's = distance 2)
-        // act
-        final result = await dataSource.findMapping(
-          'Leagueee of Legends.exe',
-          null,
-        );
-
-        // assert
-        expect(result, isNotNull);
-        expect(result!.twitchCategoryId, '21779');
-      },
-    );
-
-    test('should not find match with distance > 3', () async {
-      // Very different name
-      // act
-      final result = await dataSource.findMapping(
-        'CompletlyDifferent.exe',
-        null,
-      );
-
-      // assert
-      expect(result, isNull);
-    });
-
     test('should return null when no match found', () async {
       // act
       final result = await dataSource.findMapping('Nonexistent.exe', null);
