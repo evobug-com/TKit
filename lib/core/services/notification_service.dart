@@ -22,7 +22,7 @@ class NotificationService {
 
     try {
       await localNotifier.setup(
-        appName: 'TKit Flutter',
+        appName: 'TKit',
         shortcutPolicy: ShortcutPolicy.requireCreate,
       );
       _isInitialized = true;
