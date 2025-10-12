@@ -286,6 +286,21 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsPageDescription => '애플리케이션 동작 및 기본 설정 구성';
 
   @override
+  String get settingsTabGeneral => 'General';
+
+  @override
+  String get settingsTabAutoSwitcher => 'Auto Switcher';
+
+  @override
+  String get settingsTabKeyboard => 'Keyboard';
+
+  @override
+  String get settingsTabTwitch => 'Twitch';
+
+  @override
+  String get settingsTabAdvanced => 'Advanced';
+
+  @override
   String get autoSwitcherStatusNotInitialized => '초기화되지 않음';
 
   @override

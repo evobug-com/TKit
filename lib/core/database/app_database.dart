@@ -27,6 +27,8 @@ class CategoryMappings extends Table {
   DateTimeColumn get cacheExpiresAt => dateTime()();
   BoolColumn get manualOverride =>
       boolean().withDefault(const Constant(false))();
+  BoolColumn get isEnabled =>
+      boolean().withDefault(const Constant(true))();
 }
 
 /// Update History table - stores history of category updates
@@ -97,7 +99,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.test(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   static LazyDatabase _openConnection() {
     return LazyDatabase(() async {
@@ -192,6 +194,52 @@ class AppDatabase extends _$AppDatabase {
       await delete(unknownProcesses).go();
       await delete(topGamesCache).go();
       await delete(communityMappings).go();
+    });
+  }
+
+  /// Seed default mappings on first run
+  /// This method populates the database with default ignored processes
+  Future<void> seedDefaultMappings() async {
+    // Check if already seeded by looking for tkit.exe mapping
+    final existing = await (select(categoryMappings)
+          ..where((tbl) => tbl.processName.equals('tkit.exe')))
+        .getSingleOrNull();
+
+    if (existing != null) {
+      // Already seeded, skip
+      return;
+    }
+
+    await transaction(() async {
+      final now = DateTime.now();
+      final expiresAt = now.add(const Duration(hours: 24));
+
+      // List of default ignored processes
+      final defaultIgnored = [
+        // TKit itself - should be ignored by default
+        {
+          'processName': 'tkit.exe',
+          'twitchCategoryId': 'IGNORE',
+          'twitchCategoryName': 'Ignored Process',
+          'isEnabled': false,
+        },
+      ];
+
+      // Insert default ignored processes
+      for (final mapping in defaultIgnored) {
+        await into(categoryMappings).insert(
+          CategoryMappingsCompanion.insert(
+            processName: mapping['processName']! as String,
+            twitchCategoryId: mapping['twitchCategoryId']! as String,
+            twitchCategoryName: mapping['twitchCategoryName']! as String,
+            lastApiFetch: Value(now),
+            cacheExpiresAt: expiresAt,
+            manualOverride: const Value(true), // User can modify these
+            isEnabled: Value(mapping['isEnabled'] as bool),
+          ),
+          mode: InsertMode.insertOrIgnore, // Avoid duplicates
+        );
+      }
     });
   }
 
@@ -486,6 +534,13 @@ class AppDatabase extends _$AppDatabase {
           '(process_name, twitch_category_id, twitch_category_name, verification_count, source, synced_at) '
           'SELECT process_name, twitch_category_id, twitch_category_name, 100, \'verified\', ${DateTime.now().millisecondsSinceEpoch} '
           'FROM category_mappings WHERE manual_override = 0',
+        );
+      }
+
+      if (from == 3 && to >= 4) {
+        // Migration v3 → v4: Add isEnabled field
+        await customStatement(
+          'ALTER TABLE category_mappings ADD COLUMN is_enabled INTEGER NOT NULL DEFAULT 1',
         );
       }
     },

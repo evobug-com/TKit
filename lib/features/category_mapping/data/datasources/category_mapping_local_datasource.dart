@@ -136,6 +136,7 @@ class CategoryMappingLocalDataSource {
                 lastApiFetch: mapping.lastApiFetch,
                 cacheExpiresAt: mapping.cacheExpiresAt,
                 manualOverride: mapping.manualOverride,
+                isEnabled: mapping.isEnabled,
               ),
             );
       }

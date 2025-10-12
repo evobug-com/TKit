@@ -134,6 +134,9 @@ class _CategoryMappingEditorContent extends StatelessWidget {
                           onDelete: (id) => _handleDelete(context, id),
                           onEdit: (mapping) =>
                               _showEditMappingDialog(context, mapping),
+                          onToggleEnabled: (mapping) {
+                            context.read<CategoryMappingProvider>().toggleEnabled(mapping);
+                          },
                         ),
                       ),
                     ],

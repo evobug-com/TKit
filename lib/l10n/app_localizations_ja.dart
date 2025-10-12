@@ -288,6 +288,21 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsPageDescription => 'アプリケーションの動作と設定を構成';
 
   @override
+  String get settingsTabGeneral => 'General';
+
+  @override
+  String get settingsTabAutoSwitcher => 'Auto Switcher';
+
+  @override
+  String get settingsTabKeyboard => 'Keyboard';
+
+  @override
+  String get settingsTabTwitch => 'Twitch';
+
+  @override
+  String get settingsTabAdvanced => 'Advanced';
+
+  @override
   String get autoSwitcherStatusNotInitialized => '未初期化';
 
   @override

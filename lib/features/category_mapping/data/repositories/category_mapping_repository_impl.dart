@@ -37,6 +37,8 @@ class CategoryMappingRepositoryImpl implements ICategoryMappingRepository {
       // Step 1: Check memory cache first
       final cached = memoryCache.get(processName);
       if (cached != null) {
+        // Return the mapping regardless of isEnabled
+        // Let the caller decide what to do with disabled mappings
         return Right(cached);
       }
 
@@ -47,6 +49,7 @@ class CategoryMappingRepositoryImpl implements ICategoryMappingRepository {
         final entity = result.toEntity();
         // Cache for future lookups
         memoryCache.put(processName, entity);
+        // Return the mapping regardless of isEnabled
         return Right(entity);
       }
 

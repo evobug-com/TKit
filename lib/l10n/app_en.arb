@@ -372,6 +372,26 @@
   "@settingsPageDescription": {
     "description": "Settings page description"
   },
+  "settingsTabGeneral": "General",
+  "@settingsTabGeneral": {
+    "description": "General settings tab"
+  },
+  "settingsTabAutoSwitcher": "Auto Switcher",
+  "@settingsTabAutoSwitcher": {
+    "description": "Auto Switcher settings tab"
+  },
+  "settingsTabKeyboard": "Keyboard",
+  "@settingsTabKeyboard": {
+    "description": "Keyboard settings tab"
+  },
+  "settingsTabTwitch": "Twitch",
+  "@settingsTabTwitch": {
+    "description": "Twitch settings tab"
+  },
+  "settingsTabAdvanced": "Advanced",
+  "@settingsTabAdvanced": {
+    "description": "Advanced settings tab"
+  },
   "autoSwitcherStatusNotInitialized": "NOT INITIALIZED",
   "@autoSwitcherStatusNotInitialized": {
     "description": "Not initialized system state"

@@ -294,6 +294,21 @@ class AppLocalizationsCs extends AppLocalizations {
       'Konfigurace chování a preferencí aplikace';
 
   @override
+  String get settingsTabGeneral => 'General';
+
+  @override
+  String get settingsTabAutoSwitcher => 'Auto Switcher';
+
+  @override
+  String get settingsTabKeyboard => 'Keyboard';
+
+  @override
+  String get settingsTabTwitch => 'Twitch';
+
+  @override
+  String get settingsTabAdvanced => 'Advanced';
+
+  @override
   String get autoSwitcherStatusNotInitialized => 'NEINICIALIZOVÁNO';
 
   @override
@@ -390,7 +405,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get settingsAutoStartMonitoringSubtitle =>
-      'Zahájit monitorování aktivní aplikace při spuštění TKit';
+      'Zahájí monitorování aktivní aplikace při spuštění TKit';
 
   @override
   String get autoSwitcherControlsStopMonitoring => 'ZASTAVIT MONITOROVÁNÍ';
@@ -402,7 +417,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get updateDialogLater => 'Později';
 
   @override
-  String get settingsFallbackBehavior => 'Záložní chování';
+  String get settingsFallbackBehavior => 'Pojistné chování';
 
   @override
   String get autoSwitcherControlsStartMonitoring => 'SPUSTIT MONITOROVÁNÍ';

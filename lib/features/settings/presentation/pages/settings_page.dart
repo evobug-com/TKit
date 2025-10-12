@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:window_manager/window_manager.dart';
 import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/text_styles.dart';
 import '../../../../shared/theme/spacing.dart';
@@ -23,6 +24,7 @@ import '../../../../core/services/updater/github_update_service.dart';
 import '../../domain/usecases/factory_reset_usecase.dart';
 import '../providers/settings_provider.dart';
 import '../providers/window_controls_preview_provider.dart';
+import '../providers/unsaved_changes_notifier.dart';
 import '../states/settings_state.dart';
 import '../widgets/settings_checkbox.dart';
 import '../widgets/settings_dropdown.dart';
@@ -62,20 +64,71 @@ class _SettingsPageContent extends StatefulWidget {
   State<_SettingsPageContent> createState() => _SettingsPageContentState();
 }
 
-class _SettingsPageContentState extends State<_SettingsPageContent> {
+class _SettingsPageContentState extends State<_SettingsPageContent>
+    with TickerProviderStateMixin {
   AppSettings? _currentSettings;
   bool _hasChanges = false;
   bool _isInitialized = false;
   int _resetKey = 0;
-  WindowControlsPosition? _originalWindowControlsPosition;
+  late TabController _tabController;
+  late AnimationController _shakeController;
+  late Animation<double> _shakeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 6, vsync: this);
+
+    // Setup shake animation
+    _shakeController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _shakeAnimation =
+        TweenSequence<double>([
+          TweenSequenceItem(tween: Tween(begin: 0.0, end: 10.0), weight: 1),
+          TweenSequenceItem(tween: Tween(begin: 10.0, end: -10.0), weight: 2),
+          TweenSequenceItem(tween: Tween(begin: -10.0, end: 10.0), weight: 2),
+          TweenSequenceItem(tween: Tween(begin: 10.0, end: -10.0), weight: 2),
+          TweenSequenceItem(tween: Tween(begin: -10.0, end: 0.0), weight: 1),
+        ]).animate(
+          CurvedAnimation(parent: _shakeController, curve: Curves.easeInOut),
+        );
+
+    // Register shake callback with unsaved changes notifier
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<UnsavedChangesNotifier>().setOnNavigationAttempt(() {
+          _shakeController.forward(from: 0.0);
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // Clean up the navigation attempt callback
+    try {
+      context.read<UnsavedChangesNotifier>().setOnNavigationAttempt(null);
+      context.read<UnsavedChangesNotifier>().setHasChanges(false);
+    } catch (_) {
+      // Ignore if context is no longer available
+    }
+    _tabController.dispose();
+    _shakeController.dispose();
+    super.dispose();
+  }
 
   void _updateSettings(AppSettings settings) {
+    final hasChanges = context.read<SettingsProvider>().hasUnsavedChanges(
+      settings,
+    );
     setState(() {
       _currentSettings = settings;
-      _hasChanges = context.read<SettingsProvider>().hasUnsavedChanges(
-        settings,
-      );
+      _hasChanges = hasChanges;
     });
+    // Update the unsaved changes notifier
+    context.read<UnsavedChangesNotifier>().setHasChanges(hasChanges);
   }
 
   void _saveSettings() {
@@ -83,9 +136,6 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
       context.read<SettingsProvider>().updateSettings(_currentSettings!);
       // Clear the window controls preview after saving
       context.read<WindowControlsPreviewProvider>().clearPreview();
-      // Update the original window controls position after saving
-      _originalWindowControlsPosition =
-          _currentSettings!.windowControlsPosition;
     }
   }
 
@@ -107,6 +157,8 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
         _currentSettings = (provider.state as SettingsSaved).settings;
       }
     });
+    // Clear unsaved changes flag
+    context.read<UnsavedChangesNotifier>().setHasChanges(false);
     // Load settings after the current frame to avoid setState during build
     WidgetsBinding.instance.addPostFrameCallback((_) {
       provider.loadSettings();
@@ -129,6 +181,8 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                 _hasChanges = false;
                 _isInitialized = false;
               });
+              // Clear unsaved changes flag
+              context.read<UnsavedChangesNotifier>().setHasChanges(false);
             } else if (state is SettingsError) {
               Toast.error(context, state.message);
             }
@@ -162,31 +216,21 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
           if (!_isInitialized) {
             if (state is SettingsLoaded) {
               _currentSettings = state.settings;
-              _originalWindowControlsPosition =
-                  state.settings.windowControlsPosition;
               _isInitialized = true;
             } else if (state is SettingsSaving) {
               _currentSettings = state.settings;
-              _originalWindowControlsPosition =
-                  state.settings.windowControlsPosition;
               _isInitialized = true;
             } else if (state is SettingsSaved) {
               _currentSettings = state.settings;
-              _originalWindowControlsPosition =
-                  state.settings.windowControlsPosition;
               _isInitialized = true;
             } else if (state is SettingsError &&
                 state.currentSettings != null) {
               _currentSettings = state.currentSettings;
-              _originalWindowControlsPosition =
-                  state.currentSettings!.windowControlsPosition;
               _isInitialized = true;
             } else {
               _currentSettings = AppSettings.defaults(
                 appVersion: AppConfig.appVersion,
               );
-              _originalWindowControlsPosition =
-                  _currentSettings!.windowControlsPosition;
               _isInitialized = true;
             }
           }
@@ -197,426 +241,498 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
               AppSettings.defaults(appVersion: AppConfig.appVersion);
           final l10n = AppLocalizations.of(context)!;
 
-          return Stack(
-            children: [
-              // Scrollable content
-              SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(
-                  TKitSpacing.pagePadding,
-                  _hasChanges ? 70 : TKitSpacing.pagePadding,
-                  TKitSpacing.pagePadding,
-                  TKitSpacing.pagePadding,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Page Header
-                    PageHeader(
-                      title: l10n.settingsPageTitle,
-                      subtitle: l10n.settingsPageDescription,
-                    ),
-                    const VSpace.lg(),
-
-                    // Auto Switcher Settings
-                    _buildSection(l10n.settingsAutoSwitcher, [
-                      // Monitoring Settings
-                      _buildSubsectionTitle(l10n.settingsMonitoring),
-                      const SizedBox(height: 8),
-                      SettingsSlider(
-                        label: l10n.settingsScanIntervalLabel,
-                        description: l10n.settingsScanIntervalDescription,
-                        value: settings.scanIntervalSeconds.toDouble(),
-                        min: 1,
-                        max: 60,
-                        divisions: 59,
-                        onChanged: (value) {
-                          _updateSettings(
-                            settings.copyWith(
-                              scanIntervalSeconds: value.toInt(),
-                            ),
-                          );
-                        },
+          return PopScope(
+            canPop: !_hasChanges,
+            onPopInvokedWithResult: (didPop, result) {
+              if (!didPop && _hasChanges) {
+                // Trigger shake animation when navigation is blocked
+                _shakeController.forward(from: 0.0);
+              }
+            },
+            child: Column(
+              children: [
+                // Page Header
+                Island.comfortable(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PageHeader(
+                        title: l10n.settingsPageTitle,
+                        subtitle: l10n.settingsPageDescription,
                       ),
-                      const SizedBox(height: 10),
-                      SettingsSlider(
-                        label: l10n.settingsDebounceTimeLabel,
-                        description: l10n.settingsDebounceTimeDescription,
-                        value: settings.debounceSeconds.toDouble(),
-                        min: 0,
-                        max: 60,
-                        divisions: 60,
-                        onChanged: (value) {
-                          _updateSettings(
-                            settings.copyWith(debounceSeconds: value.toInt()),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 14),
-
-                      // Auto Start Monitoring
-                      SettingsCheckbox(
-                        label: l10n.settingsAutoStartMonitoringLabel,
-                        subtitle: l10n.settingsAutoStartMonitoringSubtitle,
-                        value: settings.autoStartMonitoring,
-                        onChanged: (value) {
-                          _updateSettings(
-                            settings.copyWith(
-                              autoStartMonitoring: value ?? false,
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 14),
-
-                      // Fallback Behavior
-                      _buildSubsectionTitle(l10n.settingsFallbackBehavior),
-                      const SizedBox(height: 8),
-                      SettingsDropdown<FallbackBehavior>(
-                        label: l10n.settingsFallbackBehaviorLabel,
-                        description: l10n.settingsFallbackBehaviorDescription,
-                        value: settings.fallbackBehavior,
-                        items: FallbackBehavior.values
-                            .map(
-                              (behavior) => DropdownMenuItem(
-                                value: behavior,
-                                child: Text(behavior.localizedName(context)),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          if (value != null) {
-                            _updateSettings(
-                              settings.copyWith(fallbackBehavior: value),
-                            );
-                          }
-                        },
-                      ),
-                      if (settings.fallbackBehavior ==
-                          FallbackBehavior.custom) ...[
-                        const SizedBox(height: 10),
-                        FormFieldWrapper(
-                          label: l10n.settingsCustomCategory,
-                          child: TKitTextField(
-                            hintText: l10n.settingsCustomCategoryHint,
-                            controller: TextEditingController(
-                              text: settings.customFallbackCategoryName ?? '',
-                            ),
-                            readOnly: true,
-                            onTap: () {
-                              // TODO: Open category search dialog
-                              // This will be implemented when Module 4 (Twitch API) is available
-                              Toast.info(
-                                context,
-                                l10n.settingsCategorySearchUnavailable,
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ]),
-                    const SizedBox(height: 20),
-
-                    // Application Settings
-                    _buildSection(l10n.settingsApplication, [
-                      // Language selection
-                      Builder(
-                        builder: (context) {
-                          final l10n = AppLocalizations.of(context)!;
-                          final languageService = Provider.of<LanguageService>(
-                            context,
-                            listen: false,
-                          );
-                          final localeProvider = Provider.of<LocaleProvider>(
-                            context,
-                            listen: false,
-                          );
-                          final currentLocale = languageService
-                              .getCurrentLocale();
-
-                          // Map of language codes to their localized names
-                          final languageNames = <String, String>{
-                            'en': l10n.languageEnglish,
-                            'cs': l10n.languageCzech,
-                            'pl': l10n.languagePolish,
-                            'es': l10n.languageSpanish,
-                            'fr': l10n.languageFrench,
-                            'de': l10n.languageGerman,
-                            'pt': l10n.languagePortuguese,
-                            'ja': l10n.languageJapanese,
-                            'ko': l10n.languageKorean,
-                            'zh': l10n.languageChinese,
-                          };
-
-                          return SettingsDropdown<String>(
-                            label: l10n.settingsLanguage,
-                            description: l10n.settingsLanguageDescription,
-                            value: currentLocale.languageCode,
-                            items: AppLocalizations.supportedLocales
-                                .map(
-                                  (locale) => DropdownMenuItem(
-                                    value: locale.languageCode,
-                                    child: Text(
-                                      languageNames[locale.languageCode] ??
-                                          locale.languageCode.toUpperCase(),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (languageCode) async {
-                              if (languageCode != null) {
-                                await languageService.saveLanguage(
-                                  languageCode,
-                                );
-                                // Update locale in the app
-                                localeProvider.setLocale(Locale(languageCode));
-
-                                // Wait for the next frame to let the app rebuild with new locale
-                                if (context.mounted) {
-                                  WidgetsBinding.instance.addPostFrameCallback((
-                                    _,
-                                  ) {
-                                    if (context.mounted) {
-                                      // Get the updated localization with the new language
-                                      final newL10n = AppLocalizations.of(
-                                        context,
-                                      )!;
-                                      Toast.success(
-                                        context,
-                                        newL10n.languageChangeNotice,
-                                      );
-                                    }
-                                  });
-                                }
-                              }
-                            },
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 4),
-                      SettingsCheckbox(
-                        label: l10n.settingsAutoStartWindowsLabel,
-                        subtitle: l10n.settingsAutoStartWindowsSubtitle,
-                        value: settings.autoStartWithWindows,
-                        onChanged: (value) {
-                          _updateSettings(
-                            settings.copyWith(
-                              autoStartWithWindows: value ?? false,
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 4),
-                      SettingsCheckbox(
-                        label: l10n.settingsStartMinimizedLabel,
-                        subtitle: l10n.settingsStartMinimizedSubtitle,
-                        value: settings.startMinimized,
-                        onChanged: (value) {
-                          _updateSettings(
-                            settings.copyWith(startMinimized: value ?? false),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 4),
-                      SettingsCheckbox(
-                        label: l10n.settingsMinimizeToTrayLabel,
-                        subtitle: l10n.settingsMinimizeToTraySubtitle,
-                        value: settings.minimizeToTray,
-                        onChanged: (value) {
-                          _updateSettings(
-                            settings.copyWith(minimizeToTray: value ?? false),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 4),
-                      SettingsCheckbox(
-                        label: l10n.settingsShowNotificationsLabel,
-                        subtitle: l10n.settingsShowNotificationsSubtitle,
-                        value: settings.showNotifications,
-                        onChanged: (value) {
-                          _updateSettings(
-                            settings.copyWith(
-                              showNotifications: value ?? false,
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 4),
-                      SettingsCheckbox(
-                        label: l10n.settingsNotifyMissingCategoryLabel,
-                        subtitle: l10n.settingsNotifyMissingCategorySubtitle,
-                        value: settings.notifyOnMissingCategory,
-                        onChanged: (value) {
-                          _updateSettings(
-                            settings.copyWith(
-                              notifyOnMissingCategory: value ?? false,
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                      CustomDropdown<WindowControlsPosition>(
-                        label: l10n.settingsWindowControlsPositionLabel,
-                        description:
-                            l10n.settingsWindowControlsPositionDescription,
-                        value: settings.windowControlsPosition,
-                        items: WindowControlsPosition.values
-                            .map(
-                              (position) => CustomDropdownItem(
-                                value: position,
-                                title: position.localizedName(context),
-                                subtitle: null,
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          if (value != null) {
-                            // Update local state to track changes
-                            final updatedSettings = settings.copyWith(
-                              windowControlsPosition: value,
-                            );
-                            _updateSettings(updatedSettings);
-
-                            // Set preview position (not saved to database yet)
-                            context
-                                .read<WindowControlsPreviewProvider>()
-                                .setPreviewPosition(value);
-                          }
-                        },
-                      ),
-                    ]),
-                    const SizedBox(height: 20),
-
-                    // Updates
-                    _buildSection(l10n.settingsUpdates, [
-                      CustomDropdown<UpdateChannel>(
-                        label: l10n.settingsUpdateChannelLabel,
-                        description: l10n.settingsUpdateChannelDescription,
-                        value: settings.updateChannel,
-                        items: UpdateChannel.values
-                            .map(
-                              (channel) => CustomDropdownItem(
-                                value: channel,
-                                title: channel.localizedName(context),
-                                subtitle: channel.localizedDescription(context),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) async {
-                          if (value != null) {
-                            final updatedSettings = settings.copyWith(
-                              updateChannel: value,
-                            );
-                            _updateSettings(updatedSettings);
-
-                            // Save settings immediately
-                            await context
-                                .read<SettingsProvider>()
-                                .updateSettings(updatedSettings);
-
-                            // Trigger update check with new channel
-                            if (context.mounted) {
-                              final updateService = context
-                                  .read<GitHubUpdateService>();
-                              await updateService.checkForUpdates(
-                                silent: false,
-                                channel: value,
-                              );
-
-                              if (context.mounted) {
-                                Toast.success(
-                                  context,
-                                  l10n.settingsUpdateChannelChanged(
-                                    value.localizedName(context),
-                                  ),
-                                );
-                              }
-                            }
-                          }
-                        },
-                      ),
-                    ]),
-                    const SizedBox(height: 20),
-
-                    // Keyboard Shortcuts
-                    _buildSection(l10n.settingsKeyboardShortcuts, [
-                      HotkeyInput(
-                        key: ValueKey(
-                          'hotkey_${settings.manualUpdateHotkey}_$_resetKey',
-                        ),
-                        label: l10n.settingsManualUpdateHotkeyLabel,
-                        description: l10n.settingsManualUpdateHotkeyDescription,
-                        currentHotkey: settings.manualUpdateHotkey,
-                        onChanged: (hotkey) {
-                          _updateSettings(
-                            settings.copyWith(manualUpdateHotkey: hotkey),
-                          );
-                        },
-                      ),
-                    ]),
-                    const SizedBox(height: 20),
-
-                    // Twitch Authentication
-                    _buildTwitchAuthSection(context),
-                    const SizedBox(height: 20),
-
-                    // Factory Reset
-                    _buildFactoryResetSection(context),
-                  ],
-                ),
-              ),
-              // Save/Discard buttons bar - positioned on top
-              if (_hasChanges)
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.all(TKitSpacing.lg),
-                    decoration: BoxDecoration(
-                      color: TKitColors.surfaceVariant,
-                      border: const Border(
-                        bottom: BorderSide(color: TKitColors.border, width: 1),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.info_outline,
-                          size: 16,
-                          color: TKitColors.warning,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          l10n.settingsUnsavedChanges,
-                          style: const TextStyle(
-                            color: TKitColors.textSecondary,
-                            fontSize: 13,
-                          ),
-                        ),
-                        const Spacer(),
-                        AccentButton(
-                          text: l10n.settingsDiscard,
-                          onPressed: _discardChanges,
-                        ),
-                        const SizedBox(width: 8),
-                        PrimaryButton(
-                          text: l10n.settingsSave,
-                          onPressed: _saveSettings,
-                        ),
-                      ],
-                    ),
+                      VSpace.lg(),
+                      // Tabs
+                      _buildTabs(l10n),
+                    ],
                   ),
                 ),
-            ],
+
+                // Tab Content
+                Expanded(
+                  child: Stack(
+                    children: [
+                      TabBarView(
+                        controller: _tabController,
+                        children: [
+                          _buildGeneralTab(settings, l10n),
+                          _buildAutoSwitcherTab(settings, l10n),
+                          _buildKeyboardTab(settings, l10n),
+                          _buildThemeTab(settings, l10n),
+                          _buildTwitchTab(l10n),
+                          _buildAdvancedTab(l10n),
+                        ],
+                      ),
+
+                      // Save/Discard bar
+                      if (_hasChanges)
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: _buildSaveBar(l10n),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildTabs(AppLocalizations l10n) {
+    return TabBar(
+      controller: _tabController,
+      isScrollable: true,
+      tabAlignment: TabAlignment.start,
+      indicatorColor: TKitColors.accent,
+      indicatorWeight: 2,
+      labelColor: TKitColors.textPrimary,
+      unselectedLabelColor: TKitColors.textSecondary,
+      labelStyle: TKitTextStyles.labelMedium,
+      unselectedLabelStyle: TKitTextStyles.labelMedium,
+      dividerColor: TKitColors.border,
+      tabs: [
+        Tab(text: l10n.settingsTabGeneral),
+        Tab(text: l10n.settingsTabAutoSwitcher),
+        Tab(text: l10n.settingsTabKeyboard),
+        const Tab(text: 'Theme'),
+        Tab(text: l10n.settingsTabTwitch),
+        Tab(text: l10n.settingsTabAdvanced),
+      ],
+    );
+  }
+
+  Widget _buildGeneralTab(AppSettings settings, AppLocalizations l10n) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(TKitSpacing.pagePadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSection(l10n.settingsApplication, [
+            // Language selection
+            Builder(
+              builder: (context) {
+                final l10n = AppLocalizations.of(context)!;
+                final languageService = Provider.of<LanguageService>(
+                  context,
+                  listen: false,
+                );
+                final localeProvider = Provider.of<LocaleProvider>(
+                  context,
+                  listen: false,
+                );
+                final currentLocale = languageService.getCurrentLocale();
+
+                // Map of language codes to their localized names
+                final languageNames = <String, String>{
+                  'en': l10n.languageEnglish,
+                  'cs': l10n.languageCzech,
+                  'pl': l10n.languagePolish,
+                  'es': l10n.languageSpanish,
+                  'fr': l10n.languageFrench,
+                  'de': l10n.languageGerman,
+                  'pt': l10n.languagePortuguese,
+                  'ja': l10n.languageJapanese,
+                  'ko': l10n.languageKorean,
+                  'zh': l10n.languageChinese,
+                };
+
+                return SettingsDropdown<String>(
+                  label: l10n.settingsLanguage,
+                  description: l10n.settingsLanguageDescription,
+                  value: currentLocale.languageCode,
+                  items: AppLocalizations.supportedLocales
+                      .map(
+                        (locale) => DropdownMenuItem(
+                          value: locale.languageCode,
+                          child: Text(
+                            languageNames[locale.languageCode] ??
+                                locale.languageCode.toUpperCase(),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (languageCode) async {
+                    if (languageCode != null) {
+                      await languageService.saveLanguage(languageCode);
+                      localeProvider.setLocale(Locale(languageCode));
+
+                      if (context.mounted) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          if (context.mounted) {
+                            final newL10n = AppLocalizations.of(context)!;
+                            Toast.success(
+                              context,
+                              newL10n.languageChangeNotice,
+                            );
+                          }
+                        });
+                      }
+                    }
+                  },
+                );
+              },
+            ),
+            VSpace.md(),
+            SettingsCheckbox(
+              label: l10n.settingsAutoStartWindowsLabel,
+              subtitle: l10n.settingsAutoStartWindowsSubtitle,
+              value: settings.autoStartWithWindows,
+              onChanged: (value) {
+                _updateSettings(
+                  settings.copyWith(autoStartWithWindows: value ?? false),
+                );
+              },
+            ),
+            VSpace.sm(),
+            SettingsCheckbox(
+              label: l10n.settingsStartMinimizedLabel,
+              subtitle: l10n.settingsStartMinimizedSubtitle,
+              value: settings.startMinimized,
+              onChanged: (value) {
+                _updateSettings(
+                  settings.copyWith(startMinimized: value ?? false),
+                );
+              },
+            ),
+            VSpace.sm(),
+            SettingsCheckbox(
+              label: l10n.settingsMinimizeToTrayLabel,
+              subtitle: l10n.settingsMinimizeToTraySubtitle,
+              value: settings.minimizeToTray,
+              onChanged: (value) {
+                _updateSettings(
+                  settings.copyWith(minimizeToTray: value ?? false),
+                );
+              },
+            ),
+            VSpace.sm(),
+            SettingsCheckbox(
+              label: l10n.settingsShowNotificationsLabel,
+              subtitle: l10n.settingsShowNotificationsSubtitle,
+              value: settings.showNotifications,
+              onChanged: (value) {
+                _updateSettings(
+                  settings.copyWith(showNotifications: value ?? false),
+                );
+              },
+            ),
+            VSpace.sm(),
+            SettingsCheckbox(
+              label: l10n.settingsNotifyMissingCategoryLabel,
+              subtitle: l10n.settingsNotifyMissingCategorySubtitle,
+              value: settings.notifyOnMissingCategory,
+              onChanged: (value) {
+                _updateSettings(
+                  settings.copyWith(notifyOnMissingCategory: value ?? false),
+                );
+              },
+            ),
+            VSpace.md(),
+            CustomDropdown<WindowControlsPosition>(
+              label: l10n.settingsWindowControlsPositionLabel,
+              description: l10n.settingsWindowControlsPositionDescription,
+              value: settings.windowControlsPosition,
+              items: WindowControlsPosition.values
+                  .map(
+                    (position) => CustomDropdownItem(
+                      value: position,
+                      title: position.localizedName(context),
+                      subtitle: null,
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  final updatedSettings = settings.copyWith(
+                    windowControlsPosition: value,
+                  );
+                  _updateSettings(updatedSettings);
+                  context
+                      .read<WindowControlsPreviewProvider>()
+                      .setPreviewPosition(value);
+                }
+              },
+            ),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAutoSwitcherTab(AppSettings settings, AppLocalizations l10n) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(TKitSpacing.pagePadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSection(l10n.settingsMonitoring, [
+            SettingsSlider(
+              label: l10n.settingsScanIntervalLabel,
+              description: l10n.settingsScanIntervalDescription,
+              value: settings.scanIntervalSeconds.toDouble(),
+              min: 1,
+              max: 60,
+              divisions: 59,
+              onChanged: (value) {
+                _updateSettings(
+                  settings.copyWith(scanIntervalSeconds: value.toInt()),
+                );
+              },
+            ),
+            VSpace.md(),
+            SettingsSlider(
+              label: l10n.settingsDebounceTimeLabel,
+              description: l10n.settingsDebounceTimeDescription,
+              value: settings.debounceSeconds.toDouble(),
+              min: 0,
+              max: 60,
+              divisions: 60,
+              onChanged: (value) {
+                _updateSettings(
+                  settings.copyWith(debounceSeconds: value.toInt()),
+                );
+              },
+            ),
+            VSpace.md(),
+            SettingsCheckbox(
+              label: l10n.settingsAutoStartMonitoringLabel,
+              subtitle: l10n.settingsAutoStartMonitoringSubtitle,
+              value: settings.autoStartMonitoring,
+              onChanged: (value) {
+                _updateSettings(
+                  settings.copyWith(autoStartMonitoring: value ?? false),
+                );
+              },
+            ),
+          ]),
+          VSpace.lg(),
+          _buildSection(l10n.settingsFallbackBehavior, [
+            SettingsDropdown<FallbackBehavior>(
+              label: l10n.settingsFallbackBehaviorLabel,
+              description: l10n.settingsFallbackBehaviorDescription,
+              value: settings.fallbackBehavior,
+              items: FallbackBehavior.values
+                  .map(
+                    (behavior) => DropdownMenuItem(
+                      value: behavior,
+                      child: Text(behavior.localizedName(context)),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  _updateSettings(settings.copyWith(fallbackBehavior: value));
+                }
+              },
+            ),
+            if (settings.fallbackBehavior == FallbackBehavior.custom) ...[
+              VSpace.md(),
+              FormFieldWrapper(
+                label: l10n.settingsCustomCategory,
+                child: TKitTextField(
+                  hintText: l10n.settingsCustomCategoryHint,
+                  controller: TextEditingController(
+                    text: settings.customFallbackCategoryName ?? '',
+                  ),
+                  readOnly: true,
+                  onTap: () {
+                    Toast.info(context, l10n.settingsCategorySearchUnavailable);
+                  },
+                ),
+              ),
+            ],
+          ]),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildKeyboardTab(AppSettings settings, AppLocalizations l10n) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(TKitSpacing.pagePadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSection(l10n.settingsKeyboardShortcuts, [
+            HotkeyInput(
+              key: ValueKey('hotkey_${settings.manualUpdateHotkey}_$_resetKey'),
+              label: l10n.settingsManualUpdateHotkeyLabel,
+              description: l10n.settingsManualUpdateHotkeyDescription,
+              currentHotkey: settings.manualUpdateHotkey,
+              onChanged: (hotkey) {
+                _updateSettings(settings.copyWith(manualUpdateHotkey: hotkey));
+              },
+            ),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildThemeTab(AppSettings settings, AppLocalizations l10n) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(TKitSpacing.pagePadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSection('WINDOW APPEARANCE', [
+            SettingsCheckbox(
+              label: 'Use Frameless Window',
+              subtitle: 'Remove the Windows title bar for a modern, borderless look with rounded corners',
+              value: settings.useFramelessWindow,
+              onChanged: (value) async {
+                final newValue = value ?? false;
+                _updateSettings(settings.copyWith(useFramelessWindow: newValue));
+
+                // Apply window style immediately
+                if (newValue) {
+                  await windowManager.setAsFrameless();
+                } else {
+                  await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
+                }
+              },
+            ),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTwitchTab(AppLocalizations l10n) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(TKitSpacing.pagePadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [_buildTwitchAuthSection(context)],
+      ),
+    );
+  }
+
+  Widget _buildAdvancedTab(AppLocalizations l10n) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(TKitSpacing.pagePadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSection(l10n.settingsUpdates, [
+            CustomDropdown<UpdateChannel>(
+              label: l10n.settingsUpdateChannelLabel,
+              description: l10n.settingsUpdateChannelDescription,
+              value: _currentSettings?.updateChannel ?? UpdateChannel.stable,
+              items: UpdateChannel.values
+                  .map(
+                    (channel) => CustomDropdownItem(
+                      value: channel,
+                      title: channel.localizedName(context),
+                      subtitle: channel.localizedDescription(context),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) async {
+                if (value != null && _currentSettings != null) {
+                  final updatedSettings = _currentSettings!.copyWith(
+                    updateChannel: value,
+                  );
+                  _updateSettings(updatedSettings);
+
+                  await context.read<SettingsProvider>().updateSettings(
+                    updatedSettings,
+                  );
+
+                  if (context.mounted) {
+                    final updateService = context.read<GitHubUpdateService>();
+                    await updateService.checkForUpdates(
+                      silent: false,
+                      channel: value,
+                    );
+
+                    if (context.mounted) {
+                      Toast.success(
+                        context,
+                        l10n.settingsUpdateChannelChanged(
+                          value.localizedName(context),
+                        ),
+                      );
+                    }
+                  }
+                }
+              },
+            ),
+          ]),
+          VSpace.lg(),
+          _buildFactoryResetSection(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSaveBar(AppLocalizations l10n) {
+    return AnimatedBuilder(
+      animation: _shakeAnimation,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(_shakeAnimation.value, 0),
+          child: child,
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(TKitSpacing.lg),
+        decoration: BoxDecoration(
+          color: TKitColors.surfaceVariant,
+          border: const Border(
+            top: BorderSide(color: TKitColors.border, width: 1),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 8,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.info_outline, size: 16, color: TKitColors.warning),
+            HSpace.sm(),
+            Text(
+              l10n.settingsUnsavedChanges,
+              style: TKitTextStyles.caption.copyWith(
+                color: TKitColors.textSecondary,
+              ),
+            ),
+            const Spacer(),
+            AccentButton(
+              text: l10n.settingsDiscard,
+              onPressed: _discardChanges,
+            ),
+            HSpace.sm(),
+            PrimaryButton(text: l10n.settingsSave, onPressed: _saveSettings),
+          ],
+        ),
       ),
     );
   }
@@ -640,13 +756,6 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildSubsectionTitle(String title) {
-    return Text(
-      title,
-      style: TKitTextStyles.labelLarge.copyWith(color: TKitColors.accent),
     );
   }
 
@@ -695,7 +804,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                     ],
                   ),
                   VSpace.md(),
-                  if (isAuthenticated && authState is Authenticated) ...[
+                  if (isAuthenticated) ...[
                     Text(
                       l10n.settingsTwitchLoggedInAs,
                       style: TKitTextStyles.caption,
@@ -710,12 +819,12 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
                         ),
                         HSpace.sm(),
                         Text(
-                          authState.user.displayName,
+                          (authState as Authenticated).user.displayName,
                           style: TKitTextStyles.bodyMedium,
                         ),
                         HSpace.sm(),
                         Text(
-                          '(@${authState.user.login})',
+                          '(@${(authState as Authenticated).user.login})',
                           style: TKitTextStyles.caption,
                         ),
                       ],
@@ -843,30 +952,51 @@ class _SettingsPageContentState extends State<_SettingsPageContent> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          l10n.settingsFactoryReset.toUpperCase(),
+          'DANGER ZONE',
           style: TKitTextStyles.labelSmall.copyWith(
             letterSpacing: 1.0,
-            color: TKitColors.textSecondary,
+            color: TKitColors.error,
           ),
         ),
         VSpace.md(),
-        Island.standard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        Container(
+          decoration: BoxDecoration(
+            color: TKitColors.surface,
+            border: Border.all(color: TKitColors.error, width: 1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.all(TKitSpacing.lg),
+          child: Row(
             children: [
               const Icon(
-                Icons.warning_amber_rounded,
-                size: 40,
-                color: TKitColors.warning,
+                Icons.warning_rounded,
+                size: 20,
+                color: TKitColors.error,
               ),
-              VSpace.md(),
-              Text(
-                l10n.settingsFactoryResetDescription,
-                style: TKitTextStyles.bodyMedium,
+              HSpace.md(),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.settingsFactoryReset,
+                      style: TKitTextStyles.labelMedium.copyWith(
+                        color: TKitColors.error,
+                      ),
+                    ),
+                    VSpace.xs(),
+                    Text(
+                      'Reset all settings and data to factory defaults',
+                      style: TKitTextStyles.caption.copyWith(
+                        color: TKitColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              VSpace.md(),
+              HSpace.md(),
               AccentButton(
-                text: l10n.settingsFactoryResetButton,
+                text: 'Reset',
                 icon: Icons.restore,
                 onPressed: () => _showFactoryResetDialog(context),
               ),

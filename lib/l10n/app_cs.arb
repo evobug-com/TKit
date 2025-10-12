@@ -492,7 +492,7 @@
   "@updateDialogCancel": {
     "description": "Cancel button in update dialog"
   },
-  "settingsAutoStartMonitoringSubtitle": "Zahájit monitorování aktivní aplikace při spuštění TKit",
+  "settingsAutoStartMonitoringSubtitle": "Zahájí monitorování aktivní aplikace při spuštění TKit",
   "@settingsAutoStartMonitoringSubtitle": {
     "description": "Auto start monitoring setting subtitle"
   },
@@ -508,7 +508,7 @@
   "@updateDialogLater": {
     "description": "Later button in update dialog"
   },
-  "settingsFallbackBehavior": "Záložní chování",
+  "settingsFallbackBehavior": "Pojistné chování",
   "@settingsFallbackBehavior": {
     "description": "Fallback behavior settings section"
   },

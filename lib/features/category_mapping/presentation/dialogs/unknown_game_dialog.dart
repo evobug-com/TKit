@@ -380,7 +380,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
           // Ignore button on the left
           AccentButton(
             text: l10n.unknownGameDialogIgnore,
-            onPressed: () => Navigator.of(context).pop({'ignore': true}),
+            onPressed: _handleIgnore,
             width: 120,
           ),
           // Skip and Save buttons on the right
@@ -416,6 +416,25 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
       'processName': widget.processName,
       'executablePath': widget.executablePath,
       'windowTitle': widget.windowTitle,
+      'isEnabled': true, // Explicitly enabled
+    };
+
+    Navigator.of(context).pop(result);
+  }
+
+  void _handleIgnore() {
+    // Create a disabled mapping with IGNORE category
+    final result = {
+      'category': const TwitchCategory(
+        id: 'IGNORE',
+        name: 'Ignored Process',
+      ),
+      'saveLocally': true, // Always save ignored processes
+      'contributeToCommunity': false, // Don't contribute ignored processes
+      'processName': widget.processName,
+      'executablePath': widget.executablePath,
+      'windowTitle': widget.windowTitle,
+      'isEnabled': false, // Disabled mapping
     };
 
     Navigator.of(context).pop(result);

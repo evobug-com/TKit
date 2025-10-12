@@ -11,12 +11,14 @@ class MappingListWidget extends StatelessWidget {
   final List<CategoryMapping> mappings;
   final Function(int id) onDelete;
   final Function(CategoryMapping mapping) onEdit;
+  final Function(CategoryMapping mapping)? onToggleEnabled;
 
   const MappingListWidget({
     super.key,
     required this.mappings,
     required this.onDelete,
     required this.onEdit,
+    this.onToggleEnabled,
   });
 
   @override
@@ -60,8 +62,8 @@ class MappingListWidget extends StatelessWidget {
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          width: double.infinity,
           child: DataTable(
             headingRowColor: WidgetStateProperty.all(TKitColors.surfaceVariant),
             dataRowColor: WidgetStateProperty.resolveWith((states) {
@@ -92,6 +94,7 @@ class MappingListWidget extends StatelessWidget {
               DataColumn(label: Text(l10n.categoryMappingListColumnCategory)),
               DataColumn(label: Text(l10n.categoryMappingListColumnLastUsed)),
               DataColumn(label: Text(l10n.categoryMappingListColumnType)),
+              const DataColumn(label: Text('Enabled')),
               DataColumn(label: Text(l10n.categoryMappingListColumnActions)),
             ],
             rows: mappings.map((mapping) {
@@ -166,6 +169,16 @@ class MappingListWidget extends StatelessWidget {
                           letterSpacing: 1.0,
                         ),
                       ),
+                    ),
+                  ),
+                  DataCell(
+                    Checkbox(
+                      value: mapping.isEnabled,
+                      onChanged: onToggleEnabled != null
+                          ? (_) => onToggleEnabled!(mapping)
+                          : null,
+                      activeColor: TKitColors.accent,
+                      side: const BorderSide(color: TKitColors.border),
                     ),
                   ),
                   DataCell(

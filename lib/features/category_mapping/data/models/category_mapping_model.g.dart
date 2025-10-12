@@ -21,6 +21,7 @@ CategoryMappingModel _$CategoryMappingModelFromJson(
   lastApiFetch: DateTime.parse(json['lastApiFetch'] as String),
   cacheExpiresAt: DateTime.parse(json['cacheExpiresAt'] as String),
   manualOverride: json['manualOverride'] as bool,
+  isEnabled: json['isEnabled'] as bool? ?? true,
 );
 
 Map<String, dynamic> _$CategoryMappingModelToJson(
@@ -36,4 +37,5 @@ Map<String, dynamic> _$CategoryMappingModelToJson(
   'lastApiFetch': instance.lastApiFetch.toIso8601String(),
   'cacheExpiresAt': instance.cacheExpiresAt.toIso8601String(),
   'manualOverride': instance.manualOverride,
+  'isEnabled': instance.isEnabled,
 };

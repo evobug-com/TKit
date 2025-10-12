@@ -57,6 +57,9 @@ class AppSettings extends Equatable {
   /// Window controls position (left, center, right)
   final WindowControlsPosition windowControlsPosition;
 
+  /// Use frameless window (remove Windows title bar)
+  final bool useFramelessWindow;
+
   const AppSettings({
     required this.scanIntervalSeconds,
     required this.debounceSeconds,
@@ -72,6 +75,7 @@ class AppSettings extends Equatable {
     this.manualUpdateHotkey,
     required this.updateChannel,
     required this.windowControlsPosition,
+    required this.useFramelessWindow,
   });
 
   /// Default settings for first-time users
@@ -89,9 +93,10 @@ class AppSettings extends Equatable {
       showNotifications: true,
       notifyOnMissingCategory: true,
       autoStartMonitoring: false,
-      manualUpdateHotkey: 'ctrl+alt+f1',
+      manualUpdateHotkey: 'alt+shift+f1',
       updateChannel: _detectChannelFromVersion(appVersion),
       windowControlsPosition: WindowControlsPosition.right,
+      useFramelessWindow: false,
     );
   }
 
@@ -136,6 +141,7 @@ class AppSettings extends Equatable {
     Object? manualUpdateHotkey = _undefined,
     UpdateChannel? updateChannel,
     WindowControlsPosition? windowControlsPosition,
+    bool? useFramelessWindow,
   }) {
     return AppSettings(
       scanIntervalSeconds: scanIntervalSeconds ?? this.scanIntervalSeconds,
@@ -158,6 +164,7 @@ class AppSettings extends Equatable {
           : manualUpdateHotkey as String?,
       updateChannel: updateChannel ?? this.updateChannel,
       windowControlsPosition: windowControlsPosition ?? this.windowControlsPosition,
+      useFramelessWindow: useFramelessWindow ?? this.useFramelessWindow,
     );
   }
 
@@ -197,5 +204,6 @@ class AppSettings extends Equatable {
     manualUpdateHotkey,
     updateChannel,
     windowControlsPosition,
+    useFramelessWindow,
   ];
 }

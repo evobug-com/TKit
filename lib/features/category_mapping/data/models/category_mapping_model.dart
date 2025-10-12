@@ -22,6 +22,7 @@ class CategoryMappingModel extends CategoryMapping {
     required super.lastApiFetch,
     required super.cacheExpiresAt,
     required super.manualOverride,
+    super.isEnabled = true,
   });
 
   /// Create from domain entity
@@ -37,6 +38,7 @@ class CategoryMappingModel extends CategoryMapping {
       lastApiFetch: entity.lastApiFetch,
       cacheExpiresAt: entity.cacheExpiresAt,
       manualOverride: entity.manualOverride,
+      isEnabled: entity.isEnabled,
     );
   }
 
@@ -53,6 +55,7 @@ class CategoryMappingModel extends CategoryMapping {
       lastApiFetch: dbEntity.lastApiFetch,
       cacheExpiresAt: dbEntity.cacheExpiresAt,
       manualOverride: dbEntity.manualOverride,
+      isEnabled: dbEntity.isEnabled,
     );
   }
 
@@ -76,6 +79,7 @@ class CategoryMappingModel extends CategoryMapping {
       lastApiFetch: lastApiFetch,
       cacheExpiresAt: cacheExpiresAt,
       manualOverride: manualOverride,
+      isEnabled: isEnabled,
     );
   }
 
@@ -92,6 +96,7 @@ class CategoryMappingModel extends CategoryMapping {
       lastApiFetch: Value(lastApiFetch),
       cacheExpiresAt: cacheExpiresAt,
       manualOverride: Value(manualOverride),
+      isEnabled: Value(isEnabled),
     );
   }
 }

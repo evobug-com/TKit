@@ -137,9 +137,16 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
 
           return mappingResult.fold(
             (failure) => null,
-            (mapping) => mapping != null
-                ? {'process': process, 'mapping': mapping}
-                : null,
+            (mapping) {
+              if (mapping == null) return null;
+
+              // Check if mapping is disabled - skip silently
+              if (!mapping.isEnabled) {
+                return {'process': process, 'mapping': null, 'disabled': true};
+              }
+
+              return {'process': process, 'mapping': mapping};
+            },
           );
         })
         .listen(
@@ -154,6 +161,16 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
                   windowTitle: null, // Not available in stream context
                 );
               }
+              return;
+            }
+
+            // Check if this was a disabled mapping - skip silently
+            if (data['disabled'] == true) {
+              _currentStatus = _currentStatus.copyWith(
+                state: OrchestrationState.detectingProcess,
+                currentProcess: null,
+              );
+              _statusController.add(_currentStatus);
               return;
             }
 
@@ -272,6 +289,17 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
               executablePath: process.executablePath,
               windowTitle: null, // Not available in this context
             );
+          }
+
+          // Check if mapping is disabled - skip silently
+          if (!mapping.isEnabled) {
+            print('[AutoSwitcher] Mapping found but disabled for: ${process.processName}');
+            _currentStatus = _currentStatus.copyWith(
+              state: OrchestrationState.idle,
+              currentProcess: null,
+            );
+            _statusController.add(_currentStatus);
+            return const Right(null);
           }
 
           // Perform update

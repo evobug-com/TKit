@@ -173,4 +173,23 @@ class CategoryMappingProvider extends ChangeNotifier {
       },
     );
   }
+
+  /// Toggle enabled/disabled state of a mapping
+  Future<void> toggleEnabled(CategoryMapping mapping) async {
+    final updatedMapping = mapping.copyWith(isEnabled: !mapping.isEnabled);
+
+    final result = await saveMappingUseCase(updatedMapping);
+
+    await result.fold(
+      (failure) async => _setError(failure.message),
+      (_) async {
+        // Update the mapping in the local list immediately for responsiveness
+        final index = _mappings.indexWhere((m) => m.id == mapping.id);
+        if (index != -1) {
+          _mappings[index] = updatedMapping;
+          notifyListeners();
+        }
+      },
+    );
+  }
 }

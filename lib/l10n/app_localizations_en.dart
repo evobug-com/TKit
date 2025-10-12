@@ -293,6 +293,21 @@ class AppLocalizationsEn extends AppLocalizations {
       'Configure application behavior and preferences';
 
   @override
+  String get settingsTabGeneral => 'General';
+
+  @override
+  String get settingsTabAutoSwitcher => 'Auto Switcher';
+
+  @override
+  String get settingsTabKeyboard => 'Keyboard';
+
+  @override
+  String get settingsTabTwitch => 'Twitch';
+
+  @override
+  String get settingsTabAdvanced => 'Advanced';
+
+  @override
   String get autoSwitcherStatusNotInitialized => 'NOT INITIALIZED';
 
   @override

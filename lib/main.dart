@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:dio/dio.dart';
@@ -77,6 +78,7 @@ import 'features/settings/domain/usecases/update_settings_usecase.dart';
 import 'features/settings/domain/usecases/watch_settings_usecase.dart';
 import 'features/settings/presentation/providers/settings_provider.dart';
 import 'features/settings/presentation/providers/window_controls_preview_provider.dart';
+import 'features/settings/presentation/providers/unsaved_changes_notifier.dart';
 import 'features/twitch_api/data/datasources/twitch_api_remote_datasource.dart';
 import 'features/twitch_api/data/repositories/twitch_api_repository_impl.dart';
 import 'features/twitch_api/domain/repositories/i_twitch_api_repository.dart';
@@ -389,6 +391,7 @@ void main() async {
     );
 
     final windowControlsPreviewProvider = WindowControlsPreviewProvider();
+    final unsavedChangesNotifier = UnsavedChangesNotifier();
 
     final categoryMappingProvider = CategoryMappingProvider(
       getAllMappingsUseCase: getAllMappingsUseCase,
@@ -432,6 +435,14 @@ void main() async {
     // Initialize database
     logger.info('Database initialized, checking schema...');
 
+    // Seed default mappings (e.g., tkit.exe as ignored)
+    try {
+      await database.seedDefaultMappings();
+      logger.info('Default mappings seeded successfully');
+    } catch (e) {
+      logger.warning('Failed to seed default mappings: $e');
+    }
+
     // Initialize platform channel
     final isAvailable = await platformChannel.isAvailable();
     logger.info('Platform channel available: $isAvailable');
@@ -454,20 +465,34 @@ void main() async {
       await windowManager.focus();
     });
 
-    logger.info('Window initialized successfully');
-
-    // Initialize window service
-    await windowService.initialize();
-
-    // Load initial minimize to tray setting
+    // Load settings to determine window style
     final initialSettings = await getSettingsUseCase();
-    initialSettings.fold(
-      (failure) => logger.warning('Could not load initial minimize to tray setting'),
-      (settings) {
+    await initialSettings.fold(
+      (failure) async {
+        logger.warning('Could not load settings, using default window style');
+        // Default to hidden title bar (non-frameless)
+        await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
+      },
+      (settings) async {
+        // Apply window style based on settings
+        if (settings.useFramelessWindow) {
+          await windowManager.setAsFrameless();
+          logger.info('Window set to frameless mode');
+        } else {
+          await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
+          logger.info('Window set to normal mode with hidden title bar');
+        }
+
+        // Also set minimize to tray setting
         windowService.setMinimizeToTray(settings.minimizeToTray);
         logger.info('Initial minimize to tray setting: ${settings.minimizeToTray}');
       },
     );
+
+    logger.info('Window initialized successfully');
+
+    // Initialize window service
+    await windowService.initialize();
 
     // Watch for settings changes and update window service
     watchSettingsUseCase().listen((settings) {
@@ -661,6 +686,9 @@ void main() async {
           ),
           ChangeNotifierProvider<WindowControlsPreviewProvider>.value(
             value: windowControlsPreviewProvider,
+          ),
+          ChangeNotifierProvider<UnsavedChangesNotifier>.value(
+            value: unsavedChangesNotifier,
           ),
           ChangeNotifierProvider<CategoryMappingProvider>.value(
             value: categoryMappingProvider,
@@ -886,16 +914,11 @@ class _TKitAppState extends State<TKitApp> {
 
             if (result == null) return;
 
-            if (result['ignore'] == true) {
-              logger.info('User chose to ignore: $processName');
-              // TODO: Add to ignore list if needed
-              return;
-            }
-
             // Extract data from result
             final category = result['category'] as TwitchCategory;
             final saveLocally = result['saveLocally'] as bool? ?? false;
             final contributeToCommunity = result['contributeToCommunity'] as bool? ?? false;
+            final isEnabled = result['isEnabled'] as bool? ?? true;
 
             logger.info('User selected category: ${category.name} (ID: ${category.id}) for process: $processName');
 
@@ -933,6 +956,7 @@ class _TKitAppState extends State<TKitApp> {
                   lastApiFetch: DateTime.now(),
                   cacheExpiresAt: DateTime.now().add(const Duration(hours: 24)),
                   manualOverride: true,
+                  isEnabled: isEnabled,
                 );
 
                 final saveResult = await saveMappingUseCase(mapping);
@@ -1008,17 +1032,11 @@ class _TKitAppState extends State<TKitApp> {
           return null;
         }
 
-        // Check if user chose to ignore
-        if (result['ignore'] == true) {
-          logger.info('User chose to ignore: $processName');
-          // TODO: Add to permanent ignore list
-          return null;
-        }
-
         // Extract TwitchCategory object
         final category = result['category'] as TwitchCategory;
         final saveLocally = result['saveLocally'] as bool;
         final contributeToCommunity = result['contributeToCommunity'] as bool;
+        final isEnabled = result['isEnabled'] as bool? ?? true;
 
         logger.info(
           'User selected category: ${category.name} (ID: ${category.id}) '
@@ -1077,6 +1095,7 @@ class _TKitAppState extends State<TKitApp> {
             lastApiFetch: DateTime.now(),
             cacheExpiresAt: DateTime.now().add(const Duration(hours: 24)),
             manualOverride: true,
+            isEnabled: isEnabled,
           );
         }
 

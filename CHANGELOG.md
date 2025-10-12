@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Icon for tray and the app
+- Msix installer 
+- Avoid closing settings when changes are unsaved/undiscarded
+
+### Changed
+- Compact UI for settings and mappings
+- Check for updates on startup
+- Improved welcome screen
+
+### Fixed
+- Save in settings not disappearing after saving
+
 ## [0.0.1-dev.1] - 2025-10-11
 
 ### Added

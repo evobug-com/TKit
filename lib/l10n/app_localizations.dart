@@ -660,6 +660,36 @@ abstract class AppLocalizations {
   /// **'Configure application behavior and preferences'**
   String get settingsPageDescription;
 
+  /// General settings tab
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get settingsTabGeneral;
+
+  /// Auto Switcher settings tab
+  ///
+  /// In en, this message translates to:
+  /// **'Auto Switcher'**
+  String get settingsTabAutoSwitcher;
+
+  /// Keyboard settings tab
+  ///
+  /// In en, this message translates to:
+  /// **'Keyboard'**
+  String get settingsTabKeyboard;
+
+  /// Twitch settings tab
+  ///
+  /// In en, this message translates to:
+  /// **'Twitch'**
+  String get settingsTabTwitch;
+
+  /// Advanced settings tab
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced'**
+  String get settingsTabAdvanced;
+
   /// Not initialized system state
   ///
   /// In en, this message translates to:

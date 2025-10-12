@@ -128,6 +128,21 @@ class $CategoryMappingsTable extends CategoryMappings
     ),
     defaultValue: const Constant(false),
   );
+  static const VerificationMeta _isEnabledMeta = const VerificationMeta(
+    'isEnabled',
+  );
+  @override
+  late final GeneratedColumn<bool> isEnabled = GeneratedColumn<bool>(
+    'is_enabled',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_enabled" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -140,6 +155,7 @@ class $CategoryMappingsTable extends CategoryMappings
     lastApiFetch,
     cacheExpiresAt,
     manualOverride,
+    isEnabled,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -242,6 +258,12 @@ class $CategoryMappingsTable extends CategoryMappings
         ),
       );
     }
+    if (data.containsKey('is_enabled')) {
+      context.handle(
+        _isEnabledMeta,
+        isEnabled.isAcceptableOrUnknown(data['is_enabled']!, _isEnabledMeta),
+      );
+    }
     return context;
   }
 
@@ -291,6 +313,10 @@ class $CategoryMappingsTable extends CategoryMappings
         DriftSqlType.bool,
         data['${effectivePrefix}manual_override'],
       )!,
+      isEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_enabled'],
+      )!,
     );
   }
 
@@ -312,6 +338,7 @@ class CategoryMappingEntity extends DataClass
   final DateTime lastApiFetch;
   final DateTime cacheExpiresAt;
   final bool manualOverride;
+  final bool isEnabled;
   const CategoryMappingEntity({
     required this.id,
     required this.processName,
@@ -323,6 +350,7 @@ class CategoryMappingEntity extends DataClass
     required this.lastApiFetch,
     required this.cacheExpiresAt,
     required this.manualOverride,
+    required this.isEnabled,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -341,6 +369,7 @@ class CategoryMappingEntity extends DataClass
     map['last_api_fetch'] = Variable<DateTime>(lastApiFetch);
     map['cache_expires_at'] = Variable<DateTime>(cacheExpiresAt);
     map['manual_override'] = Variable<bool>(manualOverride);
+    map['is_enabled'] = Variable<bool>(isEnabled);
     return map;
   }
 
@@ -360,6 +389,7 @@ class CategoryMappingEntity extends DataClass
       lastApiFetch: Value(lastApiFetch),
       cacheExpiresAt: Value(cacheExpiresAt),
       manualOverride: Value(manualOverride),
+      isEnabled: Value(isEnabled),
     );
   }
 
@@ -381,6 +411,7 @@ class CategoryMappingEntity extends DataClass
       lastApiFetch: serializer.fromJson<DateTime>(json['lastApiFetch']),
       cacheExpiresAt: serializer.fromJson<DateTime>(json['cacheExpiresAt']),
       manualOverride: serializer.fromJson<bool>(json['manualOverride']),
+      isEnabled: serializer.fromJson<bool>(json['isEnabled']),
     );
   }
   @override
@@ -397,6 +428,7 @@ class CategoryMappingEntity extends DataClass
       'lastApiFetch': serializer.toJson<DateTime>(lastApiFetch),
       'cacheExpiresAt': serializer.toJson<DateTime>(cacheExpiresAt),
       'manualOverride': serializer.toJson<bool>(manualOverride),
+      'isEnabled': serializer.toJson<bool>(isEnabled),
     };
   }
 
@@ -411,6 +443,7 @@ class CategoryMappingEntity extends DataClass
     DateTime? lastApiFetch,
     DateTime? cacheExpiresAt,
     bool? manualOverride,
+    bool? isEnabled,
   }) => CategoryMappingEntity(
     id: id ?? this.id,
     processName: processName ?? this.processName,
@@ -424,6 +457,7 @@ class CategoryMappingEntity extends DataClass
     lastApiFetch: lastApiFetch ?? this.lastApiFetch,
     cacheExpiresAt: cacheExpiresAt ?? this.cacheExpiresAt,
     manualOverride: manualOverride ?? this.manualOverride,
+    isEnabled: isEnabled ?? this.isEnabled,
   );
   CategoryMappingEntity copyWithCompanion(CategoryMappingsCompanion data) {
     return CategoryMappingEntity(
@@ -453,6 +487,7 @@ class CategoryMappingEntity extends DataClass
       manualOverride: data.manualOverride.present
           ? data.manualOverride.value
           : this.manualOverride,
+      isEnabled: data.isEnabled.present ? data.isEnabled.value : this.isEnabled,
     );
   }
 
@@ -468,7 +503,8 @@ class CategoryMappingEntity extends DataClass
           ..write('lastUsedAt: $lastUsedAt, ')
           ..write('lastApiFetch: $lastApiFetch, ')
           ..write('cacheExpiresAt: $cacheExpiresAt, ')
-          ..write('manualOverride: $manualOverride')
+          ..write('manualOverride: $manualOverride, ')
+          ..write('isEnabled: $isEnabled')
           ..write(')'))
         .toString();
   }
@@ -485,6 +521,7 @@ class CategoryMappingEntity extends DataClass
     lastApiFetch,
     cacheExpiresAt,
     manualOverride,
+    isEnabled,
   );
   @override
   bool operator ==(Object other) =>
@@ -499,7 +536,8 @@ class CategoryMappingEntity extends DataClass
           other.lastUsedAt == this.lastUsedAt &&
           other.lastApiFetch == this.lastApiFetch &&
           other.cacheExpiresAt == this.cacheExpiresAt &&
-          other.manualOverride == this.manualOverride);
+          other.manualOverride == this.manualOverride &&
+          other.isEnabled == this.isEnabled);
 }
 
 class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
@@ -513,6 +551,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
   final Value<DateTime> lastApiFetch;
   final Value<DateTime> cacheExpiresAt;
   final Value<bool> manualOverride;
+  final Value<bool> isEnabled;
   const CategoryMappingsCompanion({
     this.id = const Value.absent(),
     this.processName = const Value.absent(),
@@ -524,6 +563,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     this.lastApiFetch = const Value.absent(),
     this.cacheExpiresAt = const Value.absent(),
     this.manualOverride = const Value.absent(),
+    this.isEnabled = const Value.absent(),
   });
   CategoryMappingsCompanion.insert({
     this.id = const Value.absent(),
@@ -536,6 +576,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     this.lastApiFetch = const Value.absent(),
     required DateTime cacheExpiresAt,
     this.manualOverride = const Value.absent(),
+    this.isEnabled = const Value.absent(),
   }) : processName = Value(processName),
        twitchCategoryId = Value(twitchCategoryId),
        twitchCategoryName = Value(twitchCategoryName),
@@ -551,6 +592,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     Expression<DateTime>? lastApiFetch,
     Expression<DateTime>? cacheExpiresAt,
     Expression<bool>? manualOverride,
+    Expression<bool>? isEnabled,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -564,6 +606,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
       if (lastApiFetch != null) 'last_api_fetch': lastApiFetch,
       if (cacheExpiresAt != null) 'cache_expires_at': cacheExpiresAt,
       if (manualOverride != null) 'manual_override': manualOverride,
+      if (isEnabled != null) 'is_enabled': isEnabled,
     });
   }
 
@@ -578,6 +621,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     Value<DateTime>? lastApiFetch,
     Value<DateTime>? cacheExpiresAt,
     Value<bool>? manualOverride,
+    Value<bool>? isEnabled,
   }) {
     return CategoryMappingsCompanion(
       id: id ?? this.id,
@@ -590,6 +634,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
       lastApiFetch: lastApiFetch ?? this.lastApiFetch,
       cacheExpiresAt: cacheExpiresAt ?? this.cacheExpiresAt,
       manualOverride: manualOverride ?? this.manualOverride,
+      isEnabled: isEnabled ?? this.isEnabled,
     );
   }
 
@@ -626,6 +671,9 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     if (manualOverride.present) {
       map['manual_override'] = Variable<bool>(manualOverride.value);
     }
+    if (isEnabled.present) {
+      map['is_enabled'] = Variable<bool>(isEnabled.value);
+    }
     return map;
   }
 
@@ -641,7 +689,8 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
           ..write('lastUsedAt: $lastUsedAt, ')
           ..write('lastApiFetch: $lastApiFetch, ')
           ..write('cacheExpiresAt: $cacheExpiresAt, ')
-          ..write('manualOverride: $manualOverride')
+          ..write('manualOverride: $manualOverride, ')
+          ..write('isEnabled: $isEnabled')
           ..write(')'))
         .toString();
   }
@@ -2496,6 +2545,7 @@ typedef $$CategoryMappingsTableCreateCompanionBuilder =
       Value<DateTime> lastApiFetch,
       required DateTime cacheExpiresAt,
       Value<bool> manualOverride,
+      Value<bool> isEnabled,
     });
 typedef $$CategoryMappingsTableUpdateCompanionBuilder =
     CategoryMappingsCompanion Function({
@@ -2509,6 +2559,7 @@ typedef $$CategoryMappingsTableUpdateCompanionBuilder =
       Value<DateTime> lastApiFetch,
       Value<DateTime> cacheExpiresAt,
       Value<bool> manualOverride,
+      Value<bool> isEnabled,
     });
 
 class $$CategoryMappingsTableFilterComposer
@@ -2567,6 +2618,11 @@ class $$CategoryMappingsTableFilterComposer
 
   ColumnFilters<bool> get manualOverride => $composableBuilder(
     column: $table.manualOverride,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isEnabled => $composableBuilder(
+    column: $table.isEnabled,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -2629,6 +2685,11 @@ class $$CategoryMappingsTableOrderingComposer
     column: $table.manualOverride,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get isEnabled => $composableBuilder(
+    column: $table.isEnabled,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$CategoryMappingsTableAnnotationComposer
@@ -2685,6 +2746,9 @@ class $$CategoryMappingsTableAnnotationComposer
     column: $table.manualOverride,
     builder: (column) => column,
   );
+
+  GeneratedColumn<bool> get isEnabled =>
+      $composableBuilder(column: $table.isEnabled, builder: (column) => column);
 }
 
 class $$CategoryMappingsTableTableManager
@@ -2734,6 +2798,7 @@ class $$CategoryMappingsTableTableManager
                 Value<DateTime> lastApiFetch = const Value.absent(),
                 Value<DateTime> cacheExpiresAt = const Value.absent(),
                 Value<bool> manualOverride = const Value.absent(),
+                Value<bool> isEnabled = const Value.absent(),
               }) => CategoryMappingsCompanion(
                 id: id,
                 processName: processName,
@@ -2745,6 +2810,7 @@ class $$CategoryMappingsTableTableManager
                 lastApiFetch: lastApiFetch,
                 cacheExpiresAt: cacheExpiresAt,
                 manualOverride: manualOverride,
+                isEnabled: isEnabled,
               ),
           createCompanionCallback:
               ({
@@ -2758,6 +2824,7 @@ class $$CategoryMappingsTableTableManager
                 Value<DateTime> lastApiFetch = const Value.absent(),
                 required DateTime cacheExpiresAt,
                 Value<bool> manualOverride = const Value.absent(),
+                Value<bool> isEnabled = const Value.absent(),
               }) => CategoryMappingsCompanion.insert(
                 id: id,
                 processName: processName,
@@ -2769,6 +2836,7 @@ class $$CategoryMappingsTableTableManager
                 lastApiFetch: lastApiFetch,
                 cacheExpiresAt: cacheExpiresAt,
                 manualOverride: manualOverride,
+                isEnabled: isEnabled,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

@@ -25,6 +25,7 @@ class AppSettingsModel extends AppSettings {
     super.manualUpdateHotkey,
     required super.updateChannel,
     required super.windowControlsPosition,
+    @JsonKey(defaultValue: false) required super.useFramelessWindow,
   });
 
   /// Create from domain entity
@@ -44,6 +45,7 @@ class AppSettingsModel extends AppSettings {
       manualUpdateHotkey: settings.manualUpdateHotkey,
       updateChannel: settings.updateChannel,
       windowControlsPosition: settings.windowControlsPosition,
+      useFramelessWindow: settings.useFramelessWindow,
     );
   }
 
@@ -71,6 +73,7 @@ class AppSettingsModel extends AppSettings {
       manualUpdateHotkey: manualUpdateHotkey,
       updateChannel: updateChannel,
       windowControlsPosition: windowControlsPosition,
+      useFramelessWindow: useFramelessWindow,
     );
   }
 

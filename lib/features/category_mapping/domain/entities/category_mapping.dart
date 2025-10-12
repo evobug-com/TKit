@@ -29,6 +29,10 @@ class CategoryMapping extends Equatable {
   /// Manual overrides persist indefinitely, but their Twitch data still refreshes
   final bool manualOverride;
 
+  /// True if this mapping is enabled and should be used for auto-switching
+  /// False if the mapping is disabled/ignored by the user
+  final bool isEnabled;
+
   const CategoryMapping({
     this.id,
     required this.processName,
@@ -40,6 +44,7 @@ class CategoryMapping extends Equatable {
     required this.lastApiFetch,
     required this.cacheExpiresAt,
     required this.manualOverride,
+    this.isEnabled = true,
   });
 
   CategoryMapping copyWith({
@@ -53,6 +58,7 @@ class CategoryMapping extends Equatable {
     DateTime? lastApiFetch,
     DateTime? cacheExpiresAt,
     bool? manualOverride,
+    bool? isEnabled,
   }) {
     return CategoryMapping(
       id: id ?? this.id,
@@ -65,6 +71,7 @@ class CategoryMapping extends Equatable {
       lastApiFetch: lastApiFetch ?? this.lastApiFetch,
       cacheExpiresAt: cacheExpiresAt ?? this.cacheExpiresAt,
       manualOverride: manualOverride ?? this.manualOverride,
+      isEnabled: isEnabled ?? this.isEnabled,
     );
   }
 
@@ -88,5 +95,6 @@ class CategoryMapping extends Equatable {
     lastApiFetch,
     cacheExpiresAt,
     manualOverride,
+    isEnabled,
   ];
 }
