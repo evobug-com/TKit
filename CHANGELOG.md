@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.1-dev.2] - 2025-10-12
+
 ### Added
 - Icon for tray and the app
 - Msix installer 
@@ -59,5 +61,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **System Tray**: Minimize to tray, quick access to features
 - **Auto Updates**: Check for and install updates from GitHub releases
 
-[Unreleased]: https://github.com/evobug-com/TKit/compare/v0.0.1-dev.1...HEAD
+[Unreleased]: https://github.com/evobug-com/TKit/compare/v0.0.1-dev.2...HEAD
+[0.0.1-dev.2]: https://github.com/evobug-com/TKit/releases/tag/v0.0.1-dev.2
 [0.0.1-dev.1]: https://github.com/evobug-com/TKit/releases/tag/v0.0.1-dev.1
