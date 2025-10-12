@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Icon for tray and the app
 - Msix installer 
 - Avoid closing settings when changes are unsaved/undiscarded
+- Theme tab in settings to turn frameless mode on/off
+- Enabled checkbox in mappings
+- Ability to move exit/maximize/minimize buttons
 
 ### Changed
 - Compact UI for settings and mappings
@@ -19,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Save in settings not disappearing after saving
+- Ignored applications don't throw notifications anymore
 
 ## [0.0.1-dev.1] - 2025-10-11
 
