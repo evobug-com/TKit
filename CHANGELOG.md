@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.1-dev.5] - 2025-10-13
+
 ### TKit
 
 #### Changed
@@ -126,7 +128,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **System Tray**: Minimize to tray, quick access to features
 - **Auto Updates**: Check for and install updates from GitHub releases
 
-[Unreleased]: https://github.com/evobug-com/TKit/compare/v0.0.1-dev.3...HEAD
+[Unreleased]: https://github.com/evobug-com/TKit/compare/v0.0.1-dev.5...HEAD
+[0.0.1-dev.5]: https://github.com/evobug-com/TKit/releases/tag/v0.0.1-dev.5
+[0.0.1-dev.4]: https://github.com/evobug-com/TKit/releases/tag/v0.0.1-dev.4
 [0.0.1-dev.3]: https://github.com/evobug-com/TKit/releases/tag/v0.0.1-dev.3
 [0.0.1-dev.2]: https://github.com/evobug-com/TKit/releases/tag/v0.0.1-dev.2
 [0.0.1-dev.1]: https://github.com/evobug-com/TKit/releases/tag/v0.0.1-dev.1
