@@ -5,7 +5,7 @@ All notable changes to TKit will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.0.1-dev.3] - 2025-10-12
 
 ### TKit
 
@@ -108,6 +108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **System Tray**: Minimize to tray, quick access to features
 - **Auto Updates**: Check for and install updates from GitHub releases
 
-[Unreleased]: https://github.com/evobug-com/TKit/compare/v0.0.1-dev.2...HEAD
+[Unreleased]: https://github.com/evobug-com/TKit/compare/v0.0.1-dev.3...HEAD
+[0.0.1-dev.3]: https://github.com/evobug-com/TKit/releases/tag/v0.0.1-dev.3
 [0.0.1-dev.2]: https://github.com/evobug-com/TKit/releases/tag/v0.0.1-dev.2
 [0.0.1-dev.1]: https://github.com/evobug-com/TKit/releases/tag/v0.0.1-dev.1
