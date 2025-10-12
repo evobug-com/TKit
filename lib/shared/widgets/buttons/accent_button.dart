@@ -25,7 +25,7 @@ class AccentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      height: height ?? 40,
+      height: height ?? 32,
       child: OutlinedButton(
         onPressed: isLoading ? null : onPressed,
         style: OutlinedButton.styleFrom(
@@ -40,12 +40,14 @@ class AccentButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(0), // Sharp corners
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+          minimumSize: const Size(0, 32),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
         child: isLoading
             ? const SizedBox(
-                width: 16,
-                height: 16,
+                width: 14,
+                height: 14,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
                   valueColor: AlwaysStoppedAnimation<Color>(TKitColors.accent),
@@ -56,12 +58,12 @@ class AccentButton extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (icon != null) ...[
-                    Icon(icon, size: 16),
-                    const SizedBox(width: 8),
+                    Icon(icon, size: 14),
+                    const SizedBox(width: 6),
                   ],
                   Text(
                     text,
-                    style: TKitTextStyles.button.copyWith(
+                    style: TKitTextStyles.buttonSmall.copyWith(
                       color: onPressed == null
                           ? TKitColors.textDisabled
                           : TKitColors.accent,

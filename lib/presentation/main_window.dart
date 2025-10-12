@@ -7,6 +7,7 @@ import '../shared/theme/colors.dart';
 import '../shared/theme/text_styles.dart';
 import '../core/routing/app_router.dart';
 import '../core/config/app_config.dart';
+import '../core/utils/dev_utils.dart';
 import '../features/auth/presentation/providers/auth_provider.dart';
 import '../features/auth/presentation/states/auth_state.dart';
 import '../features/settings/presentation/providers/settings_provider.dart';
@@ -143,6 +144,15 @@ class _MainWindowState extends State<MainWindow> {
                     widget.router.navigate(const SettingsRoute());
                   },
                 ),
+                // Design System Showcase (dev only)
+                if (!isWelcomeScreen && DevUtils.isDevelopment) _buildTab(
+                  context: context,
+                  label: '🎨 Showcase',
+                  isSelected: currentRouteName == ShowcaseRoute.name,
+                  onTap: () {
+                    widget.router.navigate(const ShowcaseRoute());
+                  },
+                ),
 
                 // App name on the right
                 GestureDetector(
@@ -221,6 +231,15 @@ class _MainWindowState extends State<MainWindow> {
                   isSelected: currentRouteName == SettingsRoute.name,
                   onTap: () {
                     widget.router.navigate(const SettingsRoute());
+                  },
+                ),
+                // Design System Showcase (dev only)
+                if (!isWelcomeScreen && DevUtils.isDevelopment) _buildTab(
+                  context: context,
+                  label: '🎨 Showcase',
+                  isSelected: currentRouteName == ShowcaseRoute.name,
+                  onTap: () {
+                    widget.router.navigate(const ShowcaseRoute());
                   },
                 ),
 

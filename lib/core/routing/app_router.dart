@@ -5,6 +5,7 @@ import 'package:tkit/features/auto_switcher/presentation/pages/auto_switcher_pag
 import 'package:tkit/features/category_mapping/presentation/pages/category_mapping_editor_page.dart';
 import 'package:tkit/features/settings/presentation/pages/settings_page.dart';
 import 'package:tkit/features/welcome/presentation/pages/welcome_page.dart';
+import 'package:tkit/features/dev_showcase/presentation/pages/showcase_page.dart';
 
 part 'app_router.gr.dart';
 
@@ -13,6 +14,7 @@ const _tabOrder = {
   'AutoSwitcherRoute': 0,
   'CategoryMappingEditorRoute': 1,
   'SettingsRoute': 2,
+  'ShowcaseRoute': 3, // Dev only
 };
 
 /// Custom transition builder that slides left/right based on tab navigation direction
@@ -80,6 +82,12 @@ class AppRouter extends RootStackRouter {
         // Settings
         CustomRoute(
           page: SettingsRoute.page,
+          transitionsBuilder: _buildDirectionalSlideTransition,
+          duration: const Duration(milliseconds: 250),
+        ),
+        // Design System Showcase (dev only)
+        CustomRoute(
+          page: ShowcaseRoute.page,
           transitionsBuilder: _buildDirectionalSlideTransition,
           duration: const Duration(milliseconds: 250),
         ),
