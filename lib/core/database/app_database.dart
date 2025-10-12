@@ -133,7 +133,8 @@ class AppDatabase extends _$AppDatabase {
   ) async {
     await transaction(() async {
       for (final data in mappingsData) {
-        await into(communityMappings).insertOnConflictUpdate(
+        // Use insertOrReplace to handle the unique constraint on (processName, twitchCategoryId)
+        await into(communityMappings).insert(
           CommunityMappingsCompanion.insert(
             processName: data['processName'] as String,
             twitchCategoryId: data['twitchCategoryId'] as String,
@@ -148,6 +149,7 @@ class AppDatabase extends _$AppDatabase {
             source: Value(data['source'] as String? ?? 'community'),
             syncedAt: Value(DateTime.now()),
           ),
+          mode: InsertMode.insertOrReplace,
         );
       }
     });

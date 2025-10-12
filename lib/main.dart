@@ -572,6 +572,18 @@ void main() async {
       logger,
     );
 
+    // Sync community mappings on startup (doesn't require authentication)
+    logger.info('Syncing community mappings from GitHub...');
+    final syncResult = await syncCommunityMappingsUseCase(forceSync: true);
+    syncResult.fold(
+      (failure) {
+        logger.warning('Community mappings sync failed: ${failure.message}');
+      },
+      (count) {
+        logger.info('Synced $count community mappings from GitHub');
+      },
+    );
+
     // -------------------------------------------------------------------------
     // 8. Run App with MultiProvider
     // -------------------------------------------------------------------------
