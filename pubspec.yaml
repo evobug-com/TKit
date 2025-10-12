@@ -87,7 +87,7 @@ flutter:
 
 msix_config:
   # App Identity
-  display_name: TKit - Twitch Toolkit
+  display_name: TKit
   publisher_display_name: evobug.com
   identity_name: com.evobug.tkit
   publisher: CN=evobug
