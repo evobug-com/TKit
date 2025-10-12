@@ -7,10 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### TKit
+
+#### Added
+- Added markdown display for changelog
+- Added dialog to run auto update
+
+#### Changed
+- Autoupdate: Ignore ignores THIS version, won't autos-how again, but indicator stays visible. Later - closes dialog, will show again later
+
+### Installer
+
+### Changed
+- Application name to "TKit" for Msix installer
+
+
 ## [0.0.1-dev.2] - 2025-10-12
 
-## TKit
-### Added
+### TKit
+#### Added
 - Icon for tray and the app
 
 - Avoid closing settings when changes are unsaved/undiscarded
@@ -18,30 +33,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enabled checkbox in mappings
 - Ability to move exit/maximize/minimize buttons
 
-### Changed
+#### Changed
 - Compact UI for settings and mappings
 - Check for updates on startup
 - Improved welcome screen
 
-### Fixed
+#### Fixed
 - Save in settings not disappearing after saving
 - Ignored applications don't throw notifications anymore
 
-## Installer
+### Installer
 
-### Added
+#### Added
 - Msix installer
 
-### Changed
+#### Changed
 - Logo for Inno Setup installer
 - Changed installer name to TKit
 
 
 ## [0.0.1-dev.1] - 2025-10-11
 
-## TKit
+### TKit
 
-### Added
+#### Added
 - Initial release of TKit (Twitch Toolkit)
 - Initial development release
 - Multiple release channels support (Stable, RC, Beta, Dev)
@@ -60,12 +75,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multi-language support (English, Czech, Polish, Spanish, French, German, Portuguese, Japanese, Korean, Chinese)
 - Dark theme support
 
-### Changed
+#### Changed
 - Version now read from pubspec.yaml automatically
 - No need to manually update version in multiple files
 
 
-### Features
+#### Features
 - **Category Mapping**: Map executable paths to Twitch categories
 - **Auto Switcher**: Automatically detect running processes and switch categories
 - **Process Detection**: Real-time Windows process monitoring
