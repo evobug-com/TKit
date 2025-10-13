@@ -342,6 +342,21 @@ class _UpdateDialogState extends State<_UpdateDialog> {
     // If successful, the app will close automatically
   }
 
+  String _formatDate(DateTime date) {
+    final now = DateTime.now();
+    final difference = now.difference(date);
+
+    if (difference.inDays == 0) {
+      return 'today';
+    } else if (difference.inDays == 1) {
+      return 'yesterday';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays} days ago';
+    } else {
+      return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -374,29 +389,82 @@ class _UpdateDialogState extends State<_UpdateDialog> {
               ),
               const SizedBox(height: 8),
               Container(
-                constraints: const BoxConstraints(maxHeight: 200),
+                constraints: const BoxConstraints(maxHeight: 300),
                 decoration: BoxDecoration(
                   color: TKitColors.background,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: TKitColors.border),
                 ),
-                child: Markdown(
-                  data: updateInfo.releaseNotes,
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(12),
-                  styleSheet: MarkdownStyleSheet(
-                    p: TKitTextStyles.bodyMedium,
-                    h1: TKitTextStyles.heading2,
-                    h2: TKitTextStyles.heading3,
-                    h3: TKitTextStyles.heading4,
-                    code: TKitTextStyles.code,
-                    listBullet: TKitTextStyles.bodyMedium,
-                    a: TKitTextStyles.bodyMedium.copyWith(
-                      color: TKitColors.accentBright,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
+                child: updateInfo.versionChangelogs.isEmpty
+                    ? Markdown(
+                        data: updateInfo.releaseNotes,
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(12),
+                        styleSheet: MarkdownStyleSheet(
+                          p: TKitTextStyles.bodyMedium,
+                          h1: TKitTextStyles.heading2,
+                          h2: TKitTextStyles.heading3,
+                          h3: TKitTextStyles.heading4,
+                          code: TKitTextStyles.code,
+                          listBullet: TKitTextStyles.bodyMedium,
+                          a: TKitTextStyles.bodyMedium.copyWith(
+                            color: TKitColors.accentBright,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      )
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(12),
+                        itemCount: updateInfo.versionChangelogs.length,
+                        itemBuilder: (context, index) {
+                          final changelog = updateInfo.versionChangelogs[index];
+                          final isFirst = index == 0;
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (!isFirst) const Divider(height: 24),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Version ${changelog.version}',
+                                    style: TKitTextStyles.bodySmall.copyWith(
+                                      color: TKitColors.accentBright,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    '(${_formatDate(changelog.publishedAt)})',
+                                    style: TKitTextStyles.caption.copyWith(
+                                      color: TKitColors.textMuted,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Markdown(
+                                data: changelog.notes,
+                                shrinkWrap: true,
+                                padding: EdgeInsets.zero,
+                                styleSheet: MarkdownStyleSheet(
+                                  p: TKitTextStyles.bodySmall,
+                                  h1: TKitTextStyles.heading3,
+                                  h2: TKitTextStyles.heading4,
+                                  h3: TKitTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.bold),
+                                  code: TKitTextStyles.code.copyWith(fontSize: 12),
+                                  listBullet: TKitTextStyles.bodySmall,
+                                  a: TKitTextStyles.bodySmall.copyWith(
+                                    color: TKitColors.accentBright,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
               ),
               const SizedBox(height: 16),
             ],

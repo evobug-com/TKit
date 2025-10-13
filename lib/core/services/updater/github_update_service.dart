@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -126,99 +125,121 @@ class GitHubUpdateService {
 
       UpdateInfo? updateInfo;
 
-      if (channel == UpdateChannel.stable) {
-        // For stable, use /releases/latest endpoint
-        final url = 'https://api.github.com/repos/${AppConfig.githubOwner}/${AppConfig.githubRepo}/releases/latest';
+      // Fetch all releases to support multi-version changelogs
+      final url = 'https://api.github.com/repos/${AppConfig.githubOwner}/${AppConfig.githubRepo}/releases';
 
-        Response? response;
-        try {
-          response = await _dio.get(
-            url,
-            options: Options(
-              headers: {
-                'Accept': 'application/vnd.github+json',
-                'X-GitHub-Api-Version': '2022-11-28',
-              },
-            ),
-          );
-        } on DioException catch (e) {
-          if (e.response?.statusCode == 404) {
-            _logger.debug('No releases found on GitHub yet');
-            return null;
-          }
-          rethrow;
-        }
-
-        if (response.statusCode != 200) {
-          _logger.warning('Failed to fetch releases: ${response.statusCode}');
-          return null;
-        }
-
-        final release = response.data as Map<String, dynamic>;
-        updateInfo = UpdateInfo.fromGitHubRelease(
-          release,
-          installationType: installationType,
+      Response? response;
+      try {
+        response = await _dio.get(
+          url,
+          options: Options(
+            headers: {
+              'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28',
+            },
+          ),
         );
-      } else {
-        // For other channels, fetch all releases and find the latest matching channel
-        final url = 'https://api.github.com/repos/${AppConfig.githubOwner}/${AppConfig.githubRepo}/releases';
-
-        Response? response;
-        try {
-          response = await _dio.get(
-            url,
-            options: Options(
-              headers: {
-                'Accept': 'application/vnd.github+json',
-                'X-GitHub-Api-Version': '2022-11-28',
-              },
-            ),
-          );
-        } on DioException catch (e) {
-          if (e.response?.statusCode == 404) {
-            _logger.debug('No releases found on GitHub yet');
-            return null;
-          }
-          rethrow;
-        }
-
-        if (response.statusCode != 200) {
-          _logger.warning('Failed to fetch releases: ${response.statusCode}');
+      } on DioException catch (e) {
+        if (e.response?.statusCode == 404) {
+          _logger.debug('No releases found on GitHub yet');
           return null;
         }
+        rethrow;
+      }
 
-        final releases = response.data as List;
+      if (response.statusCode != 200) {
+        _logger.warning('Failed to fetch releases: ${response.statusCode}');
+        return null;
+      }
 
-        // Find the first (latest) release that matches the channel
-        for (final release in releases) {
-          final releaseData = release as Map<String, dynamic>;
-          final tagName = releaseData['tag_name'] as String;
-          final version = tagName.startsWith('v') ? tagName.substring(1) : tagName;
+      final allReleases = response.data as List;
 
-          // Check if this version is acceptable for the channel
+      // Find the latest release matching the channel
+      Map<String, dynamic>? latestRelease;
+      for (final release in allReleases) {
+        final releaseData = release as Map<String, dynamic>;
+        final tagName = releaseData['tag_name'] as String;
+        final version = tagName.startsWith('v') ? tagName.substring(1) : tagName;
+
+        // For stable channel, check if it's not a prerelease
+        if (channel == UpdateChannel.stable) {
+          final isPrerelease = releaseData['prerelease'] as bool? ?? false;
+          if (!isPrerelease) {
+            latestRelease = releaseData;
+            break;
+          }
+        } else {
+          // For other channels, check if this version is acceptable
           if (channel.acceptsVersion(version)) {
-            try {
-              updateInfo = UpdateInfo.fromGitHubRelease(
-                releaseData,
-                installationType: installationType,
-              );
-              break;
-            } catch (e) {
-              _logger.warning('Failed to parse release: $tagName', e);
-              continue;
+            latestRelease = releaseData;
+            break;
+          }
+        }
+      }
+
+      if (latestRelease == null) {
+        _logger.info('No releases found for channel: ${channel.value}');
+        return null;
+      }
+
+      // Get the latest version
+      final latestTagName = latestRelease['tag_name'] as String;
+      final latestVersion = latestTagName.startsWith('v')
+          ? latestTagName.substring(1)
+          : latestTagName;
+
+      // Collect all intermediate releases between current version and latest version
+      final intermediateReleases = <Map<String, dynamic>>[];
+      for (final release in allReleases) {
+        final releaseData = release as Map<String, dynamic>;
+        final tagName = releaseData['tag_name'] as String;
+        final version = tagName.startsWith('v') ? tagName.substring(1) : tagName;
+
+        // Check if version is between current and latest (inclusive of latest)
+        if (VersionComparator.isGreaterThan(version, AppConfig.appVersion) &&
+            (VersionComparator.isLessThan(version, latestVersion) ||
+             VersionComparator.isEqual(version, latestVersion))) {
+          // For stable channel, exclude prereleases
+          if (channel == UpdateChannel.stable) {
+            final isPrerelease = releaseData['prerelease'] as bool? ?? false;
+            if (!isPrerelease) {
+              intermediateReleases.add(releaseData);
+            }
+          } else {
+            // For other channels, check if version is acceptable
+            if (channel.acceptsVersion(version)) {
+              intermediateReleases.add(releaseData);
             }
           }
         }
+      }
 
-        if (updateInfo == null) {
-          _logger.info('No releases found for channel: ${channel.value}');
-          return null;
+      // Create UpdateInfo with multiple changelogs if we have intermediate releases
+      if (intermediateReleases.isNotEmpty) {
+        try {
+          updateInfo = UpdateInfo.fromMultipleReleases(
+            intermediateReleases,
+            installationType: installationType,
+          );
+        } catch (e) {
+          _logger.warning('Failed to parse releases with changelogs, falling back to single release', e);
+          // Fallback to single release
+          updateInfo = UpdateInfo.fromGitHubRelease(
+            latestRelease,
+            installationType: installationType,
+          );
         }
+      } else {
+        updateInfo = UpdateInfo.fromGitHubRelease(
+          latestRelease,
+          installationType: installationType,
+        );
       }
 
       _logger.info('Latest version from GitHub: ${updateInfo.version}');
       _logger.info('Current version: ${AppConfig.appVersion}');
       _logger.info('Selected installer: ${updateInfo.assetName}');
+      _logger.info('Found ${updateInfo.versionChangelogs.length} version changelog(s)');
 
       // Compare versions
       if (VersionComparator.isGreaterThan(
