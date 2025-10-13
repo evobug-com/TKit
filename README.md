@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="Assets/Icon512x512.png" alt="TKit Logo" width="200"/>
+<img src="Assets/Icon.svg" alt="TKit Logo" width="200"/>
 
 # TKit - Twitch Toolkit
 

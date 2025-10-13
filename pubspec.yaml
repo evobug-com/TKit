@@ -89,7 +89,8 @@ flutter:
   uses-material-design: true
   generate: true
   assets:
-    - Assets/app_icon.ico
+    - Assets/Icon512x512.ico
+    - Assets/Icon512x512.png
 
 msix_config:
   # App Identity
@@ -103,7 +104,7 @@ msix_config:
   msix_version: 1.0.0.0
 
   # Branding
-  logo_path: Assets\app_icon.ico
+  logo_path: Assets\Icon512x512.ico
 
   # Capabilities - only what's needed
   # Note: runFullTrust is automatically added by msix package for desktop apps
