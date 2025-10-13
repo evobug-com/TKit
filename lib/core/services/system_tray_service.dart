@@ -52,8 +52,8 @@ class SystemTrayService with TrayListener {
       // Set tray icon
       await trayManager.setIcon(
         Platform.isWindows
-            ? 'resources/app_icon.ico'
-            : 'assets/icon.png',
+            ? 'Assets/app_icon.ico'
+            : 'Assets/Icon64x64.png',
       );
 
       // Build context menu

@@ -101,7 +101,7 @@ msix_config:
   msix_version: 1.0.0.0
 
   # Branding
-  logo_path: windows\runner\resources\app_icon.ico
+  logo_path: Assets\app_icon.ico
 
   # Capabilities - only what's needed
   # Note: runFullTrust is automatically added by msix package for desktop apps

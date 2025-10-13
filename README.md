@@ -116,13 +116,27 @@ That's it! TKit will now automatically update your category as you switch window
 
 Map your applications to Twitch categories:
 
+**⚡ Recommended Method** (Fast & Easy):
+1. Launch the game or application you want to map
+2. Press **Alt+Shift+F1** (default shortcut for manual update)
+3. A dialog will appear with all information pre-filled (process name, window title, etc.)
+4. Search and select the correct Twitch category
+5. Save - done!
+
+**Alternative Method** (Manual):
 1. Go to **Category Mappings** page
 2. Click **Add Mapping**
-3. Enter the process name (e.g., `League of Legends.exe`)
+3. Manually enter the process name (e.g., `League of Legends.exe`)
 4. Search and select the Twitch category
 5. Save and enable the mapping
 
+> ⚠️ **Note**: Manual mapping is slow and inconvenient. We highly recommend using the shortcut method instead - it's faster and automatically fills in all required information.
+
 💡 **Tip**: TKit comes pre-seeded with popular games!
+
+<div align="center">
+<img src="Assets/presentation/Mappings.png" alt="Category Mappings Interface" width="700"/>
+</div>
 
 ### Auto Switcher
 
@@ -132,9 +146,17 @@ Control automatic category switching:
 - **Manual Update** - Force update to current window's category
 - **View History** - See all category changes with timestamps
 
+<div align="center">
+<img src="Assets/presentation/AutoSwitcher.png" alt="Auto Switcher Interface" width="700"/>
+</div>
+
 ### Settings
 
 TKit is fully configurable with options for scan intervals, debounce delays, fallback behavior, notifications, hotkeys, and update channels. Access settings from the main window or system tray.
+
+<div align="center">
+<img src="Assets/presentation/Settings.png" alt="Settings Interface" width="700"/>
+</div>
 
 ## 🛠️ For Developers
 
@@ -145,6 +167,8 @@ Interested in contributing or building from source?
 - **[Release Guide](RELEASE_GUIDE.md)** - For maintainers creating releases
 
 ## 🗺️ Roadmap
+
+> **Disclaimer**: This roadmap is not set in stone. These are just ideas we thought would be nice to have - they're straight out of our heads without proper planning or commitment. Consider this a wishlist rather than a promise.
 
 - [ ] Multi-platform support (macOS, Linux)
 - [ ] Auto-update stream title and tags
@@ -165,7 +189,7 @@ Need help?
 
 - 🐛 [Report issues](https://github.com/evobug-com/TKit/issues)
 - 💬 [Browse existing issues](https://github.com/evobug-com/TKit/issues)
-- 📝 Check logs (stored in app directory)
+- 📝 Check logs - Press **F2** while TKit is running to open the log overlay (helpful for understanding what happened)
 
 ## 📜 License
 
