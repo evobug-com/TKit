@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Added
 - Exclude launchers from auto-switcher (e.g., Steam, Epic Games Launcher)
 
+#### Fixed
+- Twitch error when adding a process to ignore list
+
 #### Changed
 - Changelog shows diffs between current and latest release
 - Application icon updated

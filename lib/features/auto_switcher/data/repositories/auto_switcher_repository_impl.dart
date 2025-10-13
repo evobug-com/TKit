@@ -480,6 +480,19 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
           // Mark as resolved
           await _unknownProcessDataSource.markAsResolved(processName);
 
+          // Check if mapping is enabled before updating Twitch
+          if (!mapping.isEnabled) {
+            _logger.debug('[AutoSwitcher] Mapping is disabled (ignored), skipping Twitch update');
+            _currentStatus = _currentStatus.copyWith(
+              state: _isMonitoring
+                  ? OrchestrationState.detectingProcess
+                  : OrchestrationState.idle,
+              currentProcess: null,
+            );
+            _statusController.add(_currentStatus);
+            return const Right(null);
+          }
+
           // Perform the category update
           return await _performCategoryUpdate(
             categoryId: mapping.twitchCategoryId,
