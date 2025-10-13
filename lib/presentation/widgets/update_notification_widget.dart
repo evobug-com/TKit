@@ -150,8 +150,6 @@ class _UpdateDialog extends StatefulWidget {
 }
 
 class _UpdateDialogState extends State<_UpdateDialog> {
-  bool _isDownloading = false;
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

@@ -24,7 +24,6 @@ class TKitRadio<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isEnabled = enabled && onChanged != null;
-    final isSelected = value == groupValue;
 
     Widget radio = SizedBox(
       width: 18,

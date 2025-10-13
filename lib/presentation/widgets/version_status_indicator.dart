@@ -36,7 +36,6 @@ class _VersionStatusIndicatorState extends State<VersionStatusIndicator> {
   UpdateCheckStatus _status = UpdateCheckStatus.unknown;
   bool _isHovering = false;
   String? _errorMessage;
-  String? _shownUpdateVersion; // Track which update version we've shown
   bool _shouldShowDialog = false; // Flag to show dialog from build
 
   @override
@@ -255,7 +254,6 @@ class _UpdateDialogState extends State<_UpdateDialog> {
   bool _isDownloading = false;
   bool _isInstalling = false;
   DownloadProgress? _downloadProgress;
-  File? _downloadedFile;
 
   @override
   void initState() {
@@ -359,7 +357,6 @@ class _UpdateDialogState extends State<_UpdateDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     final updateInfo = widget.updateInfo;
 
     return AlertDialog(

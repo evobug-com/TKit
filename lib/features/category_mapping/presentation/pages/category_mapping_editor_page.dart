@@ -239,8 +239,6 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
   }
 
   Widget _buildCommunityMappingsTab(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
     if (_loadingCommunity) {
       return const Center(child: LoadingIndicator());
     }

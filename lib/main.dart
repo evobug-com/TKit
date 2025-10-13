@@ -1122,9 +1122,6 @@ class _TKitAppState extends State<TKitApp> {
               (submissionResult) {
                 final isVerification =
                     submissionResult['isVerification'] as bool? ?? false;
-                final message =
-                    submissionResult['message'] as String? ??
-                    'Submitted successfully';
                 final issueUrl = submissionResult['issueUrl'] as String?;
 
                 logger.info(

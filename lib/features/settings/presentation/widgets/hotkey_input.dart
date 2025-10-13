@@ -26,19 +26,16 @@ class HotkeyInput extends StatefulWidget {
 
 class _HotkeyInputState extends State<HotkeyInput> {
   bool _isRecording = false;
-  HotKey? _recordedHotkey;
 
   void _startRecording() {
     setState(() {
       _isRecording = true;
-      _recordedHotkey = null;
     });
   }
 
   void _stopRecording() {
     setState(() {
       _isRecording = false;
-      _recordedHotkey = null;
     });
   }
 
@@ -47,10 +44,6 @@ class _HotkeyInputState extends State<HotkeyInput> {
     if (_isModifierKey(hotKey.key)) {
       return;
     }
-
-    setState(() {
-      _recordedHotkey = hotKey;
-    });
 
     // Convert HotKey to string format
     final hotkeyString = _hotKeyToString(hotKey);

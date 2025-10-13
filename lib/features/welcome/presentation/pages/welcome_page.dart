@@ -299,7 +299,7 @@ class _WelcomePageState extends State<WelcomePage>
                     HSpace.sm(),
                     Text(
                       l10n.welcomeTwitchConnectedAs(
-                        (authState as Authenticated).user.displayName,
+                        authState.user.displayName,
                       ),
                       style: TKitTextStyles.bodyMedium.copyWith(
                         color: TKitColors.success,

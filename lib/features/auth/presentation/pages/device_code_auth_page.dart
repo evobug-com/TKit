@@ -6,7 +6,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/text_styles.dart';
-import '../../../../shared/theme/spacing.dart';
 import '../../../../shared/widgets/layout/spacer.dart';
 import '../../../../shared/widgets/layout/island.dart';
 import '../../../../shared/widgets/buttons/primary_button.dart';
@@ -133,7 +132,7 @@ class _DeviceCodeAuthPageState extends State<DeviceCodeAuthPage> {
 
     return Dialog(
       backgroundColor: TKitColors.background,
-      child: Container(
+      child: SizedBox(
         width: 500,
         child: Island.standard(
           child: Column(

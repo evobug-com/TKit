@@ -397,18 +397,6 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
     );
   }
 
-  Future<void> _handleNoMappingFallback() async {
-    final settings =
-        _currentSettings ??
-        (await _getSettings()).getOrElse(() => AppSettings.defaults());
-
-    await _applyFallback(
-      settings.fallbackBehavior,
-      settings.customFallbackCategoryId,
-      _currentStatus.currentProcess ?? 'Unknown',
-    );
-  }
-
   Future<Either<Failure, void>> _applyFallback(
     FallbackBehavior behavior,
     String? customCategoryId,

@@ -819,12 +819,12 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                         ),
                         HSpace.sm(),
                         Text(
-                          (authState as Authenticated).user.displayName,
+                          authState.user.displayName,
                           style: TKitTextStyles.bodyMedium,
                         ),
                         HSpace.sm(),
                         Text(
-                          '(@${(authState as Authenticated).user.login})',
+                          '(@${authState.user.login})',
                           style: TKitTextStyles.caption,
                         ),
                       ],

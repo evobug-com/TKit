@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../theme/colors.dart';
-import '../../theme/spacing.dart';
 import '../../theme/text_styles.dart';
 
 /// Badge variant types

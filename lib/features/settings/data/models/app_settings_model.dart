@@ -25,7 +25,7 @@ class AppSettingsModel extends AppSettings {
     super.manualUpdateHotkey,
     required super.updateChannel,
     required super.windowControlsPosition,
-    @JsonKey(defaultValue: false) required super.useFramelessWindow,
+    required super.useFramelessWindow,
   });
 
   /// Create from domain entity

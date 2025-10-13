@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:tkit/l10n/app_localizations.dart';
 import '../../domain/entities/category_mapping.dart';
 import '../../domain/usecases/delete_mapping_usecase.dart';
 import '../../domain/usecases/find_mapping_usecase.dart';

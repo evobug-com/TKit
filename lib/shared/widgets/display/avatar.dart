@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../theme/colors.dart';
-import '../../theme/text_styles.dart';
 
 /// Avatar size options
 enum AvatarSize {
