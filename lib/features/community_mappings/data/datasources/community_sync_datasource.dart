@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import '../../../../core/errors/exceptions.dart';
+import '../../../../core/network/network_config.dart';
 import '../../../../core/utils/app_logger.dart';
 
 /// Data source for syncing community mappings from GitHub
@@ -48,15 +49,16 @@ class CommunitySyncDataSource {
         _mappingsUrl,
         options: Options(
           responseType: ResponseType.plain,
-          receiveTimeout: const Duration(seconds: 30),
-          sendTimeout: const Duration(seconds: 30),
+          receiveTimeout: NetworkConfig.standardTimeout,
+          sendTimeout: NetworkConfig.standardTimeout,
         ),
       );
 
       if (response.statusCode != 200) {
         throw ServerException(
-          message: 'Failed to fetch mappings: HTTP ${response.statusCode}',
+          message: 'Unable to download community mappings. Please try again later.',
           code: response.statusCode.toString(),
+          technicalDetails: 'HTTP ${response.statusCode}',
         );
       }
 
@@ -65,8 +67,9 @@ class CommunitySyncDataSource {
       // Validate response structure
       if (!data.containsKey('mappings') || data['mappings'] is! List) {
         throw ServerException(
-          message: 'Invalid mappings data structure',
+          message: 'Community mappings data is invalid. This will be fixed in the next update.',
           code: 'INVALID_DATA',
+          technicalDetails: 'Missing or invalid mappings field',
         );
       }
 
@@ -79,19 +82,25 @@ class CommunitySyncDataSource {
     } on DioException catch (e) {
       logger.error('Network error fetching community mappings', e);
       throw NetworkException(
-        message: 'Failed to connect to GitHub: ${e.message}',
+        message: 'Unable to download community mappings. Please check your internet connection.',
+        originalError: e,
+        technicalDetails: 'Network error: ${e.message}',
       );
     } on FormatException catch (e) {
       logger.error('JSON parse error', e);
       throw ServerException(
-        message: 'Invalid JSON format: ${e.message}',
+        message: 'Community mappings data is corrupted. This will be fixed in the next update.',
         code: 'PARSE_ERROR',
+        originalError: e,
+        technicalDetails: 'JSON parse error: ${e.message}',
       );
     } catch (e) {
       logger.error('Unexpected error fetching mappings', e);
       throw ServerException(
-        message: 'Failed to fetch community mappings: $e',
+        message: 'Unable to fetch community mappings. Please try again later.',
         code: 'UNKNOWN',
+        originalError: e,
+        technicalDetails: e.toString(),
       );
     }
   }

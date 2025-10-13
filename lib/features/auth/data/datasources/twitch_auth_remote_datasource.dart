@@ -30,8 +30,9 @@ class TwitchAuthRemoteDataSource {
 
       if (response.statusCode != 200) {
         throw AuthException(
-          message: 'Device code request failed with status ${response.statusCode}',
+          message: 'Unable to start authentication. Please try again.',
           code: 'DEVICE_CODE_FAILED',
+          technicalDetails: 'HTTP ${response.statusCode}',
         );
       }
 
@@ -41,17 +42,19 @@ class TwitchAuthRemoteDataSource {
     } on DioException catch (e) {
       _logger.error('Device code request failed', e);
       throw AuthException(
-        message: 'Failed to initiate device code flow: ${e.message}',
+        message: 'Unable to connect to Twitch. Please check your internet connection.',
         code: 'DEVICE_CODE_ERROR',
         originalError: e,
+        technicalDetails: 'Network error: ${e.message}',
       );
     } catch (e) {
       if (e is AuthException) rethrow;
       _logger.error('Unexpected error during device code request', e);
       throw AuthException(
-        message: 'Unexpected error during device code request',
+        message: 'Authentication failed. Please try again.',
         code: 'UNKNOWN_ERROR',
         originalError: e,
+        technicalDetails: e.toString(),
       );
     }
   }
@@ -151,23 +154,26 @@ class TwitchAuthRemoteDataSource {
       }
 
       throw AuthException(
-        message: 'Device code polling failed with status ${response.statusCode}',
+        message: 'Authentication failed. Please try logging in again.',
         code: 'POLLING_FAILED',
+        technicalDetails: 'HTTP ${response.statusCode}',
       );
     } on DioException catch (e) {
       _logger.error('Device code polling failed', e);
       throw AuthException(
-        message: 'Failed to poll device code: ${e.message}',
+        message: 'Unable to connect to Twitch. Please check your internet connection.',
         code: 'POLLING_ERROR',
         originalError: e,
+        technicalDetails: 'Network error: ${e.message}',
       );
     } catch (e) {
       if (e is AuthException) rethrow;
       _logger.error('Unexpected error during device code polling', e);
       throw AuthException(
-        message: 'Unexpected error during device code polling',
+        message: 'Authentication failed. Please try again.',
         code: 'UNKNOWN_ERROR',
         originalError: e,
+        technicalDetails: e.toString(),
       );
     }
   }
@@ -188,8 +194,9 @@ class TwitchAuthRemoteDataSource {
 
       if (response.statusCode != 200) {
         throw AuthException(
-          message: 'Token refresh failed with status ${response.statusCode}',
+          message: 'Your session has expired. Please log in again.',
           code: 'TOKEN_REFRESH_FAILED',
+          technicalDetails: 'HTTP ${response.statusCode}',
         );
       }
 
@@ -199,17 +206,19 @@ class TwitchAuthRemoteDataSource {
     } on DioException catch (e) {
       _logger.error('Token refresh request failed', e);
       throw AuthException(
-        message: 'Failed to refresh token: ${e.message}',
+        message: 'Your session has expired. Please log in again.',
         code: 'TOKEN_REFRESH_ERROR',
         originalError: e,
+        technicalDetails: 'Network error: ${e.message}',
       );
     } catch (e) {
       if (e is AuthException) rethrow;
       _logger.error('Unexpected error during token refresh', e);
       throw AuthException(
-        message: 'Unexpected error during token refresh',
+        message: 'Your session has expired. Please log in again.',
         code: 'UNKNOWN_ERROR',
         originalError: e,
+        technicalDetails: e.toString(),
       );
     }
   }
@@ -227,17 +236,19 @@ class TwitchAuthRemoteDataSource {
     } on DioException catch (e) {
       _logger.error('Token revocation request failed', e);
       throw AuthException(
-        message: 'Failed to revoke token: ${e.message}',
+        message: 'Unable to complete logout. You may already be logged out.',
         code: 'TOKEN_REVOKE_ERROR',
         originalError: e,
+        technicalDetails: 'Network error: ${e.message}',
       );
     } catch (e) {
       if (e is AuthException) rethrow;
       _logger.error('Unexpected error during token revocation', e);
       throw AuthException(
-        message: 'Unexpected error during token revocation',
+        message: 'Unable to complete logout. Please try again.',
         code: 'UNKNOWN_ERROR',
         originalError: e,
+        technicalDetails: e.toString(),
       );
     }
   }
@@ -257,8 +268,9 @@ class TwitchAuthRemoteDataSource {
 
       if (response.statusCode != 200) {
         throw AuthException(
-          message: 'Failed to get user info with status ${response.statusCode}',
+          message: 'Unable to retrieve your account information. Please try logging in again.',
           code: 'USER_INFO_FAILED',
+          technicalDetails: 'HTTP ${response.statusCode}',
         );
       }
 
@@ -267,8 +279,9 @@ class TwitchAuthRemoteDataSource {
 
       if (users.isEmpty) {
         throw AuthException(
-          message: 'No user data returned from Twitch API',
+          message: 'Unable to retrieve your account information. Please try logging in again.',
           code: 'NO_USER_DATA',
+          technicalDetails: 'Empty user data response',
         );
       }
 
@@ -280,17 +293,19 @@ class TwitchAuthRemoteDataSource {
     } on DioException catch (e) {
       _logger.error('Failed to get user info', e);
       throw AuthException(
-        message: 'Failed to get user info: ${e.message}',
+        message: 'Unable to connect to Twitch. Please check your internet connection.',
         code: 'USER_INFO_ERROR',
         originalError: e,
+        technicalDetails: 'Network error: ${e.message}',
       );
     } catch (e) {
       if (e is AuthException) rethrow;
       _logger.error('Unexpected error getting user info', e);
       throw AuthException(
-        message: 'Unexpected error getting user info',
+        message: 'Unable to retrieve your account information. Please try again.',
         code: 'UNKNOWN_ERROR',
         originalError: e,
+        technicalDetails: e.toString(),
       );
     }
   }

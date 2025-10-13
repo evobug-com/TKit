@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../config/app_config.dart';
+import '../../network/network_config.dart';
 import '../../utils/app_logger.dart';
 import '../../../features/settings/domain/entities/update_channel.dart';
 import 'models/update_info.dart';
@@ -300,11 +301,15 @@ class GitHubUpdateService {
 
       _downloadCancelToken = CancelToken();
 
-      // Download with progress tracking
+      // Download with progress tracking (use long timeout for large files)
       await _dio.download(
         updateInfo.downloadUrl,
         savePath,
         cancelToken: _downloadCancelToken,
+        options: Options(
+          receiveTimeout: NetworkConfig.longTimeout,
+          sendTimeout: NetworkConfig.longTimeout,
+        ),
         onReceiveProgress: (received, total) {
           _currentDownloadProgress = DownloadProgress(
             status: DownloadStatus.downloading,

@@ -3,12 +3,18 @@ class AppException implements Exception {
   final String message;
   final String? code;
   final dynamic originalError;
+  final String? technicalDetails;
 
-  const AppException({required this.message, this.code, this.originalError});
+  const AppException({
+    required this.message,
+    this.code,
+    this.originalError,
+    this.technicalDetails,
+  });
 
   @override
   String toString() =>
-      'AppException: $message${code != null ? ' (Code: $code)' : ''}';
+      'AppException: $message${code != null ? ' (Code: $code)' : ''}${technicalDetails != null ? ' | $technicalDetails' : ''}';
 }
 
 /// Exception thrown when server returns an error
@@ -17,6 +23,7 @@ class ServerException extends AppException {
     required super.message,
     super.code,
     super.originalError,
+    super.technicalDetails,
   });
 }
 
@@ -26,6 +33,7 @@ class CacheException extends AppException {
     required super.message,
     super.code,
     super.originalError,
+    super.technicalDetails,
   });
 }
 
@@ -35,6 +43,7 @@ class PlatformException extends AppException {
     required super.message,
     super.code,
     super.originalError,
+    super.technicalDetails,
   });
 }
 
@@ -44,6 +53,7 @@ class DatabaseException extends AppException {
     required super.message,
     super.code,
     super.originalError,
+    super.technicalDetails,
   });
 }
 
@@ -53,6 +63,7 @@ class AuthException extends AppException {
     required super.message,
     super.code,
     super.originalError,
+    super.technicalDetails,
   });
 }
 
@@ -62,6 +73,7 @@ class NetworkException extends AppException {
     required super.message,
     super.code,
     super.originalError,
+    super.technicalDetails,
   });
 }
 
@@ -71,5 +83,6 @@ class ValidationException extends AppException {
     required super.message,
     super.code,
     super.originalError,
+    super.technicalDetails,
   });
 }

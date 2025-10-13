@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import '../../../../core/config/app_config.dart';
 import '../../../../core/errors/exceptions.dart';
+import '../../../../core/network/network_config.dart';
 import '../../../../core/utils/app_logger.dart';
 import '../models/twitch_category_model.dart';
 import '../models/twitch_user_model.dart';
@@ -37,8 +38,8 @@ class TwitchApiRemoteDataSource {
   /// Configure Dio with base URL and interceptors
   void _configureDio() {
     _dio.options.baseUrl = AppConfig.twitchApiBaseUrl;
-    _dio.options.connectTimeout = const Duration(seconds: 30);
-    _dio.options.receiveTimeout = const Duration(seconds: 30);
+    _dio.options.connectTimeout = NetworkConfig.standardTimeout;
+    _dio.options.receiveTimeout = NetworkConfig.standardTimeout;
 
     // Add request interceptor for auth headers
     _dio.interceptors.add(
@@ -79,8 +80,8 @@ class TwitchApiRemoteDataSource {
             final retryAfter = _getRetryAfter(error.response);
             _logger.warning('Rate limited. Retry after: $retryAfter seconds');
 
-            // Wait and retry with exponential backoff
-            if (retryAfter > 0 && retryAfter <= 60) {
+            // Wait and retry if retry time is reasonable
+            if (retryAfter > 0 && retryAfter <= NetworkConfig.maxRateLimitWaitSeconds) {
               await Future.delayed(Duration(seconds: retryAfter));
 
               // Retry the request
@@ -167,14 +168,14 @@ class TwitchApiRemoteDataSource {
     final retryAfter = response.headers.value('Retry-After');
     if (retryAfter != null) {
       try {
-        return int.parse(retryAfter).clamp(1, 60);
+        return int.parse(retryAfter).clamp(1, NetworkConfig.maxRateLimitWaitSeconds);
       } catch (e) {
         _logger.error('Failed to parse Retry-After header', e);
       }
     }
 
-    // Default to 5 seconds
-    return 5;
+    // Default to configured value
+    return NetworkConfig.defaultRateLimitRetrySeconds;
   }
 
   /// Search for categories by query
@@ -201,8 +202,9 @@ class TwitchApiRemoteDataSource {
             .toList();
       } else {
         throw ServerException(
-          message: 'Failed to search categories: ${response.statusCode}',
+          message: 'Unable to search Twitch categories. Please check your connection and try again.',
           code: response.statusCode?.toString(),
+          technicalDetails: 'HTTP ${response.statusCode}',
         );
       }
     } on DioException catch (e) {
@@ -228,8 +230,9 @@ class TwitchApiRemoteDataSource {
 
       if (response.statusCode != 204) {
         throw ServerException(
-          message: 'Failed to update channel category: ${response.statusCode}',
+          message: 'Unable to update your channel category. Please try again.',
           code: response.statusCode?.toString(),
+          technicalDetails: 'HTTP ${response.statusCode}',
         );
       }
     } on DioException catch (e) {
@@ -249,13 +252,18 @@ class TwitchApiRemoteDataSource {
       if (response.statusCode == 200) {
         final data = response.data['data'] as List;
         if (data.isEmpty) {
-          throw ServerException(message: 'No user data returned', code: '404');
+          throw ServerException(
+            message: 'Unable to retrieve your account information. Please try logging in again.',
+            code: '404',
+            technicalDetails: 'Empty user data response',
+          );
         }
         return TwitchUserModel.fromJson(data.first as Map<String, dynamic>);
       } else {
         throw ServerException(
-          message: 'Failed to get current user: ${response.statusCode}',
+          message: 'Unable to retrieve your account information. Please check your connection.',
           code: response.statusCode?.toString(),
+          technicalDetails: 'HTTP ${response.statusCode}',
         );
       }
     } on DioException catch (e) {
@@ -278,13 +286,18 @@ class TwitchApiRemoteDataSource {
       if (response.statusCode == 200) {
         final data = response.data['data'] as List;
         if (data.isEmpty) {
-          throw ServerException(message: 'Category not found', code: '404');
+          throw ServerException(
+            message: 'Category not found. It may have been removed or renamed.',
+            code: '404',
+            technicalDetails: 'Category ID: $categoryId',
+          );
         }
         return TwitchCategoryModel.fromJson(data.first as Map<String, dynamic>);
       } else {
         throw ServerException(
-          message: 'Failed to get category: ${response.statusCode}',
+          message: 'Unable to retrieve category information. Please try again.',
           code: response.statusCode?.toString(),
+          technicalDetails: 'HTTP ${response.statusCode}',
         );
       }
     } on DioException catch (e) {
@@ -306,8 +319,9 @@ class TwitchApiRemoteDataSource {
     // Twitch API supports up to 100 IDs per request
     if (categoryIds.length > 100) {
       throw ServerException(
-        message: 'Maximum 100 category IDs allowed per request',
+        message: 'Too many categories requested at once. Maximum 100 allowed.',
         code: '400',
+        technicalDetails: 'Requested: ${categoryIds.length} categories',
       );
     }
 
@@ -329,8 +343,9 @@ class TwitchApiRemoteDataSource {
             .toList();
       } else {
         throw ServerException(
-          message: 'Failed to get games by IDs: ${response.statusCode}',
+          message: 'Unable to retrieve category information. Please try again.',
           code: response.statusCode?.toString(),
+          technicalDetails: 'HTTP ${response.statusCode}',
         );
       }
     } on DioException catch (e) {
@@ -354,8 +369,9 @@ class TwitchApiRemoteDataSource {
     // Twitch API supports up to 100 names per request
     if (gameNames.length > 100) {
       throw ServerException(
-        message: 'Maximum 100 game names allowed per request',
+        message: 'Too many game names requested at once. Maximum 100 allowed.',
         code: '400',
+        technicalDetails: 'Requested: ${gameNames.length} names',
       );
     }
 
@@ -377,8 +393,9 @@ class TwitchApiRemoteDataSource {
             .toList();
       } else {
         throw ServerException(
-          message: 'Failed to get games by names: ${response.statusCode}',
+          message: 'Unable to retrieve categories. Please try again.',
           code: response.statusCode?.toString(),
+          technicalDetails: 'HTTP ${response.statusCode}',
         );
       }
     } on DioException catch (e) {
@@ -397,8 +414,9 @@ class TwitchApiRemoteDataSource {
   }) async {
     if (first < 1 || first > 100) {
       throw ServerException(
-        message: 'first parameter must be between 1 and 100',
+        message: 'Invalid number of results requested. Must be between 1 and 100.',
         code: '400',
+        technicalDetails: 'Requested: $first',
       );
     }
 
@@ -423,8 +441,9 @@ class TwitchApiRemoteDataSource {
             .toList();
       } else {
         throw ServerException(
-          message: 'Failed to get top games: ${response.statusCode}',
+          message: 'Unable to retrieve popular categories. Please try again.',
           code: response.statusCode?.toString(),
+          technicalDetails: 'HTTP ${response.statusCode}',
         );
       }
     } on DioException catch (e) {
@@ -440,31 +459,42 @@ class TwitchApiRemoteDataSource {
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
         throw NetworkException(
-          message: 'Network timeout during $operation',
+          message: 'Request timed out. Please check your internet connection and try again.',
           originalError: e,
+          technicalDetails: 'Timeout during $operation',
         );
       case DioExceptionType.badResponse:
         final statusCode = e.response?.statusCode;
         if (statusCode == 401) {
           throw AuthException(
-            message: 'Authentication failed - token may be expired',
+            message: 'Your session has expired. Please log in again.',
             code: '401',
+            technicalDetails: 'Unauthorized during $operation',
           );
         } else if (statusCode == 429) {
-          throw ServerException(message: 'Rate limit exceeded', code: '429');
+          throw ServerException(
+            message: 'Too many requests. Please wait a moment and try again.',
+            code: '429',
+            technicalDetails: 'Rate limit exceeded during $operation',
+          );
         } else {
           throw ServerException(
-            message: 'Server error during $operation: $statusCode',
+            message: 'Unable to connect to Twitch. Please try again later.',
             code: statusCode?.toString(),
+            technicalDetails: 'HTTP $statusCode during $operation',
           );
         }
       case DioExceptionType.cancel:
-        throw CacheException(message: 'Request cancelled during $operation');
+        throw CacheException(
+          message: 'Request was cancelled.',
+          technicalDetails: 'Cancelled during $operation',
+        );
       case DioExceptionType.unknown:
       default:
         throw NetworkException(
-          message: 'Network error during $operation: ${e.message}',
+          message: 'Unable to connect to Twitch. Please check your internet connection.',
           originalError: e,
+          technicalDetails: 'Network error during $operation: ${e.message}',
         );
     }
   }

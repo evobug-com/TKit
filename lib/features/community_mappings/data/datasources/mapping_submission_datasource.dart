@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import '../../../../core/config/app_config.dart';
 import '../../../../core/errors/exceptions.dart';
+import '../../../../core/network/network_config.dart';
 import '../../../../core/utils/app_logger.dart';
 
 /// Data source for submitting new mappings via GitHub Pull Requests
@@ -93,8 +94,8 @@ class MappingSubmissionDataSource {
         }),
         options: Options(
           headers: {'Content-Type': 'application/json'},
-          receiveTimeout: const Duration(seconds: 30),
-          sendTimeout: const Duration(seconds: 30),
+          receiveTimeout: NetworkConfig.standardTimeout,
+          sendTimeout: NetworkConfig.standardTimeout,
         ),
       );
 
@@ -115,8 +116,9 @@ class MappingSubmissionDataSource {
         };
       } else {
         throw ServerException(
-          message: 'Failed to create pull request: HTTP ${response.statusCode}',
+          message: 'Unable to submit mapping. Please try again later.',
           code: response.statusCode.toString(),
+          technicalDetails: 'HTTP ${response.statusCode}',
         );
       }
     } on DioException catch (e) {
@@ -125,35 +127,47 @@ class MappingSubmissionDataSource {
       // Handle specific HTTP error codes
       if (e.response?.statusCode == 429 || e.response?.statusCode == 403) {
         throw ServerException(
-          message: 'Rate limit exceeded. Please try again later.',
+          message: 'Too many submissions. Please wait a few minutes and try again.',
           code: 'RATE_LIMIT',
+          originalError: e,
+          technicalDetails: 'HTTP ${e.response?.statusCode}',
         );
       }
 
       if (e.response?.statusCode == 400) {
         final errorData = e.response?.data;
         final errorMessage = errorData is Map
-            ? errorData['error'] ?? 'Invalid submission'
-            : 'Invalid submission';
+            ? errorData['error'] ?? 'Invalid submission data'
+            : 'Invalid submission data';
         throw ServerException(
-          message: errorMessage,
+          message: 'Unable to submit mapping: $errorMessage',
           code: 'INVALID_SUBMISSION',
+          originalError: e,
+          technicalDetails: 'HTTP 400',
         );
       }
 
       if (e.response?.statusCode == 500) {
         throw ServerException(
-          message: 'Server error. Please try again later.',
+          message: 'The submission server is temporarily unavailable. Please try again later.',
           code: 'SERVER_ERROR',
+          originalError: e,
+          technicalDetails: 'HTTP 500',
         );
       }
 
-      throw NetworkException(message: 'Failed to submit mapping: ${e.message}');
+      throw NetworkException(
+        message: 'Unable to connect to the submission server. Please check your internet connection.',
+        originalError: e,
+        technicalDetails: 'Network error: ${e.message}',
+      );
     } catch (e) {
       logger.error('Unexpected error submitting mapping', e);
       throw ServerException(
-        message: 'Failed to submit mapping: $e',
+        message: 'Unable to submit mapping. Please try again later.',
         code: 'UNKNOWN',
+        originalError: e,
+        technicalDetails: e.toString(),
       );
     }
   }
@@ -297,7 +311,7 @@ class MappingSubmissionDataSource {
       // Use HEAD request for lightweight connectivity check
       final response = await dio.head(
         AppConfig.communityApiUrl,
-        options: Options(receiveTimeout: const Duration(seconds: 10)),
+        options: Options(receiveTimeout: NetworkConfig.quickTimeout),
       );
       return response.statusCode == 200 || response.statusCode == 204;
     } catch (e) {
