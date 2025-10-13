@@ -555,32 +555,16 @@ void main() async {
       logger.debug('Updated minimize to tray setting: ${settings.minimizeToTray}');
     });
 
-    // Initialize system tray (navigation will be set up after router is created)
+    // Initialize system tray
     await systemTrayService.initialize(
       onShow: () async {
         await windowService.showWindow();
-        // Navigation handled in TKitApp
-      },
-      onAutoSwitcher: () async {
-        await windowService.showWindow();
-        // Navigation handled in TKitApp
-      },
-      onCategoryMappings: () async {
-        await windowService.showWindow();
-        // Navigation handled in TKitApp
-      },
-      onSettings: () async {
-        await windowService.showWindow();
-        // Navigation handled in TKitApp
       },
       onExit: () async {
         logger.info('Exit requested from system tray');
         await windowManager.destroy();
       },
       showLabel: 'Show TKit',
-      autoSwitcherLabel: 'Auto Switcher',
-      categoryMappingsLabel: 'Category Mappings',
-      settingsLabel: 'Settings',
       exitLabel: 'Exit',
       tooltip: 'TKit - Twitch Toolkit',
     );

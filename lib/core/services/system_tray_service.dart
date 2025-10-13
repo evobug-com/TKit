@@ -10,9 +10,6 @@ class SystemTrayService with TrayListener {
   bool _isInitialized = false;
 
   VoidCallback? _onShow;
-  VoidCallback? _onAutoSwitcher;
-  VoidCallback? _onCategoryMappings;
-  VoidCallback? _onSettings;
   VoidCallback? _onExit;
 
   SystemTrayService(this._logger);
@@ -20,14 +17,8 @@ class SystemTrayService with TrayListener {
   /// Initialize system tray with icon and menu
   Future<void> initialize({
     required VoidCallback onShow,
-    required VoidCallback onAutoSwitcher,
-    required VoidCallback onCategoryMappings,
-    required VoidCallback onSettings,
     required VoidCallback onExit,
     required String showLabel,
-    required String autoSwitcherLabel,
-    required String categoryMappingsLabel,
-    required String settingsLabel,
     required String exitLabel,
     required String tooltip,
   }) async {
@@ -41,9 +32,6 @@ class SystemTrayService with TrayListener {
 
       // Store callbacks
       _onShow = onShow;
-      _onAutoSwitcher = onAutoSwitcher;
-      _onCategoryMappings = onCategoryMappings;
-      _onSettings = onSettings;
       _onExit = onExit;
 
       // Add listener
@@ -62,19 +50,6 @@ class SystemTrayService with TrayListener {
           MenuItem(
             label: showLabel,
             onClick: (_) => onShow(),
-          ),
-          MenuItem.separator(),
-          MenuItem(
-            label: autoSwitcherLabel,
-            onClick: (_) => onAutoSwitcher(),
-          ),
-          MenuItem(
-            label: categoryMappingsLabel,
-            onClick: (_) => onCategoryMappings(),
-          ),
-          MenuItem(
-            label: settingsLabel,
-            onClick: (_) => onSettings(),
           ),
           MenuItem.separator(),
           MenuItem(
