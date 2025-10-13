@@ -54,6 +54,8 @@ import 'package:tkit/features/category_mapping/domain/usecases/save_mapping_usec
 import 'package:tkit/features/category_mapping/domain/usecases/update_last_used_usecase.dart';
 import 'package:tkit/features/category_mapping/presentation/providers/category_mapping_provider.dart';
 import 'package:tkit/features/category_mapping/presentation/dialogs/unknown_game_dialog.dart';
+import 'package:tkit/features/category_mapping/data/utils/ignored_processes.dart';
+import 'package:tkit/features/category_mapping/data/utils/path_normalizer.dart';
 import 'package:tkit/features/community_mappings/data/datasources/community_sync_datasource.dart';
 import 'package:tkit/features/community_mappings/data/datasources/mapping_submission_datasource.dart';
 import 'package:tkit/features/community_mappings/data/repositories/community_mappings_repository_impl.dart';
@@ -939,6 +941,45 @@ class _TKitAppState extends State<TKitApp> {
       // Set the notification click handler
       notificationService.onMissingCategoryClick =
           ({required String processName, String? executablePath}) async {
+            // Check if this process should be automatically ignored
+            if (IgnoredProcesses.shouldIgnore(processName)) {
+              final reason = IgnoredProcesses.getIgnoreReason(processName);
+              logger.info(
+                'Auto-ignoring process from notification: $processName (Reason: $reason)',
+              );
+
+              // Extract normalized path for privacy-safe storage
+              final normalizedPath = executablePath != null
+                  ? PathNormalizer.extractGamePath(executablePath)
+                  : null;
+
+              // Create and save ignored mapping
+              final ignoredMapping = CategoryMapping(
+                processName: processName,
+                executablePath: executablePath,
+                normalizedInstallPaths:
+                    normalizedPath != null ? [normalizedPath] : [],
+                twitchCategoryId: 'IGNORE',
+                twitchCategoryName: 'Ignored Process',
+                createdAt: DateTime.now(),
+                lastApiFetch: DateTime.now(),
+                cacheExpiresAt: DateTime.now().add(const Duration(days: 365)),
+                manualOverride: true,
+                isEnabled: false,
+              );
+
+              try {
+                await saveMappingUseCase(ignoredMapping);
+                logger.debug(
+                  'Auto-ignored process saved to database: $processName',
+                );
+              } catch (e) {
+                logger.warning('Failed to save auto-ignored process: $e');
+              }
+
+              return; // Exit early, don't show dialog
+            }
+
             logger.info('Notification clicked for: $processName');
 
             // Bring window to foreground first
@@ -1059,6 +1100,48 @@ class _TKitAppState extends State<TKitApp> {
         String? executablePath,
         String? windowTitle,
       }) async {
+        // Check if this process should be automatically ignored
+        if (IgnoredProcesses.shouldIgnore(processName)) {
+          final reason = IgnoredProcesses.getIgnoreReason(processName);
+          logger.info(
+            'Auto-ignoring process: $processName (Reason: $reason)',
+          );
+
+          // Extract normalized path for privacy-safe storage
+          final normalizedPath = executablePath != null
+              ? PathNormalizer.extractGamePath(executablePath)
+              : null;
+
+          // Create a disabled mapping with IGNORE category
+          final ignoredMapping = CategoryMapping(
+            processName: processName,
+            executablePath: executablePath,
+            normalizedInstallPaths:
+                normalizedPath != null ? [normalizedPath] : [],
+            twitchCategoryId: 'IGNORE',
+            twitchCategoryName: 'Ignored Process',
+            createdAt: DateTime.now(),
+            lastApiFetch: DateTime.now(),
+            cacheExpiresAt: DateTime.now().add(const Duration(days: 365)),
+            manualOverride: true,
+            isEnabled: false, // Disabled mapping
+          );
+
+          // Save the ignored mapping locally to prevent future dialogs
+          try {
+            final saveMappingUseCase = Provider.of<SaveMappingUseCase>(
+              _appRouter.navigatorKey.currentContext!,
+              listen: false,
+            );
+            await saveMappingUseCase(ignoredMapping);
+            logger.debug('Auto-ignored process saved to database: $processName');
+          } catch (e) {
+            logger.warning('Failed to save auto-ignored process: $e');
+          }
+
+          return ignoredMapping;
+        }
+
         logger.info('Showing unknown game dialog for: $processName');
 
         // Bring window to foreground first

@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### TKit
 
+#### Added
+- Exclude launchers from auto-switcher (e.g., Steam, Epic Games Launcher)
+
 #### Changed
 - Changelog shows diffs between current and latest release
 - Application icon updated
