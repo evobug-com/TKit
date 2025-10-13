@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Changed
 - Changelog shows diffs between current and latest release
+- Application icon updated
+- Removed Auto Switcher, Category Mappings, and Settings from tray menu
+- Removed web, android, ios platforms from the project
 
 ## [0.0.1-dev.5] - 2025-10-13
 
