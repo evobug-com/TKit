@@ -87,17 +87,13 @@ class TKitCheckbox extends StatelessWidget {
 class TKitCheckboxFormField extends FormField<bool> {
   TKitCheckboxFormField({
     super.key,
-    required bool initialValue,
+    required bool super.initialValue,
     String? label,
-    FormFieldSetter<bool>? onSaved,
-    FormFieldValidator<bool>? validator,
+    super.onSaved,
+    super.validator,
     bool enabled = true,
-    AutovalidateMode? autovalidateMode,
+    super.autovalidateMode,
   }) : super(
-          initialValue: initialValue,
-          onSaved: onSaved,
-          validator: validator,
-          autovalidateMode: autovalidateMode,
           builder: (FormFieldState<bool> state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,

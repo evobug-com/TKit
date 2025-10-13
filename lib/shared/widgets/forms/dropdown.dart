@@ -257,20 +257,16 @@ class TKitDropdownOption<T> {
 class TKitDropdownFormField<T> extends FormField<T> {
   TKitDropdownFormField({
     super.key,
-    T? initialValue,
+    super.initialValue,
     required List<TKitDropdownOption<T>> options,
     String? placeholder,
-    FormFieldSetter<T>? onSaved,
-    FormFieldValidator<T>? validator,
+    super.onSaved,
+    super.validator,
     bool enabled = true,
     bool searchable = false,
     String Function(T)? displayBuilder,
-    AutovalidateMode? autovalidateMode,
+    super.autovalidateMode,
   }) : super(
-          initialValue: initialValue,
-          onSaved: onSaved,
-          validator: validator,
-          autovalidateMode: autovalidateMode,
           builder: (FormFieldState<T> state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,

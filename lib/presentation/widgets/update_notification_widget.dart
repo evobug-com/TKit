@@ -288,7 +288,7 @@ class _UpdateDialogState extends State<_UpdateDialog> {
               LinearProgressIndicator(
                 value: progress.progress,
                 backgroundColor:
-                    theme.colorScheme.surfaceVariant,
+                    theme.colorScheme.surfaceContainerHighest,
                 color: theme.colorScheme.primary,
               ),
               const SizedBox(height: 8),

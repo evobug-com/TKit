@@ -1054,7 +1054,7 @@ class _TKitAppState extends State<TKitApp> {
       final windowService = Provider.of<WindowService>(context, listen: false);
 
       // Helper function to show the unknown game dialog
-      Future<CategoryMapping?> _showUnknownGameDialog({
+      Future<CategoryMapping?> showUnknownGameDialog({
         required String processName,
         String? executablePath,
         String? windowTitle,
@@ -1178,7 +1178,7 @@ class _TKitAppState extends State<TKitApp> {
             String? executablePath,
             String? windowTitle,
           }) async {
-            return await _showUnknownGameDialog(
+            return await showUnknownGameDialog(
               processName: processName,
               executablePath: executablePath,
               windowTitle: windowTitle,

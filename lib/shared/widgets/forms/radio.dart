@@ -136,18 +136,14 @@ class TKitRadioOption<T> {
 class TKitRadioGroupFormField<T> extends FormField<T> {
   TKitRadioGroupFormField({
     super.key,
-    T? initialValue,
+    super.initialValue,
     required List<TKitRadioOption<T>> options,
-    FormFieldSetter<T>? onSaved,
-    FormFieldValidator<T>? validator,
+    super.onSaved,
+    super.validator,
     bool enabled = true,
     Axis direction = Axis.vertical,
-    AutovalidateMode? autovalidateMode,
+    super.autovalidateMode,
   }) : super(
-          initialValue: initialValue,
-          onSaved: onSaved,
-          validator: validator,
-          autovalidateMode: autovalidateMode,
           builder: (FormFieldState<T> state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,

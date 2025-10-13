@@ -118,7 +118,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   /// Test constructor for in-memory database
-  AppDatabase.test(QueryExecutor e) : super(e);
+  AppDatabase.test(super.e);
 
   @override
   int get schemaVersion => 5;

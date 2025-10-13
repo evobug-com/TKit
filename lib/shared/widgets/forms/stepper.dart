@@ -219,22 +219,18 @@ class _StepperButton extends StatelessWidget {
 class TKitNumberStepperFormField extends FormField<double> {
   TKitNumberStepperFormField({
     super.key,
-    required double initialValue,
+    required double super.initialValue,
     double min = 0,
     double max = 100,
     double step = 1,
     int? decimalPlaces,
     String? suffix,
     double? width,
-    FormFieldSetter<double>? onSaved,
-    FormFieldValidator<double>? validator,
+    super.onSaved,
+    super.validator,
     bool enabled = true,
-    AutovalidateMode? autovalidateMode,
+    super.autovalidateMode,
   }) : super(
-          initialValue: initialValue,
-          onSaved: onSaved,
-          validator: validator,
-          autovalidateMode: autovalidateMode,
           builder: (FormFieldState<double> state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,

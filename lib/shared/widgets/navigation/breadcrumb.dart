@@ -192,6 +192,7 @@ class BreadcrumbCollapsed extends StatelessWidget {
             for (final item in middle)
               PopupMenuItem<BreadcrumbItem>(
                 value: item,
+                onTap: item.onTap,
                 child: Row(
                   children: [
                     if (item.icon != null) ...[
@@ -204,7 +205,6 @@ class BreadcrumbCollapsed extends StatelessWidget {
                     ),
                   ],
                 ),
-                onTap: item.onTap,
               ),
           ],
         ),

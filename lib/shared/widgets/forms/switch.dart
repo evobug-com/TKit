@@ -28,7 +28,7 @@ class TKitSwitch extends StatelessWidget {
       child: Switch(
         value: value,
         onChanged: isEnabled ? onChanged : null,
-        activeColor: TKitColors.accent,
+        activeThumbColor: TKitColors.accent,
         activeTrackColor: TKitColors.accentDim,
         inactiveThumbColor: TKitColors.textMuted,
         inactiveTrackColor: TKitColors.surfaceVariant,
@@ -76,17 +76,13 @@ class TKitSwitch extends StatelessWidget {
 class TKitSwitchFormField extends FormField<bool> {
   TKitSwitchFormField({
     super.key,
-    required bool initialValue,
+    required bool super.initialValue,
     String? label,
-    FormFieldSetter<bool>? onSaved,
-    FormFieldValidator<bool>? validator,
+    super.onSaved,
+    super.validator,
     bool enabled = true,
-    AutovalidateMode? autovalidateMode,
+    super.autovalidateMode,
   }) : super(
-          initialValue: initialValue,
-          onSaved: onSaved,
-          validator: validator,
-          autovalidateMode: autovalidateMode,
           builder: (FormFieldState<bool> state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,

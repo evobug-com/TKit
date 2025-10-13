@@ -58,12 +58,11 @@ class _DatePickerFieldState extends State<DatePickerField> {
               surface: TKitColors.surface,
               onSurface: TKitColors.textPrimary,
             ),
-            dialogBackgroundColor: TKitColors.surface,
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 foregroundColor: TKitColors.textPrimary,
               ),
-            ),
+            ), dialogTheme: DialogThemeData(backgroundColor: TKitColors.surface),
           ),
           child: child!,
         );
@@ -204,12 +203,11 @@ class _TimePickerFieldState extends State<TimePickerField> {
               surface: TKitColors.surface,
               onSurface: TKitColors.textPrimary,
             ),
-            dialogBackgroundColor: TKitColors.surface,
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 foregroundColor: TKitColors.textPrimary,
               ),
-            ),
+            ), dialogTheme: DialogThemeData(backgroundColor: TKitColors.surface),
           ),
           child: MediaQuery(
             data: MediaQuery.of(context).copyWith(

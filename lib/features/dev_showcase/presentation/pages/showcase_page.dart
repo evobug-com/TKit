@@ -1041,6 +1041,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                             TKitTab(label: 'Settings', icon: Icons.settings),
                             TKitTab(label: 'Help', icon: Icons.help_outline),
                           ],
+                          compact: true,
                           children: [
                             Container(
                               padding: const EdgeInsets.all(TKitSpacing.md),
@@ -1055,7 +1056,6 @@ class _ShowcasePageState extends State<ShowcasePage> {
                               child: Text('Help content', style: TKitTextStyles.bodyMedium),
                             ),
                           ],
-                          compact: true,
                         ),
                       ),
                       const VSpace.lg(),
