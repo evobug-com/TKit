@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/database/app_database.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../../../core/errors/failure.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../../domain/entities/community_mapping.dart';
-import '../../domain/repositories/i_community_mappings_repository.dart';
-import '../datasources/community_sync_datasource.dart';
-import '../datasources/mapping_submission_datasource.dart';
+import 'package:tkit/core/database/app_database.dart';
+import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/community_mappings/domain/entities/community_mapping.dart';
+import 'package:tkit/features/community_mappings/domain/repositories/i_community_mappings_repository.dart';
+import 'package:tkit/features/community_mappings/data/datasources/community_sync_datasource.dart';
+import 'package:tkit/features/community_mappings/data/datasources/mapping_submission_datasource.dart';
 
 /// Implementation of the community mappings repository
 ///

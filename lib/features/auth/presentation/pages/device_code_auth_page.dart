@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../l10n/app_localizations.dart';
-import '../../../../shared/theme/colors.dart';
-import '../../../../shared/theme/text_styles.dart';
-import '../../../../shared/widgets/layout/spacer.dart';
-import '../../../../shared/widgets/layout/island.dart';
-import '../../../../shared/widgets/buttons/primary_button.dart';
-import '../../../../shared/widgets/buttons/icon_button.dart';
-import '../../data/models/device_code_response.dart';
-import '../providers/auth_provider.dart';
+import 'package:tkit/l10n/app_localizations.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
+import 'package:tkit/shared/widgets/layout/island.dart';
+import 'package:tkit/shared/widgets/buttons/primary_button.dart';
+import 'package:tkit/shared/widgets/buttons/icon_button.dart';
+import 'package:tkit/features/auth/data/models/device_code_response.dart';
+import 'package:tkit/features/auth/presentation/providers/auth_provider.dart';
 
 /// Device Code Authentication Page
 /// Displays the user code and guides the user through Twitch activation

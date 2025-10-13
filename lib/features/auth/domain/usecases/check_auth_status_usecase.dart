@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../repositories/i_auth_repository.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/auth/domain/repositories/i_auth_repository.dart';
 
 /// Use case for checking if the user is authenticated
 /// Encapsulates the business logic for auth status check

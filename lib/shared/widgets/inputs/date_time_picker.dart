@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../theme/colors.dart';
-import '../../theme/spacing.dart';
-import '../../theme/text_styles.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
 
 /// DatePickerField - Date picker with Flutter's built-in picker and TKit styling
 class DatePickerField extends StatefulWidget {

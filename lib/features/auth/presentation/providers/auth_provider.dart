@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
-import '../../data/datasources/token_local_datasource.dart';
-import '../../data/models/device_code_response.dart';
-import '../../domain/repositories/i_auth_repository.dart';
-import '../../domain/usecases/check_auth_status_usecase.dart';
-import '../../domain/usecases/get_current_user_usecase.dart';
-import '../../domain/usecases/logout_usecase.dart';
-import '../../domain/usecases/refresh_token_usecase.dart';
-import '../states/auth_state.dart';
+import 'package:tkit/features/auth/data/datasources/token_local_datasource.dart';
+import 'package:tkit/features/auth/data/models/device_code_response.dart';
+import 'package:tkit/features/auth/domain/repositories/i_auth_repository.dart';
+import 'package:tkit/features/auth/domain/usecases/check_auth_status_usecase.dart';
+import 'package:tkit/features/auth/domain/usecases/get_current_user_usecase.dart';
+import 'package:tkit/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:tkit/features/auth/domain/usecases/refresh_token_usecase.dart';
+import 'package:tkit/features/auth/presentation/states/auth_state.dart';
 
 /// Provider for managing authentication state
 class AuthProvider extends ChangeNotifier {

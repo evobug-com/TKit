@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'colors.dart';
+import 'package:tkit/shared/theme/colors.dart';
 
 /// TKit text styles
 class TKitTextStyles {

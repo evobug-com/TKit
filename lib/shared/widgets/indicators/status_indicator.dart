@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../theme/colors.dart';
+import 'package:tkit/shared/theme/colors.dart';
 
 /// Status indicator types
 enum StatusType { success, error, warning, idle, info }

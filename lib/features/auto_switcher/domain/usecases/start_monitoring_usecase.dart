@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../repositories/i_auto_switcher_repository.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/auto_switcher/domain/repositories/i_auto_switcher_repository.dart';
 
 /// Use case to start the auto-switcher monitoring
 ///

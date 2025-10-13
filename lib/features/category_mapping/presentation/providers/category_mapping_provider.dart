@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
-import '../../domain/entities/category_mapping.dart';
-import '../../domain/usecases/delete_mapping_usecase.dart';
-import '../../domain/usecases/find_mapping_usecase.dart';
-import '../../domain/usecases/get_all_mappings_usecase.dart';
-import '../../domain/usecases/save_mapping_usecase.dart';
+import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
+import 'package:tkit/features/category_mapping/domain/usecases/delete_mapping_usecase.dart';
+import 'package:tkit/features/category_mapping/domain/usecases/find_mapping_usecase.dart';
+import 'package:tkit/features/category_mapping/domain/usecases/get_all_mappings_usecase.dart';
+import 'package:tkit/features/category_mapping/domain/usecases/save_mapping_usecase.dart';
 
 /// Provider for managing category mapping state
 ///

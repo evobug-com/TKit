@@ -1,4 +1,4 @@
-import '../utils/installation_detector.dart';
+import 'package:tkit/core/services/updater/utils/installation_detector.dart';
 
 /// Changelog for a specific version
 class VersionChangelog {

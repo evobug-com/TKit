@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-import '../../domain/entities/app_settings.dart';
-import '../../domain/entities/fallback_behavior.dart';
-import '../../domain/entities/update_channel.dart';
-import '../../domain/entities/window_controls_position.dart';
+import 'package:tkit/features/settings/domain/entities/app_settings.dart';
+import 'package:tkit/features/settings/domain/entities/fallback_behavior.dart';
+import 'package:tkit/features/settings/domain/entities/update_channel.dart';
+import 'package:tkit/features/settings/domain/entities/window_controls_position.dart';
 
 part 'app_settings_model.g.dart';
 

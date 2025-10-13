@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../repositories/i_twitch_api_repository.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/twitch_api/domain/repositories/i_twitch_api_repository.dart';
 
 /// Use case for updating the channel's category/game
 /// Encapsulates the business logic for channel updates

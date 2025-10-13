@@ -1,8 +1,8 @@
 import 'package:drift/drift.dart';
-import '../../../../core/database/app_database.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../models/category_mapping_model.dart';
-import '../utils/path_normalizer.dart';
+import 'package:tkit/core/database/app_database.dart';
+import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/features/category_mapping/data/models/category_mapping_model.dart';
+import 'package:tkit/features/category_mapping/data/utils/path_normalizer.dart';
 
 /// Local data source for category mappings using Drift DAO
 ///

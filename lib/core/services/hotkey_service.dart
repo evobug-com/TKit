@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
-import '../../features/auto_switcher/presentation/providers/auto_switcher_provider.dart';
-import '../../features/settings/domain/usecases/get_settings_usecase.dart';
-import '../../features/settings/domain/usecases/watch_settings_usecase.dart';
-import '../utils/app_logger.dart';
+import 'package:tkit/features/auto_switcher/presentation/providers/auto_switcher_provider.dart';
+import 'package:tkit/features/settings/domain/usecases/get_settings_usecase.dart';
+import 'package:tkit/features/settings/domain/usecases/watch_settings_usecase.dart';
+import 'package:tkit/core/utils/app_logger.dart';
 
 /// Service for managing application hotkeys
 /// Registers and handles keyboard shortcuts for various actions

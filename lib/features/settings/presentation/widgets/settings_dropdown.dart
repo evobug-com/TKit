@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/theme/spacing.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 
 /// Reusable dropdown widget for settings
 class SettingsDropdown<T> extends StatelessWidget {

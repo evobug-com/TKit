@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../../domain/usecases/get_focused_process_usecase.dart';
-import '../../domain/usecases/watch_process_changes_usecase.dart';
-import '../states/process_detection_state.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/process_detection/domain/usecases/get_focused_process_usecase.dart';
+import 'package:tkit/features/process_detection/domain/usecases/watch_process_changes_usecase.dart';
+import 'package:tkit/features/process_detection/presentation/states/process_detection_state.dart';
 
 /// Provider for managing process detection state
 class ProcessDetectionProvider extends ChangeNotifier {

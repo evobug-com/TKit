@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../entities/twitch_token.dart';
-import '../repositories/i_auth_repository.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/auth/domain/entities/twitch_token.dart';
+import 'package:tkit/features/auth/domain/repositories/i_auth_repository.dart';
 
 /// Use case for refreshing the authentication token
 /// Encapsulates the business logic for token refresh

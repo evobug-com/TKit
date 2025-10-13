@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../features/settings/domain/entities/update_channel.dart';
-import '../../theme/colors.dart';
-import '../../theme/text_styles.dart';
+import 'package:tkit/features/settings/domain/entities/update_channel.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
 
 /// Badge widget that displays the update channel (Alpha/Beta/RC)
 /// Only visible for non-stable channels

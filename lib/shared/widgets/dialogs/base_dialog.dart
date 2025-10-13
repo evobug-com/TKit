@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../theme/colors.dart';
-import '../../theme/text_styles.dart';
-import '../../theme/spacing.dart';
-import '../buttons/primary_button.dart';
-import '../buttons/accent_button.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/widgets/buttons/primary_button.dart';
+import 'package:tkit/shared/widgets/buttons/accent_button.dart';
 
 /// Base dialog template with consistent styling
 class BaseDialog extends StatelessWidget {

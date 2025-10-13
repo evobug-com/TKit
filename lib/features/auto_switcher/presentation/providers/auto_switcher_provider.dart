@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import '../../domain/entities/orchestration_status.dart';
-import '../../domain/usecases/get_orchestration_status_usecase.dart';
-import '../../domain/usecases/get_update_history_usecase.dart';
-import '../../domain/usecases/manual_update_usecase.dart';
-import '../../domain/usecases/start_monitoring_usecase.dart';
-import '../../domain/usecases/stop_monitoring_usecase.dart';
-import '../states/auto_switcher_state.dart';
+import 'package:tkit/features/auto_switcher/domain/entities/orchestration_status.dart';
+import 'package:tkit/features/auto_switcher/domain/usecases/get_orchestration_status_usecase.dart';
+import 'package:tkit/features/auto_switcher/domain/usecases/get_update_history_usecase.dart';
+import 'package:tkit/features/auto_switcher/domain/usecases/manual_update_usecase.dart';
+import 'package:tkit/features/auto_switcher/domain/usecases/start_monitoring_usecase.dart';
+import 'package:tkit/features/auto_switcher/domain/usecases/stop_monitoring_usecase.dart';
+import 'package:tkit/features/auto_switcher/presentation/states/auto_switcher_state.dart';
 
 /// Provider error message keys for localization
 class AutoSwitcherProviderKeys {

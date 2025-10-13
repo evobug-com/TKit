@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'colors.dart';
-import 'text_styles.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
 
 /// TKit application theme
 class AppTheme {

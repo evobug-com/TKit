@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter/widgets.dart';
-import '../../../../l10n/app_localizations.dart';
+import 'package:tkit/l10n/app_localizations.dart';
 
 /// Update channel preference for application updates
 @JsonEnum(valueField: 'value')

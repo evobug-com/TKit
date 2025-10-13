@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../entities/app_settings.dart';
-import '../repositories/i_settings_repository.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/settings/domain/entities/app_settings.dart';
+import 'package:tkit/features/settings/domain/repositories/i_settings_repository.dart';
 
 /// Use case for updating settings
 /// Validates settings before updating

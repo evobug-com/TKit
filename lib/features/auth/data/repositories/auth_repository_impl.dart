@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../../../core/errors/failure.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../../domain/entities/twitch_token.dart';
-import '../../domain/entities/twitch_user.dart';
-import '../../domain/repositories/i_auth_repository.dart';
-import '../datasources/token_local_datasource.dart';
-import '../datasources/twitch_auth_remote_datasource.dart';
-import '../models/device_code_response.dart';
+import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/auth/domain/entities/twitch_token.dart';
+import 'package:tkit/features/auth/domain/entities/twitch_user.dart';
+import 'package:tkit/features/auth/domain/repositories/i_auth_repository.dart';
+import 'package:tkit/features/auth/data/datasources/token_local_datasource.dart';
+import 'package:tkit/features/auth/data/datasources/twitch_auth_remote_datasource.dart';
+import 'package:tkit/features/auth/data/models/device_code_response.dart';
 
 /// Implementation of IAuthRepository
 /// Coordinates between local and remote data sources

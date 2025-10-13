@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../../domain/entities/twitch_category.dart';
-import '../../domain/usecases/search_categories_usecase.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/twitch_api/domain/entities/twitch_category.dart';
+import 'package:tkit/features/twitch_api/domain/usecases/search_categories_usecase.dart';
 
 /// Provider for managing Twitch category search
 /// Used primarily in the category mapping feature for searching categories

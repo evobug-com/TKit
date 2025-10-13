@@ -6,22 +6,22 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:tkit/l10n/app_localizations.dart';
-import '../shared/theme/colors.dart';
-import '../shared/theme/text_styles.dart';
-import '../core/routing/app_router.dart';
-import '../core/config/app_config.dart';
-import '../core/utils/dev_utils.dart';
-import '../core/utils/app_logger.dart';
-import '../features/auth/presentation/providers/auth_provider.dart';
-import '../features/auth/presentation/states/auth_state.dart';
-import '../features/settings/presentation/providers/settings_provider.dart';
-import '../features/settings/presentation/providers/window_controls_preview_provider.dart';
-import '../features/settings/presentation/providers/unsaved_changes_notifier.dart';
-import '../features/settings/presentation/states/settings_state.dart';
-import '../features/settings/domain/entities/window_controls_position.dart';
-import '../features/settings/domain/entities/update_channel.dart';
-import '../shared/widgets/badges/channel_badge.dart';
-import 'widgets/version_status_indicator.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/core/routing/app_router.dart';
+import 'package:tkit/core/config/app_config.dart';
+import 'package:tkit/core/utils/dev_utils.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/auth/presentation/providers/auth_provider.dart';
+import 'package:tkit/features/auth/presentation/states/auth_state.dart';
+import 'package:tkit/features/settings/presentation/providers/settings_provider.dart';
+import 'package:tkit/features/settings/presentation/providers/window_controls_preview_provider.dart';
+import 'package:tkit/features/settings/presentation/providers/unsaved_changes_notifier.dart';
+import 'package:tkit/features/settings/presentation/states/settings_state.dart';
+import 'package:tkit/features/settings/domain/entities/window_controls_position.dart';
+import 'package:tkit/features/settings/domain/entities/update_channel.dart';
+import 'package:tkit/shared/widgets/badges/channel_badge.dart';
+import 'package:tkit/presentation/widgets/version_status_indicator.dart';
 
 /// Main application window with custom chrome
 class MainWindow extends StatefulWidget {

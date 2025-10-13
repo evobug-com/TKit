@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../theme/colors.dart';
-import '../../theme/text_styles.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
 
 /// Primary action button with Twitch purple background
 class PrimaryButton extends StatelessWidget {

@@ -1,5 +1,5 @@
-import '../entities/app_settings.dart';
-import '../repositories/i_settings_repository.dart';
+import 'package:tkit/features/settings/domain/entities/app_settings.dart';
+import 'package:tkit/features/settings/domain/repositories/i_settings_repository.dart';
 
 /// Use case for watching settings changes
 /// Returns a stream that emits settings updates in real-time

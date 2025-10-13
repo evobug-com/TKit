@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../entities/orchestration_status.dart';
-import '../repositories/i_auto_switcher_repository.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/auto_switcher/domain/entities/orchestration_status.dart';
+import 'package:tkit/features/auto_switcher/domain/repositories/i_auto_switcher_repository.dart';
 
 /// Use case to get the current orchestration status
 ///

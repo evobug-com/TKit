@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../../../core/errors/failure.dart';
-import '../../../community_mappings/domain/repositories/i_community_mappings_repository.dart';
-import '../../domain/entities/category_mapping.dart';
-import '../../domain/repositories/i_category_mapping_repository.dart';
-import '../datasources/category_mapping_local_datasource.dart';
-import '../datasources/memory_cache.dart';
-import '../models/category_mapping_model.dart';
+import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/community_mappings/domain/repositories/i_community_mappings_repository.dart';
+import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
+import 'package:tkit/features/category_mapping/domain/repositories/i_category_mapping_repository.dart';
+import 'package:tkit/features/category_mapping/data/datasources/category_mapping_local_datasource.dart';
+import 'package:tkit/features/category_mapping/data/datasources/memory_cache.dart';
+import 'package:tkit/features/category_mapping/data/models/category_mapping_model.dart';
 
 /// Implementation of ICategoryMappingRepository
 ///

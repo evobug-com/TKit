@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../theme/colors.dart';
+import 'package:tkit/shared/theme/colors.dart';
 
 /// Standardized icon-only button
 /// Compact design with multiple sizes

@@ -1,4 +1,4 @@
-import '../../../category_mapping/domain/entities/category_mapping.dart';
+import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
 
 /// Callback signature for handling unknown games
 ///

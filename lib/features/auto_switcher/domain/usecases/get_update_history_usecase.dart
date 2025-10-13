@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../entities/update_history.dart';
-import '../repositories/i_auto_switcher_repository.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/auto_switcher/domain/entities/update_history.dart';
+import 'package:tkit/features/auto_switcher/domain/repositories/i_auto_switcher_repository.dart';
 
 /// Use case to retrieve update history
 ///

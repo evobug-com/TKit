@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../../../../core/config/app_config.dart';
-import '../models/app_settings_model.dart';
+import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/core/config/app_config.dart';
+import 'package:tkit/features/settings/data/models/app_settings_model.dart';
 
 /// Local data source for settings persistence using SharedPreferences
 /// Provides reactive stream for settings changes

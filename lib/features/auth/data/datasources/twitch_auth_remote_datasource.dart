@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import '../../../../core/config/app_config.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../models/device_code_response.dart';
-import '../models/twitch_token_model.dart';
-import '../models/twitch_user_model.dart';
+import 'package:tkit/core/config/app_config.dart';
+import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/auth/data/models/device_code_response.dart';
+import 'package:tkit/features/auth/data/models/twitch_token_model.dart';
+import 'package:tkit/features/auth/data/models/twitch_user_model.dart';
 
 /// Remote data source for Twitch OAuth authentication
 /// Implements OAuth 2.0 Device Code Flow (recommended for desktop apps)

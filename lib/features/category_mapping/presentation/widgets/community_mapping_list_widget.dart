@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/theme/colors.dart';
-import '../../../../shared/theme/text_styles.dart';
-import '../../../../shared/theme/spacing.dart';
-import '../../../../shared/widgets/layout/spacer.dart';
-import '../../../community_mappings/domain/entities/community_mapping.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
+import 'package:tkit/features/community_mappings/domain/entities/community_mapping.dart';
 
 /// Widget to display the list of community mappings in a DataTable
 class CommunityMappingListWidget extends StatelessWidget {

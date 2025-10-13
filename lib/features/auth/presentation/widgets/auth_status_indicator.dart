@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/theme/colors.dart';
+import 'package:tkit/shared/theme/colors.dart';
 
 /// Status indicator widget (8x8px square)
 /// Shows authentication status with colors:

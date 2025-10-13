@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../theme/spacing.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 
 /// Vertical spacing widgets
 class VSpace extends StatelessWidget {

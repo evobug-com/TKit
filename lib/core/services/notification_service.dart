@@ -1,5 +1,5 @@
 import 'package:local_notifier/local_notifier.dart';
-import '../utils/app_logger.dart';
+import 'package:tkit/core/utils/app_logger.dart';
 
 /// Callback for handling notification actions
 typedef NotificationActionCallback =

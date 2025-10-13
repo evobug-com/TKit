@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../entities/app_settings.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/settings/domain/entities/app_settings.dart';
 
 /// Abstract repository interface for settings management
 /// Follows Repository pattern from Clean Architecture

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/l10n/app_localizations.dart';
-import '../../theme/colors.dart';
-import '../../theme/text_styles.dart';
-import '../buttons/primary_button.dart';
-import '../indicators/status_indicator.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/widgets/buttons/primary_button.dart';
+import 'package:tkit/shared/widgets/indicators/status_indicator.dart';
 
 /// Error dialog for displaying error messages
 class ErrorDialog extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../repositories/i_category_mapping_repository.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/category_mapping/domain/repositories/i_category_mapping_repository.dart';
 
 /// Use case for deleting a category mapping
 ///

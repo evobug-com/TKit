@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import '../../../../core/database/app_database.dart';
-import '../models/update_history_model.dart';
+import 'package:tkit/core/database/app_database.dart';
+import 'package:tkit/features/auto_switcher/data/models/update_history_model.dart';
 
 /// Local data source for update history
 ///

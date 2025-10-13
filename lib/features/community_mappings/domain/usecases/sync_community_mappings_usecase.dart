@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../repositories/i_community_mappings_repository.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/community_mappings/domain/repositories/i_community_mappings_repository.dart';
 
 /// Use case for syncing community mappings from GitHub
 ///

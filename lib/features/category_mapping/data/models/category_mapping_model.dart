@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:json_annotation/json_annotation.dart';
-import '../../../../core/database/app_database.dart';
-import '../../domain/entities/category_mapping.dart';
+import 'package:tkit/core/database/app_database.dart';
+import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
 
 part 'category_mapping_model.g.dart';
 

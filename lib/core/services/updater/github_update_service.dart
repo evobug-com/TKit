@@ -3,14 +3,14 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../config/app_config.dart';
-import '../../network/network_config.dart';
-import '../../utils/app_logger.dart';
-import '../../../features/settings/domain/entities/update_channel.dart';
-import 'models/update_info.dart';
-import 'models/download_progress.dart';
-import 'utils/version_comparator.dart';
-import 'utils/installation_detector.dart';
+import 'package:tkit/core/config/app_config.dart';
+import 'package:tkit/core/network/network_config.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/settings/domain/entities/update_channel.dart';
+import 'package:tkit/core/services/updater/models/update_info.dart';
+import 'package:tkit/core/services/updater/models/download_progress.dart';
+import 'package:tkit/core/services/updater/utils/version_comparator.dart';
+import 'package:tkit/core/services/updater/utils/installation_detector.dart';
 
 /// Service for checking and managing application updates from GitHub Releases
 class GitHubUpdateService {

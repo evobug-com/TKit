@@ -1,7 +1,7 @@
-import '../../../../core/platform/windows_platform_channel.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../models/process_info_model.dart';
+import 'package:tkit/core/platform/windows_platform_channel.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/features/process_detection/data/models/process_info_model.dart';
 
 /// Data source for process detection using platform channels
 class ProcessDetectionPlatformDataSource {

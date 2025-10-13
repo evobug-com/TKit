@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../entities/twitch_category.dart';
-import '../entities/twitch_user.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/twitch_api/domain/entities/twitch_category.dart';
+import 'package:tkit/features/twitch_api/domain/entities/twitch_user.dart';
 
 /// Repository interface for Twitch API operations
 /// This defines the contract that the data layer must implement

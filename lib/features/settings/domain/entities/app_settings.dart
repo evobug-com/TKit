@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'fallback_behavior.dart';
-import 'update_channel.dart';
-import 'window_controls_position.dart';
+import 'package:tkit/features/settings/domain/entities/fallback_behavior.dart';
+import 'package:tkit/features/settings/domain/entities/update_channel.dart';
+import 'package:tkit/features/settings/domain/entities/window_controls_position.dart';
 
 /// Sentinel value to indicate "use current value" vs "set to null"
 class _Undefined {

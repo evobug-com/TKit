@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../domain/entities/twitch_user.dart';
+import 'package:tkit/features/auth/domain/entities/twitch_user.dart';
 
 /// Base class for all authentication states
 abstract class AuthState extends Equatable {

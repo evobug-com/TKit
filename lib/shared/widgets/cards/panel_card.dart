@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../theme/colors.dart';
+import 'package:tkit/shared/theme/colors.dart';
 
 /// Panel card with 1px border, sharp corners, dark background
 class PanelCard extends StatelessWidget {

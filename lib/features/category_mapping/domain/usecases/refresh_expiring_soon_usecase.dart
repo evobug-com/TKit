@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../../../twitch_api/domain/repositories/i_twitch_api_repository.dart';
-import '../../data/datasources/category_mapping_local_datasource.dart';
-import '../../data/models/category_mapping_model.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/twitch_api/domain/repositories/i_twitch_api_repository.dart';
+import 'package:tkit/features/category_mapping/data/datasources/category_mapping_local_datasource.dart';
+import 'package:tkit/features/category_mapping/data/models/category_mapping_model.dart';
 
 /// Use case for proactively refreshing category mappings before they expire
 ///

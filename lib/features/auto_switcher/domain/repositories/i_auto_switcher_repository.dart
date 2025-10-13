@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../entities/orchestration_status.dart';
-import '../entities/update_history.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/auto_switcher/domain/entities/orchestration_status.dart';
+import 'package:tkit/features/auto_switcher/domain/entities/update_history.dart';
 
 /// Repository interface for Auto Switcher orchestration
 ///

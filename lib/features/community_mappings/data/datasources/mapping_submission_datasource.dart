@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import '../../../../core/config/app_config.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../../../core/network/network_config.dart';
-import '../../../../core/utils/app_logger.dart';
+import 'package:tkit/core/config/app_config.dart';
+import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/core/network/network_config.dart';
+import 'package:tkit/core/utils/app_logger.dart';
 
 /// Data source for submitting new mappings via GitHub Pull Requests
 ///

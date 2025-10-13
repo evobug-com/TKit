@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../theme/colors.dart';
-import '../../theme/spacing.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 
 /// Island - A container with border and background for grouping content
 /// Use this for cards, panels, and content sections

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/theme/colors.dart';
+import 'package:tkit/shared/theme/colors.dart';
 
 /// 8x8px square status indicator
 /// Shows success/error/idle status with colors

@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../../../core/errors/failure.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../../domain/entities/app_settings.dart';
-import '../../domain/repositories/i_settings_repository.dart';
-import '../datasources/settings_local_datasource.dart';
-import '../models/app_settings_model.dart';
+import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/settings/domain/entities/app_settings.dart';
+import 'package:tkit/features/settings/domain/repositories/i_settings_repository.dart';
+import 'package:tkit/features/settings/data/datasources/settings_local_datasource.dart';
+import 'package:tkit/features/settings/data/models/app_settings_model.dart';
 
 /// Implementation of settings repository
 /// Handles data layer logic and error conversion

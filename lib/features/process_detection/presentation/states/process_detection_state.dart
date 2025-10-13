@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../domain/entities/process_info.dart';
+import 'package:tkit/features/process_detection/domain/entities/process_info.dart';
 
 /// Base class for ProcessDetection states
 sealed class ProcessDetectionState extends Equatable {

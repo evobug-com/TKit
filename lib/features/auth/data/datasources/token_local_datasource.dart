@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../models/twitch_token_model.dart';
-import '../models/twitch_user_model.dart';
+import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/auth/data/models/twitch_token_model.dart';
+import 'package:tkit/features/auth/data/models/twitch_user_model.dart';
 
 /// Local data source for securely storing authentication tokens and user info
 /// Uses flutter_secure_storage for encrypted storage

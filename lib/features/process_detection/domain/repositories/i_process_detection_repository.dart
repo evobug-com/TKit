@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../entities/process_info.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/process_detection/domain/entities/process_info.dart';
 
 /// Repository interface for process detection operations
 abstract class IProcessDetectionRepository {

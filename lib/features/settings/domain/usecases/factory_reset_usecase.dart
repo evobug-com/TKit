@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../core/database/app_database.dart';
-import '../../../../core/errors/failure.dart';
-import '../repositories/i_settings_repository.dart';
+import 'package:tkit/core/database/app_database.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/settings/domain/repositories/i_settings_repository.dart';
 
 /// Use case for performing factory reset
 /// Clears all app data: settings, database, auth tokens, and preferences

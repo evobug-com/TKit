@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../entities/twitch_user.dart';
-import '../repositories/i_auth_repository.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/auth/domain/entities/twitch_user.dart';
+import 'package:tkit/features/auth/domain/repositories/i_auth_repository.dart';
 
 /// Use case for getting the current authenticated user
 /// Encapsulates the business logic for retrieving current user

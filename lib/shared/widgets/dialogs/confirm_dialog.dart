@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/l10n/app_localizations.dart';
-import '../../theme/colors.dart';
-import '../../theme/text_styles.dart';
-import '../buttons/primary_button.dart';
-import '../buttons/accent_button.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/widgets/buttons/primary_button.dart';
+import 'package:tkit/shared/widgets/buttons/accent_button.dart';
 
 /// Confirmation dialog with customizable title, message, and actions
 class ConfirmDialog extends StatelessWidget {

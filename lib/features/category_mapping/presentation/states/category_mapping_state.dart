@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../domain/entities/category_mapping.dart';
+import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
 
 /// States for CategoryMappingBloc
 sealed class CategoryMappingState extends Equatable {

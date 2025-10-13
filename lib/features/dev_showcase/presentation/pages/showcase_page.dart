@@ -1,20 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import '../../../../shared/theme/theme.dart';
-import '../../../../shared/widgets/layout/layout.dart';
-import '../../../../shared/widgets/buttons/buttons.dart';
-import '../../../../shared/widgets/forms/forms.dart';
-import '../../../../shared/widgets/lists/lists.dart';
-import '../../../../shared/widgets/dialogs/dialogs.dart';
-import '../../../../shared/widgets/feedback/feedback.dart';
-import '../../../../shared/widgets/indicators/indicators.dart';
-import '../../../../shared/widgets/tables/tables.dart';
-import '../../../../shared/widgets/badges/badges.dart';
-import '../../../../shared/widgets/tooltips/tooltips.dart';
-import '../../../../shared/widgets/menus/menus.dart';
-import '../../../../shared/widgets/navigation/navigation.dart';
-import '../../../../shared/widgets/inputs/inputs.dart';
-import '../../../../shared/widgets/display/display.dart';
+import 'package:tkit/shared/theme/theme.dart';
+import 'package:tkit/shared/widgets/layout/layout.dart';
+import 'package:tkit/shared/widgets/buttons/buttons.dart';
+import 'package:tkit/shared/widgets/forms/forms.dart';
+import 'package:tkit/shared/widgets/lists/lists.dart';
+import 'package:tkit/shared/widgets/dialogs/dialogs.dart';
+import 'package:tkit/shared/widgets/feedback/feedback.dart';
+import 'package:tkit/shared/widgets/indicators/indicators.dart';
+import 'package:tkit/shared/widgets/tables/tables.dart';
+import 'package:tkit/shared/widgets/badges/badges.dart';
+import 'package:tkit/shared/widgets/tooltips/tooltips.dart';
+import 'package:tkit/shared/widgets/menus/menus.dart';
+import 'package:tkit/shared/widgets/navigation/navigation.dart';
+import 'package:tkit/shared/widgets/inputs/inputs.dart';
+import 'package:tkit/shared/widgets/display/display.dart';
 
 /// Design System Showcase
 /// Only visible in development builds

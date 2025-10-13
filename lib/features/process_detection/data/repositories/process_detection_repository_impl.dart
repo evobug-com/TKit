@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../../domain/entities/process_info.dart';
-import '../../domain/repositories/i_process_detection_repository.dart';
-import '../datasources/process_detection_platform_datasource.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/process_detection/domain/entities/process_info.dart';
+import 'package:tkit/features/process_detection/domain/repositories/i_process_detection_repository.dart';
+import 'package:tkit/features/process_detection/data/datasources/process_detection_platform_datasource.dart';
 
 /// Implementation of IProcessDetectionRepository
 class ProcessDetectionRepositoryImpl implements IProcessDetectionRepository {

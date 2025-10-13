@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../entities/twitch_category.dart';
-import '../repositories/i_twitch_api_repository.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/twitch_api/domain/entities/twitch_category.dart';
+import 'package:tkit/features/twitch_api/domain/repositories/i_twitch_api_repository.dart';
 
 /// Use case for fetching top games on Twitch
 ///

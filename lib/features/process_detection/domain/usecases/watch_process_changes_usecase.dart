@@ -1,5 +1,5 @@
-import '../entities/process_info.dart';
-import '../repositories/i_process_detection_repository.dart';
+import 'package:tkit/features/process_detection/domain/entities/process_info.dart';
+import 'package:tkit/features/process_detection/domain/repositories/i_process_detection_repository.dart';
 
 /// Use case for watching process changes over time
 class WatchProcessChangesUseCase {

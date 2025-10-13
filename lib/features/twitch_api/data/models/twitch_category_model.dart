@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import '../../domain/entities/twitch_category.dart';
+import 'package:tkit/features/twitch_api/domain/entities/twitch_category.dart';
 
 part 'twitch_category_model.g.dart';
 

@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../../../core/errors/failure.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../../domain/entities/twitch_category.dart';
-import '../../domain/entities/twitch_user.dart';
-import '../../domain/repositories/i_twitch_api_repository.dart';
-import '../datasources/twitch_api_remote_datasource.dart';
+import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/twitch_api/domain/entities/twitch_category.dart';
+import 'package:tkit/features/twitch_api/domain/entities/twitch_user.dart';
+import 'package:tkit/features/twitch_api/domain/repositories/i_twitch_api_repository.dart';
+import 'package:tkit/features/twitch_api/data/datasources/twitch_api_remote_datasource.dart';
 
 /// Implementation of ITwitchApiRepository
 /// Coordinates between data sources and handles error conversion

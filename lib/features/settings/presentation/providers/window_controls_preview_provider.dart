@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import '../../domain/entities/window_controls_position.dart';
+import 'package:tkit/features/settings/domain/entities/window_controls_position.dart';
 
 /// Provider for previewing window controls position changes before saving
 /// This allows the UI to update immediately while keeping the actual setting unsaved

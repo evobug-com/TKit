@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:tkit/l10n/app_localizations.dart';
-import '../../../../shared/widgets/hotkey_display.dart';
-import '../../../../shared/widgets/buttons/accent_button.dart';
+import 'package:tkit/shared/widgets/hotkey_display.dart';
+import 'package:tkit/shared/widgets/buttons/accent_button.dart';
 
 /// Widget for recording and displaying keyboard shortcuts
 class HotkeyInput extends StatefulWidget {

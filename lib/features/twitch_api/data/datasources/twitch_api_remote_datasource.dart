@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import '../../../../core/config/app_config.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../../../core/network/network_config.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../models/twitch_category_model.dart';
-import '../models/twitch_user_model.dart';
+import 'package:tkit/core/config/app_config.dart';
+import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/core/network/network_config.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/twitch_api/data/models/twitch_category_model.dart';
+import 'package:tkit/features/twitch_api/data/models/twitch_user_model.dart';
 
 /// Remote data source for Twitch Helix API
 /// Handles all HTTP communication with Twitch servers

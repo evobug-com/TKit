@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../utils/app_logger.dart';
+import 'package:tkit/core/utils/app_logger.dart';
 
 /// Service for managing app language/locale
 class LanguageService {

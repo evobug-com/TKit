@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../theme/colors.dart';
-import '../../theme/text_styles.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
 
 /// Status card for displaying orchestration state and information
 class StatusCard extends StatelessWidget {

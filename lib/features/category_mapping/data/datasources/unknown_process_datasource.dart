@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
-import '../../../../core/database/app_database.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../models/unknown_process_model.dart';
+import 'package:tkit/core/database/app_database.dart';
+import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/features/category_mapping/data/models/unknown_process_model.dart';
 
 /// Data source for unknown processes
 ///

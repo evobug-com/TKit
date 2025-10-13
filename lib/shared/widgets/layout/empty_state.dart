@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../theme/colors.dart';
-import '../../theme/text_styles.dart';
-import '../../theme/spacing.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 
 /// EmptyState - Display when there's no content to show
 /// Use this for empty lists, searches with no results, etc.

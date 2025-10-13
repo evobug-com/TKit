@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/theme/colors.dart';
-import '../../../../shared/theme/text_styles.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
 
 /// Primary authentication button widget
 /// Styled with Twitch purple branding

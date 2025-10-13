@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../repositories/i_auth_repository.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/auth/domain/repositories/i_auth_repository.dart';
 
 /// Use case for logging out the current user
 /// Encapsulates the business logic for logout

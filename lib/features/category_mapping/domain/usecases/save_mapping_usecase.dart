@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../entities/category_mapping.dart';
-import '../repositories/i_category_mapping_repository.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
+import 'package:tkit/features/category_mapping/domain/repositories/i_category_mapping_repository.dart';
 
 /// Use case for saving (creating or updating) a category mapping
 ///

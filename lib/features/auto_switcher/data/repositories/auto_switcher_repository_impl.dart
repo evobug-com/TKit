@@ -1,25 +1,25 @@
 import 'dart:async';
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../../../../core/services/notification_service.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../../../category_mapping/domain/usecases/find_mapping_usecase.dart';
-import '../../../category_mapping/domain/usecases/save_mapping_usecase.dart';
-import '../../../category_mapping/domain/usecases/update_last_used_usecase.dart';
-import '../../../category_mapping/data/datasources/unknown_process_datasource.dart';
-import '../../../process_detection/domain/usecases/get_focused_process_usecase.dart';
-import '../../../process_detection/domain/usecases/watch_process_changes_usecase.dart';
-import '../../../settings/domain/entities/app_settings.dart';
-import '../../../settings/domain/entities/fallback_behavior.dart';
-import '../../../settings/domain/usecases/get_settings_usecase.dart';
-import '../../../settings/domain/usecases/watch_settings_usecase.dart';
-import '../../../twitch_api/domain/usecases/update_channel_category_usecase.dart';
-import '../../domain/entities/orchestration_status.dart';
-import '../../domain/entities/unknown_game_callback.dart';
-import '../../domain/entities/update_history.dart';
-import '../../domain/repositories/i_auto_switcher_repository.dart';
-import '../datasources/update_history_local_datasource.dart';
-import '../models/update_history_model.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/core/services/notification_service.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/category_mapping/domain/usecases/find_mapping_usecase.dart';
+import 'package:tkit/features/category_mapping/domain/usecases/save_mapping_usecase.dart';
+import 'package:tkit/features/category_mapping/domain/usecases/update_last_used_usecase.dart';
+import 'package:tkit/features/category_mapping/data/datasources/unknown_process_datasource.dart';
+import 'package:tkit/features/process_detection/domain/usecases/get_focused_process_usecase.dart';
+import 'package:tkit/features/process_detection/domain/usecases/watch_process_changes_usecase.dart';
+import 'package:tkit/features/settings/domain/entities/app_settings.dart';
+import 'package:tkit/features/settings/domain/entities/fallback_behavior.dart';
+import 'package:tkit/features/settings/domain/usecases/get_settings_usecase.dart';
+import 'package:tkit/features/settings/domain/usecases/watch_settings_usecase.dart';
+import 'package:tkit/features/twitch_api/domain/usecases/update_channel_category_usecase.dart';
+import 'package:tkit/features/auto_switcher/domain/entities/orchestration_status.dart';
+import 'package:tkit/features/auto_switcher/domain/entities/unknown_game_callback.dart';
+import 'package:tkit/features/auto_switcher/domain/entities/update_history.dart';
+import 'package:tkit/features/auto_switcher/domain/repositories/i_auto_switcher_repository.dart';
+import 'package:tkit/features/auto_switcher/data/datasources/update_history_local_datasource.dart';
+import 'package:tkit/features/auto_switcher/data/models/update_history_model.dart';
 
 /// Implementation of the Auto Switcher repository
 ///

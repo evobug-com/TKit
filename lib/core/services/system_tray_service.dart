@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
-import '../utils/app_logger.dart';
+import 'package:tkit/core/utils/app_logger.dart';
 
 /// Service for managing system tray integration
 class SystemTrayService with TrayListener {

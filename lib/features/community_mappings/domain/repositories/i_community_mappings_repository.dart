@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../entities/community_mapping.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/community_mappings/domain/entities/community_mapping.dart';
 
 /// Repository interface for community mappings
 abstract class ICommunityMappingsRepository {

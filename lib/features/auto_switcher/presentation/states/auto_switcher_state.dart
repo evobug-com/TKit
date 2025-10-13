@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import '../../domain/entities/orchestration_status.dart';
-import '../../domain/entities/update_history.dart';
+import 'package:tkit/features/auto_switcher/domain/entities/orchestration_status.dart';
+import 'package:tkit/features/auto_switcher/domain/entities/update_history.dart';
 
 /// Base class for all Auto Switcher states
 sealed class AutoSwitcherState extends Equatable {

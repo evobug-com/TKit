@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import '../../../../core/database/app_database.dart' as db;
-import '../../domain/entities/update_history.dart' as domain;
+import 'package:tkit/core/database/app_database.dart' as db;
+import 'package:tkit/features/auto_switcher/domain/entities/update_history.dart' as domain;
 
 /// Data layer model for UpdateHistory
 /// Bridges between Drift database entities and domain entities

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/l10n/app_localizations.dart';
-import '../../../../shared/theme/colors.dart';
-import '../../../../shared/theme/text_styles.dart';
-import '../../../../shared/theme/spacing.dart';
-import '../../../../shared/widgets/layout/spacer.dart';
-import '../../domain/entities/category_mapping.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
+import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
 
 /// Widget to display the list of category mappings in a DataTable
 class MappingListWidget extends StatelessWidget {

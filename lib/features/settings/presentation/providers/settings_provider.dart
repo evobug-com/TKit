@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../../domain/entities/app_settings.dart';
-import '../../domain/usecases/get_settings_usecase.dart';
-import '../../domain/usecases/update_settings_usecase.dart';
-import '../../domain/usecases/watch_settings_usecase.dart';
-import '../states/settings_state.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/settings/domain/entities/app_settings.dart';
+import 'package:tkit/features/settings/domain/usecases/get_settings_usecase.dart';
+import 'package:tkit/features/settings/domain/usecases/update_settings_usecase.dart';
+import 'package:tkit/features/settings/domain/usecases/watch_settings_usecase.dart';
+import 'package:tkit/features/settings/presentation/states/settings_state.dart';
 
 /// Provider for managing settings state using ChangeNotifier
 class SettingsProvider extends ChangeNotifier {

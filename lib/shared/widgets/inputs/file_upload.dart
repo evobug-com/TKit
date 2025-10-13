@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import '../../theme/colors.dart';
-import '../../theme/spacing.dart';
-import '../../theme/text_styles.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
 
 /// FileUploadField - File upload with drag-and-drop support
 /// Shows selected file name and supports file type filtering

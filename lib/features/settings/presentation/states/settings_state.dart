@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../domain/entities/app_settings.dart';
+import 'package:tkit/features/settings/domain/entities/app_settings.dart';
 
 /// Base class for all settings states
 sealed class SettingsState extends Equatable {

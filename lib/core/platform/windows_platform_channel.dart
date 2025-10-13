@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import '../config/app_config.dart';
-import '../utils/app_logger.dart';
-import '../errors/exceptions.dart' as app_exceptions;
+import 'package:tkit/core/config/app_config.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/core/errors/exceptions.dart' as app_exceptions;
 
 /// Platform channel for Windows-specific operations
 /// Communicates with Windows runner (C++) for process detection

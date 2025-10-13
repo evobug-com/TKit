@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../theme/colors.dart';
-import '../../theme/text_styles.dart';
-import '../../theme/spacing.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 
 /// Form field wrapper with consistent label, help text, and error styling
 class FormFieldWrapper extends StatelessWidget {

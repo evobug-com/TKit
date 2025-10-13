@@ -2,22 +2,22 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tkit/l10n/app_localizations.dart';
-import '../../../../shared/theme/colors.dart';
-import '../../../../shared/theme/spacing.dart';
-import '../../../../shared/widgets/layout/page_header.dart';
-import '../../../../shared/widgets/layout/spacer.dart';
-import '../../../../shared/widgets/feedback/toast.dart';
-import '../../../settings/presentation/providers/settings_provider.dart';
-import '../../../settings/presentation/states/settings_state.dart';
-import '../../domain/usecases/get_orchestration_status_usecase.dart';
-import '../../domain/usecases/get_update_history_usecase.dart';
-import '../../domain/usecases/manual_update_usecase.dart';
-import '../../domain/usecases/start_monitoring_usecase.dart';
-import '../../domain/usecases/stop_monitoring_usecase.dart';
-import '../providers/auto_switcher_provider.dart';
-import '../states/auto_switcher_state.dart';
-import '../widgets/control_panel.dart';
-import '../widgets/status_dashboard.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/widgets/layout/page_header.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
+import 'package:tkit/shared/widgets/feedback/toast.dart';
+import 'package:tkit/features/settings/presentation/providers/settings_provider.dart';
+import 'package:tkit/features/settings/presentation/states/settings_state.dart';
+import 'package:tkit/features/auto_switcher/domain/usecases/get_orchestration_status_usecase.dart';
+import 'package:tkit/features/auto_switcher/domain/usecases/get_update_history_usecase.dart';
+import 'package:tkit/features/auto_switcher/domain/usecases/manual_update_usecase.dart';
+import 'package:tkit/features/auto_switcher/domain/usecases/start_monitoring_usecase.dart';
+import 'package:tkit/features/auto_switcher/domain/usecases/stop_monitoring_usecase.dart';
+import 'package:tkit/features/auto_switcher/presentation/providers/auto_switcher_provider.dart';
+import 'package:tkit/features/auto_switcher/presentation/states/auto_switcher_state.dart';
+import 'package:tkit/features/auto_switcher/presentation/widgets/control_panel.dart';
+import 'package:tkit/features/auto_switcher/presentation/widgets/status_dashboard.dart';
 
 /// Auto Switcher Page
 ///

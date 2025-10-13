@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tkit/l10n/app_localizations.dart';
-import '../../../../shared/theme/colors.dart';
-import '../../../../shared/theme/text_styles.dart';
-import '../../../../shared/theme/spacing.dart';
-import '../../../../shared/widgets/layout/spacer.dart';
-import '../../domain/entities/orchestration_status.dart';
-import 'update_status_indicator.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
+import 'package:tkit/features/auto_switcher/domain/entities/orchestration_status.dart';
+import 'package:tkit/features/auto_switcher/presentation/widgets/update_status_indicator.dart';
 
 /// Status dashboard widget for Auto Switcher
 /// Displays current process, matched category, last update time, and status

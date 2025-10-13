@@ -1,4 +1,4 @@
-import '../../domain/entities/category_mapping.dart';
+import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
 
 /// In-memory cache for category mappings with TTL support
 ///

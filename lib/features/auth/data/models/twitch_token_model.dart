@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import '../../domain/entities/twitch_token.dart';
+import 'package:tkit/features/auth/domain/entities/twitch_token.dart';
 
 part 'twitch_token_model.g.dart';
 

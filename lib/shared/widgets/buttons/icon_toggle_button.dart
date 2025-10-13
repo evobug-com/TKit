@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../theme/colors.dart';
+import 'package:tkit/shared/theme/colors.dart';
 
 /// Toggle button with icon states
 /// Shows different icon/color when active

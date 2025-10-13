@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../../../twitch_api/domain/repositories/i_twitch_api_repository.dart';
-import './category_mapping_local_datasource.dart';
-import '../../domain/entities/category_mapping.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/twitch_api/domain/repositories/i_twitch_api_repository.dart';
+import 'package:tkit/features/category_mapping/data/datasources/category_mapping_local_datasource.dart';
+import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
 
 /// Service for importing category mappings from community sources
 ///

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/l10n/app_localizations.dart';
-import '../../../../shared/theme/colors.dart';
-import '../../../../shared/theme/text_styles.dart';
-import '../../../../shared/theme/spacing.dart';
-import '../../../../shared/widgets/layout/spacer.dart';
-import '../../../../shared/widgets/buttons/primary_button.dart';
-import '../../../../shared/widgets/buttons/accent_button.dart';
-import '../../domain/entities/category_mapping.dart';
-import '../../data/utils/path_normalizer.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
+import 'package:tkit/shared/widgets/buttons/primary_button.dart';
+import 'package:tkit/shared/widgets/buttons/accent_button.dart';
+import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
+import 'package:tkit/features/category_mapping/data/utils/path_normalizer.dart';
 
 /// Dialog for adding or editing a category mapping
 class AddMappingDialog extends StatefulWidget {

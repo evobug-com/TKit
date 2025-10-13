@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failure.dart';
-import '../../data/models/device_code_response.dart';
-import '../entities/twitch_token.dart';
-import '../entities/twitch_user.dart';
+import 'package:tkit/core/errors/failure.dart';
+import 'package:tkit/features/auth/data/models/device_code_response.dart';
+import 'package:tkit/features/auth/domain/entities/twitch_token.dart';
+import 'package:tkit/features/auth/domain/entities/twitch_user.dart';
 
 /// Abstract repository interface for authentication operations
 /// Defines the contract that the data layer must implement

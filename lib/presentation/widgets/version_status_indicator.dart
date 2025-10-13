@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import '../../core/services/updater/github_update_service.dart';
-import '../../core/services/updater/models/download_progress.dart';
-import '../../core/utils/app_logger.dart';
-import '../../l10n/app_localizations.dart';
-import '../../shared/theme/colors.dart';
-import '../../shared/theme/text_styles.dart';
-import '../../shared/widgets/buttons/primary_button.dart';
-import '../../shared/widgets/buttons/accent_button.dart';
+import 'package:tkit/core/services/updater/github_update_service.dart';
+import 'package:tkit/core/services/updater/models/download_progress.dart';
+import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/l10n/app_localizations.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/widgets/buttons/primary_button.dart';
+import 'package:tkit/shared/widgets/buttons/accent_button.dart';
 
 /// Status indicator that shows whether the app is up to date
 enum UpdateCheckStatus {
