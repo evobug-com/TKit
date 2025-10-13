@@ -396,11 +396,11 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
                   ),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? TKitColors.accent.withOpacity(0.1)
+                        ? TKitColors.accent.withValues(alpha: 0.1)
                         : Colors.transparent,
                     border: Border(
                       bottom: BorderSide(
-                        color: TKitColors.border.withOpacity(0.3),
+                        color: TKitColors.border.withValues(alpha: 0.3),
                       ),
                     ),
                   ),

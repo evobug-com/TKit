@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:dartz/dartz.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/services/notification_service.dart';
+import '../../../../core/utils/app_logger.dart';
 import '../../../category_mapping/domain/usecases/find_mapping_usecase.dart';
 import '../../../category_mapping/domain/usecases/save_mapping_usecase.dart';
 import '../../../category_mapping/domain/usecases/update_last_used_usecase.dart';
@@ -40,6 +41,7 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
   final UpdateHistoryLocalDataSource _historyDataSource;
   final UnknownProcessDataSource _unknownProcessDataSource;
   final NotificationService _notificationService;
+  final AppLogger _logger = AppLogger();
 
   // Callback for handling unknown games (set by UI layer)
   UnknownGameCallback? unknownGameCallback;
@@ -293,7 +295,7 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
 
           // Check if mapping is disabled - skip silently
           if (!mapping.isEnabled) {
-            print('[AutoSwitcher] Mapping found but disabled for: ${process.processName}');
+            _logger.debug('[AutoSwitcher] Mapping found but disabled for: ${process.processName}');
             _currentStatus = _currentStatus.copyWith(
               state: OrchestrationState.idle,
               currentProcess: null,
@@ -454,18 +456,16 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
       );
     } catch (e) {
       // Don't fail if logging fails
-      print('[AutoSwitcher] Failed to log unknown process: $e');
+      _logger.error('[AutoSwitcher] Failed to log unknown process', e);
     }
 
-    print('[AutoSwitcher] Handling unknown game: $processName');
-    print('[AutoSwitcher] Callback available: ${unknownGameCallback != null}');
+    _logger.info('[AutoSwitcher] Handling unknown game: $processName');
+    _logger.debug('[AutoSwitcher] Callback available: ${unknownGameCallback != null}');
 
     // Try to invoke callback if available (UI will show dialog)
     if (unknownGameCallback != null) {
       try {
-        print(
-          '[AutoSwitcher] Invoking unknown game callback for: $processName',
-        );
+        _logger.info('[AutoSwitcher] Invoking unknown game callback for: $processName');
         final mapping = await unknownGameCallback!(
           processName: processName,
           executablePath: executablePath,
@@ -473,9 +473,7 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
         );
 
         if (mapping != null) {
-          print(
-            '[AutoSwitcher] User selected category: ${mapping.twitchCategoryName}',
-          );
+          _logger.info('[AutoSwitcher] User selected category: ${mapping.twitchCategoryName}');
           // User selected a category - save and use it
           await _saveMappingUseCase(mapping);
 
@@ -491,15 +489,13 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
           );
         }
         // User cancelled - apply fallback
-        print('[AutoSwitcher] User cancelled dialog, applying fallback');
+        _logger.info('[AutoSwitcher] User cancelled dialog, applying fallback');
       } catch (e) {
         // Callback failed - fall through to notification/fallback
-        print('[AutoSwitcher] Callback failed: $e');
+        _logger.error('[AutoSwitcher] Callback failed', e);
       }
     } else {
-      print(
-        '[AutoSwitcher] No callback registered, using notification fallback',
-      );
+      _logger.info('[AutoSwitcher] No callback registered, using notification fallback');
     }
 
     // Show notification if enabled and callback not available/failed

@@ -36,7 +36,7 @@ class CommunitySyncDataSource {
   /// Returns a map containing:
   /// - version: String
   /// - lastUpdated: String (ISO date)
-  /// - mappings: List<Map<String, dynamic>>
+  /// - mappings: List\<Map\<String, dynamic>>
   ///
   /// Throws [NetworkException] on connection errors
   /// Throws [ServerException] on HTTP errors

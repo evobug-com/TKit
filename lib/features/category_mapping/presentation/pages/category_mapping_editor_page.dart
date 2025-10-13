@@ -118,7 +118,7 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
                   }
                 },
                 indicator: BoxDecoration(
-                  color: TKitColors.accent.withOpacity(0.1),
+                  color: TKitColors.accent.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 indicatorSize: TabBarIndicatorSize.tab,

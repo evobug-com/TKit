@@ -36,7 +36,7 @@ class CustomDropdown<T> extends StatelessWidget {
             description!,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               fontSize: 11,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -70,7 +70,7 @@ class CustomDropdown<T> extends StatelessWidget {
                           selectedItem.subtitle!,
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             fontSize: 11,
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -142,7 +142,7 @@ class CustomDropdown<T> extends StatelessWidget {
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3)
+                                ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3)
                                 : null,
                           ),
                           child: Row(
@@ -164,7 +164,7 @@ class CustomDropdown<T> extends StatelessWidget {
                                         item.subtitle!,
                                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                           fontSize: 11,
-                                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                                         ),
                                       ),
                                     ],

@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import '../../core/services/updater/github_update_service.dart';
 import '../../core/services/updater/models/download_progress.dart';
@@ -213,7 +211,7 @@ class _VersionStatusIndicatorState extends State<VersionStatusIndicator> {
                       borderRadius: BorderRadius.circular(4),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
+                          color: Colors.black.withValues(alpha: 0.3),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
@@ -313,7 +311,6 @@ class _UpdateDialogState extends State<_UpdateDialog> {
     logger.info('[VersionIndicator] Download completed: ${file.path}');
 
     setState(() {
-      _downloadedFile = file;
       _isDownloading = false;
       _isInstalling = true;
     });

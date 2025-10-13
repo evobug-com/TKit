@@ -333,7 +333,7 @@ class _ColorPickerDialogState extends State<_ColorPickerDialog> {
             activeTrackColor: TKitColors.accent,
             inactiveTrackColor: TKitColors.border,
             thumbColor: TKitColors.accentBright,
-            overlayColor: TKitColors.accent.withOpacity(0.2),
+            overlayColor: TKitColors.accent.withValues(alpha: 0.2),
             trackHeight: 2,
             thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
           ),

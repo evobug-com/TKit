@@ -119,12 +119,12 @@ class _KeyCap extends StatelessWidget {
         color: effectiveKeyColor,
         borderRadius: BorderRadius.circular(6),
         border: Border.all(
-          color: theme.colorScheme.outline.withOpacity(0.3),
+          color: theme.colorScheme.outline.withValues(alpha: 0.3),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 2,
             offset: const Offset(0, 2),
           ),

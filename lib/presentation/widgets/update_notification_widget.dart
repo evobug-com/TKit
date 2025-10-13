@@ -193,7 +193,7 @@ class _UpdateDialogState extends State<_UpdateDialog> {
             Text(
               l10n.updateDialogPublished(_formatDate(widget.updateInfo.publishedAt, l10n)),
               style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 16),
@@ -255,7 +255,7 @@ class _UpdateDialogState extends State<_UpdateDialog> {
                                 Text(
                                   '(${_formatDate(changelog.publishedAt, l10n)})',
                                   style: theme.textTheme.bodySmall?.copyWith(
-                                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                                   ),
                                 ),
                               ],
@@ -298,13 +298,13 @@ class _UpdateDialogState extends State<_UpdateDialog> {
                   Text(
                     progress.progressPercentage,
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
                   Text(
                     '${progress.bytesReceivedFormatted} / ${progress.totalBytesFormatted}',
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
@@ -378,7 +378,6 @@ class _UpdateDialogState extends State<_UpdateDialog> {
             text: l10n.updateDialogDownloadUpdate,
             icon: Icons.download,
             onPressed: () {
-              setState(() => _isDownloading = true);
               widget.onDownload();
             },
           ),

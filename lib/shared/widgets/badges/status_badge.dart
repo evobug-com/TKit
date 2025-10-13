@@ -66,7 +66,7 @@ class StatusBadge extends StatelessWidget {
 
   /// Get background color
   Color get _backgroundColor {
-    return _color.withOpacity(0.1);
+    return _color.withValues(alpha: 0.1);
   }
 
   @override
@@ -201,7 +201,7 @@ class _PulsingStatusBadgeState extends State<PulsingStatusBadge>
 
   /// Get background color
   Color get _backgroundColor {
-    return _color.withOpacity(0.1);
+    return _color.withValues(alpha: 0.1);
   }
 
   @override

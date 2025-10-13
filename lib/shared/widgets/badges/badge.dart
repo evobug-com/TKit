@@ -61,7 +61,7 @@ class TKitBadge extends StatelessWidget {
 
   /// Get background color (subtle, low opacity)
   Color get _backgroundColor {
-    return _color.withOpacity(0.1);
+    return _color.withValues(alpha: 0.1);
   }
 
   @override

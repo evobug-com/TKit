@@ -75,7 +75,7 @@ class TKitTag extends StatelessWidget {
   /// Get background color
   Color get _backgroundColor {
     if (selected) {
-      return _color.withOpacity(0.15);
+      return _color.withValues(alpha: 0.15);
     }
     return TKitColors.surfaceVariant;
   }
@@ -148,7 +148,7 @@ class TKitTag extends StatelessWidget {
     if (onTap != null) {
       return InkWell(
         onTap: onTap,
-        hoverColor: _color.withOpacity(0.05),
+        hoverColor: _color.withValues(alpha: 0.05),
         child: container,
       );
     }
