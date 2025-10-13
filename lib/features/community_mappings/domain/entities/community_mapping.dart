@@ -20,6 +20,11 @@ class CommunityMapping extends Equatable {
   final int verificationCount;
   final DateTime? lastVerified;
   final String source; // 'community', 'verified', etc.
+
+  /// Category type: 'game' (default), 'system', 'launcher', 'browser', etc.
+  /// Used to group and filter mappings in the UI
+  final String? category;
+
   final DateTime syncedAt;
 
   const CommunityMapping({
@@ -31,6 +36,7 @@ class CommunityMapping extends Equatable {
     this.verificationCount = 1,
     this.lastVerified,
     this.source = 'community',
+    this.category,
     required this.syncedAt,
   });
 
@@ -68,6 +74,7 @@ class CommunityMapping extends Equatable {
       verificationCount: entity.verificationCount as int? ?? 1,
       lastVerified: entity.lastVerified as DateTime?,
       source: entity.source as String? ?? 'community',
+      category: entity.category as String?,
       syncedAt: entity.syncedAt as DateTime,
     );
   }
@@ -94,6 +101,7 @@ class CommunityMapping extends Equatable {
           ? DateTime.parse(json['lastVerified'] as String)
           : null,
       source: json['source'] as String? ?? 'community',
+      category: json['category'] as String?,
       syncedAt: DateTime.now(),
     );
   }
@@ -110,8 +118,15 @@ class CommunityMapping extends Equatable {
       if (lastVerified != null)
         'lastVerified': lastVerified!.toIso8601String().split('T')[0],
       'source': source,
+      if (category != null) 'category': category,
     };
   }
+
+  /// Check if this is an ignored program/software
+  bool get isIgnored => twitchCategoryId == 'IGNORE';
+
+  /// Check if this is a game (not ignored)
+  bool get isGame => !isIgnored;
 
   @override
   List<Object?> get props => [
@@ -123,6 +138,7 @@ class CommunityMapping extends Equatable {
         verificationCount,
         lastVerified,
         source,
+        category,
         syncedAt,
       ];
 }

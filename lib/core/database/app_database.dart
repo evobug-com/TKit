@@ -99,6 +99,11 @@ class CommunityMappings extends Table {
   IntColumn get verificationCount => integer().withDefault(const Constant(1))();
   DateTimeColumn get lastVerified => dateTime().nullable()();
   TextColumn get source => text().withDefault(const Constant('community'))();
+
+  /// Category type: 'game' (default), 'system', 'launcher', 'browser', etc.
+  /// Used to group and filter mappings (e.g., show ignored programs separately)
+  TextColumn get category => text().nullable()();
+
   DateTimeColumn get syncedAt => dateTime().withDefault(currentDateAndTime)();
 
   @override
@@ -121,7 +126,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.test(super.e);
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   static LazyDatabase _openConnection() {
     return LazyDatabase(() async {
@@ -159,6 +164,14 @@ class AppDatabase extends _$AppDatabase {
         await into(communityMappings).insert(
           CommunityMappingsCompanion.insert(
             processName: data['processName'] as String,
+            normalizedInstallPaths: Value(
+              data['normalizedInstallPaths'] != null
+                  ? (data['normalizedInstallPaths'] as List)
+                      .map((e) => e.toString())
+                      .toList()
+                      .join(',')
+                  : null,
+            ),
             twitchCategoryId: data['twitchCategoryId'] as String,
             twitchCategoryName: data['twitchCategoryName'] as String,
             verificationCount:
@@ -169,6 +182,7 @@ class AppDatabase extends _$AppDatabase {
                   : null,
             ),
             source: Value(data['source'] as String? ?? 'community'),
+            category: Value(data['category'] as String?),
             syncedAt: Value(DateTime.now()),
           ),
           mode: InsertMode.insertOrReplace,
@@ -612,6 +626,24 @@ class AppDatabase extends _$AppDatabase {
         // Note: We don't auto-migrate executablePath to normalizedInstallPaths
         // because we need PathNormalizer to extract privacy-safe paths.
         // The app will handle this migration on-the-fly when mappings are accessed.
+      }
+
+      if (from == 5 && to >= 6) {
+        // Migration v5 → v6: Add category field to community_mappings
+        // This allows grouping mappings by type (game, system, launcher, etc.)
+        final communityMappingsInfo = await customSelect(
+          'PRAGMA table_info(community_mappings)',
+        ).get();
+
+        final hasCategory = communityMappingsInfo.any(
+          (row) => row.data['name'] == 'category',
+        );
+
+        if (!hasCategory) {
+          await customStatement(
+            'ALTER TABLE community_mappings ADD COLUMN category TEXT',
+          );
+        }
       }
     },
   );

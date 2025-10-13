@@ -616,6 +616,17 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                 }
               },
             ),
+            VSpace.sm(),
+            SettingsCheckbox(
+              label: 'Invert Footer/Header',
+              subtitle: 'Swap the positions of the header and footer sections',
+              value: settings.invertFooterHeader,
+              onChanged: (value) {
+                _updateSettings(
+                  settings.copyWith(invertFooterHeader: value ?? false),
+                );
+              },
+            ),
           ]),
         ],
       ),

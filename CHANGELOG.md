@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Added
 - Exclude launchers from auto-switcher (e.g., Steam, Epic Games Launcher)
+- Community Programs mappings tab
+- Checkbox in mappings to do many actions at once (enable/disable, delete, invert, export)
+- Export mappings to JSON file (based on toggled items)
+- Search bar in mappings
 
 #### Fixed
 - Twitch error when adding a process to ignore list
@@ -20,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Application icon updated
 - Removed Auto Switcher, Category Mappings, and Settings from tray menu
 - Removed web, android, ios platforms from the project
+- Renamed "Community Mappings" to "Community Games"
 
 ## [0.0.1-dev.5] - 2025-10-13
 

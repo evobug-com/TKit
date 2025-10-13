@@ -130,18 +130,33 @@ class _MainWindowState extends State<MainWindow> {
                     .useFramelessWindow
                 : false; // Default to false
 
+            // Determine if footer/header should be inverted
+            final invertFooterHeader = settingsProvider.state is SettingsLoaded
+                ? (settingsProvider.state as SettingsLoaded)
+                    .settings
+                    .invertFooterHeader
+                : settingsProvider.state is SettingsSaved
+                ? (settingsProvider.state as SettingsSaved)
+                    .settings
+                    .invertFooterHeader
+                : false; // Default to false
+
+            // Build header and footer widgets
+            final header = _buildHeader(context);
+            final footer = _buildFooter();
+
             final scaffold = Scaffold(
               backgroundColor: TKitColors.background,
               body: Column(
                 children: [
                   // Custom header with tabs and window controls
-                  _buildHeader(context),
+                  if (invertFooterHeader) footer else header,
 
                   // Main content area - full width
                   Expanded(child: widget.child),
 
                   // Minimal footer
-                  _buildFooter(),
+                  if (invertFooterHeader) header else footer,
                 ],
               ),
             );

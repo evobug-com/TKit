@@ -191,4 +191,97 @@ class CategoryMappingProvider extends ChangeNotifier {
       },
     );
   }
+
+  /// Bulk delete mappings
+  Future<void> bulkDelete(List<int> ids, {String? successMessage}) async {
+    if (ids.isEmpty) return;
+
+    _setLoading(true);
+
+    // Delete each mapping sequentially
+    for (final id in ids) {
+      final result = await deleteMappingUseCase(id);
+      if (result.isLeft()) {
+        // If any deletion fails, show error and reload
+        await loadMappings();
+        _setError('Failed to delete some mappings');
+        return;
+      }
+    }
+
+    // Reload all mappings to show the updated list
+    final mappingsResult = await getAllMappingsUseCase();
+    mappingsResult.fold(
+      (failure) => _setError(failure.message),
+      (mappings) {
+        _mappings = mappings;
+        _setSuccess(
+          successMessage ?? 'Deleted ${ids.length} mapping${ids.length > 1 ? 's' : ''}',
+        );
+      },
+    );
+  }
+
+  /// Bulk toggle enabled/disabled state
+  Future<void> bulkToggleEnabled(List<int> ids, bool enabled, {String? successMessage}) async {
+    if (ids.isEmpty) return;
+
+    _setLoading(true);
+
+    // Update each mapping sequentially
+    for (final id in ids) {
+      final mapping = _mappings.firstWhere((m) => m.id == id);
+      final updatedMapping = mapping.copyWith(isEnabled: enabled);
+      final result = await saveMappingUseCase(updatedMapping);
+
+      if (result.isLeft()) {
+        // If any update fails, show error and reload
+        await loadMappings();
+        _setError('Failed to update some mappings');
+        return;
+      }
+    }
+
+    // Reload all mappings to show the updated list
+    final mappingsResult = await getAllMappingsUseCase();
+    mappingsResult.fold(
+      (failure) => _setError(failure.message),
+      (mappings) {
+        _mappings = mappings;
+        _setSuccess(
+          successMessage ?? '${enabled ? 'Enabled' : 'Disabled'} ${ids.length} mapping${ids.length > 1 ? 's' : ''}',
+        );
+      },
+    );
+  }
+
+  /// Bulk restore deleted mappings
+  Future<void> bulkRestore(List<CategoryMapping> mappingsToRestore, {String? successMessage}) async {
+    if (mappingsToRestore.isEmpty) return;
+
+    _setLoading(true);
+
+    // Re-add each mapping sequentially
+    for (final mapping in mappingsToRestore) {
+      final result = await saveMappingUseCase(mapping);
+      if (result.isLeft()) {
+        // If any restore fails, show error and reload
+        await loadMappings();
+        _setError('Failed to restore some mappings');
+        return;
+      }
+    }
+
+    // Reload all mappings to show the updated list
+    final mappingsResult = await getAllMappingsUseCase();
+    mappingsResult.fold(
+      (failure) => _setError(failure.message),
+      (mappings) {
+        _mappings = mappings;
+        _setSuccess(
+          successMessage ?? 'Restored ${mappingsToRestore.length} mapping${mappingsToRestore.length > 1 ? 's' : ''}',
+        );
+      },
+    );
+  }
 }

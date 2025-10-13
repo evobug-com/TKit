@@ -1,9 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/widgets/layout/page_header.dart';
 import 'package:tkit/shared/widgets/layout/island.dart';
 import 'package:tkit/shared/widgets/layout/stat_item.dart';
@@ -38,13 +42,14 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   List<CommunityMapping> _communityMappings = [];
+  List<CommunityMapping> _communityPrograms = [];
   bool _loadingCommunity = false;
   String? _communityError;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
 
     // Load custom mappings
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -78,7 +83,9 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
       },
       (mappings) {
         setState(() {
-          _communityMappings = mappings;
+          // Separate games from programs (ignored items)
+          _communityMappings = mappings.where((m) => m.isGame).toList();
+          _communityPrograms = mappings.where((m) => m.isIgnored).toList();
           _loadingCommunity = false;
         });
       },
@@ -113,7 +120,9 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
               child: TabBar(
                 controller: _tabController,
                 onTap: (index) {
-                  if (index == 1 && _communityMappings.isEmpty) {
+                  if ((index == 1 || index == 2) &&
+                      _communityMappings.isEmpty &&
+                      _communityPrograms.isEmpty) {
                     _loadCommunityMappings();
                   }
                 },
@@ -127,7 +136,8 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
                 unselectedLabelColor: TKitColors.textMuted,
                 tabs: const [
                   Tab(text: 'Custom Mappings'),
-                  Tab(text: 'Community Mappings'),
+                  Tab(text: 'Community Games'),
+                  Tab(text: 'Community Programs'),
                 ],
               ),
             ),
@@ -139,7 +149,8 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
                 controller: _tabController,
                 children: [
                   _buildCustomMappingsTab(context),
-                  _buildCommunityMappingsTab(context),
+                  _buildCommunityGamesTab(context),
+                  _buildCommunityProgramsTab(context),
                 ],
               ),
             ),
@@ -230,6 +241,11 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
                 onToggleEnabled: (mapping) {
                   context.read<CategoryMappingProvider>().toggleEnabled(mapping);
                 },
+                onBulkDelete: (ids) => _handleBulkDelete(context, ids),
+                onBulkExport: (mappings) => _handleBulkExport(context, mappings),
+                onBulkToggleEnabled: (ids, enabled) =>
+                    _handleBulkToggleEnabled(context, ids, enabled),
+                onBulkRestore: (mappings) => _handleBulkRestore(context, mappings),
               ),
             ),
           ],
@@ -238,7 +254,7 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
     );
   }
 
-  Widget _buildCommunityMappingsTab(BuildContext context) {
+  Widget _buildCommunityGamesTab(BuildContext context) {
     if (_loadingCommunity) {
       return const Center(child: LoadingIndicator());
     }
@@ -246,7 +262,7 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
     if (_communityError != null) {
       return EmptyState(
         icon: Icons.error_outline,
-        message: 'Failed to load community mappings',
+        message: 'Failed to load community games',
         subtitle: _communityError,
         action: PrimaryButton(
           text: 'Retry',
@@ -259,8 +275,8 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
     if (_communityMappings.isEmpty) {
       return EmptyState(
         icon: Icons.cloud_download,
-        message: 'No community mappings available',
-        subtitle: 'Community mappings are synced from GitHub',
+        message: 'No community games available',
+        subtitle: 'Community games are synced from GitHub',
       );
     }
 
@@ -272,7 +288,7 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
           child: Row(
             children: [
               StatItem(
-                label: 'Total Community Mappings',
+                label: 'Total Community Games',
                 value: _communityMappings.length.toString(),
                 valueColor: TKitColors.accent,
               ),
@@ -287,10 +303,70 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
         ),
         const VSpace.md(),
 
-        // Community mappings list
+        // Community games list
         Expanded(
           child: CommunityMappingListWidget(
             mappings: _communityMappings,
+            onAdopt: (mapping) => _handleAdoptMapping(context, mapping),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCommunityProgramsTab(BuildContext context) {
+    if (_loadingCommunity) {
+      return const Center(child: LoadingIndicator());
+    }
+
+    if (_communityError != null) {
+      return EmptyState(
+        icon: Icons.error_outline,
+        message: 'Failed to load community programs',
+        subtitle: _communityError,
+        action: PrimaryButton(
+          text: 'Retry',
+          icon: Icons.refresh,
+          onPressed: _loadCommunityMappings,
+        ),
+      );
+    }
+
+    if (_communityPrograms.isEmpty) {
+      return EmptyState(
+        icon: Icons.apps,
+        message: 'No community programs available',
+        subtitle: 'Community programs are synced from GitHub',
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Stats bar
+        IslandVariant.standard(
+          child: Row(
+            children: [
+              StatItem(
+                label: 'Total Community Programs',
+                value: _communityPrograms.length.toString(),
+                valueColor: TKitColors.accent,
+              ),
+              const HSpace.xxl(),
+              StatItem(
+                label: 'Last Synced',
+                value: _formatLastSync(
+                    context.read<ICommunityMappingsRepository>().getLastSyncTime()),
+              ),
+            ],
+          ),
+        ),
+        const VSpace.md(),
+
+        // Community programs list
+        Expanded(
+          child: CommunityMappingListWidget(
+            mappings: _communityPrograms,
             onAdopt: (mapping) => _handleAdoptMapping(context, mapping),
           ),
         ),
@@ -393,5 +469,127 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
       context.read<CategoryMappingProvider>().addMapping(mapping);
       Toast.success(context, 'Community mapping adopted successfully!');
     }
+  }
+
+  Future<void> _handleBulkDelete(BuildContext context, List<int> ids) async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => ConfirmDialog(
+        title: 'Delete Multiple Mappings',
+        message:
+            'Are you sure you want to delete ${ids.length} mapping${ids.length > 1 ? 's' : ''}? This action cannot be undone.',
+        confirmText: l10n.categoryMappingDeleteDialogConfirm,
+        cancelText: l10n.categoryMappingDeleteDialogCancel,
+      ),
+    );
+
+    if (confirmed == true && context.mounted) {
+      context.read<CategoryMappingProvider>().bulkDelete(ids);
+    }
+  }
+
+  Future<void> _handleBulkExport(
+    BuildContext context,
+    List<CategoryMapping> mappings,
+  ) async {
+    try {
+      // Let user choose where to save the file
+      final result = await FilePicker.platform.saveFile(
+        dialogTitle: 'Export Mappings',
+        fileName: 'my-mappings.json',
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+      );
+
+      if (result == null) {
+        // User cancelled
+        return;
+      }
+
+      // Convert mappings to community format
+      final exportData = {
+        'version': '1.0',
+        'lastUpdated': DateTime.now().toIso8601String(),
+        'mappings': mappings.map((mapping) {
+          return {
+            'processName': mapping.processName,
+            'twitchCategoryId': mapping.twitchCategoryId,
+            'twitchCategoryName': mapping.twitchCategoryName,
+            'verificationCount': 1,
+            'lastVerified': mapping.lastUsedAt?.toIso8601String() ??
+                             mapping.createdAt.toIso8601String(),
+            'source': mapping.manualOverride ? 'user' : 'preset',
+          };
+        }).toList(),
+      };
+
+      // Write to file
+      final file = File(result);
+      await file.writeAsString(
+        const JsonEncoder.withIndent('  ').convert(exportData),
+      );
+
+      if (context.mounted) {
+        Toast.successWithWidget(
+          context,
+          duration: const Duration(seconds: 6),
+          content: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Text(
+                'Exported ${mappings.length} mapping${mappings.length > 1 ? 's' : ''} to ',
+                style: TKitTextStyles.bodyMedium.copyWith(
+                  color: TKitColors.textPrimary,
+                ),
+              ),
+              InkWell(
+                onTap: () async {
+                  // Open file location in Explorer (Windows)
+                  await Process.run(
+                    'explorer',
+                    ['/select,', file.path],
+                    runInShell: true,
+                  );
+                },
+                child: Text(
+                  file.path,
+                  style: TKitTextStyles.bodyMedium.copyWith(
+                    color: TKitColors.textPrimary,
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: (dialogContext) => ErrorDialog(
+            title: 'Export Failed',
+            message: e.toString(),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _handleBulkToggleEnabled(
+    BuildContext context,
+    List<int> ids,
+    bool enabled,
+  ) async {
+    context.read<CategoryMappingProvider>().bulkToggleEnabled(ids, enabled);
+  }
+
+  Future<void> _handleBulkRestore(
+    BuildContext context,
+    List<CategoryMapping> mappings,
+  ) async {
+    context.read<CategoryMappingProvider>().bulkRestore(mappings);
   }
 }

@@ -2145,6 +2145,17 @@ class $CommunityMappingsTable extends CommunityMappings
     requiredDuringInsert: false,
     defaultValue: const Constant('community'),
   );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _syncedAtMeta = const VerificationMeta(
     'syncedAt',
   );
@@ -2167,6 +2178,7 @@ class $CommunityMappingsTable extends CommunityMappings
     verificationCount,
     lastVerified,
     source,
+    category,
     syncedAt,
   ];
   @override
@@ -2250,6 +2262,12 @@ class $CommunityMappingsTable extends CommunityMappings
         source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
       );
     }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
+    }
     if (data.containsKey('synced_at')) {
       context.handle(
         _syncedAtMeta,
@@ -2301,6 +2319,10 @@ class $CommunityMappingsTable extends CommunityMappings
         DriftSqlType.string,
         data['${effectivePrefix}source'],
       )!,
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
+      ),
       syncedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}synced_at'],
@@ -2327,6 +2349,10 @@ class CommunityMappingEntity extends DataClass
   final int verificationCount;
   final DateTime? lastVerified;
   final String source;
+
+  /// Category type: 'game' (default), 'system', 'launcher', 'browser', etc.
+  /// Used to group and filter mappings (e.g., show ignored programs separately)
+  final String? category;
   final DateTime syncedAt;
   const CommunityMappingEntity({
     required this.id,
@@ -2337,6 +2363,7 @@ class CommunityMappingEntity extends DataClass
     required this.verificationCount,
     this.lastVerified,
     required this.source,
+    this.category,
     required this.syncedAt,
   });
   @override
@@ -2356,6 +2383,9 @@ class CommunityMappingEntity extends DataClass
       map['last_verified'] = Variable<DateTime>(lastVerified);
     }
     map['source'] = Variable<String>(source);
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<String>(category);
+    }
     map['synced_at'] = Variable<DateTime>(syncedAt);
     return map;
   }
@@ -2374,6 +2404,9 @@ class CommunityMappingEntity extends DataClass
           ? const Value.absent()
           : Value(lastVerified),
       source: Value(source),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
       syncedAt: Value(syncedAt),
     );
   }
@@ -2396,6 +2429,7 @@ class CommunityMappingEntity extends DataClass
       verificationCount: serializer.fromJson<int>(json['verificationCount']),
       lastVerified: serializer.fromJson<DateTime?>(json['lastVerified']),
       source: serializer.fromJson<String>(json['source']),
+      category: serializer.fromJson<String?>(json['category']),
       syncedAt: serializer.fromJson<DateTime>(json['syncedAt']),
     );
   }
@@ -2413,6 +2447,7 @@ class CommunityMappingEntity extends DataClass
       'verificationCount': serializer.toJson<int>(verificationCount),
       'lastVerified': serializer.toJson<DateTime?>(lastVerified),
       'source': serializer.toJson<String>(source),
+      'category': serializer.toJson<String?>(category),
       'syncedAt': serializer.toJson<DateTime>(syncedAt),
     };
   }
@@ -2426,6 +2461,7 @@ class CommunityMappingEntity extends DataClass
     int? verificationCount,
     Value<DateTime?> lastVerified = const Value.absent(),
     String? source,
+    Value<String?> category = const Value.absent(),
     DateTime? syncedAt,
   }) => CommunityMappingEntity(
     id: id ?? this.id,
@@ -2438,6 +2474,7 @@ class CommunityMappingEntity extends DataClass
     verificationCount: verificationCount ?? this.verificationCount,
     lastVerified: lastVerified.present ? lastVerified.value : this.lastVerified,
     source: source ?? this.source,
+    category: category.present ? category.value : this.category,
     syncedAt: syncedAt ?? this.syncedAt,
   );
   CommunityMappingEntity copyWithCompanion(CommunityMappingsCompanion data) {
@@ -2462,6 +2499,7 @@ class CommunityMappingEntity extends DataClass
           ? data.lastVerified.value
           : this.lastVerified,
       source: data.source.present ? data.source.value : this.source,
+      category: data.category.present ? data.category.value : this.category,
       syncedAt: data.syncedAt.present ? data.syncedAt.value : this.syncedAt,
     );
   }
@@ -2477,6 +2515,7 @@ class CommunityMappingEntity extends DataClass
           ..write('verificationCount: $verificationCount, ')
           ..write('lastVerified: $lastVerified, ')
           ..write('source: $source, ')
+          ..write('category: $category, ')
           ..write('syncedAt: $syncedAt')
           ..write(')'))
         .toString();
@@ -2492,6 +2531,7 @@ class CommunityMappingEntity extends DataClass
     verificationCount,
     lastVerified,
     source,
+    category,
     syncedAt,
   );
   @override
@@ -2506,6 +2546,7 @@ class CommunityMappingEntity extends DataClass
           other.verificationCount == this.verificationCount &&
           other.lastVerified == this.lastVerified &&
           other.source == this.source &&
+          other.category == this.category &&
           other.syncedAt == this.syncedAt);
 }
 
@@ -2519,6 +2560,7 @@ class CommunityMappingsCompanion
   final Value<int> verificationCount;
   final Value<DateTime?> lastVerified;
   final Value<String> source;
+  final Value<String?> category;
   final Value<DateTime> syncedAt;
   const CommunityMappingsCompanion({
     this.id = const Value.absent(),
@@ -2529,6 +2571,7 @@ class CommunityMappingsCompanion
     this.verificationCount = const Value.absent(),
     this.lastVerified = const Value.absent(),
     this.source = const Value.absent(),
+    this.category = const Value.absent(),
     this.syncedAt = const Value.absent(),
   });
   CommunityMappingsCompanion.insert({
@@ -2540,6 +2583,7 @@ class CommunityMappingsCompanion
     this.verificationCount = const Value.absent(),
     this.lastVerified = const Value.absent(),
     this.source = const Value.absent(),
+    this.category = const Value.absent(),
     this.syncedAt = const Value.absent(),
   }) : processName = Value(processName),
        twitchCategoryId = Value(twitchCategoryId),
@@ -2553,6 +2597,7 @@ class CommunityMappingsCompanion
     Expression<int>? verificationCount,
     Expression<DateTime>? lastVerified,
     Expression<String>? source,
+    Expression<String>? category,
     Expression<DateTime>? syncedAt,
   }) {
     return RawValuesInsertable({
@@ -2566,6 +2611,7 @@ class CommunityMappingsCompanion
       if (verificationCount != null) 'verification_count': verificationCount,
       if (lastVerified != null) 'last_verified': lastVerified,
       if (source != null) 'source': source,
+      if (category != null) 'category': category,
       if (syncedAt != null) 'synced_at': syncedAt,
     });
   }
@@ -2579,6 +2625,7 @@ class CommunityMappingsCompanion
     Value<int>? verificationCount,
     Value<DateTime?>? lastVerified,
     Value<String>? source,
+    Value<String?>? category,
     Value<DateTime>? syncedAt,
   }) {
     return CommunityMappingsCompanion(
@@ -2591,6 +2638,7 @@ class CommunityMappingsCompanion
       verificationCount: verificationCount ?? this.verificationCount,
       lastVerified: lastVerified ?? this.lastVerified,
       source: source ?? this.source,
+      category: category ?? this.category,
       syncedAt: syncedAt ?? this.syncedAt,
     );
   }
@@ -2624,6 +2672,9 @@ class CommunityMappingsCompanion
     if (source.present) {
       map['source'] = Variable<String>(source.value);
     }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
     if (syncedAt.present) {
       map['synced_at'] = Variable<DateTime>(syncedAt.value);
     }
@@ -2641,6 +2692,7 @@ class CommunityMappingsCompanion
           ..write('verificationCount: $verificationCount, ')
           ..write('lastVerified: $lastVerified, ')
           ..write('source: $source, ')
+          ..write('category: $category, ')
           ..write('syncedAt: $syncedAt')
           ..write(')'))
         .toString();
@@ -3717,6 +3769,7 @@ typedef $$CommunityMappingsTableCreateCompanionBuilder =
       Value<int> verificationCount,
       Value<DateTime?> lastVerified,
       Value<String> source,
+      Value<String?> category,
       Value<DateTime> syncedAt,
     });
 typedef $$CommunityMappingsTableUpdateCompanionBuilder =
@@ -3729,6 +3782,7 @@ typedef $$CommunityMappingsTableUpdateCompanionBuilder =
       Value<int> verificationCount,
       Value<DateTime?> lastVerified,
       Value<String> source,
+      Value<String?> category,
       Value<DateTime> syncedAt,
     });
 
@@ -3778,6 +3832,11 @@ class $$CommunityMappingsTableFilterComposer
 
   ColumnFilters<String> get source => $composableBuilder(
     column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3836,6 +3895,11 @@ class $$CommunityMappingsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get syncedAt => $composableBuilder(
     column: $table.syncedAt,
     builder: (column) => ColumnOrderings(column),
@@ -3886,6 +3950,9 @@ class $$CommunityMappingsTableAnnotationComposer
 
   GeneratedColumn<String> get source =>
       $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
 
   GeneratedColumn<DateTime> get syncedAt =>
       $composableBuilder(column: $table.syncedAt, builder: (column) => column);
@@ -3939,6 +4006,7 @@ class $$CommunityMappingsTableTableManager
                 Value<int> verificationCount = const Value.absent(),
                 Value<DateTime?> lastVerified = const Value.absent(),
                 Value<String> source = const Value.absent(),
+                Value<String?> category = const Value.absent(),
                 Value<DateTime> syncedAt = const Value.absent(),
               }) => CommunityMappingsCompanion(
                 id: id,
@@ -3949,6 +4017,7 @@ class $$CommunityMappingsTableTableManager
                 verificationCount: verificationCount,
                 lastVerified: lastVerified,
                 source: source,
+                category: category,
                 syncedAt: syncedAt,
               ),
           createCompanionCallback:
@@ -3961,6 +4030,7 @@ class $$CommunityMappingsTableTableManager
                 Value<int> verificationCount = const Value.absent(),
                 Value<DateTime?> lastVerified = const Value.absent(),
                 Value<String> source = const Value.absent(),
+                Value<String?> category = const Value.absent(),
                 Value<DateTime> syncedAt = const Value.absent(),
               }) => CommunityMappingsCompanion.insert(
                 id: id,
@@ -3971,6 +4041,7 @@ class $$CommunityMappingsTableTableManager
                 verificationCount: verificationCount,
                 lastVerified: lastVerified,
                 source: source,
+                category: category,
                 syncedAt: syncedAt,
               ),
           withReferenceMapper: (p0) => p0

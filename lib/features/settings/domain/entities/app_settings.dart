@@ -60,6 +60,9 @@ class AppSettings extends Equatable {
   /// Use frameless window (remove Windows title bar)
   final bool useFramelessWindow;
 
+  /// Invert footer and header positions
+  final bool invertFooterHeader;
+
   const AppSettings({
     required this.scanIntervalSeconds,
     required this.debounceSeconds,
@@ -76,6 +79,7 @@ class AppSettings extends Equatable {
     required this.updateChannel,
     required this.windowControlsPosition,
     required this.useFramelessWindow,
+    required this.invertFooterHeader,
   });
 
   /// Default settings for first-time users
@@ -97,6 +101,7 @@ class AppSettings extends Equatable {
       updateChannel: _detectChannelFromVersion(appVersion),
       windowControlsPosition: WindowControlsPosition.right,
       useFramelessWindow: false,
+      invertFooterHeader: false,
     );
   }
 
@@ -142,6 +147,7 @@ class AppSettings extends Equatable {
     UpdateChannel? updateChannel,
     WindowControlsPosition? windowControlsPosition,
     bool? useFramelessWindow,
+    bool? invertFooterHeader,
   }) {
     return AppSettings(
       scanIntervalSeconds: scanIntervalSeconds ?? this.scanIntervalSeconds,
@@ -165,6 +171,7 @@ class AppSettings extends Equatable {
       updateChannel: updateChannel ?? this.updateChannel,
       windowControlsPosition: windowControlsPosition ?? this.windowControlsPosition,
       useFramelessWindow: useFramelessWindow ?? this.useFramelessWindow,
+      invertFooterHeader: invertFooterHeader ?? this.invertFooterHeader,
     );
   }
 
@@ -205,5 +212,6 @@ class AppSettings extends Equatable {
     updateChannel,
     windowControlsPosition,
     useFramelessWindow,
+    invertFooterHeader,
   ];
 }
