@@ -514,51 +514,79 @@ class _MainWindowState extends State<MainWindow> {
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
         children: [
-          // Twitch connection status - left side
-          Consumer<AuthProvider>(
-            builder: (context, authProvider, child) {
-              final isAuthenticated = authProvider.state is Authenticated;
+          // Twitch connection status - left side (draggable)
+          Expanded(
+            flex: 0,
+            child: GestureDetector(
+              onDoubleTap: () async {
+                if (await windowManager.isMaximized()) {
+                  await windowManager.unmaximize();
+                } else {
+                  await windowManager.maximize();
+                }
+              },
+              child: DragToMoveArea(
+                child: Consumer<AuthProvider>(
+                  builder: (context, authProvider, child) {
+                    final isAuthenticated = authProvider.state is Authenticated;
 
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Twitch icon
-                  Icon(
-                    Icons.videocam,
-                    size: 12,
-                    color: isAuthenticated
-                        ? TKitColors.success
-                        : TKitColors.textDisabled,
-                  ),
-                  const SizedBox(width: 6),
-                  Container(
-                    width: 5,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: isAuthenticated
-                          ? TKitColors.success
-                          : TKitColors.textDisabled,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    isAuthenticated
-                        ? l10n.mainWindowStatusConnected
-                        : l10n.mainWindowStatusDisconnected,
-                    style: TKitTextStyles.bodySmall.copyWith(
-                      color: TKitColors.textMuted,
-                      fontSize: 9,
-                    ),
-                  ),
-                ],
-              );
-            },
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Twitch icon
+                        Icon(
+                          Icons.videocam,
+                          size: 12,
+                          color: isAuthenticated
+                              ? TKitColors.success
+                              : TKitColors.textDisabled,
+                        ),
+                        const SizedBox(width: 6),
+                        Container(
+                          width: 5,
+                          height: 5,
+                          decoration: BoxDecoration(
+                            color: isAuthenticated
+                                ? TKitColors.success
+                                : TKitColors.textDisabled,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          isAuthenticated
+                              ? l10n.mainWindowStatusConnected
+                              : l10n.mainWindowStatusDisconnected,
+                          style: TKitTextStyles.bodySmall.copyWith(
+                            color: TKitColors.textMuted,
+                            fontSize: 9,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
           ),
 
-          const Spacer(),
+          // Spacer - draggable area with double-click
+          Expanded(
+            child: GestureDetector(
+              onDoubleTap: () async {
+                if (await windowManager.isMaximized()) {
+                  await windowManager.unmaximize();
+                } else {
+                  await windowManager.maximize();
+                }
+              },
+              child: DragToMoveArea(
+                child: Container(color: Colors.transparent),
+              ),
+            ),
+          ),
 
-          // evobug.com link
+          // evobug.com link (not draggable - clickable)
           MouseRegion(
             cursor: SystemMouseCursors.click,
             child: GestureDetector(
@@ -579,23 +607,36 @@ class _MainWindowState extends State<MainWindow> {
             ),
           ),
           const SizedBox(width: 16),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'v${AppConfig.appVersion}',
-                style: TKitTextStyles.caption.copyWith(
-                  fontSize: 11,
-                  color: TKitColors.textDisabled,
-                ),
+
+          // Version info (draggable)
+          GestureDetector(
+            onDoubleTap: () async {
+              if (await windowManager.isMaximized()) {
+                await windowManager.unmaximize();
+              } else {
+                await windowManager.maximize();
+              }
+            },
+            child: DragToMoveArea(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'v${AppConfig.appVersion}',
+                    style: TKitTextStyles.caption.copyWith(
+                      fontSize: 11,
+                      color: TKitColors.textDisabled,
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  ChannelBadge(
+                    channel: _getChannelFromVersion(AppConfig.appVersion),
+                  ),
+                  const SizedBox(width: 6),
+                  VersionStatusIndicator(navigatorKey: widget.router.navigatorKey),
+                ],
               ),
-              const SizedBox(width: 6),
-              ChannelBadge(
-                channel: _getChannelFromVersion(AppConfig.appVersion),
-              ),
-              const SizedBox(width: 6),
-              VersionStatusIndicator(navigatorKey: widget.router.navigatorKey),
-            ],
+            ),
           ),
         ],
       ),
