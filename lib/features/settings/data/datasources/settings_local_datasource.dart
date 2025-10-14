@@ -23,8 +23,6 @@ class SettingsLocalDataSource {
   /// Returns default settings if none exist
   Future<AppSettingsModel> getSettings() async {
     try {
-      _logger.debug('Loading settings from local storage');
-
       final settingsJson = _prefs.getString(_settingsKey);
 
       if (settingsJson == null || settingsJson.isEmpty) {
@@ -37,7 +35,6 @@ class SettingsLocalDataSource {
       final json = jsonDecode(settingsJson) as Map<String, dynamic>;
       final settings = AppSettingsModel.fromJson(json);
 
-      _logger.debug('Settings loaded successfully');
       return settings;
     } catch (e, stackTrace) {
       _logger.error('Error loading settings', e, stackTrace);

@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:tkit/core/errors/exceptions.dart';
 import 'package:tkit/core/errors/failure.dart';
-import 'package:tkit/features/community_mappings/domain/repositories/i_community_mappings_repository.dart';
 import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
 import 'package:tkit/features/category_mapping/domain/repositories/i_category_mapping_repository.dart';
 import 'package:tkit/features/category_mapping/data/datasources/category_mapping_local_datasource.dart';
@@ -13,20 +12,17 @@ import 'package:tkit/features/category_mapping/data/models/category_mapping_mode
 /// Implements cascade lookup strategy:
 /// 1. Memory cache (fast, in-memory)
 /// 2. User's custom mappings database (persistent, with fuzzy matching)
-/// 3. Community mappings (crowdsourced, synced from GitHub)
-/// 4. Falls through if not found
+/// 3. Falls through if not found
 ///
 /// This minimizes database queries for frequently accessed mappings.
 class CategoryMappingRepositoryImpl implements ICategoryMappingRepository {
   final CategoryMappingLocalDataSource localDataSource;
   final MemoryCache memoryCache;
-  final ICommunityMappingsRepository? communityMappingsRepository;
 
   CategoryMappingRepositoryImpl(
     this.localDataSource,
-    this.memoryCache, {
-    this.communityMappingsRepository,
-  });
+    this.memoryCache,
+  );
 
   @override
   Future<Either<Failure, CategoryMapping?>> findMapping(
@@ -53,36 +49,7 @@ class CategoryMappingRepositoryImpl implements ICategoryMappingRepository {
         return Right(entity);
       }
 
-      // Step 3: Check community mappings as fallback
-      if (communityMappingsRepository != null) {
-        final communityResult =
-            await communityMappingsRepository!.findMapping(processName);
-
-        return communityResult.fold(
-          (failure) => Left(failure),
-          (communityMapping) {
-            if (communityMapping != null) {
-              // Convert community mapping to category mapping
-              final categoryMapping = CategoryMapping(
-                processName: communityMapping.processName,
-                twitchCategoryId: communityMapping.twitchCategoryId,
-                twitchCategoryName: communityMapping.twitchCategoryName,
-                createdAt: communityMapping.syncedAt,
-                lastApiFetch: communityMapping.syncedAt,
-                cacheExpiresAt: communityMapping.syncedAt
-                    .add(const Duration(hours: 24)),
-                manualOverride: false,
-              );
-
-              // Cache it (but don't save to user's database)
-              memoryCache.put(processName, categoryMapping);
-              return Right(categoryMapping);
-            }
-            return const Right(null);
-          },
-        );
-      }
-
+      // Not found in cache or local database
       return const Right(null);
     } on CacheException catch (e) {
       return Left(CacheFailure(message: e.message));

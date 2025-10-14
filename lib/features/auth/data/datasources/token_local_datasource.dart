@@ -44,7 +44,6 @@ class TokenLocalDataSource {
 
       final json = jsonDecode(jsonString) as Map<String, dynamic>;
       final token = TwitchTokenModel.fromJson(json);
-      _logger.debug('Token retrieved from secure storage');
       return token;
     } catch (e, stackTrace) {
       _logger.error('Failed to get token', e, stackTrace);

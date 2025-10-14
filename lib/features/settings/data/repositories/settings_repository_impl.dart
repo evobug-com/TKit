@@ -18,7 +18,6 @@ class SettingsRepositoryImpl implements ISettingsRepository {
   @override
   Future<Either<Failure, AppSettings>> getSettings() async {
     try {
-      _logger.debug('Getting settings from repository');
       final settingsModel = await _localDataSource.getSettings();
       return Right(settingsModel.toEntity());
     } on CacheException catch (e) {
@@ -74,7 +73,6 @@ class SettingsRepositoryImpl implements ISettingsRepository {
   @override
   Stream<AppSettings> watchSettings() {
     try {
-      _logger.debug('Watching settings from repository');
       return _localDataSource.watchSettings().map((model) => model.toEntity());
     } catch (e, stackTrace) {
       _logger.error('Error setting up settings watch', e, stackTrace);

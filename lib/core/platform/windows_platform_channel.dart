@@ -12,7 +12,6 @@ class WindowsPlatformChannel {
 
   WindowsPlatformChannel(this._logger)
     : _channel = const MethodChannel(AppConfig.processDetectionChannel) {
-    _logger.info('WindowsPlatformChannel initialized');
   }
 
   /// Get the currently focused Windows process

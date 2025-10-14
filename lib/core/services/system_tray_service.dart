@@ -66,7 +66,6 @@ class SystemTrayService with TrayListener {
       await trayManager.setToolTip(tooltip);
 
       _isInitialized = true;
-      _logger.info('System tray initialized successfully');
     } catch (e, stackTrace) {
       _logger.error('Failed to initialize system tray', e, stackTrace);
       // Don't rethrow - tray is not critical for app functionality
@@ -121,13 +120,11 @@ class WindowService with WindowListener {
     windowManager.addListener(this);
     // Prevent window from closing immediately - trigger onWindowClose instead
     await windowManager.setPreventClose(true);
-    _logger.info('Window service initialized');
   }
 
   /// Set minimize to tray preference
   void setMinimizeToTray(bool enabled) {
     _minimizeToTray = enabled;
-    _logger.info('Minimize to tray: $enabled');
   }
 
   /// Show the main window

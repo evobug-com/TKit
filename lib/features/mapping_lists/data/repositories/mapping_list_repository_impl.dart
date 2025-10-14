@@ -260,29 +260,37 @@ class MappingListRepositoryImpl implements IMappingListRepository {
 
   /// Import mapping items into a list
   Future<void> _importMappingsToList(String listId, List<MappingListItem> items) async {
-    for (final item in items) {
-      // Convert to CategoryMapping
-      final now = DateTime.now();
-      final expiresAt = now.add(const Duration(hours: 24));
+    await _database.transaction(() async {
+      // First, delete all existing mappings for this list to avoid duplicates
+      await (_database.delete(_database.categoryMappings)
+            ..where((tbl) => tbl.listId.equals(listId)))
+          .go();
 
-      final mapping = CategoryMappingModel(
-        processName: item.processName,
-        normalizedInstallPaths: item.normalizedInstallPaths,
-        twitchCategoryId: item.twitchCategoryId,
-        twitchCategoryName: item.twitchCategoryName,
-        createdAt: now,
-        lastApiFetch: now,
-        cacheExpiresAt: expiresAt,
-        manualOverride: false,
-        isEnabled: true,
-        listId: listId,
-      );
+      // Then insert the new mappings
+      for (final item in items) {
+        // Convert to CategoryMapping
+        final now = DateTime.now();
+        final expiresAt = now.add(const Duration(hours: 24));
 
-      // Insert or update mapping
-      await _database.into(_database.categoryMappings).insert(
-            mapping.toCompanion(),
-            mode: InsertMode.insertOrReplace,
-          );
-    }
+        final mapping = CategoryMappingModel(
+          processName: item.processName,
+          normalizedInstallPaths: item.normalizedInstallPaths,
+          twitchCategoryId: item.twitchCategoryId,
+          twitchCategoryName: item.twitchCategoryName,
+          createdAt: now,
+          lastApiFetch: now,
+          cacheExpiresAt: expiresAt,
+          manualOverride: false,
+          isEnabled: true,
+          listId: listId,
+        );
+
+        // Insert mapping
+        await _database.into(_database.categoryMappings).insert(
+              mapping.toCompanion(),
+              mode: InsertMode.insert,
+            );
+      }
+    });
   }
 }

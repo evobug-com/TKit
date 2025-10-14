@@ -14,7 +14,6 @@ import 'package:tkit/core/services/system_tray_service.dart';
 import 'package:tkit/core/services/hotkey_service.dart';
 import 'package:tkit/core/services/language_service.dart';
 import 'package:tkit/core/services/locale_provider.dart';
-import 'package:tkit/core/services/maintenance_scheduler.dart';
 import 'package:tkit/core/services/notification_service.dart';
 import 'package:tkit/core/services/updater/github_update_service.dart';
 import 'package:tkit/features/auth/data/datasources/token_local_datasource.dart';
@@ -58,19 +57,14 @@ import 'package:tkit/features/category_mapping/presentation/dialogs/unknown_game
 import 'package:tkit/features/mapping_lists/data/datasources/mapping_list_local_datasource.dart';
 import 'package:tkit/features/mapping_lists/data/datasources/mapping_list_sync_datasource.dart';
 import 'package:tkit/features/mapping_lists/data/repositories/mapping_list_repository_impl.dart';
-import 'package:tkit/features/mapping_lists/domain/entities/mapping_list.dart';
 import 'package:tkit/features/mapping_lists/domain/repositories/i_mapping_list_repository.dart';
 import 'package:tkit/features/mapping_lists/domain/usecases/get_all_lists_usecase.dart';
 import 'package:tkit/features/mapping_lists/domain/usecases/sync_list_usecase.dart';
 import 'package:tkit/features/mapping_lists/domain/usecases/import_list_from_url_usecase.dart';
 import 'package:tkit/features/mapping_lists/domain/usecases/toggle_list_enabled_usecase.dart';
 import 'package:tkit/features/mapping_lists/presentation/providers/mapping_list_provider.dart';
-import 'package:tkit/features/community_mappings/data/datasources/community_sync_datasource.dart';
-import 'package:tkit/features/community_mappings/data/datasources/mapping_submission_datasource.dart';
-import 'package:tkit/features/community_mappings/data/repositories/community_mappings_repository_impl.dart';
-import 'package:tkit/features/community_mappings/domain/repositories/i_community_mappings_repository.dart';
-import 'package:tkit/features/community_mappings/domain/usecases/sync_community_mappings_usecase.dart';
-import 'package:tkit/features/community_mappings/domain/usecases/submit_mapping_usecase.dart';
+import 'package:tkit/features/mapping_submission/data/datasources/mapping_submission_datasource.dart';
+import 'package:tkit/features/mapping_submission/domain/usecases/submit_mapping_usecase.dart';
 import 'package:tkit/features/process_detection/data/datasources/process_detection_platform_datasource.dart';
 import 'package:tkit/features/process_detection/data/repositories/process_detection_repository_impl.dart';
 import 'package:tkit/features/process_detection/domain/repositories/i_process_detection_repository.dart';
@@ -112,7 +106,6 @@ void main() async {
 
   // Initialize logger
   final logger = AppLogger();
-  logger.info('TKit starting...');
 
   try {
     // =========================================================================
@@ -120,11 +113,6 @@ void main() async {
     // =========================================================================
     await AppConfig.getVersion();
     logger.info('App version: ${AppConfig.appVersion}');
-
-    // =========================================================================
-    // MANUAL DEPENDENCY INJECTION SETUP
-    // =========================================================================
-    logger.info('Configuring dependencies...');
 
     // -------------------------------------------------------------------------
     // 1. Core Dependencies (Singletons)
@@ -164,7 +152,6 @@ void main() async {
     final systemTrayService = SystemTrayService(logger);
     final windowService = WindowService(logger);
     final updateService = GitHubUpdateService(authDio, logger);
-    final maintenanceScheduler = MaintenanceScheduler(logger);
     final notificationService = NotificationService(logger);
 
     // -------------------------------------------------------------------------
@@ -190,19 +177,12 @@ void main() async {
       defaultTtl: const Duration(minutes: 30),
     );
 
-    // Community mappings datasources
-    final communitySyncDataSource = CommunitySyncDataSource(
-      dio: authDio,
-      logger: logger,
-    );
-    final mappingSubmissionDataSource = MappingSubmissionDataSource(
-      dio: authDio,
-      logger: logger,
-    );
-
     // Mapping list datasources
     final mappingListLocalDataSource = MappingListLocalDataSource(database);
     final mappingListSyncDataSource = MappingListSyncDataSource(authDio);
+
+    // Mapping submission datasource
+    final mappingSubmissionDataSource = MappingSubmissionDataSource(authDio, logger);
 
     // Process detection datasource
     final processDetectionPlatformDataSource =
@@ -227,18 +207,9 @@ void main() async {
       logger,
     );
 
-    // Community mappings repository
-    final communityMappingsRepository = CommunityMappingsRepositoryImpl(
-      syncDataSource: communitySyncDataSource,
-      submissionDataSource: mappingSubmissionDataSource,
-      database: database,
-      logger: logger,
-    );
-
     final categoryMappingRepository = CategoryMappingRepositoryImpl(
       categoryMappingLocalDataSource,
       memoryCache,
-      communityMappingsRepository: communityMappingsRepository,
     );
 
     // Mapping list repository
@@ -389,19 +360,14 @@ void main() async {
       twitchApiRepository,
     );
 
-    // Community mappings use cases
-    final syncCommunityMappingsUseCase = SyncCommunityMappingsUseCase(
-      communityMappingsRepository,
-    );
-    final submitMappingUseCase = SubmitMappingUseCase(
-      communityMappingsRepository,
-    );
-
     // Mapping list use cases
     final getAllListsUseCase = GetAllListsUseCase(mappingListRepository);
     final syncListUseCase = SyncListUseCase(mappingListRepository);
     final importListFromUrlUseCase = ImportListFromUrlUseCase(mappingListRepository);
     final toggleListEnabledUseCase = ToggleListEnabledUseCase(mappingListRepository);
+
+    // Mapping submission use case
+    final submitMappingUseCase = SubmitMappingUseCase(mappingSubmissionDataSource);
 
     // Process detection use cases
     final getFocusedProcessUseCase = GetFocusedProcessUseCase(
@@ -517,8 +483,6 @@ void main() async {
       logger,
     );
 
-    logger.info('Dependencies configured successfully');
-
     // -------------------------------------------------------------------------
     // 7. Initialize Services
     // -------------------------------------------------------------------------
@@ -535,7 +499,6 @@ void main() async {
 
     // Initialize platform channel
     final isAvailable = await platformChannel.isAvailable();
-    logger.info('Platform channel available: $isAvailable');
 
     // Configure window with custom chrome
     await windowManager.ensureInitialized();
@@ -579,15 +542,12 @@ void main() async {
       },
     );
 
-    logger.info('Window initialized successfully');
-
     // Initialize window service
     await windowService.initialize();
 
     // Watch for settings changes and update window service
     watchSettingsUseCase().listen((settings) {
       windowService.setMinimizeToTray(settings.minimizeToTray);
-      logger.debug('Updated minimize to tray setting: ${settings.minimizeToTray}');
     });
 
     // Initialize system tray
@@ -605,15 +565,11 @@ void main() async {
       tooltip: 'TKit - Twitch Toolkit',
     );
 
-    logger.info('System tray initialized successfully');
-
     // Initialize hotkey service
     await hotkeyService.initialize();
-    logger.info('Hotkey service initialized successfully');
 
     // Initialize notification service
     await notificationService.initialize();
-    logger.info('Notification service initialized successfully');
 
     // Configure update service with settings channel provider
     updateService.setChannelProvider(() async {
@@ -637,27 +593,49 @@ void main() async {
     );
     updateService.checkForUpdates(silent: true, channel: updateChannel);
 
-    // Initialize maintenance scheduler with use cases
-    logger.info('Starting maintenance scheduler...');
-    await _initializeMaintenanceScheduler(
-      maintenanceScheduler,
-      refreshExpiredMappingsUseCase,
-      refreshExpiringSoonUseCase,
-      mappingImporter,
-      logger,
+    // Sync mapping lists on startup based on settings
+    final shouldSyncOnStart = await getSettingsUseCase().then(
+      (result) => result.fold(
+        (_) => true, // Default to true on error
+        (settings) => settings.autoSyncMappingsOnStart,
+      ),
     );
 
-    // Sync community mappings on startup (doesn't require authentication)
-    logger.info('Syncing community mappings from GitHub...');
-    final syncResult = await syncCommunityMappingsUseCase(forceSync: true);
-    syncResult.fold(
-      (failure) {
-        logger.warning('Community mappings sync failed: ${failure.message}');
-      },
-      (count) {
-        logger.info('Synced $count community mappings from GitHub');
-      },
-    );
+    if (shouldSyncOnStart) {
+      logger.info('Auto-sync enabled, syncing enabled mapping lists...');
+
+      // Get all enabled lists that need syncing
+      final listsResult = await mappingListRepository.getAllLists();
+      await listsResult.fold(
+        (failure) {
+          logger.warning('Failed to get mapping lists: ${failure.message}');
+        },
+        (lists) async {
+          final enabledLists = lists.where((list) => list.isEnabled && list.shouldSync).toList();
+
+          if (enabledLists.isEmpty) {
+            logger.info('No enabled lists to sync');
+            return;
+          }
+
+          logger.info('Syncing ${enabledLists.length} enabled list(s)...');
+
+          for (final list in enabledLists) {
+            final syncResult = await syncListUseCase(list.id);
+            syncResult.fold(
+              (failure) {
+                logger.warning('Failed to sync list "${list.name}": ${failure.message}');
+              },
+              (_) {
+                logger.info('Successfully synced list: ${list.name}');
+              },
+            );
+          }
+        },
+      );
+    } else {
+      logger.info('Auto-sync disabled in settings, skipping mapping list sync');
+    }
 
     // -------------------------------------------------------------------------
     // 8. Run App with MultiProvider
@@ -678,7 +656,6 @@ void main() async {
           Provider<GitHubUpdateService>.value(value: updateService),
           Provider<HotkeyService>.value(value: hotkeyService),
           Provider<NotificationService>.value(value: notificationService),
-          Provider<MaintenanceScheduler>.value(value: maintenanceScheduler),
 
           // Data sources
           Provider<TokenLocalDataSource>.value(value: tokenLocalDataSource),
@@ -694,9 +671,6 @@ void main() async {
           // Repositories
           Provider<IAuthRepository>.value(value: authRepository),
           Provider<ISettingsRepository>.value(value: settingsRepository),
-          Provider<ICommunityMappingsRepository>.value(
-            value: communityMappingsRepository,
-          ),
           Provider<ICategoryMappingRepository>.value(
             value: categoryMappingRepository,
           ),
@@ -735,14 +709,11 @@ void main() async {
           Provider<RefreshExpiringSoonUseCase>.value(
             value: refreshExpiringSoonUseCase,
           ),
-          Provider<SyncCommunityMappingsUseCase>.value(
-            value: syncCommunityMappingsUseCase,
-          ),
-          Provider<SubmitMappingUseCase>.value(value: submitMappingUseCase),
           Provider<GetAllListsUseCase>.value(value: getAllListsUseCase),
           Provider<SyncListUseCase>.value(value: syncListUseCase),
           Provider<ImportListFromUrlUseCase>.value(value: importListFromUrlUseCase),
           Provider<ToggleListEnabledUseCase>.value(value: toggleListEnabledUseCase),
+          Provider<SubmitMappingUseCase>.value(value: submitMappingUseCase),
           Provider<GetFocusedProcessUseCase>.value(
             value: getFocusedProcessUseCase,
           ),
@@ -806,28 +777,6 @@ void main() async {
     logger.fatal('Failed to initialize app', e, stackTrace);
     rethrow;
   }
-}
-
-/// Initialize maintenance scheduler with actual use cases
-Future<void> _initializeMaintenanceScheduler(
-  MaintenanceScheduler scheduler,
-  RefreshExpiredMappingsUseCase refreshExpired,
-  RefreshExpiringSoonUseCase refreshExpiringSoon,
-  MappingImporter importer,
-  AppLogger logger,
-) async {
-  // Wire up the scheduler with actual implementations
-  // For now, we'll start the scheduler - actual job wiring can be done
-  // when scheduler is enhanced to accept callbacks
-  await scheduler.start();
-  logger.info('Maintenance scheduler started');
-
-  // TODO: Future enhancement - wire up actual use case calls
-  // The scheduler currently has placeholder methods that need to be
-  // enhanced to accept callbacks for:
-  // - Daily cleanup: call refreshExpired()
-  // - Proactive refresh: call refreshExpiringSoon()
-  // - Weekly sync: call importer.importFromGr3gorywolf() and importFromNerothos()
 }
 
 class TKitApp extends StatefulWidget {
@@ -957,7 +906,6 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
 
     try {
       // Get all services that need cleanup
-      final maintenanceScheduler = Provider.of<MaintenanceScheduler>(context, listen: false);
       final autoSwitcherRepo = Provider.of<IAutoSwitcherRepository>(context, listen: false);
       final hotkeyService = Provider.of<HotkeyService>(context, listen: false);
       final systemTrayService = Provider.of<SystemTrayService>(context, listen: false);
@@ -965,12 +913,6 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
 
       // Stop services in parallel for speed
       await Future.wait([
-        // Stop maintenance scheduler (cancels 3 timers)
-        Future(() async {
-          _logger.info('Stopping maintenance scheduler...');
-          await maintenanceScheduler.stop();
-        }),
-
         // Dispose auto switcher (cancels stream subscriptions)
         Future(() async {
           _logger.info('Disposing auto switcher...');
@@ -1008,8 +950,8 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
       // Update cached access token for Twitch API
       _updateApiAccessToken();
 
-      // Initialize community mappings sync
-      _initializeCommunitySync();
+      // Initialize periodic sync scheduler
+      _initializePeriodicListSync();
 
       // Wire up unknown game dialog callback
       _setupUnknownGameCallback();
@@ -1039,28 +981,93 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
     }
   }
 
-  /// Initialize community mappings sync
-  Future<void> _initializeCommunitySync() async {
+  /// Initialize periodic mapping list sync based on settings
+  void _initializePeriodicListSync() {
     try {
-      final syncUseCase = Provider.of<SyncCommunityMappingsUseCase>(
+      final mappingListRepository = Provider.of<IMappingListRepository>(
+        context,
+        listen: false,
+      );
+      final syncListUseCase = Provider.of<SyncListUseCase>(
+        context,
+        listen: false,
+      );
+      final getSettingsUseCase = Provider.of<GetSettingsUseCase>(
+        context,
+        listen: false,
+      );
+      final watchSettingsUseCase = Provider.of<WatchSettingsUseCase>(
         context,
         listen: false,
       );
       final logger = Provider.of<AppLogger>(context, listen: false);
 
-      logger.info('Syncing community mappings from GitHub...');
-      final result = await syncUseCase(forceSync: true);
+      Timer? syncTimer;
 
-      result.fold(
-        (failure) {
-          logger.warning('Community mappings sync failed: ${failure.message}');
-        },
-        (count) {
-          logger.info('Synced $count community mappings from GitHub');
-        },
-      );
+      // Function to schedule next sync
+      void scheduleSyncTimer(int intervalHours) {
+        // Cancel existing timer
+        syncTimer?.cancel();
+
+        if (intervalHours <= 0) {
+          logger.info('Periodic mapping list sync disabled (interval: 0)');
+          return;
+        }
+
+        final duration = Duration(hours: intervalHours);
+        logger.info('Scheduling mapping list sync every ${intervalHours}h');
+
+        syncTimer = Timer.periodic(duration, (_) async {
+          logger.info('Periodic sync triggered for mapping lists');
+
+          // Get all enabled lists
+          final listsResult = await mappingListRepository.getAllLists();
+          await listsResult.fold(
+            (failure) {
+              logger.warning('Failed to get mapping lists for periodic sync: ${failure.message}');
+            },
+            (lists) async {
+              final enabledLists = lists.where((list) => list.isEnabled && list.shouldSync).toList();
+
+              if (enabledLists.isEmpty) {
+                logger.debug('No enabled lists need syncing');
+                return;
+              }
+
+              logger.info('Syncing ${enabledLists.length} enabled list(s)...');
+
+              for (final list in enabledLists) {
+                final syncResult = await syncListUseCase(list.id);
+                syncResult.fold(
+                  (failure) {
+                    logger.warning('Periodic sync failed for "${list.name}": ${failure.message}');
+                  },
+                  (_) {
+                    logger.info('Periodic sync completed for: ${list.name}');
+                  },
+                );
+              }
+            },
+          );
+        });
+      }
+
+      // Watch settings for changes to sync interval
+      watchSettingsUseCase().listen((settings) {
+        scheduleSyncTimer(settings.mappingsSyncIntervalHours);
+      });
+
+      // Initialize with current settings
+      getSettingsUseCase().then((result) {
+        result.fold(
+          (failure) => logger.warning('Could not get settings for sync scheduler'),
+          (settings) => scheduleSyncTimer(settings.mappingsSyncIntervalHours),
+        );
+      });
+
+      logger.info('Periodic mapping list sync initialized');
     } catch (e) {
-      _logger.error('Failed to sync community mappings', e);
+      _logger.error('Failed to initialize periodic sync', e);
     }
   }
 
@@ -1075,15 +1082,7 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
         context,
         listen: false,
       );
-      final submitMappingUseCase = Provider.of<SubmitMappingUseCase>(
-        context,
-        listen: false,
-      );
       final categoryMappingProvider = Provider.of<CategoryMappingProvider>(
-        context,
-        listen: false,
-      );
-      final mappingListRepository = Provider.of<IMappingListRepository>(
         context,
         listen: false,
       );
@@ -1129,45 +1128,8 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
 
             // Submit to community if requested
             if (contributeToCommunity) {
-              try {
-                // Normalize process name: remove .exe extension for cross-platform compatibility
-                final normalizedProcessName = processName.toLowerCase().replaceAll('.exe', '');
-
-                // Get submission URL from official list
-                String? submissionUrl;
-                final listsResult = await mappingListRepository.getAllLists();
-                listsResult.fold(
-                  (failure) => logger.warning('Failed to get lists for submission: ${failure.message}'),
-                  (lists) {
-                    // Find official list's submission hook URL
-                    final officialList = lists.firstWhere(
-                      (list) => list.sourceType == MappingListSourceType.official && list.isEnabled,
-                      orElse: () => lists.first, // Fallback to first list if no official found
-                    );
-                    submissionUrl = officialList.submissionHookUrl;
-                    logger.debug('Using submission URL: $submissionUrl');
-                  },
-                );
-
-                final submitResult = await submitMappingUseCase(
-                  processName: normalizedProcessName,
-                  twitchCategoryId: category.id,
-                  twitchCategoryName: category.name,
-                  windowTitle: null,
-                  normalizedInstallPath: normalizedPath,
-                  submissionUrl: submissionUrl,
-                );
-
-                submitResult.fold(
-                  (failure) => logger.error('Failed to submit mapping: ${failure.message}'),
-                  (submissionResult) {
-                    final message = submissionResult['message'] as String? ?? 'Submitted successfully';
-                    logger.info(message);
-                  },
-                );
-              } catch (e) {
-                logger.error('Failed to submit mapping to community', e);
-              }
+              // TODO: Implement submission to mapping list's submission hook URL
+              logger.info('Community contribution requested - submission feature to be implemented with mapping list hooks');
             }
 
             // Save locally if requested
@@ -1213,15 +1175,15 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
       final autoSwitcherRepo =
           Provider.of<IAutoSwitcherRepository>(context, listen: false)
               as AutoSwitcherRepositoryImpl;
-      final submitMappingUseCase = Provider.of<SubmitMappingUseCase>(
-        context,
-        listen: false,
-      );
       final categoryMappingProvider = Provider.of<CategoryMappingProvider>(
         context,
         listen: false,
       );
       final mappingListRepository = Provider.of<IMappingListRepository>(
+        context,
+        listen: false,
+      );
+      final submitMappingUseCase = Provider.of<SubmitMappingUseCase>(
         context,
         listen: false,
       );
@@ -1281,52 +1243,57 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
             // Normalize process name: remove .exe extension for cross-platform compatibility
             final normalizedProcessName = processName.toLowerCase().replaceAll('.exe', '');
 
-            // Get submission URL from official list
+            // Get submission URL from an enabled list's submission hook
             String? submissionUrl;
             final listsResult = await mappingListRepository.getAllLists();
             listsResult.fold(
               (failure) => logger.warning('Failed to get lists for submission: ${failure.message}'),
               (lists) {
-                // Find official list's submission hook URL
-                final officialList = lists.firstWhere(
-                  (list) => list.sourceType == MappingListSourceType.official && list.isEnabled,
-                  orElse: () => lists.first, // Fallback to first list if no official found
+                // Find an enabled list with a submission hook URL (prefer official)
+                final listWithSubmissionHook = lists.firstWhere(
+                  (list) => list.isEnabled && list.submissionHookUrl != null,
+                  orElse: () => lists.firstWhere(
+                    (list) => list.submissionHookUrl != null,
+                    orElse: () => lists.first,
+                  ),
                 );
-                submissionUrl = officialList.submissionHookUrl;
-                logger.debug('Using submission URL: $submissionUrl');
+                submissionUrl = listWithSubmissionHook.submissionHookUrl;
+                logger.debug('Using submission URL from list "${listWithSubmissionHook.name}": $submissionUrl');
               },
             );
 
-            final result = await submitMappingUseCase(
-              processName: normalizedProcessName,
-              twitchCategoryId: category.id,
-              twitchCategoryName: category.name,
-              windowTitle: windowTitle,
-              normalizedInstallPath: normalizedPath,
-              submissionUrl: submissionUrl,
-            );
+            if (submissionUrl != null) {
+              final result = await submitMappingUseCase(
+                submissionUrl: submissionUrl!,
+                processName: normalizedProcessName,
+                twitchCategoryId: category.id,
+                twitchCategoryName: category.name,
+                windowTitle: windowTitle,
+                normalizedInstallPath: normalizedPath,
+              );
 
-            result.fold(
-              (failure) {
-                logger.error('Failed to submit mapping: ${failure.message}');
-                // Error is already logged, user sees it in the app logs
-              },
-              (submissionResult) {
-                final isVerification =
-                    submissionResult['isVerification'] as bool? ?? false;
-                final issueUrl = submissionResult['issueUrl'] as String?;
+              result.fold(
+                (failure) {
+                  logger.error('Failed to submit mapping: ${failure.message}');
+                },
+                (submissionResult) {
+                  final isVerification = submissionResult['isVerification'] as bool? ?? false;
+                  final issueUrl = submissionResult['issueUrl'] as String?;
 
-                logger.info(
-                  isVerification
-                      ? 'Verified existing mapping: $processName'
-                      : 'Submitted new mapping: $processName',
-                );
+                  logger.info(
+                    isVerification
+                        ? 'Verified existing mapping: $processName'
+                        : 'Submitted new mapping: $processName',
+                  );
 
-                if (issueUrl != null) {
-                  logger.debug('GitHub PR: $issueUrl');
-                }
-              },
-            );
+                  if (issueUrl != null) {
+                    logger.debug('Submission URL: $issueUrl');
+                  }
+                },
+              );
+            } else {
+              logger.warning('No submission URL available in enabled mapping lists');
+            }
           } catch (e) {
             logger.error('Failed to submit mapping to community', e);
             // Don't fail the whole operation
