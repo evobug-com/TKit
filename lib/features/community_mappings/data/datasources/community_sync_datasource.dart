@@ -127,26 +127,19 @@ class CommunitySyncDataSource {
 
       final data = json.decode(response.data as String) as Map<String, dynamic>;
 
-      // Validate response structure - handle both 'mappings' and 'programs' fields
-      final mappingsField = data.containsKey('mappings') ? 'mappings' :
-                           data.containsKey('programs') ? 'programs' : null;
-
-      if (mappingsField == null || data[mappingsField] is! List) {
+      // Validate response structure - expect 'mappings' field
+      if (!data.containsKey('mappings') || data['mappings'] is! List) {
         throw ServerException(
           message: 'Community $type data is invalid. This will be fixed in the next update.',
           code: 'INVALID_DATA',
-          technicalDetails: 'Missing or invalid mappings/programs field',
+          technicalDetails: 'Missing or invalid mappings field',
         );
       }
 
-      final mappings = data[mappingsField] as List;
+      final mappings = data['mappings'] as List;
       logger.debug('Fetched ${mappings.length} $type');
 
-      // Normalize the field name to 'mappings' for consistency
-      return {
-        ...data,
-        'mappings': mappings,
-      };
+      return data;
     } on DioException catch (e, stackTrace) {
       logger.error('Network error fetching community mappings', e, stackTrace);
       throw NetworkException(
