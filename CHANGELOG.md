@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Official lists now appear at the top of list management dialog
 - Enhanced time formatting: shows "never" for null values and displays days + hours (e.g., "1d 5h ago") for times >= 24 hours
 - Auto-sync interval slider now supports 0 (Never) and displays formatted values (e.g., "1d", "1d 5h")
+- When no process is detected, it runs the fallback behavior now
 
 ## [0.0.1-dev.5] - 2025-10-13
 
