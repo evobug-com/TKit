@@ -42,6 +42,10 @@ class CategoryMappings extends Table {
       boolean().withDefault(const Constant(false))();
   BoolColumn get isEnabled =>
       boolean().withDefault(const Constant(true))();
+
+  /// The ID of the mapping list this mapping belongs to
+  /// Nullable for backward compatibility with legacy mappings
+  TextColumn get listId => text().nullable()();
 }
 
 /// Update History table - stores history of category updates
@@ -112,12 +116,36 @@ class CommunityMappings extends Table {
       ];
 }
 
+/// Mapping Lists table - stores collections of mappings
+///
+/// Lists can be Local (user-created), Official (verified by TKit), or Remote (third-party).
+/// Each list can be enabled/disabled and has a priority for conflict resolution.
+@DataClassName('MappingListEntity')
+class MappingLists extends Table {
+  TextColumn get id => text()();
+  TextColumn get name => text()();
+  TextColumn get description => text().withDefault(const Constant(''))();
+  TextColumn get sourceType => text()(); // 'local', 'official', 'remote'
+  TextColumn get sourceUrl => text().nullable()();
+  TextColumn get submissionHookUrl => text().nullable()(); // URL for submitting unknown processes
+  BoolColumn get isEnabled => boolean().withDefault(const Constant(true))();
+  BoolColumn get isReadOnly => boolean().withDefault(const Constant(false))();
+  IntColumn get priority => integer().withDefault(const Constant(100))(); // Lower = higher priority
+  DateTimeColumn get lastSyncedAt => dateTime().nullable()();
+  TextColumn get lastSyncError => text().nullable()(); // Error message from last sync attempt
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
 @DriftDatabase(tables: [
   CategoryMappings,
   UpdateHistory,
   UnknownProcesses,
   TopGamesCache,
   CommunityMappings,
+  MappingLists,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
@@ -126,7 +154,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.test(super.e);
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 9;
 
   static LazyDatabase _openConnection() {
     return LazyDatabase(() async {
@@ -645,6 +673,264 @@ class AppDatabase extends _$AppDatabase {
           );
         }
       }
+
+      if (from == 6 && to >= 7) {
+        // Migration v6 → v7: Add mapping_lists table and listId to category_mappings
+        // This introduces the list-based mapping system
+
+        // Create mapping_lists table
+        await m.createTable(mappingLists);
+
+        // Create index for mapping lists
+        await customStatement(
+          'CREATE INDEX IF NOT EXISTS idx_mapping_lists_priority '
+          'ON mapping_lists(priority, is_enabled)',
+        );
+
+        // Add listId column to category_mappings
+        final categoryMappingsInfo = await customSelect(
+          'PRAGMA table_info(category_mappings)',
+        ).get();
+
+        final hasListId = categoryMappingsInfo.any(
+          (row) => row.data['name'] == 'list_id',
+        );
+
+        if (!hasListId) {
+          await customStatement(
+            'ALTER TABLE category_mappings ADD COLUMN list_id TEXT',
+          );
+        }
+
+        // Create default lists
+        await _createDefaultLists();
+
+        // Migrate existing mappings to appropriate lists
+        await _migrateExistingMappingsToLists();
+      }
+
+      if (from == 7 && to >= 8) {
+        // Migration v7 → v8: Add submissionHookUrl to mapping_lists
+        // This allows lists to have custom submission endpoints for unknown processes
+        final mappingListsInfo = await customSelect(
+          'PRAGMA table_info(mapping_lists)',
+        ).get();
+
+        final hasSubmissionHookUrl = mappingListsInfo.any(
+          (row) => row.data['name'] == 'submission_hook_url',
+        );
+
+        if (!hasSubmissionHookUrl) {
+          await customStatement(
+            'ALTER TABLE mapping_lists ADD COLUMN submission_hook_url TEXT',
+          );
+        }
+
+        // Update official TKit mappings list with submission hook
+        await customStatement(
+          "UPDATE mapping_lists SET submission_hook_url = 'https://tkit-api.evobug.workers.dev/submit-mapping' WHERE id = 'official-tkit-mappings'",
+        );
+      }
+
+      if (from == 8 && to >= 9) {
+        // Migration v8 → v9: Add lastSyncError to mapping_lists
+        // This allows showing sync errors in the UI
+        final mappingListsInfo = await customSelect(
+          'PRAGMA table_info(mapping_lists)',
+        ).get();
+
+        final hasLastSyncError = mappingListsInfo.any(
+          (row) => row.data['name'] == 'last_sync_error',
+        );
+
+        if (!hasLastSyncError) {
+          await customStatement(
+            'ALTER TABLE mapping_lists ADD COLUMN last_sync_error TEXT',
+          );
+        }
+      }
     },
   );
+
+  /// Create default mapping lists for migration and first-run setup
+  Future<void> _createDefaultLists() async {
+    final now = DateTime.now();
+
+    // 1. Official TKit Mappings list (from community sync)
+    await into(mappingLists).insert(
+      MappingListsCompanion.insert(
+        id: 'official-tkit-mappings',
+        name: 'Official TKit Mappings',
+        description: const Value('Verified game mappings from the TKit community'),
+        sourceType: 'official',
+        sourceUrl: const Value('https://raw.githubusercontent.com/evobug-com/tkit-community-mapping/refs/heads/main/mappings.json'),
+        submissionHookUrl: const Value('https://tkit-api.evobug.workers.dev/submit-mapping'),
+        isEnabled: const Value(true),
+        isReadOnly: const Value(true),
+        priority: const Value(10),
+        createdAt: Value(now),
+      ),
+      mode: InsertMode.insertOrIgnore,
+    );
+
+    // 2. Official Ignored Programs list
+    await into(mappingLists).insert(
+      MappingListsCompanion.insert(
+        id: 'official-ignored-programs',
+        name: 'Official Ignored Programs',
+        description: const Value('System apps, launchers, and other programs to ignore'),
+        sourceType: 'official',
+        sourceUrl: const Value('https://raw.githubusercontent.com/evobug-com/tkit-community-mapping/refs/heads/main/programs.json'),
+        isEnabled: const Value(true),
+        isReadOnly: const Value(true),
+        priority: const Value(20),
+        createdAt: Value(now),
+      ),
+      mode: InsertMode.insertOrIgnore,
+    );
+
+    // 3. My Custom Mappings list (user's personal mappings)
+    await into(mappingLists).insert(
+      MappingListsCompanion.insert(
+        id: 'my-custom-mappings',
+        name: 'My Custom Mappings',
+        description: const Value('Your personal game and program mappings'),
+        sourceType: 'local',
+        isEnabled: const Value(true),
+        isReadOnly: const Value(false),
+        priority: const Value(0), // Highest priority
+        createdAt: Value(now),
+      ),
+      mode: InsertMode.insertOrIgnore,
+    );
+  }
+
+  /// Migrate existing mappings to the new list-based system
+  Future<void> _migrateExistingMappingsToLists() async {
+    // Get all existing category mappings without a listId
+    final unmappedMappings = await (select(categoryMappings)
+          ..where((tbl) => tbl.listId.isNull()))
+        .get();
+
+    for (final mapping in unmappedMappings) {
+      // Assign to appropriate list based on whether it's user-defined or preset
+      final targetListId = mapping.manualOverride
+          ? 'my-custom-mappings'
+          : 'official-tkit-mappings';
+
+      await (update(categoryMappings)
+            ..where((tbl) => tbl.id.equals(mapping.id)))
+          .write(CategoryMappingsCompanion(
+        listId: Value(targetListId),
+      ));
+    }
+  }
+
+  /// Get all mapping lists
+  /// Ordered by source type (official first), then by priority
+  Future<List<MappingListEntity>> getAllMappingLists() async {
+    return (select(mappingLists)
+          ..orderBy([
+            (tbl) => OrderingTerm(
+              expression: tbl.sourceType.caseMatch(
+                when: {
+                  const Constant('official'): const Constant(0),
+                  const Constant('local'): const Constant(1),
+                  const Constant('remote'): const Constant(2),
+                },
+                orElse: const Constant(999),
+              ),
+            ),
+            (tbl) => OrderingTerm(expression: tbl.priority),
+          ]))
+        .get();
+  }
+
+  /// Get enabled mapping lists ordered by source type (official first), then priority
+  Future<List<MappingListEntity>> getEnabledMappingLists() async {
+    return (select(mappingLists)
+          ..where((tbl) => tbl.isEnabled.equals(true))
+          ..orderBy([
+            (tbl) => OrderingTerm(
+              expression: tbl.sourceType.caseMatch(
+                when: {
+                  const Constant('official'): const Constant(0),
+                  const Constant('local'): const Constant(1),
+                  const Constant('remote'): const Constant(2),
+                },
+                orElse: const Constant(999),
+              ),
+            ),
+            (tbl) => OrderingTerm(expression: tbl.priority),
+          ]))
+        .get();
+  }
+
+  /// Get mapping list by ID
+  Future<MappingListEntity?> getMappingListById(String id) async {
+    return (select(mappingLists)..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+  }
+
+  /// Update mapping list
+  Future<bool> updateMappingList(String id, MappingListsCompanion data) async {
+    final count = await (update(mappingLists)..where((tbl) => tbl.id.equals(id))).write(data);
+    return count > 0;
+  }
+
+  /// Delete mapping list (and optionally its mappings)
+  Future<void> deleteMappingList(String id, {bool deleteMappings = false}) async {
+    await transaction(() async {
+      if (deleteMappings) {
+        // Delete all mappings in this list
+        await (delete(categoryMappings)..where((tbl) => tbl.listId.equals(id))).go();
+      } else {
+        // Reassign mappings to "My Custom Mappings"
+        await (update(categoryMappings)..where((tbl) => tbl.listId.equals(id)))
+            .write(const CategoryMappingsCompanion(
+          listId: Value('my-custom-mappings'),
+        ));
+      }
+
+      // Delete the list
+      await (delete(mappingLists)..where((tbl) => tbl.id.equals(id))).go();
+    });
+  }
+
+  /// Get count of mappings in a list
+  Future<int> getMappingCountForList(String listId) async {
+    final countQuery = selectOnly(categoryMappings)
+      ..addColumns([categoryMappings.id.count()])
+      ..where(categoryMappings.listId.equals(listId));
+
+    final result = await countQuery.getSingleOrNull();
+    return result?.read(categoryMappings.id.count()) ?? 0;
+  }
+
+  /// Get mappings only from enabled lists
+  /// Joins with mapping_lists table and filters by isEnabled = true
+  /// Returns a map with 'mapping' and 'listName' keys
+  Future<List<Map<String, dynamic>>> getMappingsFromEnabledLists() async {
+    final query = select(categoryMappings).join([
+      leftOuterJoin(
+        mappingLists,
+        mappingLists.id.equalsExp(categoryMappings.listId),
+      ),
+    ])
+      ..where(mappingLists.isEnabled.equals(true) | categoryMappings.listId.isNull())
+      ..orderBy([
+        OrderingTerm(expression: categoryMappings.lastUsedAt, mode: OrderingMode.desc),
+        OrderingTerm(expression: categoryMappings.createdAt, mode: OrderingMode.desc),
+      ]);
+
+    final results = await query.get();
+    return results.map((row) {
+      final mapping = row.readTable(categoryMappings);
+      final list = row.readTableOrNull(mappingLists);
+      return {
+        'mapping': mapping,
+        'listName': list?.name ?? 'Unknown',
+        'isReadOnly': list?.isReadOnly ?? false,
+      };
+    }).toList();
+  }
 }

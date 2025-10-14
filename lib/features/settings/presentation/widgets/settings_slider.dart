@@ -10,6 +10,7 @@ class SettingsSlider extends StatelessWidget {
   final int divisions;
   final String suffix;
   final ValueChanged<double> onChanged;
+  final String Function(double)? valueFormatter;
 
   const SettingsSlider({
     super.key,
@@ -21,6 +22,7 @@ class SettingsSlider extends StatelessWidget {
     required this.divisions,
     this.suffix = 's',
     required this.onChanged,
+    this.valueFormatter,
   });
 
   @override
@@ -56,7 +58,7 @@ class SettingsSlider extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             Text(
-              '${value.toInt()}$suffix',
+              valueFormatter != null ? valueFormatter!(value) : '${value.toInt()}$suffix',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
@@ -69,7 +71,7 @@ class SettingsSlider extends StatelessWidget {
           min: min,
           max: max,
           divisions: divisions,
-          label: '${value.toInt()}$suffix',
+          label: valueFormatter != null ? valueFormatter!(value) : '${value.toInt()}$suffix',
           onChanged: onChanged,
         ),
       ],

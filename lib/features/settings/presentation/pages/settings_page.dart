@@ -77,7 +77,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 6, vsync: this);
+    _tabController = TabController(length: 7, vsync: this);
 
     // Setup shake animation
     _shakeController = AnimationController(
@@ -276,6 +276,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                         children: [
                           _buildGeneralTab(settings, l10n),
                           _buildAutoSwitcherTab(settings, l10n),
+                          _buildMappingsTab(settings, l10n),
                           _buildKeyboardTab(settings, l10n),
                           _buildThemeTab(settings, l10n),
                           _buildTwitchTab(l10n),
@@ -317,6 +318,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
       tabs: [
         Tab(text: l10n.settingsTabGeneral),
         Tab(text: l10n.settingsTabAutoSwitcher),
+        const Tab(text: 'Mappings'),
         Tab(text: l10n.settingsTabKeyboard),
         const Tab(text: 'Theme'),
         Tab(text: l10n.settingsTabTwitch),
@@ -569,6 +571,61 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
         ],
       ),
     );
+  }
+
+  Widget _buildMappingsTab(AppSettings settings, AppLocalizations l10n) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(TKitSpacing.pagePadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSection('AUTOMATIC SYNCHRONIZATION', [
+            SettingsCheckbox(
+              label: 'Auto-sync mappings on app start',
+              subtitle: 'Automatically sync mapping lists when the application starts',
+              value: settings.autoSyncMappingsOnStart,
+              onChanged: (value) {
+                _updateSettings(
+                  settings.copyWith(autoSyncMappingsOnStart: value ?? true),
+                );
+              },
+            ),
+            VSpace.md(),
+            SettingsSlider(
+              label: 'Auto-sync interval',
+              description: 'How often to automatically sync mapping lists (0 = never)',
+              value: settings.mappingsSyncIntervalHours.toDouble(),
+              min: 0,
+              max: 168,
+              divisions: 168,
+              valueFormatter: (value) => _formatSyncInterval(value.toInt()),
+              onChanged: (value) {
+                _updateSettings(
+                  settings.copyWith(mappingsSyncIntervalHours: value.toInt()),
+                );
+              },
+            ),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  String _formatSyncInterval(int hours) {
+    if (hours == 0) {
+      return 'Never';
+    } else if (hours < 24) {
+      return '${hours}h';
+    } else {
+      final days = hours ~/ 24;
+      final remainingHours = hours % 24;
+
+      if (remainingHours == 0) {
+        return '${days}d';
+      } else {
+        return '${days}d ${remainingHours}h';
+      }
+    }
   }
 
   Widget _buildKeyboardTab(AppSettings settings, AppLocalizations l10n) {

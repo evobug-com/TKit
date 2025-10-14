@@ -503,6 +503,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
         lastApiFetch: widget.mapping?.lastApiFetch ?? now,
         cacheExpiresAt: widget.mapping?.cacheExpiresAt ?? now.add(const Duration(hours: 24)),
         manualOverride: true,
+        listId: widget.mapping?.listId ?? 'my-custom-mappings', // Default to custom list
       );
 
       Navigator.of(context).pop(mapping);

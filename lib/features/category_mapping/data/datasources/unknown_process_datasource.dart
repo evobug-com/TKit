@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:tkit/core/database/app_database.dart';
 import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/core/utils/app_logger.dart';
 import 'package:tkit/features/category_mapping/data/models/unknown_process_model.dart';
 
 /// Data source for unknown processes
@@ -9,6 +10,7 @@ import 'package:tkit/features/category_mapping/data/models/unknown_process_model
 /// Helps identify gaps in the mapping database.
 class UnknownProcessDataSource {
   final AppDatabase database;
+  final _logger = AppLogger();
 
   UnknownProcessDataSource(this.database);
 
@@ -46,7 +48,8 @@ class UnknownProcessDataSource {
               ),
             );
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to log unknown process', e, stackTrace);
       throw CacheException(
         message: 'Failed to log unknown process: ${e.toString()}',
       );
@@ -72,7 +75,8 @@ class UnknownProcessDataSource {
       return processes
           .map((entity) => UnknownProcessModel.fromDbEntity(entity))
           .toList();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to get unknown processes', e, stackTrace);
       throw CacheException(
         message: 'Failed to get unknown processes: ${e.toString()}',
       );
@@ -95,7 +99,8 @@ class UnknownProcessDataSource {
       return processes
           .map((entity) => UnknownProcessModel.fromDbEntity(entity))
           .toList();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to get unresolved processes', e, stackTrace);
       throw CacheException(
         message: 'Failed to get unresolved processes: ${e.toString()}',
       );
@@ -110,7 +115,8 @@ class UnknownProcessDataSource {
       await (database.update(database.unknownProcesses)
             ..where((tbl) => tbl.executableName.equals(executableName)))
           .write(const UnknownProcessesCompanion(resolved: Value(true)));
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to mark process as resolved', e, stackTrace);
       throw CacheException(
         message: 'Failed to mark process as resolved: ${e.toString()}',
       );
@@ -123,7 +129,8 @@ class UnknownProcessDataSource {
       await (database.delete(database.unknownProcesses)
             ..where((tbl) => tbl.id.equals(id)))
           .go();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to delete unknown process', e, stackTrace);
       throw CacheException(
         message: 'Failed to delete unknown process: ${e.toString()}',
       );
@@ -135,7 +142,8 @@ class UnknownProcessDataSource {
     try {
       final processes = await getUnresolvedProcesses();
       return processes.map((process) => process.toJson()).toList();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to export unknown processes', e, stackTrace);
       throw CacheException(
         message: 'Failed to export unknown processes: ${e.toString()}',
       );
@@ -148,7 +156,8 @@ class UnknownProcessDataSource {
       return await (database.delete(database.unknownProcesses)
             ..where((tbl) => tbl.resolved.equals(true)))
           .go();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to clear resolved processes', e, stackTrace);
       throw CacheException(
         message: 'Failed to clear resolved processes: ${e.toString()}',
       );

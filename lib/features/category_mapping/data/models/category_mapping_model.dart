@@ -27,6 +27,9 @@ class CategoryMappingModel extends CategoryMapping {
     required super.cacheExpiresAt,
     required super.manualOverride,
     super.isEnabled = true,
+    super.listId,
+    super.sourceListName,
+    super.sourceListIsReadOnly = false,
   });
 
   /// Create from domain entity
@@ -44,11 +47,18 @@ class CategoryMappingModel extends CategoryMapping {
       cacheExpiresAt: entity.cacheExpiresAt,
       manualOverride: entity.manualOverride,
       isEnabled: entity.isEnabled,
+      listId: entity.listId,
+      sourceListName: entity.sourceListName,
+      sourceListIsReadOnly: entity.sourceListIsReadOnly,
     );
   }
 
   /// Create from Drift database entity
-  factory CategoryMappingModel.fromDbEntity(CategoryMappingEntity dbEntity) {
+  factory CategoryMappingModel.fromDbEntity(
+    CategoryMappingEntity dbEntity, {
+    String? sourceListName,
+    bool sourceListIsReadOnly = false,
+  }) {
     // Parse normalizedInstallPaths from JSON string
     List<String> paths = [];
     if (dbEntity.normalizedInstallPaths != null &&
@@ -77,6 +87,9 @@ class CategoryMappingModel extends CategoryMapping {
       cacheExpiresAt: dbEntity.cacheExpiresAt,
       manualOverride: dbEntity.manualOverride,
       isEnabled: dbEntity.isEnabled,
+      listId: dbEntity.listId,
+      sourceListName: sourceListName,
+      sourceListIsReadOnly: sourceListIsReadOnly,
     );
   }
 
@@ -102,6 +115,9 @@ class CategoryMappingModel extends CategoryMapping {
       cacheExpiresAt: cacheExpiresAt,
       manualOverride: manualOverride,
       isEnabled: isEnabled,
+      listId: listId,
+      sourceListName: sourceListName,
+      sourceListIsReadOnly: sourceListIsReadOnly,
     );
   }
 
@@ -126,6 +142,7 @@ class CategoryMappingModel extends CategoryMapping {
       cacheExpiresAt: cacheExpiresAt,
       manualOverride: Value(manualOverride),
       isEnabled: Value(isEnabled),
+      listId: Value(listId),
     );
   }
 }

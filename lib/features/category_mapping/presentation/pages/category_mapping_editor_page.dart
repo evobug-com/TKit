@@ -14,21 +14,21 @@ import 'package:tkit/shared/widgets/layout/stat_item.dart';
 import 'package:tkit/shared/widgets/layout/empty_state.dart';
 import 'package:tkit/shared/widgets/layout/spacer.dart';
 import 'package:tkit/shared/widgets/buttons/primary_button.dart';
+import 'package:tkit/shared/widgets/buttons/accent_button.dart';
 import 'package:tkit/shared/widgets/dialogs/confirm_dialog.dart';
 import 'package:tkit/shared/widgets/dialogs/error_dialog.dart';
 import 'package:tkit/shared/widgets/indicators/loading_indicator.dart';
 import 'package:tkit/shared/widgets/feedback/toast.dart';
-import 'package:tkit/features/community_mappings/domain/repositories/i_community_mappings_repository.dart';
-import 'package:tkit/features/community_mappings/domain/entities/community_mapping.dart';
 import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
 import 'package:tkit/features/category_mapping/presentation/providers/category_mapping_provider.dart';
 import 'package:tkit/features/category_mapping/presentation/widgets/add_mapping_dialog.dart';
 import 'package:tkit/features/category_mapping/presentation/widgets/mapping_list_widget.dart';
-import 'package:tkit/features/category_mapping/presentation/widgets/community_mapping_list_widget.dart';
+import 'package:tkit/features/mapping_lists/presentation/dialogs/list_management_dialog.dart';
+import 'package:tkit/features/mapping_lists/presentation/providers/mapping_list_provider.dart';
 
 /// Page for managing category mappings
 ///
-/// Displays tabs for Custom and Community mappings
+/// Displays unified view of all mappings from enabled lists
 @RoutePage()
 class CategoryMappingEditorPage extends StatefulWidget {
   const CategoryMappingEditorPage({super.key});
@@ -38,58 +38,38 @@ class CategoryMappingEditorPage extends StatefulWidget {
       _CategoryMappingEditorPageState();
 }
 
-class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  List<CommunityMapping> _communityMappings = [];
-  List<CommunityMapping> _communityPrograms = [];
-  bool _loadingCommunity = false;
-  String? _communityError;
+class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage> {
+  MappingListProvider? _listProvider;
+  CategoryMappingProvider? _mappingProvider;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
 
-    // Load custom mappings
+    // Load mappings and lists
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<CategoryMappingProvider>().loadMappings();
+      _mappingProvider = context.read<CategoryMappingProvider>();
+      _listProvider = context.read<MappingListProvider>();
+
+      _mappingProvider!.loadMappings();
+      _listProvider!.loadLists();
+
+      // Listen to list changes and reload mappings
+      _listProvider!.addListener(_onListsChanged);
     });
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _listProvider?.removeListener(_onListsChanged);
     super.dispose();
   }
 
-  Future<void> _loadCommunityMappings() async {
-    if (_loadingCommunity) return;
-
-    setState(() {
-      _loadingCommunity = true;
-      _communityError = null;
-    });
-
-    final repo = context.read<ICommunityMappingsRepository>();
-    final result = await repo.getAllMappings();
-
-    result.fold(
-      (failure) {
-        setState(() {
-          _communityError = failure.message;
-          _loadingCommunity = false;
-        });
-      },
-      (mappings) {
-        setState(() {
-          // Separate games from programs (ignored items)
-          _communityMappings = mappings.where((m) => m.isGame).toList();
-          _communityPrograms = mappings.where((m) => m.isIgnored).toList();
-          _loadingCommunity = false;
-        });
-      },
-    );
+  void _onListsChanged() {
+    // Reload mappings when lists change (e.g., when toggled)
+    if (mounted && _mappingProvider != null) {
+      _mappingProvider!.loadMappings();
+    }
   }
 
   @override
@@ -110,49 +90,9 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
             ),
             const VSpace.lg(),
 
-            // Tab Bar
-            Container(
-              decoration: BoxDecoration(
-                color: TKitColors.surface,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: TKitColors.border),
-              ),
-              child: TabBar(
-                controller: _tabController,
-                onTap: (index) {
-                  if ((index == 1 || index == 2) &&
-                      _communityMappings.isEmpty &&
-                      _communityPrograms.isEmpty) {
-                    _loadCommunityMappings();
-                  }
-                },
-                indicator: BoxDecoration(
-                  color: TKitColors.accent.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                indicatorSize: TabBarIndicatorSize.tab,
-                dividerColor: Colors.transparent,
-                labelColor: TKitColors.textPrimary,
-                unselectedLabelColor: TKitColors.textMuted,
-                tabs: const [
-                  Tab(text: 'Custom Mappings'),
-                  Tab(text: 'Community Games'),
-                  Tab(text: 'Community Programs'),
-                ],
-              ),
-            ),
-            const VSpace.md(),
-
-            // Tab Views
+            // Unified mappings view
             Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  _buildCustomMappingsTab(context),
-                  _buildCommunityGamesTab(context),
-                  _buildCommunityProgramsTab(context),
-                ],
-              ),
+              child: _buildMappingsView(context),
             ),
           ],
         ),
@@ -160,18 +100,18 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
     );
   }
 
-  Widget _buildCustomMappingsTab(BuildContext context) {
-    return Consumer<CategoryMappingProvider>(
-      builder: (context, provider, child) {
+  Widget _buildMappingsView(BuildContext context) {
+    return Consumer2<CategoryMappingProvider, MappingListProvider>(
+      builder: (context, mappingProvider, listProvider, child) {
         final l10n = AppLocalizations.of(context)!;
-        final errorMsg = provider.errorMessage;
-        final successMsg = provider.successMessage;
+        final errorMsg = mappingProvider.errorMessage;
+        final successMsg = mappingProvider.successMessage;
 
-        // Handle success/error messages
+        // Handle success/error messages from mapping provider
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (successMsg != null) {
             Toast.success(context, successMsg);
-            provider.clearMessages();
+            mappingProvider.clearMessages();
           } else if (errorMsg != null) {
             showDialog(
               context: context,
@@ -180,24 +120,35 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
                 message: errorMsg,
               ),
             );
-            provider.clearMessages();
+            mappingProvider.clearMessages();
+          }
+
+          // Handle messages from list provider
+          if (listProvider.successMessage != null) {
+            Toast.success(context, listProvider.successMessage!);
+            listProvider.clearMessages();
+          } else if (listProvider.errorMessage != null) {
+            Toast.error(context, listProvider.errorMessage!);
+            listProvider.clearMessages();
           }
         });
 
-        if (provider.isLoading) {
+        // Only show full loading indicator on initial load (when there are no mappings)
+        if (mappingProvider.isLoading && mappingProvider.mappings.isEmpty) {
           return const Center(child: LoadingIndicator());
         }
 
-        if (provider.errorMessage != null && provider.mappings.isEmpty) {
-          return _buildErrorView(context, provider.errorMessage!);
+        if (mappingProvider.errorMessage != null && mappingProvider.mappings.isEmpty) {
+          return _buildErrorView(context, mappingProvider.errorMessage!);
         }
 
-        final mappings = provider.mappings;
+        final mappings = mappingProvider.mappings;
+        final enabledLists = listProvider.lists.where((l) => l.isEnabled).length;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Stats bar with Add button
+            // Stats bar with actions
             IslandVariant.standard(
               child: Row(
                 children: [
@@ -208,19 +159,22 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
                   ),
                   const HSpace.xxl(),
                   StatItem(
-                    label: l10n.categoryMappingStatsUserDefined,
-                    value:
-                        mappings.where((m) => m.manualOverride).length.toString(),
+                    label: 'Active Lists',
+                    value: enabledLists.toString(),
                   ),
                   const HSpace.xxl(),
                   StatItem(
-                    label: l10n.categoryMappingStatsPresets,
-                    value: mappings
-                        .where((m) => !m.manualOverride)
-                        .length
-                        .toString(),
+                    label: l10n.categoryMappingStatsUserDefined,
+                    value: mappings.where((m) => m.manualOverride).length.toString(),
                   ),
                   const Spacer(),
+                  AccentButton(
+                    text: 'View Lists',
+                    icon: Icons.list_alt,
+                    onPressed: () => ListManagementDialog.show(context),
+                    width: 140,
+                  ),
+                  const HSpace.md(),
                   PrimaryButton(
                     text: l10n.categoryMappingAddMappingButton,
                     icon: Icons.add,
@@ -246,141 +200,13 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
                 onBulkToggleEnabled: (ids, enabled) =>
                     _handleBulkToggleEnabled(context, ids, enabled),
                 onBulkRestore: (mappings) => _handleBulkRestore(context, mappings),
+                onSourceTap: (listId) => _handleSourceTap(context, listId),
               ),
             ),
           ],
         );
       },
     );
-  }
-
-  Widget _buildCommunityGamesTab(BuildContext context) {
-    if (_loadingCommunity) {
-      return const Center(child: LoadingIndicator());
-    }
-
-    if (_communityError != null) {
-      return EmptyState(
-        icon: Icons.error_outline,
-        message: 'Failed to load community games',
-        subtitle: _communityError,
-        action: PrimaryButton(
-          text: 'Retry',
-          icon: Icons.refresh,
-          onPressed: _loadCommunityMappings,
-        ),
-      );
-    }
-
-    if (_communityMappings.isEmpty) {
-      return EmptyState(
-        icon: Icons.cloud_download,
-        message: 'No community games available',
-        subtitle: 'Community games are synced from GitHub',
-      );
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        // Stats bar
-        IslandVariant.standard(
-          child: Row(
-            children: [
-              StatItem(
-                label: 'Total Community Games',
-                value: _communityMappings.length.toString(),
-                valueColor: TKitColors.accent,
-              ),
-              const HSpace.xxl(),
-              StatItem(
-                label: 'Last Synced',
-                value: _formatLastSync(
-                    context.read<ICommunityMappingsRepository>().getLastSyncTime()),
-              ),
-            ],
-          ),
-        ),
-        const VSpace.md(),
-
-        // Community games list
-        Expanded(
-          child: CommunityMappingListWidget(
-            mappings: _communityMappings,
-            onAdopt: (mapping) => _handleAdoptMapping(context, mapping),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCommunityProgramsTab(BuildContext context) {
-    if (_loadingCommunity) {
-      return const Center(child: LoadingIndicator());
-    }
-
-    if (_communityError != null) {
-      return EmptyState(
-        icon: Icons.error_outline,
-        message: 'Failed to load community programs',
-        subtitle: _communityError,
-        action: PrimaryButton(
-          text: 'Retry',
-          icon: Icons.refresh,
-          onPressed: _loadCommunityMappings,
-        ),
-      );
-    }
-
-    if (_communityPrograms.isEmpty) {
-      return EmptyState(
-        icon: Icons.apps,
-        message: 'No community programs available',
-        subtitle: 'Community programs are synced from GitHub',
-      );
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        // Stats bar
-        IslandVariant.standard(
-          child: Row(
-            children: [
-              StatItem(
-                label: 'Total Community Programs',
-                value: _communityPrograms.length.toString(),
-                valueColor: TKitColors.accent,
-              ),
-              const HSpace.xxl(),
-              StatItem(
-                label: 'Last Synced',
-                value: _formatLastSync(
-                    context.read<ICommunityMappingsRepository>().getLastSyncTime()),
-              ),
-            ],
-          ),
-        ),
-        const VSpace.md(),
-
-        // Community programs list
-        Expanded(
-          child: CommunityMappingListWidget(
-            mappings: _communityPrograms,
-            onAdopt: (mapping) => _handleAdoptMapping(context, mapping),
-          ),
-        ),
-      ],
-    );
-  }
-
-  String _formatLastSync(DateTime? lastSync) {
-    if (lastSync == null) return 'Never';
-    final diff = DateTime.now().difference(lastSync);
-    if (diff.inMinutes < 1) return 'Just now';
-    if (diff.inHours < 1) return '${diff.inMinutes}m ago';
-    if (diff.inDays < 1) return '${diff.inHours}h ago';
-    return '${diff.inDays}d ago';
   }
 
   Widget _buildErrorView(BuildContext context, String message) {
@@ -437,37 +263,6 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
 
     if (confirmed == true && context.mounted) {
       context.read<CategoryMappingProvider>().deleteMapping(id);
-    }
-  }
-
-  Future<void> _handleAdoptMapping(
-    BuildContext context,
-    CommunityMapping communityMapping,
-  ) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => ConfirmDialog(
-        title: 'Adopt Community Mapping',
-        message:
-            'Add "${communityMapping.processName} → ${communityMapping.twitchCategoryName}" to your personal mappings?',
-        confirmText: 'Adopt',
-        cancelText: 'Cancel',
-      ),
-    );
-
-    if (confirmed == true && context.mounted) {
-      final mapping = CategoryMapping(
-        processName: communityMapping.processName,
-        twitchCategoryId: communityMapping.twitchCategoryId,
-        twitchCategoryName: communityMapping.twitchCategoryName,
-        createdAt: DateTime.now(),
-        lastApiFetch: DateTime.now(),
-        cacheExpiresAt: DateTime.now().add(const Duration(hours: 24)),
-        manualOverride: true,
-      );
-
-      context.read<CategoryMappingProvider>().addMapping(mapping);
-      Toast.success(context, 'Community mapping adopted successfully!');
     }
   }
 
@@ -591,5 +386,10 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage>
     List<CategoryMapping> mappings,
   ) async {
     context.read<CategoryMappingProvider>().bulkRestore(mappings);
+  }
+
+  void _handleSourceTap(BuildContext context, String? listId) {
+    // Open the list management dialog
+    ListManagementDialog.show(context);
   }
 }

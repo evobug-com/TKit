@@ -39,17 +39,17 @@ class TwitchAuthRemoteDataSource {
       final deviceCodeResponse = DeviceCodeResponse.fromJson(response.data);
       _logger.info('Device code generated: ${deviceCodeResponse.userCode}');
       return deviceCodeResponse;
-    } on DioException catch (e) {
-      _logger.error('Device code request failed', e);
+    } on DioException catch (e, stackTrace) {
+      _logger.error('Device code request failed', e, stackTrace);
       throw AuthException(
         message: 'Unable to connect to Twitch. Please check your internet connection.',
         code: 'DEVICE_CODE_ERROR',
         originalError: e,
         technicalDetails: 'Network error: ${e.message}',
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       if (e is AuthException) rethrow;
-      _logger.error('Unexpected error during device code request', e);
+      _logger.error('Unexpected error during device code request', e, stackTrace);
       throw AuthException(
         message: 'Authentication failed. Please try again.',
         code: 'UNKNOWN_ERROR',
@@ -158,17 +158,17 @@ class TwitchAuthRemoteDataSource {
         code: 'POLLING_FAILED',
         technicalDetails: 'HTTP ${response.statusCode}',
       );
-    } on DioException catch (e) {
-      _logger.error('Device code polling failed', e);
+    } on DioException catch (e, stackTrace) {
+      _logger.error('Device code polling failed', e, stackTrace);
       throw AuthException(
         message: 'Unable to connect to Twitch. Please check your internet connection.',
         code: 'POLLING_ERROR',
         originalError: e,
         technicalDetails: 'Network error: ${e.message}',
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       if (e is AuthException) rethrow;
-      _logger.error('Unexpected error during device code polling', e);
+      _logger.error('Unexpected error during device code polling', e, stackTrace);
       throw AuthException(
         message: 'Authentication failed. Please try again.',
         code: 'UNKNOWN_ERROR',
@@ -203,17 +203,17 @@ class TwitchAuthRemoteDataSource {
       final token = TwitchTokenModel.fromTokenResponse(response.data);
       _logger.info('Access token refreshed successfully');
       return token;
-    } on DioException catch (e) {
-      _logger.error('Token refresh request failed', e);
+    } on DioException catch (e, stackTrace) {
+      _logger.error('Token refresh request failed', e, stackTrace);
       throw AuthException(
         message: 'Your session has expired. Please log in again.',
         code: 'TOKEN_REFRESH_ERROR',
         originalError: e,
         technicalDetails: 'Network error: ${e.message}',
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       if (e is AuthException) rethrow;
-      _logger.error('Unexpected error during token refresh', e);
+      _logger.error('Unexpected error during token refresh', e, stackTrace);
       throw AuthException(
         message: 'Your session has expired. Please log in again.',
         code: 'UNKNOWN_ERROR',
@@ -233,17 +233,17 @@ class TwitchAuthRemoteDataSource {
       );
 
       _logger.info('Access token revoked successfully');
-    } on DioException catch (e) {
-      _logger.error('Token revocation request failed', e);
+    } on DioException catch (e, stackTrace) {
+      _logger.error('Token revocation request failed', e, stackTrace);
       throw AuthException(
         message: 'Unable to complete logout. You may already be logged out.',
         code: 'TOKEN_REVOKE_ERROR',
         originalError: e,
         technicalDetails: 'Network error: ${e.message}',
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       if (e is AuthException) rethrow;
-      _logger.error('Unexpected error during token revocation', e);
+      _logger.error('Unexpected error during token revocation', e, stackTrace);
       throw AuthException(
         message: 'Unable to complete logout. Please try again.',
         code: 'UNKNOWN_ERROR',
@@ -290,17 +290,17 @@ class TwitchAuthRemoteDataSource {
       );
       _logger.info('User info retrieved: ${user.login}');
       return user;
-    } on DioException catch (e) {
-      _logger.error('Failed to get user info', e);
+    } on DioException catch (e, stackTrace) {
+      _logger.error('Failed to get user info', e, stackTrace);
       throw AuthException(
         message: 'Unable to connect to Twitch. Please check your internet connection.',
         code: 'USER_INFO_ERROR',
         originalError: e,
         technicalDetails: 'Network error: ${e.message}',
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       if (e is AuthException) rethrow;
-      _logger.error('Unexpected error getting user info', e);
+      _logger.error('Unexpected error getting user info', e, stackTrace);
       throw AuthException(
         message: 'Unable to retrieve your account information. Please try again.',
         code: 'UNKNOWN_ERROR',

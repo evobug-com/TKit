@@ -154,6 +154,15 @@ class $CategoryMappingsTable extends CategoryMappings
     ),
     defaultValue: const Constant(true),
   );
+  static const VerificationMeta _listIdMeta = const VerificationMeta('listId');
+  @override
+  late final GeneratedColumn<String> listId = GeneratedColumn<String>(
+    'list_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -168,6 +177,7 @@ class $CategoryMappingsTable extends CategoryMappings
     cacheExpiresAt,
     manualOverride,
     isEnabled,
+    listId,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -285,6 +295,12 @@ class $CategoryMappingsTable extends CategoryMappings
         isEnabled.isAcceptableOrUnknown(data['is_enabled']!, _isEnabledMeta),
       );
     }
+    if (data.containsKey('list_id')) {
+      context.handle(
+        _listIdMeta,
+        listId.isAcceptableOrUnknown(data['list_id']!, _listIdMeta),
+      );
+    }
     return context;
   }
 
@@ -342,6 +358,10 @@ class $CategoryMappingsTable extends CategoryMappings
         DriftSqlType.bool,
         data['${effectivePrefix}is_enabled'],
       )!,
+      listId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}list_id'],
+      ),
     );
   }
 
@@ -370,6 +390,10 @@ class CategoryMappingEntity extends DataClass
   final DateTime cacheExpiresAt;
   final bool manualOverride;
   final bool isEnabled;
+
+  /// The ID of the mapping list this mapping belongs to
+  /// Nullable for backward compatibility with legacy mappings
+  final String? listId;
   const CategoryMappingEntity({
     required this.id,
     required this.processName,
@@ -383,6 +407,7 @@ class CategoryMappingEntity extends DataClass
     required this.cacheExpiresAt,
     required this.manualOverride,
     required this.isEnabled,
+    this.listId,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -407,6 +432,9 @@ class CategoryMappingEntity extends DataClass
     map['cache_expires_at'] = Variable<DateTime>(cacheExpiresAt);
     map['manual_override'] = Variable<bool>(manualOverride);
     map['is_enabled'] = Variable<bool>(isEnabled);
+    if (!nullToAbsent || listId != null) {
+      map['list_id'] = Variable<String>(listId);
+    }
     return map;
   }
 
@@ -430,6 +458,9 @@ class CategoryMappingEntity extends DataClass
       cacheExpiresAt: Value(cacheExpiresAt),
       manualOverride: Value(manualOverride),
       isEnabled: Value(isEnabled),
+      listId: listId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(listId),
     );
   }
 
@@ -455,6 +486,7 @@ class CategoryMappingEntity extends DataClass
       cacheExpiresAt: serializer.fromJson<DateTime>(json['cacheExpiresAt']),
       manualOverride: serializer.fromJson<bool>(json['manualOverride']),
       isEnabled: serializer.fromJson<bool>(json['isEnabled']),
+      listId: serializer.fromJson<String?>(json['listId']),
     );
   }
   @override
@@ -475,6 +507,7 @@ class CategoryMappingEntity extends DataClass
       'cacheExpiresAt': serializer.toJson<DateTime>(cacheExpiresAt),
       'manualOverride': serializer.toJson<bool>(manualOverride),
       'isEnabled': serializer.toJson<bool>(isEnabled),
+      'listId': serializer.toJson<String?>(listId),
     };
   }
 
@@ -491,6 +524,7 @@ class CategoryMappingEntity extends DataClass
     DateTime? cacheExpiresAt,
     bool? manualOverride,
     bool? isEnabled,
+    Value<String?> listId = const Value.absent(),
   }) => CategoryMappingEntity(
     id: id ?? this.id,
     processName: processName ?? this.processName,
@@ -508,6 +542,7 @@ class CategoryMappingEntity extends DataClass
     cacheExpiresAt: cacheExpiresAt ?? this.cacheExpiresAt,
     manualOverride: manualOverride ?? this.manualOverride,
     isEnabled: isEnabled ?? this.isEnabled,
+    listId: listId.present ? listId.value : this.listId,
   );
   CategoryMappingEntity copyWithCompanion(CategoryMappingsCompanion data) {
     return CategoryMappingEntity(
@@ -541,6 +576,7 @@ class CategoryMappingEntity extends DataClass
           ? data.manualOverride.value
           : this.manualOverride,
       isEnabled: data.isEnabled.present ? data.isEnabled.value : this.isEnabled,
+      listId: data.listId.present ? data.listId.value : this.listId,
     );
   }
 
@@ -558,7 +594,8 @@ class CategoryMappingEntity extends DataClass
           ..write('lastApiFetch: $lastApiFetch, ')
           ..write('cacheExpiresAt: $cacheExpiresAt, ')
           ..write('manualOverride: $manualOverride, ')
-          ..write('isEnabled: $isEnabled')
+          ..write('isEnabled: $isEnabled, ')
+          ..write('listId: $listId')
           ..write(')'))
         .toString();
   }
@@ -577,6 +614,7 @@ class CategoryMappingEntity extends DataClass
     cacheExpiresAt,
     manualOverride,
     isEnabled,
+    listId,
   );
   @override
   bool operator ==(Object other) =>
@@ -593,7 +631,8 @@ class CategoryMappingEntity extends DataClass
           other.lastApiFetch == this.lastApiFetch &&
           other.cacheExpiresAt == this.cacheExpiresAt &&
           other.manualOverride == this.manualOverride &&
-          other.isEnabled == this.isEnabled);
+          other.isEnabled == this.isEnabled &&
+          other.listId == this.listId);
 }
 
 class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
@@ -609,6 +648,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
   final Value<DateTime> cacheExpiresAt;
   final Value<bool> manualOverride;
   final Value<bool> isEnabled;
+  final Value<String?> listId;
   const CategoryMappingsCompanion({
     this.id = const Value.absent(),
     this.processName = const Value.absent(),
@@ -622,6 +662,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     this.cacheExpiresAt = const Value.absent(),
     this.manualOverride = const Value.absent(),
     this.isEnabled = const Value.absent(),
+    this.listId = const Value.absent(),
   });
   CategoryMappingsCompanion.insert({
     this.id = const Value.absent(),
@@ -636,6 +677,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     required DateTime cacheExpiresAt,
     this.manualOverride = const Value.absent(),
     this.isEnabled = const Value.absent(),
+    this.listId = const Value.absent(),
   }) : processName = Value(processName),
        twitchCategoryId = Value(twitchCategoryId),
        twitchCategoryName = Value(twitchCategoryName),
@@ -653,6 +695,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     Expression<DateTime>? cacheExpiresAt,
     Expression<bool>? manualOverride,
     Expression<bool>? isEnabled,
+    Expression<String>? listId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -669,6 +712,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
       if (cacheExpiresAt != null) 'cache_expires_at': cacheExpiresAt,
       if (manualOverride != null) 'manual_override': manualOverride,
       if (isEnabled != null) 'is_enabled': isEnabled,
+      if (listId != null) 'list_id': listId,
     });
   }
 
@@ -685,6 +729,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     Value<DateTime>? cacheExpiresAt,
     Value<bool>? manualOverride,
     Value<bool>? isEnabled,
+    Value<String?>? listId,
   }) {
     return CategoryMappingsCompanion(
       id: id ?? this.id,
@@ -700,6 +745,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
       cacheExpiresAt: cacheExpiresAt ?? this.cacheExpiresAt,
       manualOverride: manualOverride ?? this.manualOverride,
       isEnabled: isEnabled ?? this.isEnabled,
+      listId: listId ?? this.listId,
     );
   }
 
@@ -744,6 +790,9 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     if (isEnabled.present) {
       map['is_enabled'] = Variable<bool>(isEnabled.value);
     }
+    if (listId.present) {
+      map['list_id'] = Variable<String>(listId.value);
+    }
     return map;
   }
 
@@ -761,7 +810,8 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
           ..write('lastApiFetch: $lastApiFetch, ')
           ..write('cacheExpiresAt: $cacheExpiresAt, ')
           ..write('manualOverride: $manualOverride, ')
-          ..write('isEnabled: $isEnabled')
+          ..write('isEnabled: $isEnabled, ')
+          ..write('listId: $listId')
           ..write(')'))
         .toString();
   }
@@ -2699,6 +2749,743 @@ class CommunityMappingsCompanion
   }
 }
 
+class $MappingListsTable extends MappingLists
+    with TableInfo<$MappingListsTable, MappingListEntity> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MappingListsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _sourceTypeMeta = const VerificationMeta(
+    'sourceType',
+  );
+  @override
+  late final GeneratedColumn<String> sourceType = GeneratedColumn<String>(
+    'source_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceUrlMeta = const VerificationMeta(
+    'sourceUrl',
+  );
+  @override
+  late final GeneratedColumn<String> sourceUrl = GeneratedColumn<String>(
+    'source_url',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _submissionHookUrlMeta = const VerificationMeta(
+    'submissionHookUrl',
+  );
+  @override
+  late final GeneratedColumn<String> submissionHookUrl =
+      GeneratedColumn<String>(
+        'submission_hook_url',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _isEnabledMeta = const VerificationMeta(
+    'isEnabled',
+  );
+  @override
+  late final GeneratedColumn<bool> isEnabled = GeneratedColumn<bool>(
+    'is_enabled',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_enabled" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _isReadOnlyMeta = const VerificationMeta(
+    'isReadOnly',
+  );
+  @override
+  late final GeneratedColumn<bool> isReadOnly = GeneratedColumn<bool>(
+    'is_read_only',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_read_only" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _priorityMeta = const VerificationMeta(
+    'priority',
+  );
+  @override
+  late final GeneratedColumn<int> priority = GeneratedColumn<int>(
+    'priority',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(100),
+  );
+  static const VerificationMeta _lastSyncedAtMeta = const VerificationMeta(
+    'lastSyncedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> lastSyncedAt = GeneratedColumn<DateTime>(
+    'last_synced_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    description,
+    sourceType,
+    sourceUrl,
+    submissionHookUrl,
+    isEnabled,
+    isReadOnly,
+    priority,
+    lastSyncedAt,
+    lastSyncError,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'mapping_lists';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MappingListEntity> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('source_type')) {
+      context.handle(
+        _sourceTypeMeta,
+        sourceType.isAcceptableOrUnknown(data['source_type']!, _sourceTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceTypeMeta);
+    }
+    if (data.containsKey('source_url')) {
+      context.handle(
+        _sourceUrlMeta,
+        sourceUrl.isAcceptableOrUnknown(data['source_url']!, _sourceUrlMeta),
+      );
+    }
+    if (data.containsKey('submission_hook_url')) {
+      context.handle(
+        _submissionHookUrlMeta,
+        submissionHookUrl.isAcceptableOrUnknown(
+          data['submission_hook_url']!,
+          _submissionHookUrlMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_enabled')) {
+      context.handle(
+        _isEnabledMeta,
+        isEnabled.isAcceptableOrUnknown(data['is_enabled']!, _isEnabledMeta),
+      );
+    }
+    if (data.containsKey('is_read_only')) {
+      context.handle(
+        _isReadOnlyMeta,
+        isReadOnly.isAcceptableOrUnknown(
+          data['is_read_only']!,
+          _isReadOnlyMeta,
+        ),
+      );
+    }
+    if (data.containsKey('priority')) {
+      context.handle(
+        _priorityMeta,
+        priority.isAcceptableOrUnknown(data['priority']!, _priorityMeta),
+      );
+    }
+    if (data.containsKey('last_synced_at')) {
+      context.handle(
+        _lastSyncedAtMeta,
+        lastSyncedAt.isAcceptableOrUnknown(
+          data['last_synced_at']!,
+          _lastSyncedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MappingListEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MappingListEntity(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      sourceType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_type'],
+      )!,
+      sourceUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_url'],
+      ),
+      submissionHookUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}submission_hook_url'],
+      ),
+      isEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_enabled'],
+      )!,
+      isReadOnly: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_read_only'],
+      )!,
+      priority: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}priority'],
+      )!,
+      lastSyncedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}last_synced_at'],
+      ),
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $MappingListsTable createAlias(String alias) {
+    return $MappingListsTable(attachedDatabase, alias);
+  }
+}
+
+class MappingListEntity extends DataClass
+    implements Insertable<MappingListEntity> {
+  final String id;
+  final String name;
+  final String description;
+  final String sourceType;
+  final String? sourceUrl;
+  final String? submissionHookUrl;
+  final bool isEnabled;
+  final bool isReadOnly;
+  final int priority;
+  final DateTime? lastSyncedAt;
+  final String? lastSyncError;
+  final DateTime createdAt;
+  const MappingListEntity({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.sourceType,
+    this.sourceUrl,
+    this.submissionHookUrl,
+    required this.isEnabled,
+    required this.isReadOnly,
+    required this.priority,
+    this.lastSyncedAt,
+    this.lastSyncError,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    map['description'] = Variable<String>(description);
+    map['source_type'] = Variable<String>(sourceType);
+    if (!nullToAbsent || sourceUrl != null) {
+      map['source_url'] = Variable<String>(sourceUrl);
+    }
+    if (!nullToAbsent || submissionHookUrl != null) {
+      map['submission_hook_url'] = Variable<String>(submissionHookUrl);
+    }
+    map['is_enabled'] = Variable<bool>(isEnabled);
+    map['is_read_only'] = Variable<bool>(isReadOnly);
+    map['priority'] = Variable<int>(priority);
+    if (!nullToAbsent || lastSyncedAt != null) {
+      map['last_synced_at'] = Variable<DateTime>(lastSyncedAt);
+    }
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  MappingListsCompanion toCompanion(bool nullToAbsent) {
+    return MappingListsCompanion(
+      id: Value(id),
+      name: Value(name),
+      description: Value(description),
+      sourceType: Value(sourceType),
+      sourceUrl: sourceUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sourceUrl),
+      submissionHookUrl: submissionHookUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(submissionHookUrl),
+      isEnabled: Value(isEnabled),
+      isReadOnly: Value(isReadOnly),
+      priority: Value(priority),
+      lastSyncedAt: lastSyncedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncedAt),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory MappingListEntity.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MappingListEntity(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String>(json['description']),
+      sourceType: serializer.fromJson<String>(json['sourceType']),
+      sourceUrl: serializer.fromJson<String?>(json['sourceUrl']),
+      submissionHookUrl: serializer.fromJson<String?>(
+        json['submissionHookUrl'],
+      ),
+      isEnabled: serializer.fromJson<bool>(json['isEnabled']),
+      isReadOnly: serializer.fromJson<bool>(json['isReadOnly']),
+      priority: serializer.fromJson<int>(json['priority']),
+      lastSyncedAt: serializer.fromJson<DateTime?>(json['lastSyncedAt']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String>(description),
+      'sourceType': serializer.toJson<String>(sourceType),
+      'sourceUrl': serializer.toJson<String?>(sourceUrl),
+      'submissionHookUrl': serializer.toJson<String?>(submissionHookUrl),
+      'isEnabled': serializer.toJson<bool>(isEnabled),
+      'isReadOnly': serializer.toJson<bool>(isReadOnly),
+      'priority': serializer.toJson<int>(priority),
+      'lastSyncedAt': serializer.toJson<DateTime?>(lastSyncedAt),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  MappingListEntity copyWith({
+    String? id,
+    String? name,
+    String? description,
+    String? sourceType,
+    Value<String?> sourceUrl = const Value.absent(),
+    Value<String?> submissionHookUrl = const Value.absent(),
+    bool? isEnabled,
+    bool? isReadOnly,
+    int? priority,
+    Value<DateTime?> lastSyncedAt = const Value.absent(),
+    Value<String?> lastSyncError = const Value.absent(),
+    DateTime? createdAt,
+  }) => MappingListEntity(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    description: description ?? this.description,
+    sourceType: sourceType ?? this.sourceType,
+    sourceUrl: sourceUrl.present ? sourceUrl.value : this.sourceUrl,
+    submissionHookUrl: submissionHookUrl.present
+        ? submissionHookUrl.value
+        : this.submissionHookUrl,
+    isEnabled: isEnabled ?? this.isEnabled,
+    isReadOnly: isReadOnly ?? this.isReadOnly,
+    priority: priority ?? this.priority,
+    lastSyncedAt: lastSyncedAt.present ? lastSyncedAt.value : this.lastSyncedAt,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  MappingListEntity copyWithCompanion(MappingListsCompanion data) {
+    return MappingListEntity(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      sourceType: data.sourceType.present
+          ? data.sourceType.value
+          : this.sourceType,
+      sourceUrl: data.sourceUrl.present ? data.sourceUrl.value : this.sourceUrl,
+      submissionHookUrl: data.submissionHookUrl.present
+          ? data.submissionHookUrl.value
+          : this.submissionHookUrl,
+      isEnabled: data.isEnabled.present ? data.isEnabled.value : this.isEnabled,
+      isReadOnly: data.isReadOnly.present
+          ? data.isReadOnly.value
+          : this.isReadOnly,
+      priority: data.priority.present ? data.priority.value : this.priority,
+      lastSyncedAt: data.lastSyncedAt.present
+          ? data.lastSyncedAt.value
+          : this.lastSyncedAt,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MappingListEntity(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('sourceType: $sourceType, ')
+          ..write('sourceUrl: $sourceUrl, ')
+          ..write('submissionHookUrl: $submissionHookUrl, ')
+          ..write('isEnabled: $isEnabled, ')
+          ..write('isReadOnly: $isReadOnly, ')
+          ..write('priority: $priority, ')
+          ..write('lastSyncedAt: $lastSyncedAt, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    description,
+    sourceType,
+    sourceUrl,
+    submissionHookUrl,
+    isEnabled,
+    isReadOnly,
+    priority,
+    lastSyncedAt,
+    lastSyncError,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MappingListEntity &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.description == this.description &&
+          other.sourceType == this.sourceType &&
+          other.sourceUrl == this.sourceUrl &&
+          other.submissionHookUrl == this.submissionHookUrl &&
+          other.isEnabled == this.isEnabled &&
+          other.isReadOnly == this.isReadOnly &&
+          other.priority == this.priority &&
+          other.lastSyncedAt == this.lastSyncedAt &&
+          other.lastSyncError == this.lastSyncError &&
+          other.createdAt == this.createdAt);
+}
+
+class MappingListsCompanion extends UpdateCompanion<MappingListEntity> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<String> description;
+  final Value<String> sourceType;
+  final Value<String?> sourceUrl;
+  final Value<String?> submissionHookUrl;
+  final Value<bool> isEnabled;
+  final Value<bool> isReadOnly;
+  final Value<int> priority;
+  final Value<DateTime?> lastSyncedAt;
+  final Value<String?> lastSyncError;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const MappingListsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.sourceType = const Value.absent(),
+    this.sourceUrl = const Value.absent(),
+    this.submissionHookUrl = const Value.absent(),
+    this.isEnabled = const Value.absent(),
+    this.isReadOnly = const Value.absent(),
+    this.priority = const Value.absent(),
+    this.lastSyncedAt = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MappingListsCompanion.insert({
+    required String id,
+    required String name,
+    this.description = const Value.absent(),
+    required String sourceType,
+    this.sourceUrl = const Value.absent(),
+    this.submissionHookUrl = const Value.absent(),
+    this.isEnabled = const Value.absent(),
+    this.isReadOnly = const Value.absent(),
+    this.priority = const Value.absent(),
+    this.lastSyncedAt = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name),
+       sourceType = Value(sourceType);
+  static Insertable<MappingListEntity> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<String>? sourceType,
+    Expression<String>? sourceUrl,
+    Expression<String>? submissionHookUrl,
+    Expression<bool>? isEnabled,
+    Expression<bool>? isReadOnly,
+    Expression<int>? priority,
+    Expression<DateTime>? lastSyncedAt,
+    Expression<String>? lastSyncError,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (sourceType != null) 'source_type': sourceType,
+      if (sourceUrl != null) 'source_url': sourceUrl,
+      if (submissionHookUrl != null) 'submission_hook_url': submissionHookUrl,
+      if (isEnabled != null) 'is_enabled': isEnabled,
+      if (isReadOnly != null) 'is_read_only': isReadOnly,
+      if (priority != null) 'priority': priority,
+      if (lastSyncedAt != null) 'last_synced_at': lastSyncedAt,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MappingListsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<String>? description,
+    Value<String>? sourceType,
+    Value<String?>? sourceUrl,
+    Value<String?>? submissionHookUrl,
+    Value<bool>? isEnabled,
+    Value<bool>? isReadOnly,
+    Value<int>? priority,
+    Value<DateTime?>? lastSyncedAt,
+    Value<String?>? lastSyncError,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return MappingListsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      sourceType: sourceType ?? this.sourceType,
+      sourceUrl: sourceUrl ?? this.sourceUrl,
+      submissionHookUrl: submissionHookUrl ?? this.submissionHookUrl,
+      isEnabled: isEnabled ?? this.isEnabled,
+      isReadOnly: isReadOnly ?? this.isReadOnly,
+      priority: priority ?? this.priority,
+      lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (sourceType.present) {
+      map['source_type'] = Variable<String>(sourceType.value);
+    }
+    if (sourceUrl.present) {
+      map['source_url'] = Variable<String>(sourceUrl.value);
+    }
+    if (submissionHookUrl.present) {
+      map['submission_hook_url'] = Variable<String>(submissionHookUrl.value);
+    }
+    if (isEnabled.present) {
+      map['is_enabled'] = Variable<bool>(isEnabled.value);
+    }
+    if (isReadOnly.present) {
+      map['is_read_only'] = Variable<bool>(isReadOnly.value);
+    }
+    if (priority.present) {
+      map['priority'] = Variable<int>(priority.value);
+    }
+    if (lastSyncedAt.present) {
+      map['last_synced_at'] = Variable<DateTime>(lastSyncedAt.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MappingListsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('sourceType: $sourceType, ')
+          ..write('sourceUrl: $sourceUrl, ')
+          ..write('submissionHookUrl: $submissionHookUrl, ')
+          ..write('isEnabled: $isEnabled, ')
+          ..write('isReadOnly: $isReadOnly, ')
+          ..write('priority: $priority, ')
+          ..write('lastSyncedAt: $lastSyncedAt, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -2712,6 +3499,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $TopGamesCacheTable topGamesCache = $TopGamesCacheTable(this);
   late final $CommunityMappingsTable communityMappings =
       $CommunityMappingsTable(this);
+  late final $MappingListsTable mappingLists = $MappingListsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -2722,6 +3510,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     unknownProcesses,
     topGamesCache,
     communityMappings,
+    mappingLists,
   ];
 }
 
@@ -2739,6 +3528,7 @@ typedef $$CategoryMappingsTableCreateCompanionBuilder =
       required DateTime cacheExpiresAt,
       Value<bool> manualOverride,
       Value<bool> isEnabled,
+      Value<String?> listId,
     });
 typedef $$CategoryMappingsTableUpdateCompanionBuilder =
     CategoryMappingsCompanion Function({
@@ -2754,6 +3544,7 @@ typedef $$CategoryMappingsTableUpdateCompanionBuilder =
       Value<DateTime> cacheExpiresAt,
       Value<bool> manualOverride,
       Value<bool> isEnabled,
+      Value<String?> listId,
     });
 
 class $$CategoryMappingsTableFilterComposer
@@ -2822,6 +3613,11 @@ class $$CategoryMappingsTableFilterComposer
 
   ColumnFilters<bool> get isEnabled => $composableBuilder(
     column: $table.isEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get listId => $composableBuilder(
+    column: $table.listId,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -2894,6 +3690,11 @@ class $$CategoryMappingsTableOrderingComposer
     column: $table.isEnabled,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get listId => $composableBuilder(
+    column: $table.listId,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$CategoryMappingsTableAnnotationComposer
@@ -2958,6 +3759,9 @@ class $$CategoryMappingsTableAnnotationComposer
 
   GeneratedColumn<bool> get isEnabled =>
       $composableBuilder(column: $table.isEnabled, builder: (column) => column);
+
+  GeneratedColumn<String> get listId =>
+      $composableBuilder(column: $table.listId, builder: (column) => column);
 }
 
 class $$CategoryMappingsTableTableManager
@@ -3009,6 +3813,7 @@ class $$CategoryMappingsTableTableManager
                 Value<DateTime> cacheExpiresAt = const Value.absent(),
                 Value<bool> manualOverride = const Value.absent(),
                 Value<bool> isEnabled = const Value.absent(),
+                Value<String?> listId = const Value.absent(),
               }) => CategoryMappingsCompanion(
                 id: id,
                 processName: processName,
@@ -3022,6 +3827,7 @@ class $$CategoryMappingsTableTableManager
                 cacheExpiresAt: cacheExpiresAt,
                 manualOverride: manualOverride,
                 isEnabled: isEnabled,
+                listId: listId,
               ),
           createCompanionCallback:
               ({
@@ -3037,6 +3843,7 @@ class $$CategoryMappingsTableTableManager
                 required DateTime cacheExpiresAt,
                 Value<bool> manualOverride = const Value.absent(),
                 Value<bool> isEnabled = const Value.absent(),
+                Value<String?> listId = const Value.absent(),
               }) => CategoryMappingsCompanion.insert(
                 id: id,
                 processName: processName,
@@ -3050,6 +3857,7 @@ class $$CategoryMappingsTableTableManager
                 cacheExpiresAt: cacheExpiresAt,
                 manualOverride: manualOverride,
                 isEnabled: isEnabled,
+                listId: listId,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
@@ -4073,6 +4881,355 @@ typedef $$CommunityMappingsTableProcessedTableManager =
       CommunityMappingEntity,
       PrefetchHooks Function()
     >;
+typedef $$MappingListsTableCreateCompanionBuilder =
+    MappingListsCompanion Function({
+      required String id,
+      required String name,
+      Value<String> description,
+      required String sourceType,
+      Value<String?> sourceUrl,
+      Value<String?> submissionHookUrl,
+      Value<bool> isEnabled,
+      Value<bool> isReadOnly,
+      Value<int> priority,
+      Value<DateTime?> lastSyncedAt,
+      Value<String?> lastSyncError,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+typedef $$MappingListsTableUpdateCompanionBuilder =
+    MappingListsCompanion Function({
+      Value<String> id,
+      Value<String> name,
+      Value<String> description,
+      Value<String> sourceType,
+      Value<String?> sourceUrl,
+      Value<String?> submissionHookUrl,
+      Value<bool> isEnabled,
+      Value<bool> isReadOnly,
+      Value<int> priority,
+      Value<DateTime?> lastSyncedAt,
+      Value<String?> lastSyncError,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+class $$MappingListsTableFilterComposer
+    extends Composer<_$AppDatabase, $MappingListsTable> {
+  $$MappingListsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceType => $composableBuilder(
+    column: $table.sourceType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceUrl => $composableBuilder(
+    column: $table.sourceUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get submissionHookUrl => $composableBuilder(
+    column: $table.submissionHookUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isEnabled => $composableBuilder(
+    column: $table.isEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isReadOnly => $composableBuilder(
+    column: $table.isReadOnly,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get priority => $composableBuilder(
+    column: $table.priority,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get lastSyncedAt => $composableBuilder(
+    column: $table.lastSyncedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MappingListsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MappingListsTable> {
+  $$MappingListsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceType => $composableBuilder(
+    column: $table.sourceType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceUrl => $composableBuilder(
+    column: $table.sourceUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get submissionHookUrl => $composableBuilder(
+    column: $table.submissionHookUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isEnabled => $composableBuilder(
+    column: $table.isEnabled,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isReadOnly => $composableBuilder(
+    column: $table.isReadOnly,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get priority => $composableBuilder(
+    column: $table.priority,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get lastSyncedAt => $composableBuilder(
+    column: $table.lastSyncedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MappingListsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MappingListsTable> {
+  $$MappingListsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sourceType => $composableBuilder(
+    column: $table.sourceType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sourceUrl =>
+      $composableBuilder(column: $table.sourceUrl, builder: (column) => column);
+
+  GeneratedColumn<String> get submissionHookUrl => $composableBuilder(
+    column: $table.submissionHookUrl,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isEnabled =>
+      $composableBuilder(column: $table.isEnabled, builder: (column) => column);
+
+  GeneratedColumn<bool> get isReadOnly => $composableBuilder(
+    column: $table.isReadOnly,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get priority =>
+      $composableBuilder(column: $table.priority, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastSyncedAt => $composableBuilder(
+    column: $table.lastSyncedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$MappingListsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MappingListsTable,
+          MappingListEntity,
+          $$MappingListsTableFilterComposer,
+          $$MappingListsTableOrderingComposer,
+          $$MappingListsTableAnnotationComposer,
+          $$MappingListsTableCreateCompanionBuilder,
+          $$MappingListsTableUpdateCompanionBuilder,
+          (
+            MappingListEntity,
+            BaseReferences<
+              _$AppDatabase,
+              $MappingListsTable,
+              MappingListEntity
+            >,
+          ),
+          MappingListEntity,
+          PrefetchHooks Function()
+        > {
+  $$MappingListsTableTableManager(_$AppDatabase db, $MappingListsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MappingListsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MappingListsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MappingListsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<String> sourceType = const Value.absent(),
+                Value<String?> sourceUrl = const Value.absent(),
+                Value<String?> submissionHookUrl = const Value.absent(),
+                Value<bool> isEnabled = const Value.absent(),
+                Value<bool> isReadOnly = const Value.absent(),
+                Value<int> priority = const Value.absent(),
+                Value<DateTime?> lastSyncedAt = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MappingListsCompanion(
+                id: id,
+                name: name,
+                description: description,
+                sourceType: sourceType,
+                sourceUrl: sourceUrl,
+                submissionHookUrl: submissionHookUrl,
+                isEnabled: isEnabled,
+                isReadOnly: isReadOnly,
+                priority: priority,
+                lastSyncedAt: lastSyncedAt,
+                lastSyncError: lastSyncError,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String name,
+                Value<String> description = const Value.absent(),
+                required String sourceType,
+                Value<String?> sourceUrl = const Value.absent(),
+                Value<String?> submissionHookUrl = const Value.absent(),
+                Value<bool> isEnabled = const Value.absent(),
+                Value<bool> isReadOnly = const Value.absent(),
+                Value<int> priority = const Value.absent(),
+                Value<DateTime?> lastSyncedAt = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MappingListsCompanion.insert(
+                id: id,
+                name: name,
+                description: description,
+                sourceType: sourceType,
+                sourceUrl: sourceUrl,
+                submissionHookUrl: submissionHookUrl,
+                isEnabled: isEnabled,
+                isReadOnly: isReadOnly,
+                priority: priority,
+                lastSyncedAt: lastSyncedAt,
+                lastSyncError: lastSyncError,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MappingListsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MappingListsTable,
+      MappingListEntity,
+      $$MappingListsTableFilterComposer,
+      $$MappingListsTableOrderingComposer,
+      $$MappingListsTableAnnotationComposer,
+      $$MappingListsTableCreateCompanionBuilder,
+      $$MappingListsTableUpdateCompanionBuilder,
+      (
+        MappingListEntity,
+        BaseReferences<_$AppDatabase, $MappingListsTable, MappingListEntity>,
+      ),
+      MappingListEntity,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -4087,4 +5244,6 @@ class $AppDatabaseManager {
       $$TopGamesCacheTableTableManager(_db, _db.topGamesCache);
   $$CommunityMappingsTableTableManager get communityMappings =>
       $$CommunityMappingsTableTableManager(_db, _db.communityMappings);
+  $$MappingListsTableTableManager get mappingLists =>
+      $$MappingListsTableTableManager(_db, _db.mappingLists);
 }

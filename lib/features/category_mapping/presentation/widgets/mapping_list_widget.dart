@@ -16,6 +16,7 @@ class MappingListWidget extends StatefulWidget {
   final Function(List<CategoryMapping> mappings)? onBulkExport;
   final Function(List<int> ids, bool enabled)? onBulkToggleEnabled;
   final Function(List<CategoryMapping> mappings)? onBulkRestore;
+  final Function(String? listId)? onSourceTap;
 
   const MappingListWidget({
     super.key,
@@ -27,6 +28,7 @@ class MappingListWidget extends StatefulWidget {
     this.onBulkExport,
     this.onBulkToggleEnabled,
     this.onBulkRestore,
+    this.onSourceTap,
   });
 
   @override
@@ -205,14 +207,14 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                   headingRowHeight: 48,
                   dataRowMinHeight: 52,
                   dataRowMaxHeight: 64,
-                  columnSpacing: 24,
+                  columnSpacing: 16,
                   horizontalMargin: TKitSpacing.md,
+                  checkboxHorizontalMargin: 8,
                   showCheckboxColumn: true,
                   columns: [
                     DataColumn(label: Text(l10n.categoryMappingListColumnProcessName)),
                     DataColumn(label: Text(l10n.categoryMappingListColumnCategory)),
-                    DataColumn(label: Text(l10n.categoryMappingListColumnLastUsed)),
-                    DataColumn(label: Text(l10n.categoryMappingListColumnType)),
+                    const DataColumn(label: Text('Source')),
                     const DataColumn(label: Text('Enabled')),
                     DataColumn(label: Text(l10n.categoryMappingListColumnActions)),
                   ],
@@ -254,85 +256,90 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                           ),
                         ),
                         DataCell(
-                          Text(
-                            mapping.lastUsedAt != null
-                                ? _formatDate(context, mapping.lastUsedAt!)
-                                : l10n.categoryMappingListNever,
-                            style: TKitTextStyles.bodySmall.copyWith(
-                              fontSize: 12,
-                              color: mapping.lastUsedAt != null
-                                  ? TKitColors.textSecondary
-                                  : TKitColors.textMuted,
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: TKitSpacing.sm,
-                              vertical: TKitSpacing.xs,
-                            ),
-                            decoration: BoxDecoration(
-                              color: mapping.manualOverride
-                                  ? TKitColors.accent.withValues(alpha: 0.2)
-                                  : TKitColors.surfaceVariant,
-                              border: Border.all(
-                                color: mapping.manualOverride
-                                    ? TKitColors.accent
-                                    : TKitColors.border,
-                              ),
-                            ),
-                            child: Text(
-                              mapping.manualOverride ? l10n.categoryMappingListTypeUser : l10n.categoryMappingListTypePreset,
-                              style: TKitTextStyles.caption.copyWith(
-                                color: mapping.manualOverride
-                                    ? TKitColors.accent
-                                    : TKitColors.textMuted,
-                                letterSpacing: 1.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          Checkbox(
-                            value: mapping.isEnabled,
-                            onChanged: widget.onToggleEnabled != null
-                                ? (_) => widget.onToggleEnabled!(mapping)
+                          InkWell(
+                            onTap: widget.onSourceTap != null
+                                ? () => widget.onSourceTap!(mapping.listId)
                                 : null,
-                            activeColor: TKitColors.accent,
-                            side: const BorderSide(color: TKitColors.border),
+                            borderRadius: BorderRadius.circular(2),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: TKitSpacing.sm,
+                                vertical: TKitSpacing.xs,
+                              ),
+                              decoration: BoxDecoration(
+                                color: TKitColors.info.withValues(alpha: 0.1),
+                                border: Border.all(
+                                  color: TKitColors.info.withValues(alpha: 0.3),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    mapping.sourceListName ?? 'Unknown',
+                                    style: TKitTextStyles.caption.copyWith(
+                                      color: TKitColors.info,
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                  if (widget.onSourceTap != null) ...[
+                                    const HSpace.xs(),
+                                    Icon(
+                                      Icons.open_in_new,
+                                      size: 10,
+                                      color: TKitColors.info,
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                         DataCell(
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit, size: 16),
-                                color: TKitColors.textSecondary,
-                                hoverColor: TKitColors.accent.withValues(alpha: 0.2),
-                                onPressed: () => widget.onEdit(mapping),
-                                tooltip: l10n.categoryMappingListEditTooltip,
-                                padding: const EdgeInsets.all(TKitSpacing.sm),
-                                constraints: const BoxConstraints(
-                                  minWidth: 32,
-                                  minHeight: 32,
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete, size: 16),
-                                color: TKitColors.textSecondary,
-                                hoverColor: TKitColors.error.withValues(alpha: 0.2),
-                                onPressed: () => widget.onDelete(mapping.id!),
-                                tooltip: l10n.categoryMappingListDeleteTooltip,
-                                padding: const EdgeInsets.all(TKitSpacing.sm),
-                                constraints: const BoxConstraints(
-                                  minWidth: 32,
-                                  minHeight: 32,
-                                ),
-                              ),
-                            ],
+                          SizedBox(
+                            width: 40,
+                            child: Checkbox(
+                              value: mapping.isEnabled,
+                              onChanged: widget.onToggleEnabled != null
+                                  ? (_) => widget.onToggleEnabled!(mapping)
+                                  : null,
+                              activeColor: TKitColors.accent,
+                              side: const BorderSide(color: TKitColors.border),
+                            ),
                           ),
+                        ),
+                        DataCell(
+                          mapping.sourceListIsReadOnly
+                              ? const SizedBox.shrink()
+                              : Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.edit, size: 16),
+                                      color: TKitColors.textSecondary,
+                                      hoverColor: TKitColors.accent.withValues(alpha: 0.2),
+                                      onPressed: () => widget.onEdit(mapping),
+                                      tooltip: l10n.categoryMappingListEditTooltip,
+                                      padding: const EdgeInsets.all(TKitSpacing.sm),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 32,
+                                        minHeight: 32,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.delete, size: 16),
+                                      color: TKitColors.textSecondary,
+                                      hoverColor: TKitColors.error.withValues(alpha: 0.2),
+                                      onPressed: () => widget.onDelete(mapping.id!),
+                                      tooltip: l10n.categoryMappingListDeleteTooltip,
+                                      padding: const EdgeInsets.all(TKitSpacing.sm),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 32,
+                                        minHeight: 32,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                         ),
                       ],
                     );
@@ -606,41 +613,5 @@ class _MappingListWidgetState extends State<MappingListWidget> {
         ],
       ),
     );
-  }
-
-  String _formatDate(BuildContext context, DateTime date) {
-    final l10n = AppLocalizations.of(context)!;
-    final now = DateTime.now();
-    final difference = now.difference(date);
-
-    if (difference.inDays == 0) {
-      if (difference.inHours == 0) {
-        if (difference.inMinutes == 0) {
-          return l10n.categoryMappingListJustNow;
-        }
-        return l10n.categoryMappingListMinutesAgo(difference.inMinutes);
-      }
-      return l10n.categoryMappingListHoursAgo(difference.inHours);
-    } else if (difference.inDays < 7) {
-      return l10n.categoryMappingListDaysAgo(difference.inDays);
-    } else {
-      // Format as MMM d, yyyy manually
-      const months = [
-        '',
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ];
-      return '${months[date.month]} ${date.day}, ${date.year}';
-    }
   }
 }

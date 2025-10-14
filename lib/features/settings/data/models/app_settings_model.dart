@@ -14,6 +14,14 @@ class AppSettingsModel extends AppSettings {
   @override
   final bool invertFooterHeader;
 
+  @JsonKey(defaultValue: true)
+  @override
+  final bool autoSyncMappingsOnStart;
+
+  @JsonKey(defaultValue: 6)
+  @override
+  final int mappingsSyncIntervalHours;
+
   const AppSettingsModel({
     required super.scanIntervalSeconds,
     required super.debounceSeconds,
@@ -31,7 +39,13 @@ class AppSettingsModel extends AppSettings {
     required super.windowControlsPosition,
     required super.useFramelessWindow,
     required this.invertFooterHeader,
-  }) : super(invertFooterHeader: invertFooterHeader);
+    required this.autoSyncMappingsOnStart,
+    required this.mappingsSyncIntervalHours,
+  }) : super(
+    invertFooterHeader: invertFooterHeader,
+    autoSyncMappingsOnStart: autoSyncMappingsOnStart,
+    mappingsSyncIntervalHours: mappingsSyncIntervalHours,
+  );
 
   /// Create from domain entity
   factory AppSettingsModel.fromEntity(AppSettings settings) {
@@ -52,6 +66,8 @@ class AppSettingsModel extends AppSettings {
       windowControlsPosition: settings.windowControlsPosition,
       useFramelessWindow: settings.useFramelessWindow,
       invertFooterHeader: settings.invertFooterHeader,
+      autoSyncMappingsOnStart: settings.autoSyncMappingsOnStart,
+      mappingsSyncIntervalHours: settings.mappingsSyncIntervalHours,
     );
   }
 
@@ -81,6 +97,8 @@ class AppSettingsModel extends AppSettings {
       windowControlsPosition: windowControlsPosition,
       useFramelessWindow: useFramelessWindow,
       invertFooterHeader: invertFooterHeader,
+      autoSyncMappingsOnStart: autoSyncMappingsOnStart,
+      mappingsSyncIntervalHours: mappingsSyncIntervalHours,
     );
   }
 

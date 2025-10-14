@@ -10,21 +10,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### TKit
 
 #### Added
-- Exclude launchers from auto-switcher (e.g., Steam, Epic Games Launcher)
-- Community Programs mappings tab
-- Checkbox in mappings to do many actions at once (enable/disable, delete, invert, export)
-- Export mappings to JSON file (based on toggled items)
-- Search bar in mappings
+- Checkboxes in mappings to perform bulk actions (enable/disable, delete, invert, export)
+- Export selected mappings to JSON file
+- Search bar in mappings tab
+- Ability to swap header with footer
+- Support for custom listings with only read or write access and hooks for adding new items
+- Clickable Source label in mappings table that opens List Management dialog
+- List name display in Source column (populated from mapping lists)
+- New Mappings tab in Settings with auto-sync configuration
+- Auto-sync mappings on app start setting
+- Configurable auto-sync interval (1-168 hours)
 
 #### Fixed
-- Twitch error when adding a process to ignore list
+- Twitch error when adding a process to the ignore list
+- Source column now shows actual list name instead of "Unknown"
+- JSON parsing error when syncing mapping lists (manual decode for String responses)
+- Added comprehensive error logging to all datasource layers with stack traces
 
 #### Changed
-- Changelog shows diffs between current and latest release
+- Changelog now displays differences between current and latest release
 - Application icon updated
-- Removed Auto Switcher, Category Mappings, and Settings from tray menu
-- Removed web, android, ios platforms from the project
+- Removed Auto Switcher, Category Mappings, and Settings from the tray menu
+- Removed web, Android, and iOS platforms from the project
 - Renamed "Community Mappings" to "Community Games"
+- Source column styled as clickable badge with blue theme
+- Official lists now appear at the top of list management dialog
+- Enhanced time formatting: shows "never" for null values and displays days + hours (e.g., "1d 5h ago") for times >= 24 hours
+- Auto-sync interval slider now supports 0 (Never) and displays formatted values (e.g., "1d", "1d 5h")
 
 ## [0.0.1-dev.5] - 2025-10-13
 

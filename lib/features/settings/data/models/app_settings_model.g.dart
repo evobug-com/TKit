@@ -30,6 +30,9 @@ AppSettingsModel _$AppSettingsModelFromJson(Map<String, dynamic> json) =>
       ),
       useFramelessWindow: json['useFramelessWindow'] as bool,
       invertFooterHeader: json['invertFooterHeader'] as bool? ?? false,
+      autoSyncMappingsOnStart: json['autoSyncMappingsOnStart'] as bool? ?? true,
+      mappingsSyncIntervalHours:
+          (json['mappingsSyncIntervalHours'] as num?)?.toInt() ?? 6,
     );
 
 Map<String, dynamic> _$AppSettingsModelToJson(AppSettingsModel instance) =>
@@ -51,6 +54,8 @@ Map<String, dynamic> _$AppSettingsModelToJson(AppSettingsModel instance) =>
           _$WindowControlsPositionEnumMap[instance.windowControlsPosition]!,
       'useFramelessWindow': instance.useFramelessWindow,
       'invertFooterHeader': instance.invertFooterHeader,
+      'autoSyncMappingsOnStart': instance.autoSyncMappingsOnStart,
+      'mappingsSyncIntervalHours': instance.mappingsSyncIntervalHours,
     };
 
 const _$FallbackBehaviorEnumMap = {

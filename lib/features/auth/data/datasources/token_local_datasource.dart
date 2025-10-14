@@ -23,8 +23,8 @@ class TokenLocalDataSource {
       final jsonString = jsonEncode(token.toJson());
       await _secureStorage.write(key: _tokenKey, value: jsonString);
       _logger.debug('Token saved to secure storage');
-    } catch (e) {
-      _logger.error('Failed to save token', e);
+    } catch (e, stackTrace) {
+      _logger.error('Failed to save token', e, stackTrace);
       throw CacheException(
         message: 'Failed to save token to secure storage',
         originalError: e,
@@ -46,8 +46,8 @@ class TokenLocalDataSource {
       final token = TwitchTokenModel.fromJson(json);
       _logger.debug('Token retrieved from secure storage');
       return token;
-    } catch (e) {
-      _logger.error('Failed to get token', e);
+    } catch (e, stackTrace) {
+      _logger.error('Failed to get token', e, stackTrace);
       throw CacheException(
         message: 'Failed to retrieve token from secure storage',
         originalError: e,
@@ -60,8 +60,8 @@ class TokenLocalDataSource {
     try {
       await _secureStorage.delete(key: _tokenKey);
       _logger.debug('Token deleted from secure storage');
-    } catch (e) {
-      _logger.error('Failed to delete token', e);
+    } catch (e, stackTrace) {
+      _logger.error('Failed to delete token', e, stackTrace);
       throw CacheException(
         message: 'Failed to delete token from secure storage',
         originalError: e,
@@ -76,8 +76,8 @@ class TokenLocalDataSource {
       final exists = jsonString != null;
       _logger.debug('Token exists: $exists');
       return exists;
-    } catch (e) {
-      _logger.error('Failed to check token existence', e);
+    } catch (e, stackTrace) {
+      _logger.error('Failed to check token existence', e, stackTrace);
       throw CacheException(
         message: 'Failed to check token existence',
         originalError: e,
@@ -91,8 +91,8 @@ class TokenLocalDataSource {
       final jsonString = jsonEncode(user.toJson());
       await _secureStorage.write(key: _userKey, value: jsonString);
       _logger.debug('User info saved to secure storage');
-    } catch (e) {
-      _logger.error('Failed to save user info', e);
+    } catch (e, stackTrace) {
+      _logger.error('Failed to save user info', e, stackTrace);
       throw CacheException(
         message: 'Failed to save user info to secure storage',
         originalError: e,
@@ -114,8 +114,8 @@ class TokenLocalDataSource {
       final user = TwitchUserModel.fromJson(json);
       _logger.debug('User info retrieved from secure storage');
       return user;
-    } catch (e) {
-      _logger.error('Failed to get user info', e);
+    } catch (e, stackTrace) {
+      _logger.error('Failed to get user info', e, stackTrace);
       throw CacheException(
         message: 'Failed to retrieve user info from secure storage',
         originalError: e,
@@ -128,8 +128,8 @@ class TokenLocalDataSource {
     try {
       await _secureStorage.delete(key: _userKey);
       _logger.debug('User info deleted from secure storage');
-    } catch (e) {
-      _logger.error('Failed to delete user info', e);
+    } catch (e, stackTrace) {
+      _logger.error('Failed to delete user info', e, stackTrace);
       throw CacheException(
         message: 'Failed to delete user info from secure storage',
         originalError: e,
@@ -143,8 +143,8 @@ class TokenLocalDataSource {
       await deleteToken();
       await deleteUser();
       _logger.info('All authentication data cleared');
-    } catch (e) {
-      _logger.error('Failed to clear authentication data', e);
+    } catch (e, stackTrace) {
+      _logger.error('Failed to clear authentication data', e, stackTrace);
       throw CacheException(
         message: 'Failed to clear authentication data',
         originalError: e,

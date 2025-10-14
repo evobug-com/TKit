@@ -80,6 +80,7 @@ class CommunityMappingsRepositoryImpl implements ICommunityMappingsRepository {
     required String twitchCategoryName,
     String? windowTitle,
     String? normalizedInstallPath,
+    String? submissionUrl,
   }) async {
     try {
       logger.info('Checking for duplicate mapping: $processName');
@@ -126,6 +127,7 @@ class CommunityMappingsRepositoryImpl implements ICommunityMappingsRepository {
         normalizedInstallPath: normalizedInstallPath,
         isExistingMapping: isExistingMapping,
         existingVerificationCount: verificationCount,
+        submissionUrl: submissionUrl,
       );
 
       return Right(result);

@@ -36,6 +36,7 @@ class MappingSubmissionDataSource {
     String? normalizedInstallPath,
     bool isExistingMapping = false,
     int? existingVerificationCount,
+    String? submissionUrl,
   }) async {
     // Check if community API is enabled
     if (!AppConfig.useCommunityApi) {
@@ -80,8 +81,10 @@ class MappingSubmissionDataSource {
           : ['mapping-submission', 'auto-generated'];
 
       // Call Cloudflare Worker API instead of GitHub directly
+      // Use custom submission URL if provided, otherwise use default
+      final apiUrl = submissionUrl ?? AppConfig.communityApiUrl;
       final response = await dio.post(
-        AppConfig.communityApiUrl,
+        apiUrl,
         data: json.encode({
           'title': issueTitle,
           'body': issueBody,
@@ -121,8 +124,8 @@ class MappingSubmissionDataSource {
           technicalDetails: 'HTTP ${response.statusCode}',
         );
       }
-    } on DioException catch (e) {
-      logger.error('Network error submitting mapping', e);
+    } on DioException catch (e, stackTrace) {
+      logger.error('Network error submitting mapping', e, stackTrace);
 
       // Handle specific HTTP error codes
       if (e.response?.statusCode == 429 || e.response?.statusCode == 403) {
@@ -161,8 +164,8 @@ class MappingSubmissionDataSource {
         originalError: e,
         technicalDetails: 'Network error: ${e.message}',
       );
-    } catch (e) {
-      logger.error('Unexpected error submitting mapping', e);
+    } catch (e, stackTrace) {
+      logger.error('Unexpected error submitting mapping', e, stackTrace);
       throw ServerException(
         message: 'Unable to submit mapping. Please try again later.',
         code: 'UNKNOWN',
@@ -314,7 +317,7 @@ class MappingSubmissionDataSource {
         options: Options(receiveTimeout: NetworkConfig.quickTimeout),
       );
       return response.statusCode == 200 || response.statusCode == 204;
-    } catch (e) {
+    } catch (e, stackTrace) {
       logger.warning('Community API availability check failed', e);
       return false;
     }

@@ -140,23 +140,23 @@ class CommunitySyncDataSource {
       logger.debug('Fetched ${mappings.length} $type');
 
       return data;
-    } on DioException catch (e) {
-      logger.error('Network error fetching community mappings', e);
+    } on DioException catch (e, stackTrace) {
+      logger.error('Network error fetching community mappings', e, stackTrace);
       throw NetworkException(
         message: 'Unable to download community mappings. Please check your internet connection.',
         originalError: e,
         technicalDetails: 'Network error: ${e.message}',
       );
-    } on FormatException catch (e) {
-      logger.error('JSON parse error', e);
+    } on FormatException catch (e, stackTrace) {
+      logger.error('JSON parse error', e, stackTrace);
       throw ServerException(
         message: 'Community mappings data is corrupted. This will be fixed in the next update.',
         code: 'PARSE_ERROR',
         originalError: e,
         technicalDetails: 'JSON parse error: ${e.message}',
       );
-    } catch (e) {
-      logger.error('Unexpected error fetching mappings', e);
+    } catch (e, stackTrace) {
+      logger.error('Unexpected error fetching mappings', e, stackTrace);
       throw ServerException(
         message: 'Unable to fetch community mappings. Please try again later.',
         code: 'UNKNOWN',

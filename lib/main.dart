@@ -54,6 +54,16 @@ import 'package:tkit/features/category_mapping/domain/usecases/save_mapping_usec
 import 'package:tkit/features/category_mapping/domain/usecases/update_last_used_usecase.dart';
 import 'package:tkit/features/category_mapping/presentation/providers/category_mapping_provider.dart';
 import 'package:tkit/features/category_mapping/presentation/dialogs/unknown_game_dialog.dart';
+import 'package:tkit/features/mapping_lists/data/datasources/mapping_list_local_datasource.dart';
+import 'package:tkit/features/mapping_lists/data/datasources/mapping_list_sync_datasource.dart';
+import 'package:tkit/features/mapping_lists/data/repositories/mapping_list_repository_impl.dart';
+import 'package:tkit/features/mapping_lists/domain/entities/mapping_list.dart';
+import 'package:tkit/features/mapping_lists/domain/repositories/i_mapping_list_repository.dart';
+import 'package:tkit/features/mapping_lists/domain/usecases/get_all_lists_usecase.dart';
+import 'package:tkit/features/mapping_lists/domain/usecases/sync_list_usecase.dart';
+import 'package:tkit/features/mapping_lists/domain/usecases/import_list_from_url_usecase.dart';
+import 'package:tkit/features/mapping_lists/domain/usecases/toggle_list_enabled_usecase.dart';
+import 'package:tkit/features/mapping_lists/presentation/providers/mapping_list_provider.dart';
 import 'package:tkit/features/community_mappings/data/datasources/community_sync_datasource.dart';
 import 'package:tkit/features/community_mappings/data/datasources/mapping_submission_datasource.dart';
 import 'package:tkit/features/community_mappings/data/repositories/community_mappings_repository_impl.dart';
@@ -189,6 +199,10 @@ void main() async {
       logger: logger,
     );
 
+    // Mapping list datasources
+    final mappingListLocalDataSource = MappingListLocalDataSource(database);
+    final mappingListSyncDataSource = MappingListSyncDataSource(authDio);
+
     // Process detection datasource
     final processDetectionPlatformDataSource =
         ProcessDetectionPlatformDataSource(platformChannel, logger);
@@ -224,6 +238,13 @@ void main() async {
       categoryMappingLocalDataSource,
       memoryCache,
       communityMappingsRepository: communityMappingsRepository,
+    );
+
+    // Mapping list repository
+    final mappingListRepository = MappingListRepositoryImpl(
+      mappingListLocalDataSource,
+      mappingListSyncDataSource,
+      database,
     );
 
     final processDetectionRepository = ProcessDetectionRepositoryImpl(
@@ -375,6 +396,12 @@ void main() async {
       communityMappingsRepository,
     );
 
+    // Mapping list use cases
+    final getAllListsUseCase = GetAllListsUseCase(mappingListRepository);
+    final syncListUseCase = SyncListUseCase(mappingListRepository);
+    final importListFromUrlUseCase = ImportListFromUrlUseCase(mappingListRepository);
+    final toggleListEnabledUseCase = ToggleListEnabledUseCase(mappingListRepository);
+
     // Process detection use cases
     final getFocusedProcessUseCase = GetFocusedProcessUseCase(
       processDetectionRepository,
@@ -453,6 +480,13 @@ void main() async {
       findMappingUseCase: findMappingUseCase,
       saveMappingUseCase: saveMappingUseCase,
       deleteMappingUseCase: deleteMappingUseCase,
+    );
+
+    final mappingListProvider = MappingListProvider(
+      getAllListsUseCase: getAllListsUseCase,
+      syncListUseCase: syncListUseCase,
+      importListFromUrlUseCase: importListFromUrlUseCase,
+      toggleListEnabledUseCase: toggleListEnabledUseCase,
     );
 
     final processDetectionProvider = ProcessDetectionProvider(
@@ -664,6 +698,9 @@ void main() async {
           Provider<ICategoryMappingRepository>.value(
             value: categoryMappingRepository,
           ),
+          Provider<IMappingListRepository>.value(
+            value: mappingListRepository,
+          ),
           Provider<IProcessDetectionRepository>.value(
             value: processDetectionRepository,
           ),
@@ -700,6 +737,10 @@ void main() async {
             value: syncCommunityMappingsUseCase,
           ),
           Provider<SubmitMappingUseCase>.value(value: submitMappingUseCase),
+          Provider<GetAllListsUseCase>.value(value: getAllListsUseCase),
+          Provider<SyncListUseCase>.value(value: syncListUseCase),
+          Provider<ImportListFromUrlUseCase>.value(value: importListFromUrlUseCase),
+          Provider<ToggleListEnabledUseCase>.value(value: toggleListEnabledUseCase),
           Provider<GetFocusedProcessUseCase>.value(
             value: getFocusedProcessUseCase,
           ),
@@ -742,6 +783,9 @@ void main() async {
           ),
           ChangeNotifierProvider<CategoryMappingProvider>.value(
             value: categoryMappingProvider,
+          ),
+          ChangeNotifierProvider<MappingListProvider>.value(
+            value: mappingListProvider,
           ),
           ChangeNotifierProvider<ProcessDetectionProvider>.value(
             value: processDetectionProvider,
@@ -933,6 +977,10 @@ class _TKitAppState extends State<TKitApp> {
         context,
         listen: false,
       );
+      final mappingListRepository = Provider.of<IMappingListRepository>(
+        context,
+        listen: false,
+      );
       final logger = Provider.of<AppLogger>(context, listen: false);
       final windowService = Provider.of<WindowService>(context, listen: false);
 
@@ -979,12 +1027,29 @@ class _TKitAppState extends State<TKitApp> {
                 // Normalize process name: remove .exe extension for cross-platform compatibility
                 final normalizedProcessName = processName.toLowerCase().replaceAll('.exe', '');
 
+                // Get submission URL from official list
+                String? submissionUrl;
+                final listsResult = await mappingListRepository.getAllLists();
+                listsResult.fold(
+                  (failure) => logger.warning('Failed to get lists for submission: ${failure.message}'),
+                  (lists) {
+                    // Find official list's submission hook URL
+                    final officialList = lists.firstWhere(
+                      (list) => list.sourceType == MappingListSourceType.official && list.isEnabled,
+                      orElse: () => lists.first, // Fallback to first list if no official found
+                    );
+                    submissionUrl = officialList.submissionHookUrl;
+                    logger.debug('Using submission URL: $submissionUrl');
+                  },
+                );
+
                 final submitResult = await submitMappingUseCase(
                   processName: normalizedProcessName,
                   twitchCategoryId: category.id,
                   twitchCategoryName: category.name,
                   windowTitle: null,
                   normalizedInstallPath: normalizedPath,
+                  submissionUrl: submissionUrl,
                 );
 
                 submitResult.fold(
@@ -1050,6 +1115,10 @@ class _TKitAppState extends State<TKitApp> {
         context,
         listen: false,
       );
+      final mappingListRepository = Provider.of<IMappingListRepository>(
+        context,
+        listen: false,
+      );
       final logger = Provider.of<AppLogger>(context, listen: false);
       final windowService = Provider.of<WindowService>(context, listen: false);
 
@@ -1106,12 +1175,29 @@ class _TKitAppState extends State<TKitApp> {
             // Normalize process name: remove .exe extension for cross-platform compatibility
             final normalizedProcessName = processName.toLowerCase().replaceAll('.exe', '');
 
+            // Get submission URL from official list
+            String? submissionUrl;
+            final listsResult = await mappingListRepository.getAllLists();
+            listsResult.fold(
+              (failure) => logger.warning('Failed to get lists for submission: ${failure.message}'),
+              (lists) {
+                // Find official list's submission hook URL
+                final officialList = lists.firstWhere(
+                  (list) => list.sourceType == MappingListSourceType.official && list.isEnabled,
+                  orElse: () => lists.first, // Fallback to first list if no official found
+                );
+                submissionUrl = officialList.submissionHookUrl;
+                logger.debug('Using submission URL: $submissionUrl');
+              },
+            );
+
             final result = await submitMappingUseCase(
               processName: normalizedProcessName,
               twitchCategoryId: category.id,
               twitchCategoryName: category.name,
               windowTitle: windowTitle,
               normalizedInstallPath: normalizedPath,
+              submissionUrl: submissionUrl,
             );
 
             result.fold(

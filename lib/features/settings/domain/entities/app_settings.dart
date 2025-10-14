@@ -63,6 +63,13 @@ class AppSettings extends Equatable {
   /// Invert footer and header positions
   final bool invertFooterHeader;
 
+  /// Auto-sync mappings on app start
+  final bool autoSyncMappingsOnStart;
+
+  /// How often to auto-sync mappings (in hours)
+  /// Valid range: 1-168 hours (1 week)
+  final int mappingsSyncIntervalHours;
+
   const AppSettings({
     required this.scanIntervalSeconds,
     required this.debounceSeconds,
@@ -80,6 +87,8 @@ class AppSettings extends Equatable {
     required this.windowControlsPosition,
     required this.useFramelessWindow,
     required this.invertFooterHeader,
+    required this.autoSyncMappingsOnStart,
+    required this.mappingsSyncIntervalHours,
   });
 
   /// Default settings for first-time users
@@ -102,6 +111,8 @@ class AppSettings extends Equatable {
       windowControlsPosition: WindowControlsPosition.right,
       useFramelessWindow: false,
       invertFooterHeader: false,
+      autoSyncMappingsOnStart: true,
+      mappingsSyncIntervalHours: 6,
     );
   }
 
@@ -148,6 +159,8 @@ class AppSettings extends Equatable {
     WindowControlsPosition? windowControlsPosition,
     bool? useFramelessWindow,
     bool? invertFooterHeader,
+    bool? autoSyncMappingsOnStart,
+    int? mappingsSyncIntervalHours,
   }) {
     return AppSettings(
       scanIntervalSeconds: scanIntervalSeconds ?? this.scanIntervalSeconds,
@@ -172,6 +185,8 @@ class AppSettings extends Equatable {
       windowControlsPosition: windowControlsPosition ?? this.windowControlsPosition,
       useFramelessWindow: useFramelessWindow ?? this.useFramelessWindow,
       invertFooterHeader: invertFooterHeader ?? this.invertFooterHeader,
+      autoSyncMappingsOnStart: autoSyncMappingsOnStart ?? this.autoSyncMappingsOnStart,
+      mappingsSyncIntervalHours: mappingsSyncIntervalHours ?? this.mappingsSyncIntervalHours,
     );
   }
 
@@ -188,6 +203,9 @@ class AppSettings extends Equatable {
         (customFallbackCategoryId == null ||
             customFallbackCategoryId!.isEmpty)) {
       return 'Custom fallback category must be specified';
+    }
+    if (mappingsSyncIntervalHours < 0 || mappingsSyncIntervalHours > 168) {
+      return 'Mappings sync interval must be between 0 and 168 hours';
     }
     return null;
   }
@@ -213,5 +231,7 @@ class AppSettings extends Equatable {
     windowControlsPosition,
     useFramelessWindow,
     invertFooterHeader,
+    autoSyncMappingsOnStart,
+    mappingsSyncIntervalHours,
   ];
 }

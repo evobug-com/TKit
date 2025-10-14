@@ -27,6 +27,9 @@ CategoryMappingModel _$CategoryMappingModelFromJson(
   cacheExpiresAt: DateTime.parse(json['cacheExpiresAt'] as String),
   manualOverride: json['manualOverride'] as bool,
   isEnabled: json['isEnabled'] as bool? ?? true,
+  listId: json['listId'] as String?,
+  sourceListName: json['sourceListName'] as String?,
+  sourceListIsReadOnly: json['sourceListIsReadOnly'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$CategoryMappingModelToJson(
@@ -44,4 +47,7 @@ Map<String, dynamic> _$CategoryMappingModelToJson(
   'cacheExpiresAt': instance.cacheExpiresAt.toIso8601String(),
   'manualOverride': instance.manualOverride,
   'isEnabled': instance.isEnabled,
+  'listId': instance.listId,
+  'sourceListName': instance.sourceListName,
+  'sourceListIsReadOnly': instance.sourceListIsReadOnly,
 };

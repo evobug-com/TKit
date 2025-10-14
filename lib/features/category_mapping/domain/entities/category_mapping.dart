@@ -47,6 +47,18 @@ class CategoryMapping extends Equatable {
   /// False if the mapping is disabled/ignored by the user
   final bool isEnabled;
 
+  /// The ID of the mapping list this mapping belongs to
+  /// Nullable for backward compatibility with legacy mappings
+  final String? listId;
+
+  /// The name of the list this mapping belongs to (for display purposes)
+  /// This is populated when loading mappings with list information
+  final String? sourceListName;
+
+  /// Whether the source list is read-only
+  /// If true, this mapping cannot be edited or deleted
+  final bool sourceListIsReadOnly;
+
   const CategoryMapping({
     this.id,
     required this.processName,
@@ -60,6 +72,9 @@ class CategoryMapping extends Equatable {
     required this.cacheExpiresAt,
     required this.manualOverride,
     this.isEnabled = true,
+    this.listId,
+    this.sourceListName,
+    this.sourceListIsReadOnly = false,
   });
 
   CategoryMapping copyWith({
@@ -75,6 +90,9 @@ class CategoryMapping extends Equatable {
     DateTime? cacheExpiresAt,
     bool? manualOverride,
     bool? isEnabled,
+    String? listId,
+    String? sourceListName,
+    bool? sourceListIsReadOnly,
   }) {
     return CategoryMapping(
       id: id ?? this.id,
@@ -89,6 +107,9 @@ class CategoryMapping extends Equatable {
       cacheExpiresAt: cacheExpiresAt ?? this.cacheExpiresAt,
       manualOverride: manualOverride ?? this.manualOverride,
       isEnabled: isEnabled ?? this.isEnabled,
+      listId: listId ?? this.listId,
+      sourceListName: sourceListName ?? this.sourceListName,
+      sourceListIsReadOnly: sourceListIsReadOnly ?? this.sourceListIsReadOnly,
     );
   }
 
@@ -114,5 +135,8 @@ class CategoryMapping extends Equatable {
     cacheExpiresAt,
     manualOverride,
     isEnabled,
+    listId,
+    sourceListName,
+    sourceListIsReadOnly,
   ];
 }

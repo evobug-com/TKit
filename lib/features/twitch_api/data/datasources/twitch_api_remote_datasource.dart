@@ -88,7 +88,8 @@ class TwitchApiRemoteDataSource {
               try {
                 final response = await _dio.fetch(error.requestOptions);
                 return handler.resolve(response);
-              } catch (e) {
+              } catch (e, stackTrace) {
+                _logger.error('Retry after rate limit failed', e, stackTrace);
                 return handler.next(error);
               }
             }
@@ -118,15 +119,15 @@ class TwitchApiRemoteDataSource {
                   try {
                     final response = await _dio.fetch(error.requestOptions);
                     return handler.resolve(response);
-                  } catch (e) {
-                    _logger.error('Retry after token refresh failed', e);
+                  } catch (e, stackTrace) {
+                    _logger.error('Retry after token refresh failed', e, stackTrace);
                     return handler.next(error);
                   }
                 } else {
                   _logger.error('Token refresh returned null - refresh failed');
                 }
-              } catch (e) {
-                _logger.error('Token refresh failed', e);
+              } catch (e, stackTrace) {
+                _logger.error('Token refresh failed', e, stackTrace);
               }
             } else if (isRetry) {
               _logger.error('Request failed with 401 after token refresh - not retrying again');
@@ -159,8 +160,8 @@ class TwitchApiRemoteDataSource {
         final resetTime = int.parse(resetHeader);
         final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
         return (resetTime - now).clamp(1, 60);
-      } catch (e) {
-        _logger.error('Failed to parse Ratelimit-Reset header', e);
+      } catch (e, stackTrace) {
+        _logger.error('Failed to parse Ratelimit-Reset header', e, stackTrace);
       }
     }
 
@@ -169,8 +170,8 @@ class TwitchApiRemoteDataSource {
     if (retryAfter != null) {
       try {
         return int.parse(retryAfter).clamp(1, NetworkConfig.maxRateLimitWaitSeconds);
-      } catch (e) {
-        _logger.error('Failed to parse Retry-After header', e);
+      } catch (e, stackTrace) {
+        _logger.error('Failed to parse Retry-After header', e, stackTrace);
       }
     }
 

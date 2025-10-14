@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:tkit/core/database/app_database.dart';
 import 'package:tkit/core/errors/exceptions.dart';
+import 'package:tkit/core/utils/app_logger.dart';
 import 'package:tkit/features/category_mapping/data/models/category_mapping_model.dart';
 import 'package:tkit/features/category_mapping/data/utils/path_normalizer.dart';
 
@@ -10,6 +11,7 @@ import 'package:tkit/features/category_mapping/data/utils/path_normalizer.dart';
 /// No fuzzy matching to avoid false positives.
 class CategoryMappingLocalDataSource {
   final AppDatabase database;
+  final _logger = AppLogger();
 
   CategoryMappingLocalDataSource(this.database);
 
@@ -21,6 +23,7 @@ class CategoryMappingLocalDataSource {
   /// 3. Normalized match: processName (lowercase, no .exe, no spaces/dashes)
   /// 4. Legacy: Match by deprecated executablePath if provided (backward compatibility)
   ///
+  /// Only returns mappings from enabled lists
   /// Returns the best match or null if no suitable match found
   Future<CategoryMappingModel?> findMapping(
     String processName,
@@ -33,17 +36,23 @@ class CategoryMappingLocalDataSource {
         normalizedPath = PathNormalizer.extractGamePath(executablePath);
       }
 
-      final allMappings = await database
-          .select(database.categoryMappings)
-          .get();
+      // Only get mappings from enabled lists
+      final allResults = await database.getMappingsFromEnabledLists();
 
       // Step 1: Try exact match with processName + normalizedPath
       if (normalizedPath != null) {
-        for (final mapping in allMappings) {
+        for (final result in allResults) {
+          final mapping = result['mapping'] as CategoryMappingEntity;
+          final listName = result['listName'] as String;
+          final isReadOnly = result['isReadOnly'] as bool;
           // Check if this mapping has the normalized path in its array
           if (mapping.processName == processName &&
               mapping.normalizedInstallPaths != null) {
-            final model = CategoryMappingModel.fromDbEntity(mapping);
+            final model = CategoryMappingModel.fromDbEntity(
+              mapping,
+              sourceListName: listName,
+              sourceListIsReadOnly: isReadOnly,
+            );
             if (model.normalizedInstallPaths.contains(normalizedPath)) {
               return model;
             }
@@ -52,21 +61,39 @@ class CategoryMappingLocalDataSource {
       }
 
       // Step 2: Try exact match on process name only
-      final exactMatches = allMappings
-          .where((m) => m.processName == processName)
+      final exactMatches = allResults
+          .where((result) {
+            final mapping = result['mapping'] as CategoryMappingEntity;
+            return mapping.processName == processName;
+          })
           .toList();
 
       if (exactMatches.isNotEmpty) {
-        return CategoryMappingModel.fromDbEntity(exactMatches.first);
+        final result = exactMatches.first;
+        final mapping = result['mapping'] as CategoryMappingEntity;
+        final listName = result['listName'] as String;
+        final isReadOnly = result['isReadOnly'] as bool;
+        return CategoryMappingModel.fromDbEntity(
+          mapping,
+          sourceListName: listName,
+          sourceListIsReadOnly: isReadOnly,
+        );
       }
 
       // Step 3: Try normalized exact match
       final normalizedInput = _normalizeProcessName(processName);
 
-      for (final mapping in allMappings) {
+      for (final result in allResults) {
+        final mapping = result['mapping'] as CategoryMappingEntity;
+        final listName = result['listName'] as String;
+        final isReadOnly = result['isReadOnly'] as bool;
         final normalizedMapping = _normalizeProcessName(mapping.processName);
         if (normalizedMapping == normalizedInput) {
-          return CategoryMappingModel.fromDbEntity(mapping);
+          return CategoryMappingModel.fromDbEntity(
+            mapping,
+            sourceListName: listName,
+            sourceListIsReadOnly: isReadOnly,
+          );
         }
       }
 
@@ -83,31 +110,32 @@ class CategoryMappingLocalDataSource {
       }
 
       return null;
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to find mapping', e, stackTrace);
       throw CacheException(message: 'Failed to find mapping: ${e.toString()}');
     }
   }
 
   /// Get all mappings ordered by last used date (most recent first)
+  /// Only returns mappings from enabled lists
   Future<List<CategoryMappingModel>> getAllMappings() async {
     try {
-      final mappings =
-          await (database.select(database.categoryMappings)..orderBy([
-                (tbl) => OrderingTerm(
-                  expression: tbl.lastUsedAt,
-                  mode: OrderingMode.desc,
-                ),
-                (tbl) => OrderingTerm(
-                  expression: tbl.createdAt,
-                  mode: OrderingMode.desc,
-                ),
-              ]))
-              .get();
+      final results = await database.getMappingsFromEnabledLists();
 
-      return mappings
-          .map((entity) => CategoryMappingModel.fromDbEntity(entity))
+      return results
+          .map((result) {
+            final entity = result['mapping'] as CategoryMappingEntity;
+            final listName = result['listName'] as String;
+            final isReadOnly = result['isReadOnly'] as bool;
+            return CategoryMappingModel.fromDbEntity(
+              entity,
+              sourceListName: listName,
+              sourceListIsReadOnly: isReadOnly,
+            );
+          })
           .toList();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to get all mappings', e, stackTrace);
       throw CacheException(
         message: 'Failed to get all mappings: ${e.toString()}',
       );
@@ -128,7 +156,8 @@ class CategoryMappingLocalDataSource {
               ..where((tbl) => tbl.id.equals(mapping.id!)))
             .write(companion);
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to save mapping', e, stackTrace);
       throw CacheException(message: 'Failed to save mapping: ${e.toString()}');
     }
   }
@@ -139,7 +168,8 @@ class CategoryMappingLocalDataSource {
       await (database.delete(
         database.categoryMappings,
       )..where((tbl) => tbl.id.equals(id))).go();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to delete mapping', e, stackTrace);
       throw CacheException(
         message: 'Failed to delete mapping: ${e.toString()}',
       );
@@ -152,7 +182,8 @@ class CategoryMappingLocalDataSource {
       await (database.update(database.categoryMappings)
             ..where((tbl) => tbl.id.equals(id)))
           .write(CategoryMappingsCompanion(lastUsedAt: Value(DateTime.now())));
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to update last used', e, stackTrace);
       throw CacheException(
         message: 'Failed to update last used: ${e.toString()}',
       );
@@ -181,7 +212,8 @@ class CategoryMappingLocalDataSource {
       return mappings
           .map((entity) => CategoryMappingModel.fromDbEntity(entity))
           .toList();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to get expired mappings', e, stackTrace);
       throw CacheException(
         message: 'Failed to get expired mappings: ${e.toString()}',
       );
@@ -197,7 +229,8 @@ class CategoryMappingLocalDataSource {
       return mappings
           .map((entity) => CategoryMappingModel.fromDbEntity(entity))
           .toList();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to get expiring mappings', e, stackTrace);
       throw CacheException(
         message: 'Failed to get expiring mappings: ${e.toString()}',
       );
@@ -208,7 +241,8 @@ class CategoryMappingLocalDataSource {
   Future<int> deleteExpiredMappings() async {
     try {
       return await database.deleteExpiredMappings();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      _logger.error('Failed to delete expired mappings', e, stackTrace);
       throw CacheException(
         message: 'Failed to delete expired mappings: ${e.toString()}',
       );
