@@ -726,10 +726,8 @@ class AppDatabase extends _$AppDatabase {
           );
         }
 
-        // Update official TKit mappings list with submission hook
-        await customStatement(
-          "UPDATE mapping_lists SET submission_hook_url = 'https://tkit-api.evobug.workers.dev/submit-mapping' WHERE id = 'official-tkit-mappings'",
-        );
+        // Note: Submission hook URLs are now loaded from JSON metadata during sync
+        // No need to hardcode them in migrations
       }
 
       if (from == 8 && to >= 9) {
@@ -757,6 +755,7 @@ class AppDatabase extends _$AppDatabase {
     final now = DateTime.now();
 
     // 1. Official TKit Mappings list (from community sync)
+    // Note: Metadata (name, description, submissionHookUrl) will be loaded from JSON during first sync
     await into(mappingLists).insert(
       MappingListsCompanion.insert(
         id: 'official-tkit-mappings',
@@ -764,7 +763,6 @@ class AppDatabase extends _$AppDatabase {
         description: const Value('Verified game mappings from the TKit community'),
         sourceType: 'official',
         sourceUrl: const Value('https://raw.githubusercontent.com/evobug-com/tkit-community-mapping/refs/heads/main/mappings.json'),
-        submissionHookUrl: const Value('https://tkit-api.evobug.workers.dev/submit-mapping'),
         isEnabled: const Value(true),
         isReadOnly: const Value(true),
         priority: const Value(10),
@@ -774,6 +772,7 @@ class AppDatabase extends _$AppDatabase {
     );
 
     // 2. Official Ignored Programs list
+    // Note: Metadata (name, description, submissionHookUrl) will be loaded from JSON during first sync
     await into(mappingLists).insert(
       MappingListsCompanion.insert(
         id: 'official-ignored-programs',

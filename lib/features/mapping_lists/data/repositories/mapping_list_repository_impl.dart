@@ -135,6 +135,20 @@ class MappingListRepositoryImpl implements IMappingListRepository {
       // Fetch mappings and metadata from URL
       final remoteData = await _syncDataSource.fetchListFromUrl(model.sourceUrl!);
 
+      // Update list metadata from remote JSON if provided
+      if (remoteData.name != null ||
+          remoteData.description != null ||
+          remoteData.submissionHookUrl != null) {
+        await (_database.update(_database.mappingLists)
+              ..where((tbl) => tbl.id.equals(listId)))
+            .write(MappingListsCompanion(
+          name: remoteData.name != null ? Value(remoteData.name!) : const Value.absent(),
+          description: remoteData.description != null ? Value(remoteData.description!) : const Value.absent(),
+          isReadOnly: Value(remoteData.isReadOnly),
+          submissionHookUrl: Value(remoteData.submissionHookUrl),
+        ));
+      }
+
       // Convert mapping items to category mappings and insert into database
       await _importMappingsToList(listId, remoteData.mappings);
 
