@@ -128,11 +128,23 @@ class CommunitySyncDataSource {
       final data = json.decode(response.data as String) as Map<String, dynamic>;
 
       // Validate response structure - expect 'mappings' field
-      if (!data.containsKey('mappings') || data['mappings'] is! List) {
+      if (!data.containsKey('mappings')) {
+        final availableKeys = data.keys.join(', ');
+        logger.error('Missing mappings field. Available keys: $availableKeys');
         throw ServerException(
           message: 'Community $type data is invalid. This will be fixed in the next update.',
           code: 'INVALID_DATA',
-          technicalDetails: 'Missing or invalid mappings field',
+          technicalDetails: 'Missing "mappings" field. Available keys: $availableKeys',
+        );
+      }
+
+      if (data['mappings'] is! List) {
+        final actualType = data['mappings'].runtimeType;
+        logger.error('Invalid mappings field type: $actualType');
+        throw ServerException(
+          message: 'Community $type data is invalid. This will be fixed in the next update.',
+          code: 'INVALID_DATA',
+          technicalDetails: 'Expected "mappings" to be a List, but got $actualType',
         );
       }
 
