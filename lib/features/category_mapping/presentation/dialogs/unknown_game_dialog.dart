@@ -519,10 +519,10 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> {
         ? PathNormalizer.extractGamePath(widget.executablePath!)
         : null;
 
-    // Create a disabled mapping with IGNORE category
+    // Create a disabled mapping with -1 as the category ID (never sent to Twitch)
     final result = {
       'category': const TwitchCategory(
-        id: 'IGNORE',
+        id: '-1',
         name: 'Ignored Process',
       ),
       'saveLocally': true, // Always save ignored processes

@@ -334,6 +334,19 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
     required String processName,
     int? mappingId,
   }) async {
+    // Never send -1 (ignored processes) to Twitch
+    if (categoryId == '-1') {
+      _logger.debug('[AutoSwitcher] Skipping Twitch update for ignored process: $processName');
+      _currentStatus = _currentStatus.copyWith(
+        state: _isMonitoring
+            ? OrchestrationState.detectingProcess
+            : OrchestrationState.idle,
+        currentProcess: null,
+      );
+      _statusController.add(_currentStatus);
+      return const Right(null);
+    }
+
     // Skip if same category as last update (prevent duplicate updates)
     if (_lastProcessedCategoryId == categoryId) {
       return const Right(null);

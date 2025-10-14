@@ -282,15 +282,7 @@ class AppDatabase extends _$AppDatabase {
       final expiresAt = now.add(const Duration(hours: 24));
 
       // List of default ignored processes
-      final defaultIgnored = [
-        // TKit itself - should be ignored by default
-        {
-          'processName': 'tkit.exe',
-          'twitchCategoryId': 'IGNORE',
-          'twitchCategoryName': 'Ignored Process',
-          'isEnabled': false,
-        },
-      ];
+      final defaultIgnored = [];
 
       // Insert default ignored processes
       for (final mapping in defaultIgnored) {

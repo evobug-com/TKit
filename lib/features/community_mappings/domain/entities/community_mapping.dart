@@ -123,7 +123,7 @@ class CommunityMapping extends Equatable {
   }
 
   /// Check if this is an ignored program/software
-  bool get isIgnored => twitchCategoryId == 'IGNORE';
+  bool get isIgnored => twitchCategoryId == '-1';
 
   /// Check if this is a game (not ignored)
   bool get isGame => !isIgnored;

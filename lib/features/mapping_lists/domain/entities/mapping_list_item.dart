@@ -20,7 +20,7 @@ class MappingListItem extends Equatable {
   });
 
   /// Returns true if this is an ignored process (not a game)
-  bool get isIgnored => twitchCategoryId == 'IGNORE';
+  bool get isIgnored => twitchCategoryId == '-1';
 
   /// Returns true if this is a game mapping
   bool get isGame => !isIgnored;
