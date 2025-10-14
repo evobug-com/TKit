@@ -4,6 +4,7 @@ import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqlite3/sqlite3.dart' as sqlite;
+import 'package:tkit/core/utils/app_logger.dart';
 
 part 'app_database.g.dart';
 
@@ -521,7 +522,7 @@ class AppDatabase extends _$AppDatabase {
       // No seed data - will be populated from community sync
     },
     onUpgrade: (Migrator m, int from, int to) async {
-      if (from == 1 && to >= 2) {
+      if (from <= 1 && to >= 2) {
         // Migration v1 → v2: Add cache expiry fields and new tables
         // SQLite doesn't support non-constant defaults in ALTER TABLE,
         // so we recreate the table with data migration
@@ -583,7 +584,7 @@ class AppDatabase extends _$AppDatabase {
         );
       }
 
-      if (from == 2 && to >= 3) {
+      if (from <= 2 && to >= 3) {
         // Migration v2 → v3: Add community_mappings table
         await m.createTable(communityMappings);
 
@@ -603,7 +604,7 @@ class AppDatabase extends _$AppDatabase {
         );
       }
 
-      if (from == 3 && to >= 4) {
+      if (from <= 3 && to >= 4) {
         // Migration v3 → v4: Add isEnabled field
         // Check if column already exists to make migration idempotent
         final result = await customSelect(
@@ -619,7 +620,7 @@ class AppDatabase extends _$AppDatabase {
         }
       }
 
-      if (from == 4 && to >= 5) {
+      if (from <= 4 && to >= 5) {
         // Migration v4 → v5: Add normalizedInstallPaths for privacy-preserving path tracking
         // Check if column already exists to make migration idempotent
         final categoryMappingsInfo = await customSelect(
@@ -656,7 +657,7 @@ class AppDatabase extends _$AppDatabase {
         // The app will handle this migration on-the-fly when mappings are accessed.
       }
 
-      if (from == 5 && to >= 6) {
+      if (from <= 5 && to >= 6) {
         // Migration v5 → v6: Add category field to community_mappings
         // This allows grouping mappings by type (game, system, launcher, etc.)
         final communityMappingsInfo = await customSelect(
@@ -674,7 +675,7 @@ class AppDatabase extends _$AppDatabase {
         }
       }
 
-      if (from == 6 && to >= 7) {
+      if (from <= 6 && to >= 7) {
         // Migration v6 → v7: Add mapping_lists table and listId to category_mappings
         // This introduces the list-based mapping system
 
@@ -709,7 +710,7 @@ class AppDatabase extends _$AppDatabase {
         await _migrateExistingMappingsToLists();
       }
 
-      if (from == 7 && to >= 8) {
+      if (from <= 7 && to >= 8) {
         // Migration v7 → v8: Add submissionHookUrl to mapping_lists
         // This allows lists to have custom submission endpoints for unknown processes
         final mappingListsInfo = await customSelect(
@@ -730,7 +731,7 @@ class AppDatabase extends _$AppDatabase {
         // No need to hardcode them in migrations
       }
 
-      if (from == 8 && to >= 9) {
+      if (from <= 8 && to >= 9) {
         // Migration v8 → v9: Add lastSyncError to mapping_lists
         // This allows showing sync errors in the UI
         final mappingListsInfo = await customSelect(
@@ -908,28 +909,61 @@ class AppDatabase extends _$AppDatabase {
   /// Get mappings only from enabled lists
   /// Joins with mapping_lists table and filters by isEnabled = true
   /// Returns a map with 'mapping' and 'listName' keys
+  ///
+  /// If mapping_lists table doesn't exist (pre-v7 migration), returns all mappings
   Future<List<Map<String, dynamic>>> getMappingsFromEnabledLists() async {
-    final query = select(categoryMappings).join([
-      leftOuterJoin(
-        mappingLists,
-        mappingLists.id.equalsExp(categoryMappings.listId),
-      ),
-    ])
-      ..where(mappingLists.isEnabled.equals(true) | categoryMappings.listId.isNull())
-      ..orderBy([
-        OrderingTerm(expression: categoryMappings.lastUsedAt, mode: OrderingMode.desc),
-        OrderingTerm(expression: categoryMappings.createdAt, mode: OrderingMode.desc),
-      ]);
+    final logger = AppLogger();
 
-    final results = await query.get();
-    return results.map((row) {
-      final mapping = row.readTable(categoryMappings);
-      final list = row.readTableOrNull(mappingLists);
-      return {
-        'mapping': mapping,
-        'listName': list?.name ?? 'Unknown',
-        'isReadOnly': list?.isReadOnly ?? false,
-      };
-    }).toList();
+    try {
+      final query = select(categoryMappings).join([
+        leftOuterJoin(
+          mappingLists,
+          mappingLists.id.equalsExp(categoryMappings.listId),
+        ),
+      ])
+        ..where(mappingLists.isEnabled.equals(true) | categoryMappings.listId.isNull())
+        ..orderBy([
+          OrderingTerm(expression: categoryMappings.lastUsedAt, mode: OrderingMode.desc),
+          OrderingTerm(expression: categoryMappings.createdAt, mode: OrderingMode.desc),
+        ]);
+
+      final results = await query.get();
+      return results.map((row) {
+        final mapping = row.readTable(categoryMappings);
+        final list = row.readTableOrNull(mappingLists);
+        return {
+          'mapping': mapping,
+          'listName': list?.name ?? 'Unknown',
+          'isReadOnly': list?.isReadOnly ?? false,
+        };
+      }).toList();
+    } catch (e, stackTrace) {
+      logger.error('Error getting mappings from enabled lists', e, stackTrace);
+
+      // Fallback for databases that haven't migrated to v7 yet (no mapping_lists table)
+      // This can happen during migration or with very old databases
+      if (e.toString().contains('no such table: mapping_lists')) {
+        logger.warning('mapping_lists table not found, using fallback (database may be migrating)');
+
+        // Return all mappings without list information
+        try {
+          final allMappings = await (select(categoryMappings)
+            ..orderBy([
+              (tbl) => OrderingTerm(expression: tbl.lastUsedAt, mode: OrderingMode.desc),
+              (tbl) => OrderingTerm(expression: tbl.createdAt, mode: OrderingMode.desc),
+            ])).get();
+
+          return allMappings.map((mapping) => {
+            'mapping': mapping,
+            'listName': 'My Mappings',
+            'isReadOnly': false,
+          }).toList();
+        } catch (fallbackError, fallbackStackTrace) {
+          logger.error('Fallback query also failed', fallbackError, fallbackStackTrace);
+          rethrow;
+        }
+      }
+      rethrow;
+    }
   }
 }

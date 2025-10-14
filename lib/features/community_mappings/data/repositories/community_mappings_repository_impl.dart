@@ -83,41 +83,56 @@ class CommunityMappingsRepositoryImpl implements ICommunityMappingsRepository {
     String? submissionUrl,
   }) async {
     try {
-      logger.info('Checking for duplicate mapping: $processName');
+      logger.info('Checking for existing mapping before submission: $processName');
 
-      // Check if mapping already exists in community mappings
-      final existingMapping = await database.getCommunityMapping(processName);
+      // First check local database
+      final localMapping = await database.getCommunityMapping(processName);
 
-      bool isExistingMapping = false;
-      int? verificationCount;
-
-      if (existingMapping != null) {
-        // Mapping exists in community database
-        isExistingMapping = true;
-        verificationCount = existingMapping.verificationCount;
-
-        // Check if the category ID matches
-        if (existingMapping.twitchCategoryId != twitchCategoryId) {
-          logger.warning(
-            'Category mismatch: existing=${existingMapping.twitchCategoryId}, '
-            'new=$twitchCategoryId',
-          );
-          // User is trying to submit a different category for the same process
-          // This could be intentional (game changed category) or an error
-          // We'll submit as new mapping with a note
-          isExistingMapping = false;
-        } else {
-          logger.info(
-            'Existing mapping found with $verificationCount verifications',
-          );
-        }
+      if (localMapping != null && localMapping.twitchCategoryId == twitchCategoryId) {
+        logger.info('Mapping already exists locally and matches');
+        return Right({
+          'success': false,
+          'alreadyExists': true,
+          'message': 'This mapping already exists in your local database.',
+        });
       }
 
-      logger.info(
-        isExistingMapping
-            ? 'Submitting verification for: $processName'
-            : 'Submitting new mapping for: $processName',
-      );
+      // Check remote mappings to avoid duplicate submissions
+      logger.info('Checking remote mappings for duplicates');
+      try {
+        final remoteData = await syncDataSource.fetchMappings();
+        final remoteMappings = remoteData['mappings'] as List;
+
+        final existingMapping = remoteMappings.firstWhere(
+          (m) => (m as Map<String, dynamic>)['processName'] == processName,
+          orElse: () => null,
+        );
+
+        if (existingMapping != null) {
+          final existingCategoryId = existingMapping['twitchCategoryId'] as String;
+
+          if (existingCategoryId == twitchCategoryId) {
+            logger.info('Mapping already exists in remote repository with same category');
+            return Right({
+              'success': false,
+              'alreadyExists': true,
+              'message': 'This mapping already exists! Syncing to update your local database...',
+              'shouldSync': true,
+            });
+          } else {
+            logger.warning(
+              'Process exists with different category: existing=$existingCategoryId, new=$twitchCategoryId',
+            );
+            // Different category - could be a different game with same process name
+            // Allow submission but log it
+          }
+        }
+      } catch (e) {
+        logger.warning('Could not check remote mappings, proceeding with submission: $e');
+        // If we can't check remote, proceed with submission anyway
+      }
+
+      logger.info('Submitting new mapping for: $processName');
 
       final result = await submissionDataSource.submitMapping(
         processName: processName,
@@ -125,8 +140,6 @@ class CommunityMappingsRepositoryImpl implements ICommunityMappingsRepository {
         twitchCategoryName: twitchCategoryName,
         windowTitle: windowTitle,
         normalizedInstallPath: normalizedInstallPath,
-        isExistingMapping: isExistingMapping,
-        existingVerificationCount: verificationCount,
         submissionUrl: submissionUrl,
       );
 
