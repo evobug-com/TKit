@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
@@ -842,6 +843,10 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
   late final LocaleProvider _localeProvider;
   late final AppLogger _logger;
 
+  // Track stream subscriptions for cleanup
+  StreamSubscription? _settingsWatchSubscription;
+  VoidCallback? _authProviderListener;
+
   @override
   void initState() {
     super.initState();
@@ -894,14 +899,28 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
       authProvider.checkAuthStatus();
 
       // Listen to auth state changes
-      authProvider.addListener(() {
+      _authProviderListener = () {
         _handleAuthStateChange(authProvider.state);
-      });
+      };
+      authProvider.addListener(_authProviderListener!);
     });
   }
 
   @override
   void dispose() {
+    // Cancel stream subscriptions
+    _settingsWatchSubscription?.cancel();
+
+    // Remove auth provider listener
+    if (_authProviderListener != null) {
+      try {
+        final authProvider = Provider.of<AuthProvider>(context, listen: false);
+        authProvider.removeListener(_authProviderListener!);
+      } catch (e) {
+        // Context might be unavailable
+      }
+    }
+
     // Unregister window listener
     windowManager.removeListener(this);
     super.dispose();
@@ -910,47 +929,76 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
   /// Called when the window is about to close
   @override
   Future<void> onWindowClose() async {
-    _logger.info('Window close requested - cleaning up resources');
+    _logger.info('Window close requested - starting fast shutdown');
 
+    // Start cleanup but don't wait - let it run in background
+    // This allows immediate window close while cleanup finishes
+    _cleanupResources().catchError((e, stackTrace) {
+      _logger.error('Cleanup error', e, stackTrace);
+    });
+
+    // Close window with 500ms timeout to prevent hanging
     try {
-      // Stop all background services before closing
-      await _cleanupResources();
-    } catch (e, stackTrace) {
-      _logger.error('Error during cleanup', e, stackTrace);
+      await windowManager.destroy().timeout(
+        const Duration(milliseconds: 500),
+        onTimeout: () {
+          _logger.warning('Window destroy timed out - force closing');
+        },
+      );
+    } catch (e) {
+      _logger.error('Error destroying window', e);
     }
-
-    // Allow the window to close
-    await windowManager.destroy();
   }
 
   /// Cleanup all app resources before exit
   Future<void> _cleanupResources() async {
+    _logger.info('Starting cleanup - this should be fast...');
+    final stopwatch = Stopwatch()..start();
+
     try {
-      final maintenanceScheduler = Provider.of<MaintenanceScheduler>(
-        context,
-        listen: false,
-      );
-      final autoSwitcherRepo = Provider.of<IAutoSwitcherRepository>(
-        context,
-        listen: false,
-      );
+      // Get all services that need cleanup
+      final maintenanceScheduler = Provider.of<MaintenanceScheduler>(context, listen: false);
+      final autoSwitcherRepo = Provider.of<IAutoSwitcherRepository>(context, listen: false);
+      final hotkeyService = Provider.of<HotkeyService>(context, listen: false);
+      final systemTrayService = Provider.of<SystemTrayService>(context, listen: false);
       final database = Provider.of<AppDatabase>(context, listen: false);
 
-      // Stop maintenance scheduler (cancels all timers)
-      _logger.info('Stopping maintenance scheduler...');
-      await maintenanceScheduler.stop();
+      // Stop services in parallel for speed
+      await Future.wait([
+        // Stop maintenance scheduler (cancels 3 timers)
+        Future(() async {
+          _logger.info('Stopping maintenance scheduler...');
+          await maintenanceScheduler.stop();
+        }),
 
-      // Dispose auto switcher repository (cancels stream subscriptions)
-      _logger.info('Disposing auto switcher...');
-      await autoSwitcherRepo.dispose();
+        // Dispose auto switcher (cancels stream subscriptions)
+        Future(() async {
+          _logger.info('Disposing auto switcher...');
+          await autoSwitcherRepo.dispose();
+        }),
 
-      // Close database connection
-      _logger.info('Closing database connection...');
+        // Dispose hotkey service (cancels stream subscription, unregisters hotkeys)
+        Future(() async {
+          _logger.info('Disposing hotkey service...');
+          hotkeyService.dispose();
+        }),
+
+        // Dispose system tray
+        Future(() async {
+          _logger.info('Disposing system tray...');
+          await systemTrayService.dispose();
+        }),
+      ], eagerError: false);
+
+      // Close database last (might have pending writes)
+      _logger.info('Closing database...');
       await database.close();
 
-      _logger.info('Cleanup completed successfully');
+      stopwatch.stop();
+      _logger.info('Cleanup completed in ${stopwatch.elapsedMilliseconds}ms');
     } catch (e, stackTrace) {
-      _logger.error('Cleanup error', e, stackTrace);
+      stopwatch.stop();
+      _logger.error('Cleanup error after ${stopwatch.elapsedMilliseconds}ms', e, stackTrace);
     }
   }
 
