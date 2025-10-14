@@ -596,7 +596,8 @@ void main() async {
       },
       onExit: () async {
         logger.info('Exit requested from system tray');
-        await windowManager.destroy();
+        // Use close() instead of destroy() to trigger cleanup via WindowListener
+        await windowManager.close();
       },
       showLabel: 'Show TKit',
       exitLabel: 'Exit',
@@ -835,7 +836,7 @@ class TKitApp extends StatefulWidget {
   State<TKitApp> createState() => _TKitAppState();
 }
 
-class _TKitAppState extends State<TKitApp> {
+class _TKitAppState extends State<TKitApp> with WindowListener {
   late final AppRouter _appRouter;
   late final LanguageService _languageService;
   late final LocaleProvider _localeProvider;
@@ -844,6 +845,9 @@ class _TKitAppState extends State<TKitApp> {
   @override
   void initState() {
     super.initState();
+
+    // Register window listener for cleanup
+    windowManager.addListener(this);
 
     // Get dependencies from Provider
     _languageService = Provider.of<LanguageService>(context, listen: false);
@@ -894,6 +898,60 @@ class _TKitAppState extends State<TKitApp> {
         _handleAuthStateChange(authProvider.state);
       });
     });
+  }
+
+  @override
+  void dispose() {
+    // Unregister window listener
+    windowManager.removeListener(this);
+    super.dispose();
+  }
+
+  /// Called when the window is about to close
+  @override
+  Future<void> onWindowClose() async {
+    _logger.info('Window close requested - cleaning up resources');
+
+    try {
+      // Stop all background services before closing
+      await _cleanupResources();
+    } catch (e, stackTrace) {
+      _logger.error('Error during cleanup', e, stackTrace);
+    }
+
+    // Allow the window to close
+    await windowManager.destroy();
+  }
+
+  /// Cleanup all app resources before exit
+  Future<void> _cleanupResources() async {
+    try {
+      final maintenanceScheduler = Provider.of<MaintenanceScheduler>(
+        context,
+        listen: false,
+      );
+      final autoSwitcherRepo = Provider.of<IAutoSwitcherRepository>(
+        context,
+        listen: false,
+      );
+      final database = Provider.of<AppDatabase>(context, listen: false);
+
+      // Stop maintenance scheduler (cancels all timers)
+      _logger.info('Stopping maintenance scheduler...');
+      await maintenanceScheduler.stop();
+
+      // Dispose auto switcher repository (cancels stream subscriptions)
+      _logger.info('Disposing auto switcher...');
+      await autoSwitcherRepo.dispose();
+
+      // Close database connection
+      _logger.info('Closing database connection...');
+      await database.close();
+
+      _logger.info('Cleanup completed successfully');
+    } catch (e, stackTrace) {
+      _logger.error('Cleanup error', e, stackTrace);
+    }
   }
 
   /// Handle auth state changes
