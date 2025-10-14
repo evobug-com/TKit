@@ -37,6 +37,7 @@ class MappingSubmissionDataSource {
     bool isExistingMapping = false,
     int? existingVerificationCount,
     String? submissionUrl,
+    String category = 'game', // 'game' or 'program'
   }) async {
     // Check if community API is enabled
     if (!AppConfig.useCommunityApi) {
@@ -82,7 +83,8 @@ class MappingSubmissionDataSource {
 
       // Call Cloudflare Worker API instead of GitHub directly
       // Use custom submission URL if provided, otherwise use default
-      final apiUrl = submissionUrl ?? AppConfig.communityApiUrl;
+      final baseApiUrl = submissionUrl ?? AppConfig.communityApiUrl;
+      final apiUrl = '$baseApiUrl?category=$category';
       final response = await dio.post(
         apiUrl,
         data: json.encode({

@@ -121,13 +121,16 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
     _monitoringSubscription = _watchProcessChanges(scanInterval)
         // Debounce to prevent rapid updates
         .transform(_createDebounceTransformer(debounceTime))
-        // Filter out null/empty processes
-        .where((process) => process != null && process.processName.isNotEmpty)
-        // Process each detected process
+        // Process each detected process (including null for fallback)
         .asyncMap((process) async {
+          // Handle no process detected - apply fallback
+          if (process == null || process.processName.isEmpty) {
+            return {'process': null, 'mapping': null, 'noProcess': true};
+          }
+
           _currentStatus = _currentStatus.copyWith(
             state: OrchestrationState.searchingMapping,
-            currentProcess: process!.processName,
+            currentProcess: process.processName,
           );
           _statusController.add(_currentStatus);
 
@@ -153,6 +156,12 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
         })
         .listen(
           (data) async {
+            // Handle no process detected - apply fallback
+            if (data != null && data['noProcess'] == true) {
+              await _handleNoProcess();
+              return;
+            }
+
             if (data == null) {
               // No mapping found - handle via callback or fallback
               final processName = _currentStatus.currentProcess;
@@ -263,12 +272,8 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
       final processResult = await _getFocusedProcess();
       return processResult.fold((failure) => Left(failure), (process) async {
         if (process == null || process.processName.isEmpty) {
-          return const Left(
-            ValidationFailure(
-              message: 'No active process detected',
-              code: 'NO_PROCESS',
-            ),
-          );
+          // No process detected - apply fallback behavior
+          return await _handleNoProcess();
         }
 
         _currentStatus = _currentStatus.copyWith(
@@ -440,6 +445,20 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
           processName: processName,
         );
     }
+  }
+
+  /// Handle when no process is detected - apply fallback behavior
+  Future<Either<Failure, void>> _handleNoProcess() async {
+    _logger.info('[AutoSwitcher] No process detected, applying fallback behavior');
+
+    final settings = _currentSettings ?? AppSettings.defaults();
+
+    // Apply fallback behavior directly (no callback needed since there's no process to map)
+    return await _applyFallback(
+      settings.fallbackBehavior,
+      settings.customFallbackCategoryId,
+      'No Process Detected', // Process name for history tracking
+    );
   }
 
   /// Handle unknown game - try callback first, then fallback
