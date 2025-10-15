@@ -10,7 +10,6 @@ class SystemTrayService with TrayListener {
   bool _isInitialized = false;
 
   VoidCallback? _onShow;
-  VoidCallback? _onExit;
 
   SystemTrayService(this._logger);
 
@@ -30,9 +29,8 @@ class SystemTrayService with TrayListener {
     try {
       _logger.info('Initializing system tray...');
 
-      // Store callbacks
+      // Store callback
       _onShow = onShow;
-      _onExit = onExit;
 
       // Add listener
       trayManager.addListener(this);

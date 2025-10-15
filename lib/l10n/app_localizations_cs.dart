@@ -294,19 +294,19 @@ class AppLocalizationsCs extends AppLocalizations {
       'Konfigurace chování a preferencí aplikace';
 
   @override
-  String get settingsTabGeneral => 'General';
+  String get settingsTabGeneral => 'Obecné';
 
   @override
-  String get settingsTabAutoSwitcher => 'Auto Switcher';
+  String get settingsTabAutoSwitcher => 'Automatický přepínač';
 
   @override
-  String get settingsTabKeyboard => 'Keyboard';
+  String get settingsTabKeyboard => 'Klávesnice';
 
   @override
   String get settingsTabTwitch => 'Twitch';
 
   @override
-  String get settingsTabAdvanced => 'Advanced';
+  String get settingsTabAdvanced => 'Pokročilé';
 
   @override
   String get autoSwitcherStatusNotInitialized => 'NEINICIALIZOVÁNO';
@@ -980,6 +980,34 @@ class AppLocalizationsCs extends AppLocalizations {
   String get unknownGameDialogTitle => 'Game Not Mapped';
 
   @override
+  String get unknownGameDialogStepCategory => 'Kategorie';
+
+  @override
+  String get unknownGameDialogStepDestination => 'Cíl';
+
+  @override
+  String get unknownGameDialogStepConfirm => 'Potvrdit';
+
+  @override
+  String get unknownGameDialogConfirmHeader => 'Zkontrolovat a potvrdit';
+
+  @override
+  String get unknownGameDialogConfirmDescription =>
+      'Před uložením zkontrolujte svůj výběr';
+
+  @override
+  String get unknownGameDialogConfirmCategory => 'KATEGORIE TWITCH';
+
+  @override
+  String get unknownGameDialogConfirmDestination => 'CÍLOVÝ SEZNAM';
+
+  @override
+  String get unknownGameDialogBack => 'Zpět';
+
+  @override
+  String get unknownGameDialogNext => 'Další';
+
+  @override
   String unknownGameDialogSubtitle(String processName) {
     return 'Select a Twitch category for \"$processName\"';
   }
@@ -994,18 +1022,64 @@ class AppLocalizationsCs extends AppLocalizations {
   String get unknownGameDialogSearchHint => 'Type game name...';
 
   @override
-  String get unknownGameDialogOptionsHeader => 'OPTIONS';
+  String get unknownGameDialogCategoryHeader => 'Vyberte kategorii Twitch';
 
   @override
-  String get unknownGameDialogSaveLocallyLabel => 'Save mapping locally';
+  String get unknownGameDialogCategoryDescription =>
+      'Vyhledejte a vyberte kategorii Twitch pro tuto hru';
 
   @override
-  String get unknownGameDialogContributeLabel =>
-      'Contribute to community mappings';
+  String get unknownGameDialogListHeader => 'Zvolte cíl';
 
   @override
-  String get unknownGameDialogContributeSubtitle =>
-      'Help others by sharing this mapping on GitHub';
+  String get unknownGameDialogListDescription =>
+      'Vyberte, kam chcete toto mapování uložit';
+
+  @override
+  String get unknownGameDialogNoWritableLists =>
+      'Nejsou k dispozici žádné zapisovatelné seznamy';
+
+  @override
+  String get unknownGameDialogNoWritableListsHint =>
+      'Vytvořte místní seznam v Mapování kategorií pro uložení vlastních mapování';
+
+  @override
+  String get unknownGameDialogLocalListsHeader => 'MÍSTNÍ MAPOVÁNÍ';
+
+  @override
+  String get unknownGameDialogSubmissionListsHeader => 'PŘÍSPĚVEK KOMUNITY';
+
+  @override
+  String get unknownGameDialogWorkflowHeader =>
+      'Jak funguje odesílání příspěvků';
+
+  @override
+  String get unknownGameDialogWorkflowCompactNote =>
+      'Nejprve se uloží místně, poté se odešle ke schválení komunitou';
+
+  @override
+  String get unknownGameDialogWorkflowLearnMore => 'Zjistit více';
+
+  @override
+  String get unknownGameDialogWorkflowStep1Title => 'Uloženo místně (okamžitě)';
+
+  @override
+  String get unknownGameDialogWorkflowStep1Description =>
+      'Mapování je přidáno do místního seznamu a funguje okamžitě';
+
+  @override
+  String get unknownGameDialogWorkflowStep2Title => 'Odesláno ke kontrole';
+
+  @override
+  String get unknownGameDialogWorkflowStep2Description =>
+      'Vaše mapování je odesláno komunitě ke schválení';
+
+  @override
+  String get unknownGameDialogWorkflowStep3Title => 'Sloučeno do oficiálního';
+
+  @override
+  String get unknownGameDialogWorkflowStep3Description =>
+      'Po schválení se zobrazí v oficiálních mapováních a bude odstraněno z místního seznamu';
 
   @override
   String get unknownGameDialogSearchError => 'Search Error';
@@ -1025,6 +1099,13 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get unknownGameDialogSave => 'Save';
+
+  @override
+  String get unknownGameDialogThankYouTitle => 'Děkujeme!';
+
+  @override
+  String get unknownGameDialogThankYouMessage =>
+      'Váš příspěvek pomáhá růst komunitě!';
 
   @override
   String get versionStatusUpToDate => 'Aktuální';

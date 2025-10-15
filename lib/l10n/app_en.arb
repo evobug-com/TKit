@@ -1213,6 +1213,42 @@
   "@unknownGameDialogTitle": {
     "description": "Unknown game dialog title"
   },
+  "unknownGameDialogStepCategory": "Category",
+  "@unknownGameDialogStepCategory": {
+    "description": "Step 1 label"
+  },
+  "unknownGameDialogStepDestination": "Destination",
+  "@unknownGameDialogStepDestination": {
+    "description": "Step 2 label"
+  },
+  "unknownGameDialogStepConfirm": "Confirm",
+  "@unknownGameDialogStepConfirm": {
+    "description": "Step 3 label"
+  },
+  "unknownGameDialogConfirmHeader": "Review & Confirm",
+  "@unknownGameDialogConfirmHeader": {
+    "description": "Confirm step header"
+  },
+  "unknownGameDialogConfirmDescription": "Please review your selections before saving",
+  "@unknownGameDialogConfirmDescription": {
+    "description": "Confirm step description"
+  },
+  "unknownGameDialogConfirmCategory": "TWITCH CATEGORY",
+  "@unknownGameDialogConfirmCategory": {
+    "description": "Confirm category section label"
+  },
+  "unknownGameDialogConfirmDestination": "DESTINATION LIST",
+  "@unknownGameDialogConfirmDestination": {
+    "description": "Confirm destination section label"
+  },
+  "unknownGameDialogBack": "Back",
+  "@unknownGameDialogBack": {
+    "description": "Back button text"
+  },
+  "unknownGameDialogNext": "Next",
+  "@unknownGameDialogNext": {
+    "description": "Next button text"
+  },
   "unknownGameDialogSubtitle": "Select a Twitch category for \"{processName}\"",
   "@unknownGameDialogSubtitle": {
     "description": "Unknown game dialog subtitle",
@@ -1234,21 +1270,73 @@
   "@unknownGameDialogSearchHint": {
     "description": "Search input hint text"
   },
-  "unknownGameDialogOptionsHeader": "OPTIONS",
-  "@unknownGameDialogOptionsHeader": {
-    "description": "Options section header"
+  "unknownGameDialogCategoryHeader": "Select Twitch Category",
+  "@unknownGameDialogCategoryHeader": {
+    "description": "Category selection section header"
   },
-  "unknownGameDialogSaveLocallyLabel": "Save mapping locally",
-  "@unknownGameDialogSaveLocallyLabel": {
-    "description": "Save locally checkbox label"
+  "unknownGameDialogCategoryDescription": "Search and select the Twitch category for this game",
+  "@unknownGameDialogCategoryDescription": {
+    "description": "Category selection section description"
   },
-  "unknownGameDialogContributeLabel": "Contribute to community mappings",
-  "@unknownGameDialogContributeLabel": {
-    "description": "Contribute to community checkbox label"
+  "unknownGameDialogListHeader": "Choose Destination",
+  "@unknownGameDialogListHeader": {
+    "description": "List selection section header"
   },
-  "unknownGameDialogContributeSubtitle": "Help others by sharing this mapping on GitHub",
-  "@unknownGameDialogContributeSubtitle": {
-    "description": "Contribute to community checkbox subtitle"
+  "unknownGameDialogListDescription": "Select where to save this mapping",
+  "@unknownGameDialogListDescription": {
+    "description": "List selection section description"
+  },
+  "unknownGameDialogNoWritableLists": "No writable lists available",
+  "@unknownGameDialogNoWritableLists": {
+    "description": "Message when no writable lists are available"
+  },
+  "unknownGameDialogNoWritableListsHint": "Create a local list in Category Mappings to save custom mappings",
+  "@unknownGameDialogNoWritableListsHint": {
+    "description": "Hint for creating writable lists"
+  },
+  "unknownGameDialogLocalListsHeader": "LOCAL MAPPINGS",
+  "@unknownGameDialogLocalListsHeader": {
+    "description": "Header for local mapping lists section"
+  },
+  "unknownGameDialogSubmissionListsHeader": "COMMUNITY SUBMISSION",
+  "@unknownGameDialogSubmissionListsHeader": {
+    "description": "Header for lists with submission capability"
+  },
+  "unknownGameDialogWorkflowHeader": "How Submission Works",
+  "@unknownGameDialogWorkflowHeader": {
+    "description": "Header for workflow explanation dialog"
+  },
+  "unknownGameDialogWorkflowCompactNote": "Saves locally first, then submitted for community approval",
+  "@unknownGameDialogWorkflowCompactNote": {
+    "description": "Compact workflow note shown in list section"
+  },
+  "unknownGameDialogWorkflowLearnMore": "Learn More",
+  "@unknownGameDialogWorkflowLearnMore": {
+    "description": "Learn more link text for workflow details"
+  },
+  "unknownGameDialogWorkflowStep1Title": "Saved Locally (Immediate)",
+  "@unknownGameDialogWorkflowStep1Title": {
+    "description": "Title for workflow step 1"
+  },
+  "unknownGameDialogWorkflowStep1Description": "Mapping is added to your local list and works immediately",
+  "@unknownGameDialogWorkflowStep1Description": {
+    "description": "Description for workflow step 1"
+  },
+  "unknownGameDialogWorkflowStep2Title": "Submitted for Review",
+  "@unknownGameDialogWorkflowStep2Title": {
+    "description": "Title for workflow step 2"
+  },
+  "unknownGameDialogWorkflowStep2Description": "Your mapping is submitted to the community for approval",
+  "@unknownGameDialogWorkflowStep2Description": {
+    "description": "Description for workflow step 2"
+  },
+  "unknownGameDialogWorkflowStep3Title": "Merged to Official",
+  "@unknownGameDialogWorkflowStep3Title": {
+    "description": "Title for workflow step 3"
+  },
+  "unknownGameDialogWorkflowStep3Description": "Once approved, it appears in official mappings and is removed from your local list",
+  "@unknownGameDialogWorkflowStep3Description": {
+    "description": "Description for workflow step 3"
   },
   "unknownGameDialogSearchError": "Search Error",
   "@unknownGameDialogSearchError": {
@@ -1273,6 +1361,14 @@
   "unknownGameDialogSave": "Save",
   "@unknownGameDialogSave": {
     "description": "Save button text"
+  },
+  "unknownGameDialogThankYouTitle": "Thank You!",
+  "@unknownGameDialogThankYouTitle": {
+    "description": "Thank you overlay title"
+  },
+  "unknownGameDialogThankYouMessage": "Your contribution helps the community grow!",
+  "@unknownGameDialogThankYouMessage": {
+    "description": "Thank you overlay message"
   },
   "versionStatusUpToDate": "Up to date",
   "@versionStatusUpToDate": {

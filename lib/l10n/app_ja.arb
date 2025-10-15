@@ -1214,6 +1214,138 @@
   "@settingsPageDescription": {
     "description": "Settings page description"
   },
+  "settingsTabGeneral": "一般",
+  "@settingsTabGeneral": {
+    "description": "General settings tab"
+  },
+  "settingsTabAutoSwitcher": "自動切り替え",
+  "@settingsTabAutoSwitcher": {
+    "description": "Auto Switcher settings tab"
+  },
+  "settingsTabKeyboard": "キーボード",
+  "@settingsTabKeyboard": {
+    "description": "Keyboard settings tab"
+  },
+  "settingsTabTwitch": "Twitch",
+  "@settingsTabTwitch": {
+    "description": "Twitch settings tab"
+  },
+  "settingsTabAdvanced": "詳細",
+  "@settingsTabAdvanced": {
+    "description": "Advanced settings tab"
+  },
+  "unknownGameDialogStepCategory": "カテゴリー",
+  "@unknownGameDialogStepCategory": {
+    "description": "Step 1 label"
+  },
+  "unknownGameDialogStepDestination": "保存先",
+  "@unknownGameDialogStepDestination": {
+    "description": "Step 2 label"
+  },
+  "unknownGameDialogStepConfirm": "確認",
+  "@unknownGameDialogStepConfirm": {
+    "description": "Step 3 label"
+  },
+  "unknownGameDialogConfirmHeader": "確認と承認",
+  "@unknownGameDialogConfirmHeader": {
+    "description": "Confirm step header"
+  },
+  "unknownGameDialogConfirmDescription": "保存する前に選択内容を確認してください",
+  "@unknownGameDialogConfirmDescription": {
+    "description": "Confirm step description"
+  },
+  "unknownGameDialogConfirmCategory": "TWITCHカテゴリー",
+  "@unknownGameDialogConfirmCategory": {
+    "description": "Confirm category section label"
+  },
+  "unknownGameDialogConfirmDestination": "保存先リスト",
+  "@unknownGameDialogConfirmDestination": {
+    "description": "Confirm destination section label"
+  },
+  "unknownGameDialogBack": "戻る",
+  "@unknownGameDialogBack": {
+    "description": "Back button text"
+  },
+  "unknownGameDialogNext": "次へ",
+  "@unknownGameDialogNext": {
+    "description": "Next button text"
+  },
+  "unknownGameDialogCategoryHeader": "Twitchカテゴリーを選択",
+  "@unknownGameDialogCategoryHeader": {
+    "description": "Category selection section header"
+  },
+  "unknownGameDialogCategoryDescription": "このゲームのTwitchカテゴリーを検索して選択してください",
+  "@unknownGameDialogCategoryDescription": {
+    "description": "Category selection section description"
+  },
+  "unknownGameDialogListHeader": "保存先を選択",
+  "@unknownGameDialogListHeader": {
+    "description": "List selection section header"
+  },
+  "unknownGameDialogListDescription": "このマッピングを保存する場所を選択してください",
+  "@unknownGameDialogListDescription": {
+    "description": "List selection section description"
+  },
+  "unknownGameDialogNoWritableLists": "書き込み可能なリストがありません",
+  "@unknownGameDialogNoWritableLists": {
+    "description": "Message when no writable lists are available"
+  },
+  "unknownGameDialogNoWritableListsHint": "カスタムマッピングを保存するには、カテゴリーマッピングでローカルリストを作成してください",
+  "@unknownGameDialogNoWritableListsHint": {
+    "description": "Hint for creating writable lists"
+  },
+  "unknownGameDialogLocalListsHeader": "ローカルマッピング",
+  "@unknownGameDialogLocalListsHeader": {
+    "description": "Header for local mapping lists section"
+  },
+  "unknownGameDialogSubmissionListsHeader": "コミュニティへの投稿",
+  "@unknownGameDialogSubmissionListsHeader": {
+    "description": "Header for lists with submission capability"
+  },
+  "unknownGameDialogWorkflowHeader": "投稿の仕組み",
+  "@unknownGameDialogWorkflowHeader": {
+    "description": "Header for workflow explanation dialog"
+  },
+  "unknownGameDialogWorkflowCompactNote": "最初にローカルに保存され、その後コミュニティの承認のために投稿されます",
+  "@unknownGameDialogWorkflowCompactNote": {
+    "description": "Compact workflow note shown in list section"
+  },
+  "unknownGameDialogWorkflowLearnMore": "詳しく見る",
+  "@unknownGameDialogWorkflowLearnMore": {
+    "description": "Learn more link text for workflow details"
+  },
+  "unknownGameDialogWorkflowStep1Title": "ローカルに保存（即時）",
+  "@unknownGameDialogWorkflowStep1Title": {
+    "description": "Title for workflow step 1"
+  },
+  "unknownGameDialogWorkflowStep1Description": "マッピングがローカルリストに追加され、すぐに機能します",
+  "@unknownGameDialogWorkflowStep1Description": {
+    "description": "Description for workflow step 1"
+  },
+  "unknownGameDialogWorkflowStep2Title": "レビューのために投稿",
+  "@unknownGameDialogWorkflowStep2Title": {
+    "description": "Title for workflow step 2"
+  },
+  "unknownGameDialogWorkflowStep2Description": "マッピングが承認のためにコミュニティに投稿されます",
+  "@unknownGameDialogWorkflowStep2Description": {
+    "description": "Description for workflow step 2"
+  },
+  "unknownGameDialogWorkflowStep3Title": "公式にマージ",
+  "@unknownGameDialogWorkflowStep3Title": {
+    "description": "Title for workflow step 3"
+  },
+  "unknownGameDialogWorkflowStep3Description": "承認されると、公式マッピングに表示され、ローカルリストから削除されます",
+  "@unknownGameDialogWorkflowStep3Description": {
+    "description": "Description for workflow step 3"
+  },
+  "unknownGameDialogThankYouTitle": "ありがとうございます！",
+  "@unknownGameDialogThankYouTitle": {
+    "description": "Thank you overlay title"
+  },
+  "unknownGameDialogThankYouMessage": "あなたの貢献がコミュニティの成長に役立ちます！",
+  "@unknownGameDialogThankYouMessage": {
+    "description": "Thank you overlay message"
+  },
   "welcomeStepBehavior": "動作",
   "@welcomeStepBehavior": {
     "description": "Behavior setup step"

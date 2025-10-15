@@ -288,19 +288,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsPageDescription => 'アプリケーションの動作と設定を構成';
 
   @override
-  String get settingsTabGeneral => 'General';
+  String get settingsTabGeneral => '一般';
 
   @override
-  String get settingsTabAutoSwitcher => 'Auto Switcher';
+  String get settingsTabAutoSwitcher => '自動切り替え';
 
   @override
-  String get settingsTabKeyboard => 'Keyboard';
+  String get settingsTabKeyboard => 'キーボード';
 
   @override
   String get settingsTabTwitch => 'Twitch';
 
   @override
-  String get settingsTabAdvanced => 'Advanced';
+  String get settingsTabAdvanced => '詳細';
 
   @override
   String get autoSwitcherStatusNotInitialized => '未初期化';
@@ -920,6 +920,33 @@ class AppLocalizationsJa extends AppLocalizations {
   String get unknownGameDialogTitle => 'Game Not Mapped';
 
   @override
+  String get unknownGameDialogStepCategory => 'カテゴリー';
+
+  @override
+  String get unknownGameDialogStepDestination => '保存先';
+
+  @override
+  String get unknownGameDialogStepConfirm => '確認';
+
+  @override
+  String get unknownGameDialogConfirmHeader => '確認と承認';
+
+  @override
+  String get unknownGameDialogConfirmDescription => '保存する前に選択内容を確認してください';
+
+  @override
+  String get unknownGameDialogConfirmCategory => 'TWITCHカテゴリー';
+
+  @override
+  String get unknownGameDialogConfirmDestination => '保存先リスト';
+
+  @override
+  String get unknownGameDialogBack => '戻る';
+
+  @override
+  String get unknownGameDialogNext => '次へ';
+
+  @override
   String unknownGameDialogSubtitle(String processName) {
     return 'Select a Twitch category for \"$processName\"';
   }
@@ -934,18 +961,61 @@ class AppLocalizationsJa extends AppLocalizations {
   String get unknownGameDialogSearchHint => 'Type game name...';
 
   @override
-  String get unknownGameDialogOptionsHeader => 'OPTIONS';
+  String get unknownGameDialogCategoryHeader => 'Twitchカテゴリーを選択';
 
   @override
-  String get unknownGameDialogSaveLocallyLabel => 'Save mapping locally';
+  String get unknownGameDialogCategoryDescription =>
+      'このゲームのTwitchカテゴリーを検索して選択してください';
 
   @override
-  String get unknownGameDialogContributeLabel =>
-      'Contribute to community mappings';
+  String get unknownGameDialogListHeader => '保存先を選択';
 
   @override
-  String get unknownGameDialogContributeSubtitle =>
-      'Help others by sharing this mapping on GitHub';
+  String get unknownGameDialogListDescription => 'このマッピングを保存する場所を選択してください';
+
+  @override
+  String get unknownGameDialogNoWritableLists => '書き込み可能なリストがありません';
+
+  @override
+  String get unknownGameDialogNoWritableListsHint =>
+      'カスタムマッピングを保存するには、カテゴリーマッピングでローカルリストを作成してください';
+
+  @override
+  String get unknownGameDialogLocalListsHeader => 'ローカルマッピング';
+
+  @override
+  String get unknownGameDialogSubmissionListsHeader => 'コミュニティへの投稿';
+
+  @override
+  String get unknownGameDialogWorkflowHeader => '投稿の仕組み';
+
+  @override
+  String get unknownGameDialogWorkflowCompactNote =>
+      '最初にローカルに保存され、その後コミュニティの承認のために投稿されます';
+
+  @override
+  String get unknownGameDialogWorkflowLearnMore => '詳しく見る';
+
+  @override
+  String get unknownGameDialogWorkflowStep1Title => 'ローカルに保存（即時）';
+
+  @override
+  String get unknownGameDialogWorkflowStep1Description =>
+      'マッピングがローカルリストに追加され、すぐに機能します';
+
+  @override
+  String get unknownGameDialogWorkflowStep2Title => 'レビューのために投稿';
+
+  @override
+  String get unknownGameDialogWorkflowStep2Description =>
+      'マッピングが承認のためにコミュニティに投稿されます';
+
+  @override
+  String get unknownGameDialogWorkflowStep3Title => '公式にマージ';
+
+  @override
+  String get unknownGameDialogWorkflowStep3Description =>
+      '承認されると、公式マッピングに表示され、ローカルリストから削除されます';
 
   @override
   String get unknownGameDialogSearchError => 'Search Error';
@@ -965,6 +1035,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get unknownGameDialogSave => 'Save';
+
+  @override
+  String get unknownGameDialogThankYouTitle => 'ありがとうございます！';
+
+  @override
+  String get unknownGameDialogThankYouMessage => 'あなたの貢献がコミュニティの成長に役立ちます！';
 
   @override
   String get versionStatusUpToDate => '最新';

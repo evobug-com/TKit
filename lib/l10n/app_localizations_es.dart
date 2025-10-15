@@ -301,16 +301,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsTabGeneral => 'General';
 
   @override
-  String get settingsTabAutoSwitcher => 'Auto Switcher';
+  String get settingsTabAutoSwitcher => 'Cambio automático';
 
   @override
-  String get settingsTabKeyboard => 'Keyboard';
+  String get settingsTabKeyboard => 'Teclado';
 
   @override
   String get settingsTabTwitch => 'Twitch';
 
   @override
-  String get settingsTabAdvanced => 'Advanced';
+  String get settingsTabAdvanced => 'Avanzado';
 
   @override
   String get autoSwitcherStatusNotInitialized => 'NO INICIALIZADO';
@@ -986,6 +986,34 @@ class AppLocalizationsEs extends AppLocalizations {
   String get unknownGameDialogTitle => 'Game Not Mapped';
 
   @override
+  String get unknownGameDialogStepCategory => 'Categoría';
+
+  @override
+  String get unknownGameDialogStepDestination => 'Destino';
+
+  @override
+  String get unknownGameDialogStepConfirm => 'Confirmar';
+
+  @override
+  String get unknownGameDialogConfirmHeader => 'Revisar y confirmar';
+
+  @override
+  String get unknownGameDialogConfirmDescription =>
+      'Por favor revisa tus selecciones antes de guardar';
+
+  @override
+  String get unknownGameDialogConfirmCategory => 'CATEGORÍA DE TWITCH';
+
+  @override
+  String get unknownGameDialogConfirmDestination => 'LISTA DE DESTINO';
+
+  @override
+  String get unknownGameDialogBack => 'Atrás';
+
+  @override
+  String get unknownGameDialogNext => 'Siguiente';
+
+  @override
   String unknownGameDialogSubtitle(String processName) {
     return 'Select a Twitch category for \"$processName\"';
   }
@@ -1000,18 +1028,65 @@ class AppLocalizationsEs extends AppLocalizations {
   String get unknownGameDialogSearchHint => 'Type game name...';
 
   @override
-  String get unknownGameDialogOptionsHeader => 'OPTIONS';
+  String get unknownGameDialogCategoryHeader =>
+      'Seleccionar categoría de Twitch';
 
   @override
-  String get unknownGameDialogSaveLocallyLabel => 'Save mapping locally';
+  String get unknownGameDialogCategoryDescription =>
+      'Busca y selecciona la categoría de Twitch para este juego';
 
   @override
-  String get unknownGameDialogContributeLabel =>
-      'Contribute to community mappings';
+  String get unknownGameDialogListHeader => 'Elegir destino';
 
   @override
-  String get unknownGameDialogContributeSubtitle =>
-      'Help others by sharing this mapping on GitHub';
+  String get unknownGameDialogListDescription =>
+      'Selecciona dónde guardar este mapeo';
+
+  @override
+  String get unknownGameDialogNoWritableLists =>
+      'No hay listas disponibles para escritura';
+
+  @override
+  String get unknownGameDialogNoWritableListsHint =>
+      'Crea una lista local en Mapeos de categorías para guardar mapeos personalizados';
+
+  @override
+  String get unknownGameDialogLocalListsHeader => 'MAPEOS LOCALES';
+
+  @override
+  String get unknownGameDialogSubmissionListsHeader => 'ENVÍO A LA COMUNIDAD';
+
+  @override
+  String get unknownGameDialogWorkflowHeader => 'Cómo funciona el envío';
+
+  @override
+  String get unknownGameDialogWorkflowCompactNote =>
+      'Se guarda localmente primero, luego se envía para aprobación de la comunidad';
+
+  @override
+  String get unknownGameDialogWorkflowLearnMore => 'Más información';
+
+  @override
+  String get unknownGameDialogWorkflowStep1Title =>
+      'Guardado localmente (inmediato)';
+
+  @override
+  String get unknownGameDialogWorkflowStep1Description =>
+      'El mapeo se agrega a tu lista local y funciona inmediatamente';
+
+  @override
+  String get unknownGameDialogWorkflowStep2Title => 'Enviado para revisión';
+
+  @override
+  String get unknownGameDialogWorkflowStep2Description =>
+      'Tu mapeo se envía a la comunidad para su aprobación';
+
+  @override
+  String get unknownGameDialogWorkflowStep3Title => 'Fusionado a oficial';
+
+  @override
+  String get unknownGameDialogWorkflowStep3Description =>
+      'Una vez aprobado, aparece en los mapeos oficiales y se elimina de tu lista local';
 
   @override
   String get unknownGameDialogSearchError => 'Search Error';
@@ -1031,6 +1106,13 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get unknownGameDialogSave => 'Save';
+
+  @override
+  String get unknownGameDialogThankYouTitle => '¡Gracias!';
+
+  @override
+  String get unknownGameDialogThankYouMessage =>
+      '¡Tu contribución ayuda a que la comunidad crezca!';
 
   @override
   String get versionStatusUpToDate => 'Actualizado';

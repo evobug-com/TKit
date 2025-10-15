@@ -974,6 +974,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unknownGameDialogTitle => 'Game Not Mapped';
 
   @override
+  String get unknownGameDialogStepCategory => 'Category';
+
+  @override
+  String get unknownGameDialogStepDestination => 'Destination';
+
+  @override
+  String get unknownGameDialogStepConfirm => 'Confirm';
+
+  @override
+  String get unknownGameDialogConfirmHeader => 'Review & Confirm';
+
+  @override
+  String get unknownGameDialogConfirmDescription =>
+      'Please review your selections before saving';
+
+  @override
+  String get unknownGameDialogConfirmCategory => 'TWITCH CATEGORY';
+
+  @override
+  String get unknownGameDialogConfirmDestination => 'DESTINATION LIST';
+
+  @override
+  String get unknownGameDialogBack => 'Back';
+
+  @override
+  String get unknownGameDialogNext => 'Next';
+
+  @override
   String unknownGameDialogSubtitle(String processName) {
     return 'Select a Twitch category for \"$processName\"';
   }
@@ -988,18 +1016,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unknownGameDialogSearchHint => 'Type game name...';
 
   @override
-  String get unknownGameDialogOptionsHeader => 'OPTIONS';
+  String get unknownGameDialogCategoryHeader => 'Select Twitch Category';
 
   @override
-  String get unknownGameDialogSaveLocallyLabel => 'Save mapping locally';
+  String get unknownGameDialogCategoryDescription =>
+      'Search and select the Twitch category for this game';
 
   @override
-  String get unknownGameDialogContributeLabel =>
-      'Contribute to community mappings';
+  String get unknownGameDialogListHeader => 'Choose Destination';
 
   @override
-  String get unknownGameDialogContributeSubtitle =>
-      'Help others by sharing this mapping on GitHub';
+  String get unknownGameDialogListDescription =>
+      'Select where to save this mapping';
+
+  @override
+  String get unknownGameDialogNoWritableLists => 'No writable lists available';
+
+  @override
+  String get unknownGameDialogNoWritableListsHint =>
+      'Create a local list in Category Mappings to save custom mappings';
+
+  @override
+  String get unknownGameDialogLocalListsHeader => 'LOCAL MAPPINGS';
+
+  @override
+  String get unknownGameDialogSubmissionListsHeader => 'COMMUNITY SUBMISSION';
+
+  @override
+  String get unknownGameDialogWorkflowHeader => 'How Submission Works';
+
+  @override
+  String get unknownGameDialogWorkflowCompactNote =>
+      'Saves locally first, then submitted for community approval';
+
+  @override
+  String get unknownGameDialogWorkflowLearnMore => 'Learn More';
+
+  @override
+  String get unknownGameDialogWorkflowStep1Title => 'Saved Locally (Immediate)';
+
+  @override
+  String get unknownGameDialogWorkflowStep1Description =>
+      'Mapping is added to your local list and works immediately';
+
+  @override
+  String get unknownGameDialogWorkflowStep2Title => 'Submitted for Review';
+
+  @override
+  String get unknownGameDialogWorkflowStep2Description =>
+      'Your mapping is submitted to the community for approval';
+
+  @override
+  String get unknownGameDialogWorkflowStep3Title => 'Merged to Official';
+
+  @override
+  String get unknownGameDialogWorkflowStep3Description =>
+      'Once approved, it appears in official mappings and is removed from your local list';
 
   @override
   String get unknownGameDialogSearchError => 'Search Error';
@@ -1019,6 +1091,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unknownGameDialogSave => 'Save';
+
+  @override
+  String get unknownGameDialogThankYouTitle => 'Thank You!';
+
+  @override
+  String get unknownGameDialogThankYouMessage =>
+      'Your contribution helps the community grow!';
 
   @override
   String get versionStatusUpToDate => 'Up to date';

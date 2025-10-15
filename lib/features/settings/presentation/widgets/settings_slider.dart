@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class SettingsSlider extends StatelessWidget {
   final String label;
   final String? description;
+  final String? example;
   final double value;
   final double min;
   final double max;
@@ -16,6 +17,7 @@ class SettingsSlider extends StatelessWidget {
     super.key,
     required this.label,
     this.description,
+    this.example,
     required this.value,
     required this.min,
     required this.max,
@@ -50,6 +52,36 @@ class SettingsSlider extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontSize: 11,
                         color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                      ),
+                    ),
+                  ],
+                  if (example != null) ...[
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.info_outline,
+                            size: 12,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 4),
+                          Flexible(
+                            child: Text(
+                              example!,
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                fontSize: 10,
+                                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

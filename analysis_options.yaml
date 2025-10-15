@@ -13,6 +13,7 @@ analyzer:
   exclude:
     - test/**
     - integration_test/**
+    - tools/**
 
 linter:
   # The lint rules applied to this project can be customized in the

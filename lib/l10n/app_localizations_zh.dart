@@ -284,19 +284,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsPageDescription => '配置应用程序行为和首选项';
 
   @override
-  String get settingsTabGeneral => 'General';
+  String get settingsTabGeneral => '常规';
 
   @override
-  String get settingsTabAutoSwitcher => 'Auto Switcher';
+  String get settingsTabAutoSwitcher => '自动切换器';
 
   @override
-  String get settingsTabKeyboard => 'Keyboard';
+  String get settingsTabKeyboard => '键盘';
 
   @override
   String get settingsTabTwitch => 'Twitch';
 
   @override
-  String get settingsTabAdvanced => 'Advanced';
+  String get settingsTabAdvanced => '高级';
 
   @override
   String get autoSwitcherStatusNotInitialized => '未初始化';
@@ -903,6 +903,33 @@ class AppLocalizationsZh extends AppLocalizations {
   String get unknownGameDialogTitle => 'Game Not Mapped';
 
   @override
+  String get unknownGameDialogStepCategory => '类别';
+
+  @override
+  String get unknownGameDialogStepDestination => '目标';
+
+  @override
+  String get unknownGameDialogStepConfirm => '确认';
+
+  @override
+  String get unknownGameDialogConfirmHeader => '审查并确认';
+
+  @override
+  String get unknownGameDialogConfirmDescription => '请在保存前检查您的选择';
+
+  @override
+  String get unknownGameDialogConfirmCategory => 'TWITCH类别';
+
+  @override
+  String get unknownGameDialogConfirmDestination => '目标列表';
+
+  @override
+  String get unknownGameDialogBack => '返回';
+
+  @override
+  String get unknownGameDialogNext => '下一步';
+
+  @override
   String unknownGameDialogSubtitle(String processName) {
     return 'Select a Twitch category for \"$processName\"';
   }
@@ -917,18 +944,56 @@ class AppLocalizationsZh extends AppLocalizations {
   String get unknownGameDialogSearchHint => 'Type game name...';
 
   @override
-  String get unknownGameDialogOptionsHeader => 'OPTIONS';
+  String get unknownGameDialogCategoryHeader => '选择Twitch类别';
 
   @override
-  String get unknownGameDialogSaveLocallyLabel => 'Save mapping locally';
+  String get unknownGameDialogCategoryDescription => '搜索并选择此游戏的Twitch类别';
 
   @override
-  String get unknownGameDialogContributeLabel =>
-      'Contribute to community mappings';
+  String get unknownGameDialogListHeader => '选择目标';
 
   @override
-  String get unknownGameDialogContributeSubtitle =>
-      'Help others by sharing this mapping on GitHub';
+  String get unknownGameDialogListDescription => '选择保存此映射的位置';
+
+  @override
+  String get unknownGameDialogNoWritableLists => '没有可写列表';
+
+  @override
+  String get unknownGameDialogNoWritableListsHint => '在类别映射中创建本地列表以保存自定义映射';
+
+  @override
+  String get unknownGameDialogLocalListsHeader => '本地映射';
+
+  @override
+  String get unknownGameDialogSubmissionListsHeader => '社区提交';
+
+  @override
+  String get unknownGameDialogWorkflowHeader => '提交工作流程';
+
+  @override
+  String get unknownGameDialogWorkflowCompactNote => '首先保存到本地，然后提交给社区审批';
+
+  @override
+  String get unknownGameDialogWorkflowLearnMore => '了解更多';
+
+  @override
+  String get unknownGameDialogWorkflowStep1Title => '本地保存（立即）';
+
+  @override
+  String get unknownGameDialogWorkflowStep1Description => '映射被添加到您的本地列表并立即生效';
+
+  @override
+  String get unknownGameDialogWorkflowStep2Title => '已提交审核';
+
+  @override
+  String get unknownGameDialogWorkflowStep2Description => '您的映射已提交给社区进行审批';
+
+  @override
+  String get unknownGameDialogWorkflowStep3Title => '合并到官方';
+
+  @override
+  String get unknownGameDialogWorkflowStep3Description =>
+      '一旦获得批准，它将出现在官方映射中并从您的本地列表中删除';
 
   @override
   String get unknownGameDialogSearchError => 'Search Error';
@@ -948,6 +1013,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get unknownGameDialogSave => 'Save';
+
+  @override
+  String get unknownGameDialogThankYouTitle => '谢谢！';
+
+  @override
+  String get unknownGameDialogThankYouMessage => '您的贡献帮助社区成长！';
 
   @override
   String get versionStatusUpToDate => '已是最新';

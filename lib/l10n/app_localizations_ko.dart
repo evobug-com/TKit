@@ -286,19 +286,19 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsPageDescription => '애플리케이션 동작 및 기본 설정 구성';
 
   @override
-  String get settingsTabGeneral => 'General';
+  String get settingsTabGeneral => '일반';
 
   @override
-  String get settingsTabAutoSwitcher => 'Auto Switcher';
+  String get settingsTabAutoSwitcher => '자동 전환기';
 
   @override
-  String get settingsTabKeyboard => 'Keyboard';
+  String get settingsTabKeyboard => '키보드';
 
   @override
   String get settingsTabTwitch => 'Twitch';
 
   @override
-  String get settingsTabAdvanced => 'Advanced';
+  String get settingsTabAdvanced => '고급';
 
   @override
   String get autoSwitcherStatusNotInitialized => '초기화되지 않음';
@@ -920,6 +920,33 @@ class AppLocalizationsKo extends AppLocalizations {
   String get unknownGameDialogTitle => 'Game Not Mapped';
 
   @override
+  String get unknownGameDialogStepCategory => '카테고리';
+
+  @override
+  String get unknownGameDialogStepDestination => '대상';
+
+  @override
+  String get unknownGameDialogStepConfirm => '확인';
+
+  @override
+  String get unknownGameDialogConfirmHeader => '검토 및 확인';
+
+  @override
+  String get unknownGameDialogConfirmDescription => '저장하기 전에 선택 내용을 검토하세요';
+
+  @override
+  String get unknownGameDialogConfirmCategory => '트위치 카테고리';
+
+  @override
+  String get unknownGameDialogConfirmDestination => '대상 목록';
+
+  @override
+  String get unknownGameDialogBack => '뒤로';
+
+  @override
+  String get unknownGameDialogNext => '다음';
+
+  @override
   String unknownGameDialogSubtitle(String processName) {
     return 'Select a Twitch category for \"$processName\"';
   }
@@ -934,18 +961,61 @@ class AppLocalizationsKo extends AppLocalizations {
   String get unknownGameDialogSearchHint => 'Type game name...';
 
   @override
-  String get unknownGameDialogOptionsHeader => 'OPTIONS';
+  String get unknownGameDialogCategoryHeader => '트위치 카테고리 선택';
 
   @override
-  String get unknownGameDialogSaveLocallyLabel => 'Save mapping locally';
+  String get unknownGameDialogCategoryDescription =>
+      '이 게임의 트위치 카테고리를 검색하고 선택하세요';
 
   @override
-  String get unknownGameDialogContributeLabel =>
-      'Contribute to community mappings';
+  String get unknownGameDialogListHeader => '대상 선택';
 
   @override
-  String get unknownGameDialogContributeSubtitle =>
-      'Help others by sharing this mapping on GitHub';
+  String get unknownGameDialogListDescription => '이 매핑을 저장할 위치를 선택하세요';
+
+  @override
+  String get unknownGameDialogNoWritableLists => '쓰기 가능한 목록이 없습니다';
+
+  @override
+  String get unknownGameDialogNoWritableListsHint =>
+      '사용자 정의 매핑을 저장하려면 카테고리 매핑에서 로컬 목록을 만드세요';
+
+  @override
+  String get unknownGameDialogLocalListsHeader => '로컬 매핑';
+
+  @override
+  String get unknownGameDialogSubmissionListsHeader => '커뮤니티 제출';
+
+  @override
+  String get unknownGameDialogWorkflowHeader => '제출 방법';
+
+  @override
+  String get unknownGameDialogWorkflowCompactNote =>
+      '먼저 로컬에 저장된 후 커뮤니티 승인을 위해 제출됩니다';
+
+  @override
+  String get unknownGameDialogWorkflowLearnMore => '자세히 알아보기';
+
+  @override
+  String get unknownGameDialogWorkflowStep1Title => '로컬에 저장됨 (즉시)';
+
+  @override
+  String get unknownGameDialogWorkflowStep1Description =>
+      '매핑이 로컬 목록에 추가되고 즉시 작동합니다';
+
+  @override
+  String get unknownGameDialogWorkflowStep2Title => '검토를 위해 제출됨';
+
+  @override
+  String get unknownGameDialogWorkflowStep2Description =>
+      '매핑이 승인을 위해 커뮤니티에 제출됩니다';
+
+  @override
+  String get unknownGameDialogWorkflowStep3Title => '공식에 병합됨';
+
+  @override
+  String get unknownGameDialogWorkflowStep3Description =>
+      '승인되면 공식 매핑에 나타나고 로컬 목록에서 제거됩니다';
 
   @override
   String get unknownGameDialogSearchError => 'Search Error';
@@ -965,6 +1035,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get unknownGameDialogSave => 'Save';
+
+  @override
+  String get unknownGameDialogThankYouTitle => '감사합니다!';
+
+  @override
+  String get unknownGameDialogThankYouMessage => '여러분의 기여가 커뮤니티 성장에 도움이 됩니다!';
 
   @override
   String get versionStatusUpToDate => '최신 상태';

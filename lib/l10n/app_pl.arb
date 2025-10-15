@@ -1214,6 +1214,138 @@
   "@settingsPageDescription": {
     "description": "Settings page description"
   },
+  "settingsTabGeneral": "Ogólne",
+  "@settingsTabGeneral": {
+    "description": "General settings tab"
+  },
+  "settingsTabAutoSwitcher": "Automatyczny przełącznik",
+  "@settingsTabAutoSwitcher": {
+    "description": "Auto Switcher settings tab"
+  },
+  "settingsTabKeyboard": "Klawiatura",
+  "@settingsTabKeyboard": {
+    "description": "Keyboard settings tab"
+  },
+  "settingsTabTwitch": "Twitch",
+  "@settingsTabTwitch": {
+    "description": "Twitch settings tab"
+  },
+  "settingsTabAdvanced": "Zaawansowane",
+  "@settingsTabAdvanced": {
+    "description": "Advanced settings tab"
+  },
+  "unknownGameDialogStepCategory": "Kategoria",
+  "@unknownGameDialogStepCategory": {
+    "description": "Step 1 label"
+  },
+  "unknownGameDialogStepDestination": "Miejsce docelowe",
+  "@unknownGameDialogStepDestination": {
+    "description": "Step 2 label"
+  },
+  "unknownGameDialogStepConfirm": "Potwierdź",
+  "@unknownGameDialogStepConfirm": {
+    "description": "Step 3 label"
+  },
+  "unknownGameDialogConfirmHeader": "Przejrzyj i potwierdź",
+  "@unknownGameDialogConfirmHeader": {
+    "description": "Confirm step header"
+  },
+  "unknownGameDialogConfirmDescription": "Proszę sprawdzić swoje wybory przed zapisaniem",
+  "@unknownGameDialogConfirmDescription": {
+    "description": "Confirm step description"
+  },
+  "unknownGameDialogConfirmCategory": "KATEGORIA TWITCH",
+  "@unknownGameDialogConfirmCategory": {
+    "description": "Confirm category section label"
+  },
+  "unknownGameDialogConfirmDestination": "LISTA DOCELOWA",
+  "@unknownGameDialogConfirmDestination": {
+    "description": "Confirm destination section label"
+  },
+  "unknownGameDialogBack": "Wstecz",
+  "@unknownGameDialogBack": {
+    "description": "Back button text"
+  },
+  "unknownGameDialogNext": "Dalej",
+  "@unknownGameDialogNext": {
+    "description": "Next button text"
+  },
+  "unknownGameDialogCategoryHeader": "Wybierz kategorię Twitch",
+  "@unknownGameDialogCategoryHeader": {
+    "description": "Category selection section header"
+  },
+  "unknownGameDialogCategoryDescription": "Wyszukaj i wybierz kategorię Twitch dla tej gry",
+  "@unknownGameDialogCategoryDescription": {
+    "description": "Category selection section description"
+  },
+  "unknownGameDialogListHeader": "Wybierz miejsce docelowe",
+  "@unknownGameDialogListHeader": {
+    "description": "List selection section header"
+  },
+  "unknownGameDialogListDescription": "Wybierz, gdzie zapisać to mapowanie",
+  "@unknownGameDialogListDescription": {
+    "description": "List selection section description"
+  },
+  "unknownGameDialogNoWritableLists": "Brak dostępnych list z możliwością zapisu",
+  "@unknownGameDialogNoWritableLists": {
+    "description": "Message when no writable lists are available"
+  },
+  "unknownGameDialogNoWritableListsHint": "Utwórz lokalną listę w Mapowaniach kategorii, aby zapisać niestandardowe mapowania",
+  "@unknownGameDialogNoWritableListsHint": {
+    "description": "Hint for creating writable lists"
+  },
+  "unknownGameDialogLocalListsHeader": "LOKALNE MAPOWANIA",
+  "@unknownGameDialogLocalListsHeader": {
+    "description": "Header for local mapping lists section"
+  },
+  "unknownGameDialogSubmissionListsHeader": "ZGŁOSZENIE SPOŁECZNOŚCI",
+  "@unknownGameDialogSubmissionListsHeader": {
+    "description": "Header for lists with submission capability"
+  },
+  "unknownGameDialogWorkflowHeader": "Jak działa zgłaszanie",
+  "@unknownGameDialogWorkflowHeader": {
+    "description": "Header for workflow explanation dialog"
+  },
+  "unknownGameDialogWorkflowCompactNote": "Najpierw zapisywane lokalnie, następnie wysyłane do zatwierdzenia przez społeczność",
+  "@unknownGameDialogWorkflowCompactNote": {
+    "description": "Compact workflow note shown in list section"
+  },
+  "unknownGameDialogWorkflowLearnMore": "Dowiedz się więcej",
+  "@unknownGameDialogWorkflowLearnMore": {
+    "description": "Learn more link text for workflow details"
+  },
+  "unknownGameDialogWorkflowStep1Title": "Zapisane lokalnie (natychmiast)",
+  "@unknownGameDialogWorkflowStep1Title": {
+    "description": "Title for workflow step 1"
+  },
+  "unknownGameDialogWorkflowStep1Description": "Mapowanie jest dodawane do lokalnej listy i działa natychmiast",
+  "@unknownGameDialogWorkflowStep1Description": {
+    "description": "Description for workflow step 1"
+  },
+  "unknownGameDialogWorkflowStep2Title": "Wysłane do przeglądu",
+  "@unknownGameDialogWorkflowStep2Title": {
+    "description": "Title for workflow step 2"
+  },
+  "unknownGameDialogWorkflowStep2Description": "Twoje mapowanie jest wysyłane do społeczności w celu zatwierdzenia",
+  "@unknownGameDialogWorkflowStep2Description": {
+    "description": "Description for workflow step 2"
+  },
+  "unknownGameDialogWorkflowStep3Title": "Połączone z oficjalnym",
+  "@unknownGameDialogWorkflowStep3Title": {
+    "description": "Title for workflow step 3"
+  },
+  "unknownGameDialogWorkflowStep3Description": "Po zatwierdzeniu pojawia się w oficjalnych mapowaniach i jest usuwane z lokalnej listy",
+  "@unknownGameDialogWorkflowStep3Description": {
+    "description": "Description for workflow step 3"
+  },
+  "unknownGameDialogThankYouTitle": "Dziękujemy!",
+  "@unknownGameDialogThankYouTitle": {
+    "description": "Thank you overlay title"
+  },
+  "unknownGameDialogThankYouMessage": "Twój wkład pomaga społeczności rosnąć!",
+  "@unknownGameDialogThankYouMessage": {
+    "description": "Thank you overlay message"
+  },
   "welcomeStepBehavior": "Zachowanie",
   "@welcomeStepBehavior": {
     "description": "Behavior setup step"

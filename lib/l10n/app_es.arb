@@ -372,6 +372,138 @@
   "@settingsPageDescription": {
     "description": "Settings page description"
   },
+  "settingsTabGeneral": "General",
+  "@settingsTabGeneral": {
+    "description": "General settings tab"
+  },
+  "settingsTabAutoSwitcher": "Cambio automático",
+  "@settingsTabAutoSwitcher": {
+    "description": "Auto Switcher settings tab"
+  },
+  "settingsTabKeyboard": "Teclado",
+  "@settingsTabKeyboard": {
+    "description": "Keyboard settings tab"
+  },
+  "settingsTabTwitch": "Twitch",
+  "@settingsTabTwitch": {
+    "description": "Twitch settings tab"
+  },
+  "settingsTabAdvanced": "Avanzado",
+  "@settingsTabAdvanced": {
+    "description": "Advanced settings tab"
+  },
+  "unknownGameDialogStepCategory": "Categoría",
+  "@unknownGameDialogStepCategory": {
+    "description": "Step 1 label"
+  },
+  "unknownGameDialogStepDestination": "Destino",
+  "@unknownGameDialogStepDestination": {
+    "description": "Step 2 label"
+  },
+  "unknownGameDialogStepConfirm": "Confirmar",
+  "@unknownGameDialogStepConfirm": {
+    "description": "Step 3 label"
+  },
+  "unknownGameDialogConfirmHeader": "Revisar y confirmar",
+  "@unknownGameDialogConfirmHeader": {
+    "description": "Confirm step header"
+  },
+  "unknownGameDialogConfirmDescription": "Por favor revisa tus selecciones antes de guardar",
+  "@unknownGameDialogConfirmDescription": {
+    "description": "Confirm step description"
+  },
+  "unknownGameDialogConfirmCategory": "CATEGORÍA DE TWITCH",
+  "@unknownGameDialogConfirmCategory": {
+    "description": "Confirm category section label"
+  },
+  "unknownGameDialogConfirmDestination": "LISTA DE DESTINO",
+  "@unknownGameDialogConfirmDestination": {
+    "description": "Confirm destination section label"
+  },
+  "unknownGameDialogBack": "Atrás",
+  "@unknownGameDialogBack": {
+    "description": "Back button text"
+  },
+  "unknownGameDialogNext": "Siguiente",
+  "@unknownGameDialogNext": {
+    "description": "Next button text"
+  },
+  "unknownGameDialogCategoryHeader": "Seleccionar categoría de Twitch",
+  "@unknownGameDialogCategoryHeader": {
+    "description": "Category selection section header"
+  },
+  "unknownGameDialogCategoryDescription": "Busca y selecciona la categoría de Twitch para este juego",
+  "@unknownGameDialogCategoryDescription": {
+    "description": "Category selection section description"
+  },
+  "unknownGameDialogListHeader": "Elegir destino",
+  "@unknownGameDialogListHeader": {
+    "description": "List selection section header"
+  },
+  "unknownGameDialogListDescription": "Selecciona dónde guardar este mapeo",
+  "@unknownGameDialogListDescription": {
+    "description": "List selection section description"
+  },
+  "unknownGameDialogNoWritableLists": "No hay listas disponibles para escritura",
+  "@unknownGameDialogNoWritableLists": {
+    "description": "Message when no writable lists are available"
+  },
+  "unknownGameDialogNoWritableListsHint": "Crea una lista local en Mapeos de categorías para guardar mapeos personalizados",
+  "@unknownGameDialogNoWritableListsHint": {
+    "description": "Hint for creating writable lists"
+  },
+  "unknownGameDialogLocalListsHeader": "MAPEOS LOCALES",
+  "@unknownGameDialogLocalListsHeader": {
+    "description": "Header for local mapping lists section"
+  },
+  "unknownGameDialogSubmissionListsHeader": "ENVÍO A LA COMUNIDAD",
+  "@unknownGameDialogSubmissionListsHeader": {
+    "description": "Header for lists with submission capability"
+  },
+  "unknownGameDialogWorkflowHeader": "Cómo funciona el envío",
+  "@unknownGameDialogWorkflowHeader": {
+    "description": "Header for workflow explanation dialog"
+  },
+  "unknownGameDialogWorkflowCompactNote": "Se guarda localmente primero, luego se envía para aprobación de la comunidad",
+  "@unknownGameDialogWorkflowCompactNote": {
+    "description": "Compact workflow note shown in list section"
+  },
+  "unknownGameDialogWorkflowLearnMore": "Más información",
+  "@unknownGameDialogWorkflowLearnMore": {
+    "description": "Learn more link text for workflow details"
+  },
+  "unknownGameDialogWorkflowStep1Title": "Guardado localmente (inmediato)",
+  "@unknownGameDialogWorkflowStep1Title": {
+    "description": "Title for workflow step 1"
+  },
+  "unknownGameDialogWorkflowStep1Description": "El mapeo se agrega a tu lista local y funciona inmediatamente",
+  "@unknownGameDialogWorkflowStep1Description": {
+    "description": "Description for workflow step 1"
+  },
+  "unknownGameDialogWorkflowStep2Title": "Enviado para revisión",
+  "@unknownGameDialogWorkflowStep2Title": {
+    "description": "Title for workflow step 2"
+  },
+  "unknownGameDialogWorkflowStep2Description": "Tu mapeo se envía a la comunidad para su aprobación",
+  "@unknownGameDialogWorkflowStep2Description": {
+    "description": "Description for workflow step 2"
+  },
+  "unknownGameDialogWorkflowStep3Title": "Fusionado a oficial",
+  "@unknownGameDialogWorkflowStep3Title": {
+    "description": "Title for workflow step 3"
+  },
+  "unknownGameDialogWorkflowStep3Description": "Una vez aprobado, aparece en los mapeos oficiales y se elimina de tu lista local",
+  "@unknownGameDialogWorkflowStep3Description": {
+    "description": "Description for workflow step 3"
+  },
+  "unknownGameDialogThankYouTitle": "¡Gracias!",
+  "@unknownGameDialogThankYouTitle": {
+    "description": "Thank you overlay title"
+  },
+  "unknownGameDialogThankYouMessage": "¡Tu contribución ayuda a que la comunidad crezca!",
+  "@unknownGameDialogThankYouMessage": {
+    "description": "Thank you overlay message"
+  },
   "autoSwitcherStatusNotInitialized": "NO INICIALIZADO",
   "@autoSwitcherStatusNotInitialized": {
     "description": "Not initialized system state"

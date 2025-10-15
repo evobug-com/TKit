@@ -1854,6 +1854,60 @@ abstract class AppLocalizations {
   /// **'Game Not Mapped'**
   String get unknownGameDialogTitle;
 
+  /// Step 1 label
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get unknownGameDialogStepCategory;
+
+  /// Step 2 label
+  ///
+  /// In en, this message translates to:
+  /// **'Destination'**
+  String get unknownGameDialogStepDestination;
+
+  /// Step 3 label
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get unknownGameDialogStepConfirm;
+
+  /// Confirm step header
+  ///
+  /// In en, this message translates to:
+  /// **'Review & Confirm'**
+  String get unknownGameDialogConfirmHeader;
+
+  /// Confirm step description
+  ///
+  /// In en, this message translates to:
+  /// **'Please review your selections before saving'**
+  String get unknownGameDialogConfirmDescription;
+
+  /// Confirm category section label
+  ///
+  /// In en, this message translates to:
+  /// **'TWITCH CATEGORY'**
+  String get unknownGameDialogConfirmCategory;
+
+  /// Confirm destination section label
+  ///
+  /// In en, this message translates to:
+  /// **'DESTINATION LIST'**
+  String get unknownGameDialogConfirmDestination;
+
+  /// Back button text
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get unknownGameDialogBack;
+
+  /// Next button text
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get unknownGameDialogNext;
+
   /// Unknown game dialog subtitle
   ///
   /// In en, this message translates to:
@@ -1878,29 +1932,107 @@ abstract class AppLocalizations {
   /// **'Type game name...'**
   String get unknownGameDialogSearchHint;
 
-  /// Options section header
+  /// Category selection section header
   ///
   /// In en, this message translates to:
-  /// **'OPTIONS'**
-  String get unknownGameDialogOptionsHeader;
+  /// **'Select Twitch Category'**
+  String get unknownGameDialogCategoryHeader;
 
-  /// Save locally checkbox label
+  /// Category selection section description
   ///
   /// In en, this message translates to:
-  /// **'Save mapping locally'**
-  String get unknownGameDialogSaveLocallyLabel;
+  /// **'Search and select the Twitch category for this game'**
+  String get unknownGameDialogCategoryDescription;
 
-  /// Contribute to community checkbox label
+  /// List selection section header
   ///
   /// In en, this message translates to:
-  /// **'Contribute to community mappings'**
-  String get unknownGameDialogContributeLabel;
+  /// **'Choose Destination'**
+  String get unknownGameDialogListHeader;
 
-  /// Contribute to community checkbox subtitle
+  /// List selection section description
   ///
   /// In en, this message translates to:
-  /// **'Help others by sharing this mapping on GitHub'**
-  String get unknownGameDialogContributeSubtitle;
+  /// **'Select where to save this mapping'**
+  String get unknownGameDialogListDescription;
+
+  /// Message when no writable lists are available
+  ///
+  /// In en, this message translates to:
+  /// **'No writable lists available'**
+  String get unknownGameDialogNoWritableLists;
+
+  /// Hint for creating writable lists
+  ///
+  /// In en, this message translates to:
+  /// **'Create a local list in Category Mappings to save custom mappings'**
+  String get unknownGameDialogNoWritableListsHint;
+
+  /// Header for local mapping lists section
+  ///
+  /// In en, this message translates to:
+  /// **'LOCAL MAPPINGS'**
+  String get unknownGameDialogLocalListsHeader;
+
+  /// Header for lists with submission capability
+  ///
+  /// In en, this message translates to:
+  /// **'COMMUNITY SUBMISSION'**
+  String get unknownGameDialogSubmissionListsHeader;
+
+  /// Header for workflow explanation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'How Submission Works'**
+  String get unknownGameDialogWorkflowHeader;
+
+  /// Compact workflow note shown in list section
+  ///
+  /// In en, this message translates to:
+  /// **'Saves locally first, then submitted for community approval'**
+  String get unknownGameDialogWorkflowCompactNote;
+
+  /// Learn more link text for workflow details
+  ///
+  /// In en, this message translates to:
+  /// **'Learn More'**
+  String get unknownGameDialogWorkflowLearnMore;
+
+  /// Title for workflow step 1
+  ///
+  /// In en, this message translates to:
+  /// **'Saved Locally (Immediate)'**
+  String get unknownGameDialogWorkflowStep1Title;
+
+  /// Description for workflow step 1
+  ///
+  /// In en, this message translates to:
+  /// **'Mapping is added to your local list and works immediately'**
+  String get unknownGameDialogWorkflowStep1Description;
+
+  /// Title for workflow step 2
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted for Review'**
+  String get unknownGameDialogWorkflowStep2Title;
+
+  /// Description for workflow step 2
+  ///
+  /// In en, this message translates to:
+  /// **'Your mapping is submitted to the community for approval'**
+  String get unknownGameDialogWorkflowStep2Description;
+
+  /// Title for workflow step 3
+  ///
+  /// In en, this message translates to:
+  /// **'Merged to Official'**
+  String get unknownGameDialogWorkflowStep3Title;
+
+  /// Description for workflow step 3
+  ///
+  /// In en, this message translates to:
+  /// **'Once approved, it appears in official mappings and is removed from your local list'**
+  String get unknownGameDialogWorkflowStep3Description;
 
   /// Search error message title
   ///
@@ -1937,6 +2069,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get unknownGameDialogSave;
+
+  /// Thank you overlay title
+  ///
+  /// In en, this message translates to:
+  /// **'Thank You!'**
+  String get unknownGameDialogThankYouTitle;
+
+  /// Thank you overlay message
+  ///
+  /// In en, this message translates to:
+  /// **'Your contribution helps the community grow!'**
+  String get unknownGameDialogThankYouMessage;
 
   /// Version status tooltip when up to date
   ///

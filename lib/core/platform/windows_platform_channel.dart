@@ -11,8 +11,7 @@ class WindowsPlatformChannel {
   final AppLogger _logger;
 
   WindowsPlatformChannel(this._logger)
-    : _channel = const MethodChannel(AppConfig.processDetectionChannel) {
-  }
+    : _channel = const MethodChannel(AppConfig.processDetectionChannel);
 
   /// Get the currently focused Windows process
   /// Returns a map with process information or null if no process is focused

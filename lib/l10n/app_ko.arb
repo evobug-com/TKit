@@ -1214,6 +1214,138 @@
   "@settingsPageDescription": {
     "description": "Settings page description"
   },
+  "settingsTabGeneral": "일반",
+  "@settingsTabGeneral": {
+    "description": "General settings tab"
+  },
+  "settingsTabAutoSwitcher": "자동 전환기",
+  "@settingsTabAutoSwitcher": {
+    "description": "Auto Switcher settings tab"
+  },
+  "settingsTabKeyboard": "키보드",
+  "@settingsTabKeyboard": {
+    "description": "Keyboard settings tab"
+  },
+  "settingsTabTwitch": "Twitch",
+  "@settingsTabTwitch": {
+    "description": "Twitch settings tab"
+  },
+  "settingsTabAdvanced": "고급",
+  "@settingsTabAdvanced": {
+    "description": "Advanced settings tab"
+  },
+  "unknownGameDialogStepCategory": "카테고리",
+  "@unknownGameDialogStepCategory": {
+    "description": "Step 1 label"
+  },
+  "unknownGameDialogStepDestination": "대상",
+  "@unknownGameDialogStepDestination": {
+    "description": "Step 2 label"
+  },
+  "unknownGameDialogStepConfirm": "확인",
+  "@unknownGameDialogStepConfirm": {
+    "description": "Step 3 label"
+  },
+  "unknownGameDialogConfirmHeader": "검토 및 확인",
+  "@unknownGameDialogConfirmHeader": {
+    "description": "Confirm step header"
+  },
+  "unknownGameDialogConfirmDescription": "저장하기 전에 선택 내용을 검토하세요",
+  "@unknownGameDialogConfirmDescription": {
+    "description": "Confirm step description"
+  },
+  "unknownGameDialogConfirmCategory": "트위치 카테고리",
+  "@unknownGameDialogConfirmCategory": {
+    "description": "Confirm category section label"
+  },
+  "unknownGameDialogConfirmDestination": "대상 목록",
+  "@unknownGameDialogConfirmDestination": {
+    "description": "Confirm destination section label"
+  },
+  "unknownGameDialogBack": "뒤로",
+  "@unknownGameDialogBack": {
+    "description": "Back button text"
+  },
+  "unknownGameDialogNext": "다음",
+  "@unknownGameDialogNext": {
+    "description": "Next button text"
+  },
+  "unknownGameDialogCategoryHeader": "트위치 카테고리 선택",
+  "@unknownGameDialogCategoryHeader": {
+    "description": "Category selection section header"
+  },
+  "unknownGameDialogCategoryDescription": "이 게임의 트위치 카테고리를 검색하고 선택하세요",
+  "@unknownGameDialogCategoryDescription": {
+    "description": "Category selection section description"
+  },
+  "unknownGameDialogListHeader": "대상 선택",
+  "@unknownGameDialogListHeader": {
+    "description": "List selection section header"
+  },
+  "unknownGameDialogListDescription": "이 매핑을 저장할 위치를 선택하세요",
+  "@unknownGameDialogListDescription": {
+    "description": "List selection section description"
+  },
+  "unknownGameDialogNoWritableLists": "쓰기 가능한 목록이 없습니다",
+  "@unknownGameDialogNoWritableLists": {
+    "description": "Message when no writable lists are available"
+  },
+  "unknownGameDialogNoWritableListsHint": "사용자 정의 매핑을 저장하려면 카테고리 매핑에서 로컬 목록을 만드세요",
+  "@unknownGameDialogNoWritableListsHint": {
+    "description": "Hint for creating writable lists"
+  },
+  "unknownGameDialogLocalListsHeader": "로컬 매핑",
+  "@unknownGameDialogLocalListsHeader": {
+    "description": "Header for local mapping lists section"
+  },
+  "unknownGameDialogSubmissionListsHeader": "커뮤니티 제출",
+  "@unknownGameDialogSubmissionListsHeader": {
+    "description": "Header for lists with submission capability"
+  },
+  "unknownGameDialogWorkflowHeader": "제출 방법",
+  "@unknownGameDialogWorkflowHeader": {
+    "description": "Header for workflow explanation dialog"
+  },
+  "unknownGameDialogWorkflowCompactNote": "먼저 로컬에 저장된 후 커뮤니티 승인을 위해 제출됩니다",
+  "@unknownGameDialogWorkflowCompactNote": {
+    "description": "Compact workflow note shown in list section"
+  },
+  "unknownGameDialogWorkflowLearnMore": "자세히 알아보기",
+  "@unknownGameDialogWorkflowLearnMore": {
+    "description": "Learn more link text for workflow details"
+  },
+  "unknownGameDialogWorkflowStep1Title": "로컬에 저장됨 (즉시)",
+  "@unknownGameDialogWorkflowStep1Title": {
+    "description": "Title for workflow step 1"
+  },
+  "unknownGameDialogWorkflowStep1Description": "매핑이 로컬 목록에 추가되고 즉시 작동합니다",
+  "@unknownGameDialogWorkflowStep1Description": {
+    "description": "Description for workflow step 1"
+  },
+  "unknownGameDialogWorkflowStep2Title": "검토를 위해 제출됨",
+  "@unknownGameDialogWorkflowStep2Title": {
+    "description": "Title for workflow step 2"
+  },
+  "unknownGameDialogWorkflowStep2Description": "매핑이 승인을 위해 커뮤니티에 제출됩니다",
+  "@unknownGameDialogWorkflowStep2Description": {
+    "description": "Description for workflow step 2"
+  },
+  "unknownGameDialogWorkflowStep3Title": "공식에 병합됨",
+  "@unknownGameDialogWorkflowStep3Title": {
+    "description": "Title for workflow step 3"
+  },
+  "unknownGameDialogWorkflowStep3Description": "승인되면 공식 매핑에 나타나고 로컬 목록에서 제거됩니다",
+  "@unknownGameDialogWorkflowStep3Description": {
+    "description": "Description for workflow step 3"
+  },
+  "unknownGameDialogThankYouTitle": "감사합니다!",
+  "@unknownGameDialogThankYouTitle": {
+    "description": "Thank you overlay title"
+  },
+  "unknownGameDialogThankYouMessage": "여러분의 기여가 커뮤니티 성장에 도움이 됩니다!",
+  "@unknownGameDialogThankYouMessage": {
+    "description": "Thank you overlay message"
+  },
   "welcomeStepBehavior": "동작",
   "@welcomeStepBehavior": {
     "description": "Behavior setup step"

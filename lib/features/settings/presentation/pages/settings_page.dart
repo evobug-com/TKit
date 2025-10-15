@@ -520,6 +520,11 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
               },
             ),
             VSpace.md(),
+            _buildTimingExplanation(
+              settings.scanIntervalSeconds,
+              settings.debounceSeconds,
+            ),
+            VSpace.md(),
             SettingsCheckbox(
               label: l10n.settingsAutoStartMonitoringLabel,
               subtitle: l10n.settingsAutoStartMonitoringSubtitle,
@@ -628,6 +633,100 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
     }
   }
 
+  Widget _buildTimingExplanation(int scanInterval, int debounce) {
+    return Container(
+      padding: const EdgeInsets.all(TKitSpacing.md),
+      decoration: BoxDecoration(
+        color: TKitColors.surfaceVariant.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: TKitColors.accent.withValues(alpha: 0.3),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.schedule,
+                size: 16,
+                color: TKitColors.accent,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'HOW THESE SETTINGS WORK TOGETHER',
+                style: TKitTextStyles.labelSmall.copyWith(
+                  color: TKitColors.accent,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          _buildTimingStep(
+            '1',
+            'App checks for focused window every ${scanInterval}s',
+            TKitColors.accent,
+          ),
+          const SizedBox(height: 4),
+          _buildTimingStep(
+            '2',
+            debounce == 0
+                ? 'Category switches immediately when new app detected'
+                : 'Waits ${debounce}s after detecting new app (debounce)',
+            TKitColors.accent,
+          ),
+          const SizedBox(height: 4),
+          _buildTimingStep(
+            '→',
+            debounce == 0
+                ? 'Total switch time: ${scanInterval}s (instant after detection)'
+                : 'Total switch time: ${scanInterval}s to ${scanInterval + debounce}s',
+            TKitColors.success,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimingStep(String number, String text, Color color) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 20,
+          height: 20,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Text(
+            number,
+            style: TKitTextStyles.labelSmall.copyWith(
+              color: color,
+              fontWeight: FontWeight.bold,
+              fontSize: 11,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            text,
+            style: TKitTextStyles.bodySmall.copyWith(
+              color: TKitColors.textPrimary,
+              height: 1.4,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildKeyboardTab(AppSettings settings, AppLocalizations l10n) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(TKitSpacing.pagePadding),
@@ -731,22 +830,22 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                     updatedSettings,
                   );
 
-                  if (context.mounted) {
-                    final updateService = context.read<GitHubUpdateService>();
-                    await updateService.checkForUpdates(
-                      silent: false,
-                      channel: value,
-                    );
+                  if (!context.mounted) return;
 
-                    if (context.mounted) {
-                      Toast.success(
-                        context,
-                        l10n.settingsUpdateChannelChanged(
-                          value.localizedName(context),
-                        ),
-                      );
-                    }
-                  }
+                  final updateService = context.read<GitHubUpdateService>();
+                  await updateService.checkForUpdates(
+                    silent: false,
+                    channel: value,
+                  );
+
+                  if (!context.mounted) return;
+
+                  Toast.success(
+                    context,
+                    l10n.settingsUpdateChannelChanged(
+                      value.localizedName(context),
+                    ),
+                  );
                 }
               },
             ),

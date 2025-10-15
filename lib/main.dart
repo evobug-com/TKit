@@ -217,6 +217,7 @@ void main() async {
       mappingListLocalDataSource,
       mappingListSyncDataSource,
       database,
+      logger,
     );
 
     final processDetectionRepository = ProcessDetectionRepositoryImpl(
@@ -498,7 +499,7 @@ void main() async {
     }
 
     // Initialize platform channel
-    final isAvailable = await platformChannel.isAvailable();
+    await platformChannel.isAvailable();
 
     // Configure window with custom chrome
     await windowManager.ensureInitialized();
@@ -1123,6 +1124,7 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
             final contributeToCommunity = result['contributeToCommunity'] as bool? ?? false;
             final isEnabled = result['isEnabled'] as bool? ?? true;
             final normalizedPath = result['normalizedInstallPath'] as String?;
+            final listId = result['listId'] as String?;
 
             logger.info('User selected category: ${category.name} (ID: ${category.id}) for process: $processName');
 
@@ -1146,6 +1148,8 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
                   cacheExpiresAt: DateTime.now().add(const Duration(hours: 24)),
                   manualOverride: true,
                   isEnabled: isEnabled,
+                  pendingSubmission: contributeToCommunity,
+                  listId: listId ?? 'my-custom-mappings',
                 );
 
                 final saveResult = await saveMappingUseCase(mapping);
@@ -1231,6 +1235,7 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
         final contributeToCommunity = result['contributeToCommunity'] as bool;
         final isEnabled = result['isEnabled'] as bool? ?? true;
         final normalizedPath = result['normalizedInstallPath'] as String?;
+        final listId = result['listId'] as String?;
 
         logger.info(
           'User selected category: ${category.name} (ID: ${category.id}) '
@@ -1314,6 +1319,8 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
             cacheExpiresAt: DateTime.now().add(const Duration(hours: 24)),
             manualOverride: true,
             isEnabled: isEnabled,
+            pendingSubmission: contributeToCommunity,
+            listId: listId ?? 'my-custom-mappings',
           );
         }
 

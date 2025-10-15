@@ -24,8 +24,25 @@ class TwitchCategory extends Equatable {
   /// Get formatted box art URL with specific dimensions
   String? getBoxArtUrl({int width = 285, int height = 380}) {
     if (boxArtUrl == null) return null;
-    return boxArtUrl!
-        .replaceAll('{width}', width.toString())
-        .replaceAll('{height}', height.toString());
+
+    // Handle both template format and hardcoded dimensions
+    String url = boxArtUrl!;
+
+    // If URL has {width}x{height} placeholders, replace them
+    if (url.contains('{width}') && url.contains('{height}')) {
+      return url
+          .replaceAll('{width}', width.toString())
+          .replaceAll('{height}', height.toString());
+    }
+
+    // Otherwise, strip existing dimensions (e.g., "52x72.jpg") and replace with desired size
+    // Pattern: anything ending in "{digits}x{digits}.jpg"
+    final regex = RegExp(r'-\d+x\d+\.jpg$');
+    if (regex.hasMatch(url)) {
+      return url.replaceAll(regex, '-${width}x$height.jpg');
+    }
+
+    // Fallback: return original URL if format is unknown
+    return url;
   }
 }

@@ -10,34 +10,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### TKit
 
 #### Added
-- Checkboxes in mappings to perform bulk actions (enable/disable, delete, invert, export)
+- List Management system with support for custom mapping lists (both read-only and writable)
+- Ability to import mapping lists from URLs
+- Auto-sync functionality for mapping lists on app start
+- Configurable auto-sync interval (1-168 hours) with "Never" option
+- Ignored processes feature to prevent specific executables from triggering auto-switcher
+- Checkboxes in mappings table for bulk actions (enable/disable, delete, invert, export)
 - Export selected mappings to JSON file
 - Search bar in mappings tab
-- Ability to swap header with footer
-- Support for custom listings with only read or write access and hooks for adding new items
-- Clickable Source label in mappings table that opens List Management dialog
+- Clickable Source badges in mappings table that open List Management dialog
 - List name display in Source column (populated from mapping lists)
-- New Mappings tab in Settings with auto-sync configuration
-- Auto-sync mappings on app start setting
-- Configurable auto-sync interval (1-168 hours)
-
-#### Fixed
-- Twitch error when adding a process to the ignore list
-- Source column now shows actual list name instead of "Unknown"
-- JSON parsing error when syncing mapping lists (manual decode for String responses)
-- Added comprehensive error logging to all datasource layers with stack traces
+- Mappings tab in Settings with auto-sync configuration
+- Ability to make the app window draggable by the footer
+- Official lists now appear at the top of List Management dialog
+- Toggle visibility for Custom/Community mappings sections
+- Ability to swap header with footer position
 
 #### Changed
-- Changelog now displays differences between current and latest release
-- Application icon updated
-- Removed Auto Switcher, Category Mappings, and Settings from the tray menu
+- Changelog now displays differences between current version and latest release
+- Application icon and logo updated (rebrand)
+- Tray menu simplified (removed Auto Switcher, Category Mappings, and Settings options)
 - Removed web, Android, and iOS platforms from the project
-- Renamed "Community Mappings" to "Community Games"
 - Source column styled as clickable badge with blue theme
-- Official lists now appear at the top of list management dialog
-- Enhanced time formatting: shows "never" for null values and displays days + hours (e.g., "1d 5h ago") for times >= 24 hours
-- Auto-sync interval slider now supports 0 (Never) and displays formatted values (e.g., "1d", "1d 5h")
-- When no process is detected, it runs the fallback behavior now
+- Enhanced time formatting: displays "never" for null values and formatted durations (e.g., "1d 5h ago") for times >= 24 hours
+- Auto-sync interval slider now supports 0 (Never) and displays formatted values
+- Fallback behavior now executes when no process is detected
+- Updated metadata now syncs properly with mapping lists
+- Simplified submission links to community repository
+- Import paths now consistently use package imports throughout the codebase
+- Error messages and logging experience improved with better context
+- IGNORE key replaced with -1 for better semantic clarity
+- Faster application shutdown process
+- Code cleanup and refactoring improvements
+
+#### Fixed
+- Twitch error when adding items to ignored list
+- Application hang on close
+- Loading mappings from database
+- Running database migrations correctly with improved logging
+- Tray icon not showing properly
+- Version status display issues
+- Race condition causing update indicator to show "Update service not initialized" intermittently on startup
+
+#### Removed
+- Source, verification, and lastVerified fields from mapping submissions (simplified submission flow)
 
 ## [0.0.1-dev.5] - 2025-10-13
 

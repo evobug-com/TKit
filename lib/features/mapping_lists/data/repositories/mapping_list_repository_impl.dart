@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:tkit/core/errors/exceptions.dart';
 import 'package:tkit/core/errors/failure.dart';
 import 'package:tkit/core/database/app_database.dart';
+import 'package:tkit/core/utils/app_logger.dart';
 import 'package:tkit/features/mapping_lists/domain/entities/mapping_list.dart';
 import 'package:tkit/features/mapping_lists/domain/entities/mapping_list_item.dart';
 import 'package:tkit/features/mapping_lists/domain/repositories/i_mapping_list_repository.dart';
@@ -16,11 +17,13 @@ class MappingListRepositoryImpl implements IMappingListRepository {
   final MappingListLocalDataSource _localDataSource;
   final MappingListSyncDataSource _syncDataSource;
   final AppDatabase _database;
+  final AppLogger _logger;
 
   MappingListRepositoryImpl(
     this._localDataSource,
     this._syncDataSource,
     this._database,
+    this._logger,
   );
 
   @override
@@ -155,6 +158,10 @@ class MappingListRepositoryImpl implements IMappingListRepository {
       // Update sync timestamp and clear error on success
       await _localDataSource.updateSyncSuccess(listId, DateTime.now());
 
+      // After syncing official/remote lists, check for and remove duplicates
+      // from local lists that were marked as pending submission
+      await _removeDuplicatesFromLocalList(listId);
+
       return const Right(null);
     } on NetworkException catch (e) {
       // Store error message
@@ -183,7 +190,7 @@ class MappingListRepositoryImpl implements IMappingListRepository {
         result.fold(
           (failure) {
             // Log failure but continue syncing other lists
-            print('Failed to sync list ${list.name}: $failure');
+            _logger.warning('Failed to sync list ${list.name}', failure);
           },
           (_) => successCount++,
         );
@@ -292,5 +299,61 @@ class MappingListRepositoryImpl implements IMappingListRepository {
             );
       }
     });
+  }
+
+  /// Remove duplicate mappings from local lists after syncing official/remote lists
+  ///
+  /// When a user submits a mapping to a community list, it's saved locally with
+  /// pendingSubmission=true. After the submission is accepted and appears in the
+  /// official list, we want to remove the local duplicate to avoid confusion.
+  ///
+  /// This method compares mappings from the just-synced list against local mappings
+  /// marked as pendingSubmission and removes matches based on processName + categoryId.
+  Future<void> _removeDuplicatesFromLocalList(String syncedListId) async {
+    try {
+      // Only check for duplicates if we just synced an official or remote list
+      final syncedList = await _localDataSource.getListById(syncedListId);
+      if (syncedList == null || syncedList.sourceType == MappingListSourceType.local) {
+        return; // Nothing to do for local lists
+      }
+
+      // Get all mappings from the synced list
+      final syncedMappings = await (_database.select(_database.categoryMappings)
+            ..where((tbl) => tbl.listId.equals(syncedListId)))
+          .get();
+
+      // Get all pending submission mappings from local lists
+      final pendingMappings = await (_database.select(_database.categoryMappings)
+            ..where((tbl) => tbl.pendingSubmission.equals(true))
+            ..where((tbl) => tbl.listId.equals('my-custom-mappings')))
+          .get();
+
+      if (pendingMappings.isEmpty) {
+        return; // No pending submissions to check
+      }
+
+      // Find and remove duplicates
+      int removedCount = 0;
+      for (final pending in pendingMappings) {
+        // Check if this pending mapping now exists in the synced list
+        final isDuplicate = syncedMappings.any((synced) =>
+            synced.processName.toLowerCase() == pending.processName.toLowerCase() &&
+            synced.twitchCategoryId == pending.twitchCategoryId);
+
+        if (isDuplicate) {
+          await (_database.delete(_database.categoryMappings)
+                ..where((tbl) => tbl.id.equals(pending.id)))
+              .go();
+          removedCount++;
+        }
+      }
+
+      if (removedCount > 0) {
+        _logger.info('Removed $removedCount duplicate mapping(s) from local list after sync');
+      }
+    } catch (e) {
+      // Log error but don't fail the sync
+      _logger.error('Error removing duplicates from local list', e);
+    }
   }
 }

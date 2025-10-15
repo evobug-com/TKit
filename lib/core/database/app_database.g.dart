@@ -154,6 +154,21 @@ class $CategoryMappingsTable extends CategoryMappings
     ),
     defaultValue: const Constant(true),
   );
+  static const VerificationMeta _pendingSubmissionMeta = const VerificationMeta(
+    'pendingSubmission',
+  );
+  @override
+  late final GeneratedColumn<bool> pendingSubmission = GeneratedColumn<bool>(
+    'pending_submission',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("pending_submission" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   static const VerificationMeta _listIdMeta = const VerificationMeta('listId');
   @override
   late final GeneratedColumn<String> listId = GeneratedColumn<String>(
@@ -177,6 +192,7 @@ class $CategoryMappingsTable extends CategoryMappings
     cacheExpiresAt,
     manualOverride,
     isEnabled,
+    pendingSubmission,
     listId,
   ];
   @override
@@ -295,6 +311,15 @@ class $CategoryMappingsTable extends CategoryMappings
         isEnabled.isAcceptableOrUnknown(data['is_enabled']!, _isEnabledMeta),
       );
     }
+    if (data.containsKey('pending_submission')) {
+      context.handle(
+        _pendingSubmissionMeta,
+        pendingSubmission.isAcceptableOrUnknown(
+          data['pending_submission']!,
+          _pendingSubmissionMeta,
+        ),
+      );
+    }
     if (data.containsKey('list_id')) {
       context.handle(
         _listIdMeta,
@@ -358,6 +383,10 @@ class $CategoryMappingsTable extends CategoryMappings
         DriftSqlType.bool,
         data['${effectivePrefix}is_enabled'],
       )!,
+      pendingSubmission: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}pending_submission'],
+      )!,
       listId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}list_id'],
@@ -391,6 +420,11 @@ class CategoryMappingEntity extends DataClass
   final bool manualOverride;
   final bool isEnabled;
 
+  /// Whether this mapping was submitted to a community list and is pending acceptance
+  /// When true, this mapping will be checked for duplicates during sync
+  /// If found in an official list, it will be automatically removed from the local list
+  final bool pendingSubmission;
+
   /// The ID of the mapping list this mapping belongs to
   /// Nullable for backward compatibility with legacy mappings
   final String? listId;
@@ -407,6 +441,7 @@ class CategoryMappingEntity extends DataClass
     required this.cacheExpiresAt,
     required this.manualOverride,
     required this.isEnabled,
+    required this.pendingSubmission,
     this.listId,
   });
   @override
@@ -432,6 +467,7 @@ class CategoryMappingEntity extends DataClass
     map['cache_expires_at'] = Variable<DateTime>(cacheExpiresAt);
     map['manual_override'] = Variable<bool>(manualOverride);
     map['is_enabled'] = Variable<bool>(isEnabled);
+    map['pending_submission'] = Variable<bool>(pendingSubmission);
     if (!nullToAbsent || listId != null) {
       map['list_id'] = Variable<String>(listId);
     }
@@ -458,6 +494,7 @@ class CategoryMappingEntity extends DataClass
       cacheExpiresAt: Value(cacheExpiresAt),
       manualOverride: Value(manualOverride),
       isEnabled: Value(isEnabled),
+      pendingSubmission: Value(pendingSubmission),
       listId: listId == null && nullToAbsent
           ? const Value.absent()
           : Value(listId),
@@ -486,6 +523,7 @@ class CategoryMappingEntity extends DataClass
       cacheExpiresAt: serializer.fromJson<DateTime>(json['cacheExpiresAt']),
       manualOverride: serializer.fromJson<bool>(json['manualOverride']),
       isEnabled: serializer.fromJson<bool>(json['isEnabled']),
+      pendingSubmission: serializer.fromJson<bool>(json['pendingSubmission']),
       listId: serializer.fromJson<String?>(json['listId']),
     );
   }
@@ -507,6 +545,7 @@ class CategoryMappingEntity extends DataClass
       'cacheExpiresAt': serializer.toJson<DateTime>(cacheExpiresAt),
       'manualOverride': serializer.toJson<bool>(manualOverride),
       'isEnabled': serializer.toJson<bool>(isEnabled),
+      'pendingSubmission': serializer.toJson<bool>(pendingSubmission),
       'listId': serializer.toJson<String?>(listId),
     };
   }
@@ -524,6 +563,7 @@ class CategoryMappingEntity extends DataClass
     DateTime? cacheExpiresAt,
     bool? manualOverride,
     bool? isEnabled,
+    bool? pendingSubmission,
     Value<String?> listId = const Value.absent(),
   }) => CategoryMappingEntity(
     id: id ?? this.id,
@@ -542,6 +582,7 @@ class CategoryMappingEntity extends DataClass
     cacheExpiresAt: cacheExpiresAt ?? this.cacheExpiresAt,
     manualOverride: manualOverride ?? this.manualOverride,
     isEnabled: isEnabled ?? this.isEnabled,
+    pendingSubmission: pendingSubmission ?? this.pendingSubmission,
     listId: listId.present ? listId.value : this.listId,
   );
   CategoryMappingEntity copyWithCompanion(CategoryMappingsCompanion data) {
@@ -576,6 +617,9 @@ class CategoryMappingEntity extends DataClass
           ? data.manualOverride.value
           : this.manualOverride,
       isEnabled: data.isEnabled.present ? data.isEnabled.value : this.isEnabled,
+      pendingSubmission: data.pendingSubmission.present
+          ? data.pendingSubmission.value
+          : this.pendingSubmission,
       listId: data.listId.present ? data.listId.value : this.listId,
     );
   }
@@ -595,6 +639,7 @@ class CategoryMappingEntity extends DataClass
           ..write('cacheExpiresAt: $cacheExpiresAt, ')
           ..write('manualOverride: $manualOverride, ')
           ..write('isEnabled: $isEnabled, ')
+          ..write('pendingSubmission: $pendingSubmission, ')
           ..write('listId: $listId')
           ..write(')'))
         .toString();
@@ -614,6 +659,7 @@ class CategoryMappingEntity extends DataClass
     cacheExpiresAt,
     manualOverride,
     isEnabled,
+    pendingSubmission,
     listId,
   );
   @override
@@ -632,6 +678,7 @@ class CategoryMappingEntity extends DataClass
           other.cacheExpiresAt == this.cacheExpiresAt &&
           other.manualOverride == this.manualOverride &&
           other.isEnabled == this.isEnabled &&
+          other.pendingSubmission == this.pendingSubmission &&
           other.listId == this.listId);
 }
 
@@ -648,6 +695,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
   final Value<DateTime> cacheExpiresAt;
   final Value<bool> manualOverride;
   final Value<bool> isEnabled;
+  final Value<bool> pendingSubmission;
   final Value<String?> listId;
   const CategoryMappingsCompanion({
     this.id = const Value.absent(),
@@ -662,6 +710,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     this.cacheExpiresAt = const Value.absent(),
     this.manualOverride = const Value.absent(),
     this.isEnabled = const Value.absent(),
+    this.pendingSubmission = const Value.absent(),
     this.listId = const Value.absent(),
   });
   CategoryMappingsCompanion.insert({
@@ -677,6 +726,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     required DateTime cacheExpiresAt,
     this.manualOverride = const Value.absent(),
     this.isEnabled = const Value.absent(),
+    this.pendingSubmission = const Value.absent(),
     this.listId = const Value.absent(),
   }) : processName = Value(processName),
        twitchCategoryId = Value(twitchCategoryId),
@@ -695,6 +745,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     Expression<DateTime>? cacheExpiresAt,
     Expression<bool>? manualOverride,
     Expression<bool>? isEnabled,
+    Expression<bool>? pendingSubmission,
     Expression<String>? listId,
   }) {
     return RawValuesInsertable({
@@ -712,6 +763,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
       if (cacheExpiresAt != null) 'cache_expires_at': cacheExpiresAt,
       if (manualOverride != null) 'manual_override': manualOverride,
       if (isEnabled != null) 'is_enabled': isEnabled,
+      if (pendingSubmission != null) 'pending_submission': pendingSubmission,
       if (listId != null) 'list_id': listId,
     });
   }
@@ -729,6 +781,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     Value<DateTime>? cacheExpiresAt,
     Value<bool>? manualOverride,
     Value<bool>? isEnabled,
+    Value<bool>? pendingSubmission,
     Value<String?>? listId,
   }) {
     return CategoryMappingsCompanion(
@@ -745,6 +798,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
       cacheExpiresAt: cacheExpiresAt ?? this.cacheExpiresAt,
       manualOverride: manualOverride ?? this.manualOverride,
       isEnabled: isEnabled ?? this.isEnabled,
+      pendingSubmission: pendingSubmission ?? this.pendingSubmission,
       listId: listId ?? this.listId,
     );
   }
@@ -790,6 +844,9 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
     if (isEnabled.present) {
       map['is_enabled'] = Variable<bool>(isEnabled.value);
     }
+    if (pendingSubmission.present) {
+      map['pending_submission'] = Variable<bool>(pendingSubmission.value);
+    }
     if (listId.present) {
       map['list_id'] = Variable<String>(listId.value);
     }
@@ -811,6 +868,7 @@ class CategoryMappingsCompanion extends UpdateCompanion<CategoryMappingEntity> {
           ..write('cacheExpiresAt: $cacheExpiresAt, ')
           ..write('manualOverride: $manualOverride, ')
           ..write('isEnabled: $isEnabled, ')
+          ..write('pendingSubmission: $pendingSubmission, ')
           ..write('listId: $listId')
           ..write(')'))
         .toString();
@@ -3528,6 +3586,7 @@ typedef $$CategoryMappingsTableCreateCompanionBuilder =
       required DateTime cacheExpiresAt,
       Value<bool> manualOverride,
       Value<bool> isEnabled,
+      Value<bool> pendingSubmission,
       Value<String?> listId,
     });
 typedef $$CategoryMappingsTableUpdateCompanionBuilder =
@@ -3544,6 +3603,7 @@ typedef $$CategoryMappingsTableUpdateCompanionBuilder =
       Value<DateTime> cacheExpiresAt,
       Value<bool> manualOverride,
       Value<bool> isEnabled,
+      Value<bool> pendingSubmission,
       Value<String?> listId,
     });
 
@@ -3613,6 +3673,11 @@ class $$CategoryMappingsTableFilterComposer
 
   ColumnFilters<bool> get isEnabled => $composableBuilder(
     column: $table.isEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get pendingSubmission => $composableBuilder(
+    column: $table.pendingSubmission,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3691,6 +3756,11 @@ class $$CategoryMappingsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get pendingSubmission => $composableBuilder(
+    column: $table.pendingSubmission,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get listId => $composableBuilder(
     column: $table.listId,
     builder: (column) => ColumnOrderings(column),
@@ -3760,6 +3830,11 @@ class $$CategoryMappingsTableAnnotationComposer
   GeneratedColumn<bool> get isEnabled =>
       $composableBuilder(column: $table.isEnabled, builder: (column) => column);
 
+  GeneratedColumn<bool> get pendingSubmission => $composableBuilder(
+    column: $table.pendingSubmission,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get listId =>
       $composableBuilder(column: $table.listId, builder: (column) => column);
 }
@@ -3813,6 +3888,7 @@ class $$CategoryMappingsTableTableManager
                 Value<DateTime> cacheExpiresAt = const Value.absent(),
                 Value<bool> manualOverride = const Value.absent(),
                 Value<bool> isEnabled = const Value.absent(),
+                Value<bool> pendingSubmission = const Value.absent(),
                 Value<String?> listId = const Value.absent(),
               }) => CategoryMappingsCompanion(
                 id: id,
@@ -3827,6 +3903,7 @@ class $$CategoryMappingsTableTableManager
                 cacheExpiresAt: cacheExpiresAt,
                 manualOverride: manualOverride,
                 isEnabled: isEnabled,
+                pendingSubmission: pendingSubmission,
                 listId: listId,
               ),
           createCompanionCallback:
@@ -3843,6 +3920,7 @@ class $$CategoryMappingsTableTableManager
                 required DateTime cacheExpiresAt,
                 Value<bool> manualOverride = const Value.absent(),
                 Value<bool> isEnabled = const Value.absent(),
+                Value<bool> pendingSubmission = const Value.absent(),
                 Value<String?> listId = const Value.absent(),
               }) => CategoryMappingsCompanion.insert(
                 id: id,
@@ -3857,6 +3935,7 @@ class $$CategoryMappingsTableTableManager
                 cacheExpiresAt: cacheExpiresAt,
                 manualOverride: manualOverride,
                 isEnabled: isEnabled,
+                pendingSubmission: pendingSubmission,
                 listId: listId,
               ),
           withReferenceMapper: (p0) => p0

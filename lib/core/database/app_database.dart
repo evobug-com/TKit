@@ -44,6 +44,12 @@ class CategoryMappings extends Table {
   BoolColumn get isEnabled =>
       boolean().withDefault(const Constant(true))();
 
+  /// Whether this mapping was submitted to a community list and is pending acceptance
+  /// When true, this mapping will be checked for duplicates during sync
+  /// If found in an official list, it will be automatically removed from the local list
+  BoolColumn get pendingSubmission =>
+      boolean().withDefault(const Constant(false))();
+
   /// The ID of the mapping list this mapping belongs to
   /// Nullable for backward compatibility with legacy mappings
   TextColumn get listId => text().nullable()();
@@ -155,7 +161,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.test(super.e);
 
   @override
-  int get schemaVersion => 9;
+  int get schemaVersion => 10;
 
   static LazyDatabase _openConnection() {
     return LazyDatabase(() async {
@@ -740,6 +746,25 @@ class AppDatabase extends _$AppDatabase {
           );
         }
       }
+
+      if (from <= 9 && to >= 10) {
+        // Migration v9 → v10: Add pendingSubmission to category_mappings
+        // This tracks local mappings that were submitted to community lists
+        // so they can be removed if/when accepted to official lists
+        final categoryMappingsInfo = await customSelect(
+          'PRAGMA table_info(category_mappings)',
+        ).get();
+
+        final hasPendingSubmission = categoryMappingsInfo.any(
+          (row) => row.data['name'] == 'pending_submission',
+        );
+
+        if (!hasPendingSubmission) {
+          await customStatement(
+            'ALTER TABLE category_mappings ADD COLUMN pending_submission INTEGER NOT NULL DEFAULT 0',
+          );
+        }
+      }
     },
   );
 
@@ -819,7 +844,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   /// Get all mapping lists
-  /// Ordered by source type (official first), then by priority
+  /// Ordered by source type (official/remote first, local last), then by priority
   Future<List<MappingListEntity>> getAllMappingLists() async {
     return (select(mappingLists)
           ..orderBy([
@@ -827,8 +852,8 @@ class AppDatabase extends _$AppDatabase {
               expression: tbl.sourceType.caseMatch(
                 when: {
                   const Constant('official'): const Constant(0),
-                  const Constant('local'): const Constant(1),
-                  const Constant('remote'): const Constant(2),
+                  const Constant('remote'): const Constant(1),
+                  const Constant('local'): const Constant(2),
                 },
                 orElse: const Constant(999),
               ),
@@ -838,7 +863,7 @@ class AppDatabase extends _$AppDatabase {
         .get();
   }
 
-  /// Get enabled mapping lists ordered by source type (official first), then priority
+  /// Get enabled mapping lists ordered by source type (official/remote first, local last), then priority
   Future<List<MappingListEntity>> getEnabledMappingLists() async {
     return (select(mappingLists)
           ..where((tbl) => tbl.isEnabled.equals(true))
@@ -847,8 +872,8 @@ class AppDatabase extends _$AppDatabase {
               expression: tbl.sourceType.caseMatch(
                 when: {
                   const Constant('official'): const Constant(0),
-                  const Constant('local'): const Constant(1),
-                  const Constant('remote'): const Constant(2),
+                  const Constant('remote'): const Constant(1),
+                  const Constant('local'): const Constant(2),
                 },
                 orElse: const Constant(999),
               ),
@@ -925,7 +950,7 @@ class AppDatabase extends _$AppDatabase {
         final list = row.readTableOrNull(mappingLists);
         return {
           'mapping': mapping,
-          'listName': list?.name ?? 'Unknown',
+          'listName': list?.name ?? 'My Custom Mappings',
           'isReadOnly': list?.isReadOnly ?? false,
         };
       }).toList();

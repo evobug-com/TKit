@@ -410,9 +410,8 @@ class _ShowcasePageState extends State<ShowcasePage> {
                           title: 'Confirm Action',
                           message: 'Are you sure you want to proceed with this action?',
                         );
-                        if (mounted) {
-                          Toast.info(context, 'Result: ${confirmed ? "Confirmed" : "Cancelled"}');
-                        }
+                        if (!context.mounted) return;
+                        Toast.info(context, 'Result: ${confirmed ? "Confirmed" : "Cancelled"}');
                       },
                     ),
                     const HSpace.md(),
@@ -1357,7 +1356,7 @@ Scaffold(
           ),
           const HSpace.md(),
           Text(
-            '#${color.value.toRadixString(16).padLeft(8, '0').toUpperCase()}',
+            '#${color.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase()}',
             style: TKitTextStyles.code.copyWith(
               fontSize: 11,
               color: TKitColors.textMuted,

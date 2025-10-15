@@ -47,6 +47,11 @@ class CategoryMapping extends Equatable {
   /// False if the mapping is disabled/ignored by the user
   final bool isEnabled;
 
+  /// Whether this mapping was submitted to a community list and is pending acceptance
+  /// When true, this mapping will be checked for duplicates during sync
+  /// If found in an official list, it will be automatically removed from the local list
+  final bool pendingSubmission;
+
   /// The ID of the mapping list this mapping belongs to
   /// Nullable for backward compatibility with legacy mappings
   final String? listId;
@@ -72,6 +77,7 @@ class CategoryMapping extends Equatable {
     required this.cacheExpiresAt,
     required this.manualOverride,
     this.isEnabled = true,
+    this.pendingSubmission = false,
     this.listId,
     this.sourceListName,
     this.sourceListIsReadOnly = false,
@@ -90,6 +96,7 @@ class CategoryMapping extends Equatable {
     DateTime? cacheExpiresAt,
     bool? manualOverride,
     bool? isEnabled,
+    bool? pendingSubmission,
     String? listId,
     String? sourceListName,
     bool? sourceListIsReadOnly,
@@ -107,6 +114,7 @@ class CategoryMapping extends Equatable {
       cacheExpiresAt: cacheExpiresAt ?? this.cacheExpiresAt,
       manualOverride: manualOverride ?? this.manualOverride,
       isEnabled: isEnabled ?? this.isEnabled,
+      pendingSubmission: pendingSubmission ?? this.pendingSubmission,
       listId: listId ?? this.listId,
       sourceListName: sourceListName ?? this.sourceListName,
       sourceListIsReadOnly: sourceListIsReadOnly ?? this.sourceListIsReadOnly,
@@ -135,6 +143,7 @@ class CategoryMapping extends Equatable {
     cacheExpiresAt,
     manualOverride,
     isEnabled,
+    pendingSubmission,
     listId,
     sourceListName,
     sourceListIsReadOnly,
