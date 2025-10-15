@@ -70,6 +70,13 @@ class _VersionStatusIndicatorState extends State<VersionStatusIndicator> {
       } else {
         _errorMessage = 'not_initialized';
       }
+    } else {
+      // Service is initialized - check if there's already a completed update check
+      if (updateService.currentUpdate == null) {
+        // No update available means we're up to date
+        _status = UpdateCheckStatus.upToDate;
+        _errorMessage = null;
+      }
     }
   }
 
@@ -100,15 +107,6 @@ class _VersionStatusIndicatorState extends State<VersionStatusIndicator> {
         });
       }
     });
-
-    // If the service already has a current update, show it
-    if (updateService.currentUpdate != null) {
-      setState(() {
-        _status = UpdateCheckStatus.updateAvailable;
-        _errorMessage = null;
-      });
-      // Note: We don't auto-show dialog here since UpdateNotificationWidget handles that
-    }
   }
 
   IconData _getIcon() {
