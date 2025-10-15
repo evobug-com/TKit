@@ -6,6 +6,7 @@ import 'package:tkit/features/settings/data/repositories/settings_repository_imp
 import 'package:tkit/features/settings/domain/entities/app_settings.dart';
 import 'package:tkit/features/settings/domain/entities/fallback_behavior.dart';
 import 'package:tkit/features/settings/domain/entities/update_channel.dart';
+import 'package:tkit/features/settings/domain/entities/window_controls_position.dart';
 import 'package:tkit/features/settings/domain/usecases/get_settings_usecase.dart';
 import 'package:tkit/features/settings/domain/usecases/update_settings_usecase.dart';
 import 'package:tkit/features/settings/domain/usecases/watch_settings_usecase.dart';
@@ -70,6 +71,11 @@ void main() {
         startMinimized: false,
         autoStartMonitoring: true,
         updateChannel: UpdateChannel.stable,
+        windowControlsPosition: WindowControlsPosition.right,
+        useFramelessWindow: false,
+        invertFooterHeader: false,
+        autoSyncMappingsOnStart: true,
+        mappingsSyncIntervalHours: 6,
       );
 
       // Act - Save
@@ -110,6 +116,11 @@ void main() {
         startMinimized: false,
         autoStartMonitoring: true,
         updateChannel: UpdateChannel.stable,
+        windowControlsPosition: WindowControlsPosition.right,
+        useFramelessWindow: false,
+        invertFooterHeader: false,
+        autoSyncMappingsOnStart: true,
+        mappingsSyncIntervalHours: 6,
       );
 
       // Act - Save with first instance
@@ -150,6 +161,11 @@ void main() {
         startMinimized: false,
         autoStartMonitoring: true,
         updateChannel: UpdateChannel.stable,
+        windowControlsPosition: WindowControlsPosition.right,
+        useFramelessWindow: false,
+        invertFooterHeader: false,
+        autoSyncMappingsOnStart: true,
+        mappingsSyncIntervalHours: 6,
       );
 
       // Act
@@ -186,6 +202,11 @@ void main() {
         startMinimized: false,
         autoStartMonitoring: true,
         updateChannel: UpdateChannel.stable,
+        windowControlsPosition: WindowControlsPosition.right,
+        useFramelessWindow: false,
+        invertFooterHeader: false,
+        autoSyncMappingsOnStart: true,
+        mappingsSyncIntervalHours: 6,
       );
       await updateSettingsUseCase(newSettings);
 
@@ -247,6 +268,11 @@ void main() {
           startMinimized: false,
           autoStartMonitoring: true,
           updateChannel: UpdateChannel.stable,
+          windowControlsPosition: WindowControlsPosition.right,
+          useFramelessWindow: false,
+          invertFooterHeader: false,
+          autoSyncMappingsOnStart: true,
+          mappingsSyncIntervalHours: 6,
         );
 
         // Act
@@ -275,6 +301,11 @@ void main() {
         startMinimized: false,
         autoStartMonitoring: true,
         updateChannel: UpdateChannel.stable,
+        windowControlsPosition: WindowControlsPosition.right,
+        useFramelessWindow: false,
+        invertFooterHeader: false,
+        autoSyncMappingsOnStart: true,
+        mappingsSyncIntervalHours: 6,
       );
 
       // Act
@@ -299,6 +330,11 @@ void main() {
         startMinimized: false,
         autoStartMonitoring: true,
         updateChannel: UpdateChannel.stable,
+        windowControlsPosition: WindowControlsPosition.right,
+        useFramelessWindow: false,
+        invertFooterHeader: false,
+        autoSyncMappingsOnStart: true,
+        mappingsSyncIntervalHours: 6,
       );
 
       // Act - Save (involves JSON serialization)

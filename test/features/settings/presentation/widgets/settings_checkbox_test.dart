@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/features/settings/presentation/widgets/settings_checkbox.dart';
 
 void main() {
@@ -8,6 +10,13 @@ void main() {
       // Act
       await tester.pumpWidget(
         MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
             body: SettingsCheckbox(
               label: 'Test Checkbox',
@@ -26,6 +35,13 @@ void main() {
       // Act
       await tester.pumpWidget(
         MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
             body: SettingsCheckbox(
               label: 'Test Checkbox',
@@ -46,6 +62,13 @@ void main() {
       // Act
       await tester.pumpWidget(
         MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
             body: SettingsCheckbox(
               label: 'Test Checkbox',
@@ -71,6 +94,13 @@ void main() {
       // Act
       await tester.pumpWidget(
         MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
             body: SettingsCheckbox(
               label: 'Test Checkbox',
