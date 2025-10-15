@@ -7,8 +7,13 @@ on:
       - 'v*.*.*-*'
 
 jobs:
+  # Build the Windows app - creates reusable artifacts
   build-windows:
     runs-on: windows-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.VERSION }}
+      is_prerelease: ${{ steps.get_version.outputs.IS_PRERELEASE }}
+      channel: ${{ steps.get_version.outputs.CHANNEL }}
 
     steps:
       - name: Checkout code
@@ -26,31 +31,28 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ~/.pub-cache
-            **/.dart_tool
-          key: pub-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+            ${{ env.LOCALAPPDATA }}\Pub\Cache
+            .dart_tool
+          key: pub-${{ runner.os }}-${{ hashFiles('pubspec.lock') }}
           restore-keys: |
             pub-${{ runner.os }}-
 
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Cache build_runner output
+      - name: Cache generated files
         uses: actions/cache@v4
         with:
           path: |
-            **/.dart_tool/build
-            **/lib/**/*.g.dart
-            **/lib/**/*.freezed.dart
-          key: build-runner-${{ runner.os }}-${{ hashFiles('**/pubspec.lock', '**/lib/**/*.dart') }}
+            .dart_tool/build
+            lib/**/*.g.dart
+            lib/**/*.freezed.dart
+          key: codegen-${{ hashFiles('pubspec.lock') }}
           restore-keys: |
-            build-runner-${{ runner.os }}-
+            codegen-
 
       - name: Run code generation
         run: dart run build_runner build --delete-conflicting-outputs
-
-      - name: Build Windows app
-        run: flutter build windows --release
 
       - name: Get version from tag
         id: get_version
@@ -83,41 +85,124 @@ jobs:
             echo "This is a stable release"
           fi
 
+      - name: Build Windows app
+        run: flutter build windows --release
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: build/windows/x64/runner/Release/**
+          retention-days: 1
+
+  # Package MSIX - can retry without rebuilding
+  package-msix:
+    needs: build-windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+          cache-key: flutter-${{ runner.os }}
+          cache-path: ${{ runner.tool_cache }}/flutter
+
+      - name: Cache pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.LOCALAPPDATA }}\Pub\Cache
+            .dart_tool
+          key: pub-${{ runner.os }}-${{ hashFiles('pubspec.lock') }}
+          restore-keys: |
+            pub-${{ runner.os }}-
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-build
+          path: build/windows/x64/runner/Release
+
       - name: Create MSIX package
         run: dart run msix:create
 
       - name: Rename MSIX file
         shell: bash
         run: |
-          mv build/windows/x64/runner/Release/tkit.msix build/windows/x64/runner/Release/TKit-Setup-${{ steps.get_version.outputs.VERSION }}.msix
+          mv build/windows/x64/runner/Release/tkit.msix build/windows/x64/runner/Release/TKit-Setup-${{ needs.build-windows.outputs.version }}.msix
 
-      - name: Setup Inno Setup
-        run: |
-          choco install innosetup -y
-
-      - name: Create installer with Inno Setup
-        run: |
-          set VERSION=${{ steps.get_version.outputs.VERSION }}
-          iscc windows\installer.iss
-        shell: cmd
-
-      - name: Upload artifact
+      - name: Upload MSIX artifact
         uses: actions/upload-artifact@v4
         with:
           name: windows-msix
-          path: build/windows/x64/runner/Release/TKit-Setup-${{ steps.get_version.outputs.VERSION }}.msix
+          path: build/windows/x64/runner/Release/TKit-Setup-${{ needs.build-windows.outputs.version }}.msix
+          retention-days: 1
 
-      - name: Upload artifact
+  # Package Inno Setup installer - can retry without rebuilding
+  package-installer:
+    needs: build-windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-build
+          path: build/windows/x64/runner/Release
+
+      - name: Setup Inno Setup
+        run: choco install innosetup -y
+
+      - name: Create installer with Inno Setup
+        run: |
+          set VERSION=${{ needs.build-windows.outputs.version }}
+          iscc windows\installer.iss
+        shell: cmd
+
+      - name: Upload installer artifact
         uses: actions/upload-artifact@v4
         with:
           name: windows-installer
-          path: build/windows/TKit-Setup-${{ steps.get_version.outputs.VERSION }}.exe
+          path: build/windows/TKit-Setup-${{ needs.build-windows.outputs.version }}.exe
+          retention-days: 1
+
+  # Create GitHub release with all packages
+  release:
+    needs: [build-windows, package-msix, package-installer]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download MSIX artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-msix
+          path: artifacts/
+
+      - name: Download installer artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-installer
+          path: artifacts/
 
       - name: Extract changelog for version
         id: changelog
         shell: bash
         run: |
-          VERSION=${{ steps.get_version.outputs.VERSION }}
+          VERSION=${{ needs.build-windows.outputs.version }}
           # Extract changelog section for this version
           CHANGELOG=$(awk "/^## \[$VERSION\]/{flag=1;next}/^## \[/{flag=0}flag" CHANGELOG.md | sed '/^$/d')
 
@@ -132,12 +217,10 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            build/windows/x64/runner/Release/TKit-Setup-${{ steps.get_version.outputs.VERSION }}.msix
-            build/windows/TKit-Setup-${{ steps.get_version.outputs.VERSION }}.exe
+          files: artifacts/*
           body_path: changelog.txt
           draft: false
-          prerelease: ${{ steps.get_version.outputs.IS_PRERELEASE }}
-          name: ${{ steps.get_version.outputs.CHANNEL == 'stable' && format('Release {0}', steps.get_version.outputs.VERSION) || format('{0} {1}', steps.get_version.outputs.CHANNEL, steps.get_version.outputs.VERSION) }}
+          prerelease: ${{ needs.build-windows.outputs.is_prerelease }}
+          name: ${{ needs.build-windows.outputs.channel == 'stable' && format('Release {0}', needs.build-windows.outputs.version) || format('{0} {1}', needs.build-windows.outputs.channel, needs.build-windows.outputs.version) }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
