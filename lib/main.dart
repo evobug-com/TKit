@@ -163,6 +163,7 @@ class TKitApp extends ConsumerStatefulWidget {
 class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
   late final AppRouter _appRouter;
   StreamSubscription? _authSubscription;
+  bool _initialized = false;
 
   @override
   void initState() {
@@ -176,12 +177,17 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
     super.didChangeDependencies();
 
     // Schedule initialization after build
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initializeApp();
-    });
+    if (!_initialized) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _initializeApp();
+      });
+    }
   }
 
   Future<void> _initializeApp() async {
+    if (_initialized) return;
+    _initialized = true;
+
     final logger = ref.read(appLoggerProvider);
 
     // For now, skip language setup check - just set a default locale
@@ -190,14 +196,6 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
 
     // Check auth status
     await ref.read(authProvider.notifier).checkAuthStatus();
-
-    // Listen to auth state changes
-    ref.listen(authProvider, (previous, next) {
-      // next is AsyncValue<AuthState>, handle it properly
-      if (next is AsyncData<AuthState>) {
-        _handleAuthStateChange((next as AsyncData<AuthState>).value);
-      }
-    });
   }
 
   @override
@@ -307,6 +305,13 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
   @override
   Widget build(BuildContext context) {
     final locale = ref.watch(localeProvider);
+
+    // Listen to auth state changes (must be in build method)
+    ref.listen<AsyncValue<AuthState>>(authProvider, (previous, next) {
+      next.whenData((authState) {
+        _handleAuthStateChange(authState);
+      });
+    });
 
     return MaterialApp.router(
       title: AppConfig.appName,
