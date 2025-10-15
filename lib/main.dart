@@ -551,8 +551,8 @@ void main() async {
       },
       onExit: () async {
         logger.info('Exit requested from system tray');
-        // Use close() instead of destroy() to trigger cleanup via WindowListener
-        await windowManager.close();
+        // Force exit bypasses close-to-tray behavior
+        await windowService.forceExit();
       },
       showLabel: 'Show TKit',
       exitLabel: 'Exit',
@@ -872,31 +872,37 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
   /// Called when the window is about to close
   @override
   Future<void> onWindowClose() async {
-    // Check if we should minimize to tray instead of closing
-    try {
-      // Get services before any async operations to avoid BuildContext issues
-      final getSettingsUseCase = Provider.of<GetSettingsUseCase>(context, listen: false);
-      final windowService = Provider.of<WindowService>(context, listen: false);
+    // Get services before any async operations to avoid BuildContext issues
+    final windowService = Provider.of<WindowService>(context, listen: false);
 
-      final settingsResult = await getSettingsUseCase();
+    // If force exit is set (from tray menu), bypass close-to-tray behavior
+    if (!windowService.forceExitRequested) {
+      // Check if we should minimize to tray instead of closing
+      try {
+        final getSettingsUseCase = Provider.of<GetSettingsUseCase>(context, listen: false);
 
-      final shouldMinimizeToTray = settingsResult.fold(
-        (failure) {
-          _logger.warning('Could not load settings, assuming close to tray disabled');
-          return false;
-        },
-        (settings) => settings.minimizeToTray,
-      );
+        final settingsResult = await getSettingsUseCase();
 
-      if (shouldMinimizeToTray) {
-        // Hide window instead of closing
-        _logger.info('Close to tray enabled - hiding window');
-        await windowService.hideWindow();
-        return; // Don't proceed with cleanup/destroy
+        final shouldMinimizeToTray = settingsResult.fold(
+          (failure) {
+            _logger.warning('Could not load settings, assuming close to tray disabled');
+            return false;
+          },
+          (settings) => settings.minimizeToTray,
+        );
+
+        if (shouldMinimizeToTray) {
+          // Hide window instead of closing
+          _logger.info('Close to tray enabled - hiding window');
+          await windowService.hideWindow();
+          return; // Don't proceed with cleanup/destroy
+        }
+      } catch (e) {
+        _logger.error('Error checking minimize to tray setting', e);
+        // Fall through to normal close behavior on error
       }
-    } catch (e) {
-      _logger.error('Error checking minimize to tray setting', e);
-      // Fall through to normal close behavior on error
+    } else {
+      _logger.info('Force exit requested - bypassing close to tray');
     }
 
     _logger.info('Window close requested - starting fast shutdown');

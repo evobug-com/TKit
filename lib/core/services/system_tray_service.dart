@@ -109,6 +109,7 @@ class SystemTrayService with TrayListener {
 /// Window manager service with minimize to tray support
 class WindowService with WindowListener {
   final AppLogger _logger;
+  bool _forceExitRequested = false;
 
   WindowService(this._logger);
 
@@ -117,6 +118,16 @@ class WindowService with WindowListener {
     windowManager.addListener(this);
     // Prevent window from closing immediately - trigger onWindowClose instead
     await windowManager.setPreventClose(true);
+  }
+
+  /// Check if force exit has been requested (bypasses close-to-tray)
+  bool get forceExitRequested => _forceExitRequested;
+
+  /// Request a forced exit that bypasses close-to-tray behavior
+  Future<void> forceExit() async {
+    _logger.info('Force exit requested - bypassing close-to-tray');
+    _forceExitRequested = true;
+    await windowManager.close();
   }
 
   /// Show the main window
