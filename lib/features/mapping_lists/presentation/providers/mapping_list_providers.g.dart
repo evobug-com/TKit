@@ -55,7 +55,7 @@ final class MappingListRepositoryProvider
 }
 
 String _$mappingListRepositoryHash() =>
-    r'dfb69a93fb18be61ef45b0f61ad6d3be499c0529';
+    r'02745311c7f51d771653b7020456d13cea21b6e8';
 
 @ProviderFor(getAllListsUseCase)
 const getAllListsUseCaseProvider = GetAllListsUseCaseProvider._();
@@ -275,7 +275,7 @@ final class MappingListsProvider
   }
 }
 
-String _$mappingListsHash() => r'2dc7926a54d3c5f9cc01d9f1be5d892ec9acdf2e';
+String _$mappingListsHash() => r'dc2869664a0dc5f32a4b65587e5eb7187db6be98';
 
 abstract class _$MappingLists extends $Notifier<MappingListState> {
   MappingListState build();

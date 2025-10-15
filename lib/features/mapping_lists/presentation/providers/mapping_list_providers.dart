@@ -20,7 +20,8 @@ IMappingListRepository mappingListRepository(Ref ref) {
   final localDataSource = ref.watch(mappingListLocalDataSourceProvider);
   final syncDataSource = ref.watch(mappingListSyncDataSourceProvider);
   final database = ref.watch(appDatabaseProvider);
-  return MappingListRepositoryImpl(localDataSource, syncDataSource, database);
+  final logger = ref.watch(appLoggerProvider);
+  return MappingListRepositoryImpl(localDataSource, syncDataSource, database, logger);
 }
 
 // =============================================================================
