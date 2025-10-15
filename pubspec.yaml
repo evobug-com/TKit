@@ -1,7 +1,7 @@
 name: tkit
 description: "Twitch Toolkit"
 publish_to: 'none'
-version: 0.0.1-dev.5+1
+version: 0.0.1-dev.6+1
 
 environment:
   sdk: ^3.9.2
