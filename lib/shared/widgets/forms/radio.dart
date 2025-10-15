@@ -30,7 +30,9 @@ class TKitRadio<T> extends StatelessWidget {
       height: 18,
       child: Radio<T>(
         value: value,
+        // ignore: deprecated_member_use
         groupValue: groupValue,
+        // ignore: deprecated_member_use
         onChanged: isEnabled ? onChanged : null,
         fillColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.disabled)) {

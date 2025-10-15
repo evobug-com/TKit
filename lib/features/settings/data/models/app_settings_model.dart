@@ -10,6 +10,21 @@ part 'app_settings_model.g.dart';
 /// Extends domain entity to maintain Clean Architecture separation
 @JsonSerializable(explicitToJson: true)
 class AppSettingsModel extends AppSettings {
+  @JsonKey(defaultValue: false)
+  @override
+  // ignore: overridden_fields
+  final bool invertFooterHeader;
+
+  @JsonKey(defaultValue: true)
+  @override
+  // ignore: overridden_fields
+  final bool autoSyncMappingsOnStart;
+
+  @JsonKey(defaultValue: 6)
+  @override
+  // ignore: overridden_fields
+  final int mappingsSyncIntervalHours;
+
   const AppSettingsModel({
     required super.scanIntervalSeconds,
     required super.debounceSeconds,
@@ -26,10 +41,14 @@ class AppSettingsModel extends AppSettings {
     required super.updateChannel,
     required super.windowControlsPosition,
     required super.useFramelessWindow,
-    @JsonKey(defaultValue: false) required super.invertFooterHeader,
-    @JsonKey(defaultValue: true) required super.autoSyncMappingsOnStart,
-    @JsonKey(defaultValue: 6) required super.mappingsSyncIntervalHours,
-  });
+    required this.invertFooterHeader,
+    required this.autoSyncMappingsOnStart,
+    required this.mappingsSyncIntervalHours,
+  }) : super(
+    invertFooterHeader: invertFooterHeader,
+    autoSyncMappingsOnStart: autoSyncMappingsOnStart,
+    mappingsSyncIntervalHours: mappingsSyncIntervalHours,
+  );
 
   /// Create from domain entity
   factory AppSettingsModel.fromEntity(AppSettings settings) {

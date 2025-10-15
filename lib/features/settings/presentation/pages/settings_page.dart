@@ -832,6 +832,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
 
                   if (!context.mounted) return;
 
+                  // ignore: use_build_context_synchronously
                   final updateService = context.read<GitHubUpdateService>();
                   await updateService.checkForUpdates(
                     silent: false,
@@ -840,9 +841,12 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
 
                   if (!context.mounted) return;
 
+                  // ignore: use_build_context_synchronously
                   Toast.success(
+                    // ignore: use_build_context_synchronously
                     context,
                     l10n.settingsUpdateChannelChanged(
+                      // ignore: use_build_context_synchronously
                       value.localizedName(context),
                     ),
                   );

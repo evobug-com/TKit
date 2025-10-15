@@ -7,11 +7,16 @@ part 'twitch_category_model.g.dart';
 /// Extends the domain entity and adds serialization capabilities
 @JsonSerializable()
 class TwitchCategoryModel extends TwitchCategory {
+  @override
+  @JsonKey(name: 'box_art_url')
+  // ignore: overridden_fields
+  final String? boxArtUrl;
+
   const TwitchCategoryModel({
     required super.id,
     required super.name,
-    @JsonKey(name: 'box_art_url') super.boxArtUrl,
-  });
+    this.boxArtUrl,
+  }) : super(boxArtUrl: boxArtUrl);
 
   /// Create model from domain entity
   factory TwitchCategoryModel.fromEntity(TwitchCategory entity) {

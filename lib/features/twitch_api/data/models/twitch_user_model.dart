@@ -7,14 +7,33 @@ part 'twitch_user_model.g.dart';
 /// Extends the domain entity and adds serialization capabilities
 @JsonSerializable()
 class TwitchUserModel extends TwitchUser {
+  @override
+  @JsonKey(name: 'display_name')
+  // ignore: overridden_fields
+  final String displayName;
+
+  @override
+  @JsonKey(name: 'profile_image_url')
+  // ignore: overridden_fields
+  final String? profileImageUrl;
+
+  @override
+  @JsonKey(name: 'broadcaster_type')
+  // ignore: overridden_fields
+  final String? broadcasterType;
+
   const TwitchUserModel({
     required super.id,
     required super.login,
-    @JsonKey(name: 'display_name') required super.displayName,
-    @JsonKey(name: 'profile_image_url') super.profileImageUrl,
+    required this.displayName,
+    this.profileImageUrl,
     super.email,
-    @JsonKey(name: 'broadcaster_type') super.broadcasterType,
-  });
+    this.broadcasterType,
+  }) : super(
+    displayName: displayName,
+    profileImageUrl: profileImageUrl,
+    broadcasterType: broadcasterType,
+  );
 
   /// Create model from domain entity
   factory TwitchUserModel.fromEntity(TwitchUser entity) {

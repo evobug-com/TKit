@@ -20,8 +20,8 @@ Map<String, dynamic> _$TwitchUserModelToJson(TwitchUserModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'login': instance.login,
-      'email': instance.email,
       'display_name': instance.displayName,
       'profile_image_url': instance.profileImageUrl,
+      'email': instance.email,
       'broadcaster_type': instance.broadcasterType,
     };
