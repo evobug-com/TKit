@@ -4,3 +4,7 @@ targets:
       build_web_compilers|entrypoint:
         options:
           tree_shake: true
+      drift_dev:
+        options:
+          databases:
+            app_database: lib/core/database/app_database.dart

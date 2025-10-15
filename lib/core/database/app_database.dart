@@ -6,6 +6,8 @@ import 'package:path/path.dart' as p;
 import 'package:sqlite3/sqlite3.dart' as sqlite;
 import 'package:tkit/core/utils/app_logger.dart';
 
+import 'package:tkit/core/database/app_database.steps.dart';
+
 part 'app_database.g.dart';
 
 /// Category Mappings table - stores process-to-Twitch-category mappings
@@ -155,13 +157,15 @@ class MappingLists extends Table {
   MappingLists,
 ])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(_openConnection());
+  // Support optional executor for testing (required for guided migrations testing)
+  AppDatabase([QueryExecutor? e]) : super(e ?? _openConnection());
 
   /// Test constructor for in-memory database
-  AppDatabase.test(super.e);
+  @Deprecated('Use AppDatabase(executor) instead')
+  AppDatabase.test(QueryExecutor e) : this(e);
 
   @override
-  int get schemaVersion => 10;
+  int get schemaVersion => 6;
 
   static LazyDatabase _openConnection() {
     return LazyDatabase(() async {
@@ -308,183 +312,6 @@ class AppDatabase extends _$AppDatabase {
     });
   }
 
-  /// Seed initial mappings for testing purposes
-  /// This method populates the database with common game-to-category mappings
-  Future<void> seedInitialMappings() async {
-    await transaction(() async {
-      final now = DateTime.now();
-      final expiresAt = now.add(const Duration(hours: 24));
-
-      // List of initial mappings - popular games
-      final seedMappings = [
-        {
-          'processName': 'League of Legends.exe',
-          'twitchCategoryId': '21779',
-          'twitchCategoryName': 'League of Legends',
-        },
-        {
-          'processName': 'Dota2.exe',
-          'twitchCategoryId': '29595',
-          'twitchCategoryName': 'Dota 2',
-        },
-        {
-          'processName': 'csgo.exe',
-          'twitchCategoryId': '32399',
-          'twitchCategoryName': 'Counter-Strike: Global Offensive',
-        },
-        {
-          'processName': 'Overwatch.exe',
-          'twitchCategoryId': '488552',
-          'twitchCategoryName': 'Overwatch',
-        },
-        {
-          'processName': 'Valorant.exe',
-          'twitchCategoryId': '516575',
-          'twitchCategoryName': 'VALORANT',
-        },
-        {
-          'processName': 'FortniteClient-Win64-Shipping.exe',
-          'twitchCategoryId': '33214',
-          'twitchCategoryName': 'Fortnite',
-        },
-        {
-          'processName': 'RocketLeague.exe',
-          'twitchCategoryId': '30921',
-          'twitchCategoryName': 'Rocket League',
-        },
-        {
-          'processName': 'ApexLegends.exe',
-          'twitchCategoryId': '511224',
-          'twitchCategoryName': 'Apex Legends',
-        },
-        {
-          'processName': 'Minecraft.exe',
-          'twitchCategoryId': '27471',
-          'twitchCategoryName': 'Minecraft',
-        },
-        {
-          'processName': 'javaw.exe',
-          'twitchCategoryId': '27471',
-          'twitchCategoryName': 'Minecraft',
-        },
-        {
-          'processName': 'wow.exe',
-          'twitchCategoryId': '18122',
-          'twitchCategoryName': 'World of Warcraft',
-        },
-        {
-          'processName': 'GTA5.exe',
-          'twitchCategoryId': '32982',
-          'twitchCategoryName': 'Grand Theft Auto V',
-        },
-        {
-          'processName': 'RainbowSix.exe',
-          'twitchCategoryId': '460630',
-          'twitchCategoryName': "Tom Clancy's Rainbow Six Siege",
-        },
-        {
-          'processName': 'PUBG.exe',
-          'twitchCategoryId': '493057',
-          'twitchCategoryName': "PLAYERUNKNOWN'S BATTLEGROUNDS",
-        },
-        {
-          'processName': 'warzone.exe',
-          'twitchCategoryId': '512710',
-          'twitchCategoryName': 'Call of Duty: Warzone',
-        },
-        {
-          'processName': 'EscapeFromTarkov.exe',
-          'twitchCategoryId': '491931',
-          'twitchCategoryName': 'Escape from Tarkov',
-        },
-        {
-          'processName': 'Among Us.exe',
-          'twitchCategoryId': '510218',
-          'twitchCategoryName': 'Among Us',
-        },
-        {
-          'processName': 'StarCraft II.exe',
-          'twitchCategoryId': '490422',
-          'twitchCategoryName': 'StarCraft II',
-        },
-        {
-          'processName': 'hearthstone.exe',
-          'twitchCategoryId': '138585',
-          'twitchCategoryName': 'Hearthstone',
-        },
-        {
-          'processName': 'RustClient.exe',
-          'twitchCategoryId': '263490',
-          'twitchCategoryName': 'Rust',
-        },
-        {
-          'processName': 'ARK.exe',
-          'twitchCategoryId': '489635',
-          'twitchCategoryName': 'ARK: Survival Evolved',
-        },
-        {
-          'processName': 'Destiny2.exe',
-          'twitchCategoryId': '497057',
-          'twitchCategoryName': 'Destiny 2',
-        },
-        {
-          'processName': 'r5apex.exe',
-          'twitchCategoryId': '511224',
-          'twitchCategoryName': 'Apex Legends',
-        },
-        {
-          'processName': 'FallGuys_client.exe',
-          'twitchCategoryId': '512980',
-          'twitchCategoryName': 'Fall Guys',
-        },
-        {
-          'processName': 'EldenRing.exe',
-          'twitchCategoryId': '512953',
-          'twitchCategoryName': 'Elden Ring',
-        },
-        {
-          'processName': 'LostArk.exe',
-          'twitchCategoryId': '490100',
-          'twitchCategoryName': 'Lost Ark',
-        },
-        {
-          'processName': 'DeadByDaylight-Win64-Shipping.exe',
-          'twitchCategoryId': '491487',
-          'twitchCategoryName': 'Dead by Daylight',
-        },
-        {
-          'processName': 'Terraria.exe',
-          'twitchCategoryId': '31376',
-          'twitchCategoryName': 'Terraria',
-        },
-        {
-          'processName': 'SeaOfThieves.exe',
-          'twitchCategoryId': '490377',
-          'twitchCategoryName': 'Sea of Thieves',
-        },
-        {
-          'processName': 'Phasmophobia.exe',
-          'twitchCategoryId': '518184',
-          'twitchCategoryName': 'Phasmophobia',
-        },
-      ];
-
-      // Insert all seed mappings
-      for (final mapping in seedMappings) {
-        await into(categoryMappings).insert(
-          CategoryMappingsCompanion.insert(
-            processName: mapping['processName']!,
-            twitchCategoryId: mapping['twitchCategoryId']!,
-            twitchCategoryName: mapping['twitchCategoryName']!,
-            lastApiFetch: Value(now),
-            cacheExpiresAt: expiresAt,
-            manualOverride: const Value(false),
-          ),
-          mode: InsertMode.insertOrIgnore, // Avoid duplicates
-        );
-      }
-    });
-  }
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -656,124 +483,59 @@ class AppDatabase extends _$AppDatabase {
       }
 
       if (from <= 5 && to >= 6) {
-        // Migration v5 → v6: Add category field to community_mappings
-        // This allows grouping mappings by type (game, system, launcher, etc.)
-        final communityMappingsInfo = await customSelect(
-          'PRAGMA table_info(community_mappings)',
-        ).get();
-
-        final hasCategory = communityMappingsInfo.any(
-          (row) => row.data['name'] == 'category',
-        );
-
-        if (!hasCategory) {
-          await customStatement(
-            'ALTER TABLE community_mappings ADD COLUMN category TEXT',
-          );
-        }
-      }
-
-      if (from <= 6 && to >= 7) {
-        // Migration v6 → v7: Add mapping_lists table and listId to category_mappings
-        // This introduces the list-based mapping system
-
-        // Create mapping_lists table
-        await m.createTable(mappingLists);
-
-        // Create index for mapping lists
-        await customStatement(
-          'CREATE INDEX IF NOT EXISTS idx_mapping_lists_priority '
-          'ON mapping_lists(priority, is_enabled)',
-        );
-
-        // Add listId column to category_mappings
-        final categoryMappingsInfo = await customSelect(
-          'PRAGMA table_info(category_mappings)',
-        ).get();
-
-        final hasListId = categoryMappingsInfo.any(
-          (row) => row.data['name'] == 'list_id',
-        );
-
-        if (!hasListId) {
-          await customStatement(
-            'ALTER TABLE category_mappings ADD COLUMN list_id TEXT',
-          );
-        }
-
-        // Create default lists
-        await _createDefaultLists();
-
-        // Migrate existing mappings to appropriate lists
-        await _migrateExistingMappingsToLists();
-      }
-
-      if (from <= 7 && to >= 8) {
-        // Migration v7 → v8: Add submissionHookUrl to mapping_lists
-        // This allows lists to have custom submission endpoints for unknown processes
-        final mappingListsInfo = await customSelect(
-          'PRAGMA table_info(mapping_lists)',
-        ).get();
-
-        final hasSubmissionHookUrl = mappingListsInfo.any(
-          (row) => row.data['name'] == 'submission_hook_url',
-        );
-
-        if (!hasSubmissionHookUrl) {
-          await customStatement(
-            'ALTER TABLE mapping_lists ADD COLUMN submission_hook_url TEXT',
-          );
-        }
-
-        // Note: Submission hook URLs are now loaded from JSON metadata during sync
-        // No need to hardcode them in migrations
-      }
-
-      if (from <= 8 && to >= 9) {
-        // Migration v8 → v9: Add lastSyncError to mapping_lists
-        // This allows showing sync errors in the UI
-        final mappingListsInfo = await customSelect(
-          'PRAGMA table_info(mapping_lists)',
-        ).get();
-
-        final hasLastSyncError = mappingListsInfo.any(
-          (row) => row.data['name'] == 'last_sync_error',
-        );
-
-        if (!hasLastSyncError) {
-          await customStatement(
-            'ALTER TABLE mapping_lists ADD COLUMN last_sync_error TEXT',
-          );
-        }
-      }
-
-      if (from <= 9 && to >= 10) {
-        // Migration v9 → v10: Add pendingSubmission to category_mappings
-        // This tracks local mappings that were submitted to community lists
-        // so they can be removed if/when accepted to official lists
-        final categoryMappingsInfo = await customSelect(
-          'PRAGMA table_info(category_mappings)',
-        ).get();
-
-        final hasPendingSubmission = categoryMappingsInfo.any(
-          (row) => row.data['name'] == 'pending_submission',
-        );
-
-        if (!hasPendingSubmission) {
-          await customStatement(
-            'ALTER TABLE category_mappings ADD COLUMN pending_submission INTEGER NOT NULL DEFAULT 0',
-          );
-        }
+        // Migration v5 → v6: GUIDED MIGRATION
+        // Uses type-safe schema definitions from app_database.steps.dart
+        final schema = Schema6(database: attachedDatabase);
+        await _migrateV5ToV6(m, schema);
       }
     },
   );
 
+  /// Guided migration from v5 to v6
+  /// Uses type-safe schema definitions for safer migrations
+  Future<void> _migrateV5ToV6(Migrator m, Schema6 schema) async {
+    final logger = AppLogger();
+    logger.info('Starting guided migration v5 → v6');
+
+    // 1. Add category field to community_mappings
+    logger.info('Adding category column to community_mappings');
+    await m.addColumn(schema.communityMappings, schema.communityMappings.category);
+
+    // 2. Create mapping_lists table
+    logger.info('Creating mapping_lists table');
+    await m.createTable(schema.mappingLists);
+
+    // 3. Create index for mapping lists
+    logger.info('Creating index for mapping_lists');
+    await m.createIndex(Index(
+      'idx_mapping_lists_priority',
+      'CREATE INDEX IF NOT EXISTS idx_mapping_lists_priority '
+      'ON mapping_lists(priority, is_enabled)',
+    ));
+
+    // 4. Add columns to category_mappings
+    logger.info('Adding listId and pendingSubmission columns to category_mappings');
+    await m.addColumn(schema.categoryMappings, schema.categoryMappings.listId);
+    await m.addColumn(schema.categoryMappings, schema.categoryMappings.pendingSubmission);
+
+    // 5. Create default lists and migrate existing mappings
+    logger.info('Creating default mapping lists');
+    await _createDefaultLists();
+
+    logger.info('Migrating existing mappings to list-based system');
+    await _migrateExistingMappingsToLists();
+
+    logger.info('Migration v5 → v6 completed successfully');
+  }
+
   /// Create default mapping lists for migration and first-run setup
   Future<void> _createDefaultLists() async {
+    final logger = AppLogger();
     final now = DateTime.now();
 
     // 1. Official TKit Mappings list (from community sync)
     // Note: Metadata (name, description, submissionHookUrl) will be loaded from JSON during first sync
+    logger.info('Creating official-tkit-mappings list');
     await into(mappingLists).insert(
       MappingListsCompanion.insert(
         id: 'official-tkit-mappings',
@@ -791,6 +553,7 @@ class AppDatabase extends _$AppDatabase {
 
     // 2. Official Ignored Programs list
     // Note: Metadata (name, description, submissionHookUrl) will be loaded from JSON during first sync
+    logger.info('Creating official-ignored-programs list');
     await into(mappingLists).insert(
       MappingListsCompanion.insert(
         id: 'official-ignored-programs',
@@ -807,6 +570,7 @@ class AppDatabase extends _$AppDatabase {
     );
 
     // 3. My Custom Mappings list (user's personal mappings)
+    logger.info('Creating my-custom-mappings list');
     await into(mappingLists).insert(
       MappingListsCompanion.insert(
         id: 'my-custom-mappings',
@@ -824,10 +588,17 @@ class AppDatabase extends _$AppDatabase {
 
   /// Migrate existing mappings to the new list-based system
   Future<void> _migrateExistingMappingsToLists() async {
+    final logger = AppLogger();
+
     // Get all existing category mappings without a listId
     final unmappedMappings = await (select(categoryMappings)
           ..where((tbl) => tbl.listId.isNull()))
         .get();
+
+    logger.info('Found ${unmappedMappings.length} unmapped mappings to migrate');
+
+    var customCount = 0;
+    var officialCount = 0;
 
     for (final mapping in unmappedMappings) {
       // Assign to appropriate list based on whether it's user-defined or preset
@@ -835,12 +606,21 @@ class AppDatabase extends _$AppDatabase {
           ? 'my-custom-mappings'
           : 'official-tkit-mappings';
 
+      if (mapping.manualOverride) {
+        customCount++;
+      } else {
+        officialCount++;
+      }
+
       await (update(categoryMappings)
             ..where((tbl) => tbl.id.equals(mapping.id)))
           .write(CategoryMappingsCompanion(
         listId: Value(targetListId),
       ));
     }
+
+    logger.info('Migrated $customCount mappings to my-custom-mappings');
+    logger.info('Migrated $officialCount mappings to official-tkit-mappings');
   }
 
   /// Get all mapping lists

@@ -82,8 +82,8 @@ dev_dependencies:
 dependency_overrides:
   build_runner: ^2.9.0
   build: ^4.0.2
-  analyzer: ^8.3.0
-  _fe_analyzer_shared: ^90.0.0
+  analyzer: ^8.4.0
+  _fe_analyzer_shared: ^91.0.0
   source_gen: ^4.0.2
 
 flutter:
