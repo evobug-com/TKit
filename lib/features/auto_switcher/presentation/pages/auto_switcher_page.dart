@@ -1,20 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/widgets/layout/page_header.dart';
 import 'package:tkit/shared/widgets/layout/spacer.dart';
 import 'package:tkit/shared/widgets/feedback/toast.dart';
-import 'package:tkit/features/settings/presentation/providers/settings_provider.dart';
+import 'package:tkit/features/settings/presentation/providers/settings_providers.dart';
 import 'package:tkit/features/settings/presentation/states/settings_state.dart';
-import 'package:tkit/features/auto_switcher/domain/usecases/get_orchestration_status_usecase.dart';
-import 'package:tkit/features/auto_switcher/domain/usecases/get_update_history_usecase.dart';
-import 'package:tkit/features/auto_switcher/domain/usecases/manual_update_usecase.dart';
-import 'package:tkit/features/auto_switcher/domain/usecases/start_monitoring_usecase.dart';
-import 'package:tkit/features/auto_switcher/domain/usecases/stop_monitoring_usecase.dart';
-import 'package:tkit/features/auto_switcher/presentation/providers/auto_switcher_provider.dart';
+import 'package:tkit/features/auto_switcher/presentation/providers/auto_switcher_providers.dart';
 import 'package:tkit/features/auto_switcher/presentation/states/auto_switcher_state.dart';
 import 'package:tkit/features/auto_switcher/presentation/widgets/control_panel.dart';
 import 'package:tkit/features/auto_switcher/presentation/widgets/status_dashboard.dart';
@@ -26,50 +21,48 @@ import 'package:tkit/features/auto_switcher/presentation/widgets/status_dashboar
 /// - Control panel (start/stop monitoring, manual update)
 /// - Two-column layout as specified in requirements
 @RoutePage()
-class AutoSwitcherPage extends StatefulWidget {
+class AutoSwitcherPage extends ConsumerStatefulWidget {
   const AutoSwitcherPage({super.key});
 
   @override
-  State<AutoSwitcherPage> createState() => _AutoSwitcherPageState();
+  ConsumerState<AutoSwitcherPage> createState() => _AutoSwitcherPageState();
 }
 
-class _AutoSwitcherPageState extends State<AutoSwitcherPage> {
+class _AutoSwitcherPageState extends ConsumerState<AutoSwitcherPage> {
   @override
   void initState() {
     super.initState();
     // Load settings to ensure hotkey is displayed
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final settingsProvider = context.read<SettingsProvider>();
-      if (settingsProvider.state is SettingsInitial) {
-        settingsProvider.loadSettings();
+      final settingsNotifier = ref.read(settingsProvider.notifier);
+      if (ref.read(settingsProvider) is SettingsInitial) {
+        settingsNotifier.loadSettings();
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) {
-        final provider = AutoSwitcherProvider(
-          context.read<StartMonitoringUseCase>(),
-          context.read<StopMonitoringUseCase>(),
-          context.read<ManualUpdateUseCase>(),
-          context.read<GetOrchestrationStatusUseCase>(),
-          context.read<GetUpdateHistoryUseCase>(),
-        );
-        provider.initialize();
-        return provider;
-      },
-      child: const _AutoSwitcherPageContent(),
-    );
+    return const _AutoSwitcherPageContent();
   }
 }
 
-class _AutoSwitcherPageContent extends StatelessWidget {
+class _AutoSwitcherPageContent extends ConsumerWidget {
   const _AutoSwitcherPageContent();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settingsState = ref.watch(settingsProvider);
+    final autoSwitcherAsync = ref.watch(autoSwitcherProvider);
+
+    // Extract hotkey from settings
+    String? manualUpdateHotkey;
+    if (settingsState is SettingsLoaded) {
+      manualUpdateHotkey = settingsState.settings.manualUpdateHotkey;
+    } else if (settingsState is SettingsSaved) {
+      manualUpdateHotkey = settingsState.settings.manualUpdateHotkey;
+    }
+
     return Scaffold(
       backgroundColor: TKitColors.background,
       body: Padding(
@@ -86,70 +79,59 @@ class _AutoSwitcherPageContent extends StatelessWidget {
 
             // Two-column layout
             Expanded(
-              child: Consumer<SettingsProvider>(
-                builder: (context, settingsProvider, child) {
-                  // Extract hotkey from settings
-                  final settingsState = settingsProvider.state;
-                  String? manualUpdateHotkey;
-                  if (settingsState is SettingsLoaded) {
-                    manualUpdateHotkey = settingsState.settings.manualUpdateHotkey;
-                  } else if (settingsState is SettingsSaved) {
-                    manualUpdateHotkey = settingsState.settings.manualUpdateHotkey;
+              child: autoSwitcherAsync.when(
+                data: (state) {
+                  // Show toast for errors
+                  if (state is UpdateError) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      Toast.error(context, state.errorMessage);
+                    });
                   }
 
-                  return Consumer<AutoSwitcherProvider>(
-                    builder: (context, provider, child) {
-                      final state = provider.state;
+                  // Show success message
+                  if (state is UpdateSuccess && state.message != null) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      Toast.success(context, state.message!);
+                    });
+                  }
 
-                      // Show toast for errors
-                      if (state is UpdateError) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          Toast.error(context, state.errorMessage);
-                        });
-                      }
+                  final status = _getStatusFromState(state);
+                  final isMonitoring = _isMonitoringActive(state);
+                  final isLoading = state is AutoSwitcherLoading;
 
-                      // Show success message
-                      if (state is UpdateSuccess && state.message != null) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          Toast.success(context, state.message!);
-                        });
-                      }
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Left column - Status Dashboard (2/3 width)
+                      Expanded(flex: 2, child: StatusDashboard(status: status)),
 
-                      final status = _getStatusFromState(state);
-                      final isMonitoring = _isMonitoringActive(state);
-                      final isLoading = state is AutoSwitcherLoading;
+                      const HSpace.lg(),
 
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Left column - Status Dashboard (2/3 width)
-                          Expanded(flex: 2, child: StatusDashboard(status: status)),
-
-                          const HSpace.lg(),
-
-                          // Right column - Control Panel (1/3 width)
-                          Expanded(
-                            flex: 1,
-                            child: ControlPanel(
-                              isMonitoring: isMonitoring,
-                              isLoading: isLoading,
-                              manualUpdateHotkey: manualUpdateHotkey,
-                              onStartMonitoring: () {
-                                context.read<AutoSwitcherProvider>().startMonitoring();
-                              },
-                              onStopMonitoring: () {
-                                context.read<AutoSwitcherProvider>().stopMonitoring();
-                              },
-                              onManualUpdate: () {
-                                context.read<AutoSwitcherProvider>().manualUpdate();
-                              },
-                            ),
-                          ),
-                        ],
-                      );
-                    },
+                      // Right column - Control Panel (1/3 width)
+                      Expanded(
+                        flex: 1,
+                        child: ControlPanel(
+                          isMonitoring: isMonitoring,
+                          isLoading: isLoading,
+                          manualUpdateHotkey: manualUpdateHotkey,
+                          onStartMonitoring: () {
+                            ref.read(autoSwitcherProvider.notifier).startMonitoring();
+                          },
+                          onStopMonitoring: () {
+                            ref.read(autoSwitcherProvider.notifier).stopMonitoring();
+                          },
+                          onManualUpdate: () {
+                            ref.read(autoSwitcherProvider.notifier).manualUpdate();
+                          },
+                        ),
+                      ),
+                    ],
                   );
                 },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stack) => Center(
+                  child: Text('Error: $error'),
+                ),
               ),
             ),
           ],

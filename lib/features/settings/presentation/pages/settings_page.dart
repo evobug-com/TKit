@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
@@ -13,58 +13,50 @@ import 'package:tkit/shared/widgets/indicators/loading_indicator.dart';
 import 'package:tkit/shared/widgets/buttons/buttons.dart';
 import 'package:tkit/shared/widgets/forms/form_field_wrapper.dart';
 import 'package:tkit/core/config/app_config.dart';
-import 'package:tkit/core/services/language_service.dart';
 import 'package:tkit/core/services/locale_provider.dart';
+import 'package:tkit/core/providers/providers.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/features/settings/domain/entities/app_settings.dart';
 import 'package:tkit/features/settings/domain/entities/fallback_behavior.dart';
 import 'package:tkit/features/settings/domain/entities/update_channel.dart';
 import 'package:tkit/features/settings/domain/entities/window_controls_position.dart';
-import 'package:tkit/core/services/updater/github_update_service.dart';
-import 'package:tkit/features/settings/domain/usecases/factory_reset_usecase.dart';
-import 'package:tkit/features/settings/presentation/providers/settings_provider.dart';
+import 'package:tkit/features/settings/presentation/providers/settings_providers.dart';
 import 'package:tkit/features/settings/presentation/providers/window_controls_preview_provider.dart';
 import 'package:tkit/features/settings/presentation/providers/unsaved_changes_notifier.dart';
+import 'package:tkit/features/auth/presentation/providers/auth_providers.dart';
 import 'package:tkit/features/settings/presentation/states/settings_state.dart';
 import 'package:tkit/features/settings/presentation/widgets/settings_checkbox.dart';
 import 'package:tkit/features/settings/presentation/widgets/settings_dropdown.dart';
 import 'package:tkit/features/settings/presentation/widgets/custom_dropdown.dart';
 import 'package:tkit/features/settings/presentation/widgets/settings_slider.dart';
 import 'package:tkit/features/settings/presentation/widgets/hotkey_input.dart';
-import 'package:tkit/features/auth/presentation/providers/auth_provider.dart';
 import 'package:tkit/features/auth/presentation/states/auth_state.dart';
 import 'package:tkit/features/auth/presentation/pages/device_code_auth_page.dart';
 
 /// Settings page for configuring application settings
 @RoutePage()
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // Get SettingsProvider from parent context (should be provided at app level)
-    final settingsProvider = Provider.of<SettingsProvider>(
-      context,
-      listen: false,
-    );
-
+  Widget build(BuildContext context, WidgetRef ref) {
     // Load settings after build completes to avoid setState during build
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      settingsProvider.loadSettings();
+      ref.read(settingsProvider.notifier).loadSettings();
     });
 
     return const _SettingsPageContent();
   }
 }
 
-class _SettingsPageContent extends StatefulWidget {
+class _SettingsPageContent extends ConsumerStatefulWidget {
   const _SettingsPageContent();
 
   @override
-  State<_SettingsPageContent> createState() => _SettingsPageContentState();
+  ConsumerState<_SettingsPageContent> createState() => _SettingsPageContentState();
 }
 
-class _SettingsPageContentState extends State<_SettingsPageContent>
+class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
     with TickerProviderStateMixin {
   AppSettings? _currentSettings;
   bool _hasChanges = false;
@@ -98,7 +90,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
     // Register shake callback with unsaved changes notifier
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        context.read<UnsavedChangesNotifier>().setOnNavigationAttempt(() {
+        ref.read(unsavedChangesProvider.notifier).setOnNavigationAttempt(() {
           _shakeController.forward(from: 0.0);
         });
       }
@@ -107,20 +99,15 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
 
   @override
   void dispose() {
-    // Clean up the navigation attempt callback
-    try {
-      context.read<UnsavedChangesNotifier>().setOnNavigationAttempt(null);
-      context.read<UnsavedChangesNotifier>().setHasChanges(false);
-    } catch (_) {
-      // Ignore if context is no longer available
-    }
+    // Note: Intentionally not cleaning up unsavedChangesProvider here to avoid
+    // accessing ref during dispose. The provider manages its own lifecycle.
     _tabController.dispose();
     _shakeController.dispose();
     super.dispose();
   }
 
   void _updateSettings(AppSettings settings) {
-    final hasChanges = context.read<SettingsProvider>().hasUnsavedChanges(
+    final hasChanges = ref.read(settingsProvider.notifier).hasUnsavedChanges(
       settings,
     );
     setState(() {
@@ -128,65 +115,65 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
       _hasChanges = hasChanges;
     });
     // Update the unsaved changes notifier
-    context.read<UnsavedChangesNotifier>().setHasChanges(hasChanges);
+    ref.read(unsavedChangesProvider.notifier).setHasChanges(hasChanges);
   }
 
   void _saveSettings() {
     if (_currentSettings != null) {
-      context.read<SettingsProvider>().updateSettings(_currentSettings!);
+      ref.read(settingsProvider.notifier).updateSettings(_currentSettings!);
       // Clear the window controls preview after saving
-      context.read<WindowControlsPreviewProvider>().clearPreview();
+      ref.read(windowControlsPreviewProvider.notifier).clearPreview();
     }
   }
 
   void _discardChanges() async {
-    final provider = context.read<SettingsProvider>();
-    final previewProvider = context.read<WindowControlsPreviewProvider>();
+    final state = ref.read(settingsProvider);
 
     // Clear the window controls preview to revert to saved position
-    previewProvider.clearPreview();
+    ref.read(windowControlsPreviewProvider.notifier).clearPreview();
 
     setState(() {
       _hasChanges = false;
       _isInitialized = false;
       _resetKey++; // Force widget recreation
       // Reset to original settings from provider immediately
-      if (provider.state is SettingsLoaded) {
-        _currentSettings = (provider.state as SettingsLoaded).settings;
-      } else if (provider.state is SettingsSaved) {
-        _currentSettings = (provider.state as SettingsSaved).settings;
+      if (state is SettingsLoaded) {
+        _currentSettings = state.settings;
+      } else if (state is SettingsSaved) {
+        _currentSettings = state.settings;
       }
     });
     // Clear unsaved changes flag
-    context.read<UnsavedChangesNotifier>().setHasChanges(false);
+    ref.read(unsavedChangesProvider.notifier).setHasChanges(false);
     // Load settings after the current frame to avoid setState during build
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      provider.loadSettings();
+      ref.read(settingsProvider.notifier).loadSettings();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Consumer<SettingsProvider>(
-        builder: (context, provider, child) {
-          final state = provider.state;
+    final state = ref.watch(settingsProvider);
 
-          // Handle state changes (similar to BlocConsumer listener)
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (state is SettingsSaved) {
-              final l10n = AppLocalizations.of(context)!;
-              Toast.success(context, l10n.settingsSavedSuccessfully);
-              setState(() {
-                _hasChanges = false;
-                _isInitialized = false;
-              });
-              // Clear unsaved changes flag
-              context.read<UnsavedChangesNotifier>().setHasChanges(false);
-            } else if (state is SettingsError) {
-              Toast.error(context, state.message);
-            }
-          });
+    // Handle state changes (similar to BlocConsumer listener)
+    ref.listen<SettingsState>(settingsProvider, (previous, next) {
+      if (next is SettingsSaved) {
+        final l10n = AppLocalizations.of(context)!;
+        Toast.success(context, l10n.settingsSavedSuccessfully);
+        setState(() {
+          _hasChanges = false;
+          _isInitialized = false;
+        });
+        // Clear unsaved changes flag
+        ref.read(unsavedChangesProvider.notifier).setHasChanges(false);
+      } else if (next is SettingsError) {
+        Toast.error(context, next.message);
+      }
+    });
+
+    return Scaffold(
+      body: Builder(
+        builder: (context) {
           if (state is SettingsLoading) {
             return const Center(child: LoadingIndicator());
           }
@@ -204,7 +191,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                   PrimaryButton(
                     text: l10n.settingsRetry,
                     onPressed: () {
-                      context.read<SettingsProvider>().loadSettings();
+                      ref.read(settingsProvider.notifier).loadSettings();
                     },
                   ),
                 ],
@@ -335,66 +322,66 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
         children: [
           _buildSection(l10n.settingsApplication, [
             // Language selection
-            Builder(
-              builder: (context) {
-                final l10n = AppLocalizations.of(context)!;
-                final languageService = Provider.of<LanguageService>(
-                  context,
-                  listen: false,
-                );
-                final localeProvider = Provider.of<LocaleProvider>(
-                  context,
-                  listen: false,
-                );
-                final currentLocale = languageService.getCurrentLocale();
+            Consumer(
+              builder: (context, ref, child) {
+                final languageServiceAsync = ref.watch(languageServiceProvider);
 
-                // Map of language codes to their localized names
-                final languageNames = <String, String>{
-                  'en': l10n.languageEnglish,
-                  'cs': l10n.languageCzech,
-                  'pl': l10n.languagePolish,
-                  'es': l10n.languageSpanish,
-                  'fr': l10n.languageFrench,
-                  'de': l10n.languageGerman,
-                  'pt': l10n.languagePortuguese,
-                  'ja': l10n.languageJapanese,
-                  'ko': l10n.languageKorean,
-                  'zh': l10n.languageChinese,
-                };
+                return languageServiceAsync.when(
+                  data: (languageService) {
+                    final l10n = AppLocalizations.of(context)!;
+                    final currentLocale = languageService.getCurrentLocale();
 
-                return SettingsDropdown<String>(
-                  label: l10n.settingsLanguage,
-                  description: l10n.settingsLanguageDescription,
-                  value: currentLocale.languageCode,
-                  items: AppLocalizations.supportedLocales
-                      .map(
-                        (locale) => DropdownMenuItem(
-                          value: locale.languageCode,
-                          child: Text(
-                            languageNames[locale.languageCode] ??
-                                locale.languageCode.toUpperCase(),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (languageCode) async {
-                    if (languageCode != null) {
-                      await languageService.saveLanguage(languageCode);
-                      localeProvider.setLocale(Locale(languageCode));
+                    // Map of language codes to their localized names
+                    final languageNames = <String, String>{
+                      'en': l10n.languageEnglish,
+                      'cs': l10n.languageCzech,
+                      'pl': l10n.languagePolish,
+                      'es': l10n.languageSpanish,
+                      'fr': l10n.languageFrench,
+                      'de': l10n.languageGerman,
+                      'pt': l10n.languagePortuguese,
+                      'ja': l10n.languageJapanese,
+                      'ko': l10n.languageKorean,
+                      'zh': l10n.languageChinese,
+                    };
 
-                      if (context.mounted) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                    return SettingsDropdown<String>(
+                      label: l10n.settingsLanguage,
+                      description: l10n.settingsLanguageDescription,
+                      value: currentLocale.languageCode,
+                      items: AppLocalizations.supportedLocales
+                          .map(
+                            (locale) => DropdownMenuItem(
+                              value: locale.languageCode,
+                              child: Text(
+                                languageNames[locale.languageCode] ??
+                                    locale.languageCode.toUpperCase(),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (languageCode) async {
+                        if (languageCode != null) {
+                          await languageService.saveLanguage(languageCode);
+                          ref.read(localeProvider.notifier).setLocale(Locale(languageCode));
+
                           if (context.mounted) {
-                            final newL10n = AppLocalizations.of(context)!;
-                            Toast.success(
-                              context,
-                              newL10n.languageChangeNotice,
-                            );
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (context.mounted) {
+                                final newL10n = AppLocalizations.of(context)!;
+                                Toast.success(
+                                  context,
+                                  newL10n.languageChangeNotice,
+                                );
+                              }
+                            });
                           }
-                        });
-                      }
-                    }
+                        }
+                      },
+                    );
                   },
+                  loading: () => const SizedBox.shrink(),
+                  error: (error, stack) => const SizedBox.shrink(),
                 );
               },
             ),
@@ -473,9 +460,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                     windowControlsPosition: value,
                   );
                   _updateSettings(updatedSettings);
-                  context
-                      .read<WindowControlsPreviewProvider>()
-                      .setPreviewPosition(value);
+                  ref.read(windowControlsPreviewProvider.notifier).setPreviewPosition(value);
                 }
               },
             ),
@@ -821,35 +806,30 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                   .toList(),
               onChanged: (value) async {
                 if (value != null && _currentSettings != null) {
+                  // Capture context-dependent values before async gap
+                  final localizedChannelName = value.localizedName(context);
+                  final successMessage = l10n.settingsUpdateChannelChanged(localizedChannelName);
+
                   final updatedSettings = _currentSettings!.copyWith(
                     updateChannel: value,
                   );
                   _updateSettings(updatedSettings);
 
-                  await context.read<SettingsProvider>().updateSettings(
+                  await ref.read(settingsProvider.notifier).updateSettings(
                     updatedSettings,
                   );
 
-                  if (!context.mounted) return;
+                  if (!mounted) return;
 
-                  // ignore: use_build_context_synchronously
-                  final updateService = context.read<GitHubUpdateService>();
+                  final updateService = ref.read(githubUpdateServiceProvider);
                   await updateService.checkForUpdates(
                     silent: false,
                     channel: value,
                   );
 
-                  if (!context.mounted) return;
+                  if (!mounted) return;
 
-                  // ignore: use_build_context_synchronously
-                  Toast.success(
-                    // ignore: use_build_context_synchronously
-                    context,
-                    l10n.settingsUpdateChannelChanged(
-                      // ignore: use_build_context_synchronously
-                      value.localizedName(context),
-                    ),
-                  );
+                  Toast.success(context, successMessage);
                 }
               },
             ),
@@ -932,9 +912,9 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
 
   Widget _buildTwitchAuthSection(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Consumer<AuthProvider>(
-      builder: (context, authProvider, child) {
-        final authState = authProvider.state;
+    return Consumer(
+      builder: (context, ref, child) {
+        final authState = ref.watch(authProvider);
         final isAuthenticated = authState is Authenticated;
         final isLoading = authState is AuthLoading;
 
@@ -1002,7 +982,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                     ),
                     const SizedBox(height: 8),
                     FutureBuilder<DateTime?>(
-                      future: authProvider.getTokenExpiration(),
+                      future: ref.read(authProvider.notifier).getTokenExpiration(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data != null) {
                           final expiresAt = snapshot.data!;
@@ -1059,7 +1039,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                             onPressed: isLoading
                                 ? null
                                 : () {
-                                    context.read<AuthProvider>().logout();
+                                    ref.read(authProvider.notifier).logout();
                                   },
                           ),
                         ),
@@ -1078,9 +1058,8 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                       onPressed: isLoading
                           ? null
                           : () async {
-                              final authProvider = context.read<AuthProvider>();
-                              final deviceCodeResponse = await authProvider
-                                  .initiateDeviceCodeAuth();
+                              final notifier = ref.read(authProvider.notifier);
+                              final deviceCodeResponse = await notifier.initiateDeviceCodeAuth();
 
                               if (deviceCodeResponse != null &&
                                   context.mounted) {
@@ -1092,15 +1071,11 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                                         deviceCodeResponse: deviceCodeResponse,
                                         onSuccess: () {
                                           Navigator.of(dialogContext).pop();
-                                          context
-                                              .read<AuthProvider>()
-                                              .checkAuthStatus();
+                                          ref.read(authProvider.notifier).checkAuthStatus();
                                         },
                                         onCancel: () {
                                           Navigator.of(dialogContext).pop();
-                                          context
-                                              .read<AuthProvider>()
-                                              .checkAuthStatus();
+                                          ref.read(authProvider.notifier).checkAuthStatus();
                                         },
                                       ),
                                 );
@@ -1221,12 +1196,8 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
     }
 
     try {
-      // Get the FactoryResetUseCase from Provider
-      // This will be wired up in main.dart
-      final factoryResetUseCase = Provider.of<FactoryResetUseCase>(
-        context,
-        listen: false,
-      );
+      // Get the FactoryResetUseCase from Riverpod
+      final factoryResetUseCase = await ref.read(factoryResetUseCaseProvider.future);
 
       final result = await factoryResetUseCase();
 

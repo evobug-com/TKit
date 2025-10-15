@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:tkit/core/services/updater/github_update_service.dart';
 import 'package:tkit/core/services/updater/models/download_progress.dart';
-import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/core/providers/providers.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
@@ -21,16 +20,16 @@ enum UpdateCheckStatus {
   upToDate,
 }
 
-class VersionStatusIndicator extends StatefulWidget {
+class VersionStatusIndicator extends ConsumerStatefulWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
 
   const VersionStatusIndicator({super.key, this.navigatorKey});
 
   @override
-  State<VersionStatusIndicator> createState() => _VersionStatusIndicatorState();
+  ConsumerState<VersionStatusIndicator> createState() => _VersionStatusIndicatorState();
 }
 
-class _VersionStatusIndicatorState extends State<VersionStatusIndicator> {
+class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator> {
   UpdateCheckStatus _status = UpdateCheckStatus.unknown;
   bool _isHovering = false;
   String? _errorMessage;
@@ -39,8 +38,10 @@ class _VersionStatusIndicatorState extends State<VersionStatusIndicator> {
   @override
   void initState() {
     super.initState();
-    _checkInitializationStatus();
-    _listenToUpdates();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkInitializationStatus();
+      _listenToUpdates();
+    });
   }
 
   @override
@@ -58,7 +59,7 @@ class _VersionStatusIndicatorState extends State<VersionStatusIndicator> {
   }
 
   void _checkInitializationStatus() {
-    final updateService = context.read<GitHubUpdateService>();
+    final updateService = ref.read(githubUpdateServiceProvider);
 
     // Check if service is initialized
     if (!updateService.isInitialized) {
@@ -81,7 +82,7 @@ class _VersionStatusIndicatorState extends State<VersionStatusIndicator> {
   }
 
   void _listenToUpdates() {
-    final updateService = context.read<GitHubUpdateService>();
+    final updateService = ref.read(githubUpdateServiceProvider);
 
     // Listen for update availability changes
     updateService.updateAvailable.listen((updateInfo) {
@@ -156,8 +157,8 @@ class _VersionStatusIndicatorState extends State<VersionStatusIndicator> {
   }
 
   void _showUpdateDialog(BuildContext context) {
-    final logger = context.read<AppLogger>();
-    final updateService = context.read<GitHubUpdateService>();
+    final logger = ref.read(appLoggerProvider);
+    final updateService = ref.read(githubUpdateServiceProvider);
     final updateInfo = updateService.currentUpdate;
 
     if (updateInfo == null) {
@@ -237,16 +238,16 @@ class _VersionStatusIndicatorState extends State<VersionStatusIndicator> {
 }
 
 /// Dialog for downloading and installing updates
-class _UpdateDialog extends StatefulWidget {
+class _UpdateDialog extends ConsumerStatefulWidget {
   final dynamic updateInfo;
 
   const _UpdateDialog({required this.updateInfo});
 
   @override
-  State<_UpdateDialog> createState() => _UpdateDialogState();
+  ConsumerState<_UpdateDialog> createState() => _UpdateDialogState();
 }
 
-class _UpdateDialogState extends State<_UpdateDialog> {
+class _UpdateDialogState extends ConsumerState<_UpdateDialog> {
   bool _isDownloading = false;
   bool _isInstalling = false;
   DownloadProgress? _downloadProgress;
@@ -254,11 +255,13 @@ class _UpdateDialogState extends State<_UpdateDialog> {
   @override
   void initState() {
     super.initState();
-    _listenToDownloadProgress();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _listenToDownloadProgress();
+    });
   }
 
   void _listenToDownloadProgress() {
-    final updateService = context.read<GitHubUpdateService>();
+    final updateService = ref.read(githubUpdateServiceProvider);
     updateService.downloadProgress.listen((progress) {
       if (mounted) {
         setState(() {
@@ -275,8 +278,8 @@ class _UpdateDialogState extends State<_UpdateDialog> {
   }
 
   Future<void> _downloadAndInstall() async {
-    final logger = context.read<AppLogger>();
-    final updateService = context.read<GitHubUpdateService>();
+    final logger = ref.read(appLoggerProvider);
+    final updateService = ref.read(githubUpdateServiceProvider);
 
     logger.info('[VersionIndicator] Download & Install clicked for version ${widget.updateInfo.version}');
 
@@ -506,7 +509,7 @@ class _UpdateDialogState extends State<_UpdateDialog> {
             text: 'Ignore',
             onPressed: () async {
               // Ignore this update version - won't auto-show dialog again, but indicator stays visible
-              await context.read<GitHubUpdateService>().ignoreUpdate();
+              await ref.read(githubUpdateServiceProvider).ignoreUpdate();
               if (context.mounted) {
                 Navigator.of(context).pop();
               }
@@ -528,7 +531,7 @@ class _UpdateDialogState extends State<_UpdateDialog> {
           AccentButton(
             text: 'Cancel',
             onPressed: () {
-              context.read<GitHubUpdateService>().cancelDownload();
+              ref.read(githubUpdateServiceProvider).cancelDownload();
               Navigator.of(context).pop();
             },
           ),

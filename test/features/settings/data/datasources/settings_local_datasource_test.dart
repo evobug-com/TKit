@@ -9,6 +9,7 @@ import 'package:tkit/features/settings/data/datasources/settings_local_datasourc
 import 'package:tkit/features/settings/data/models/app_settings_model.dart';
 import 'package:tkit/features/settings/domain/entities/fallback_behavior.dart';
 import 'package:tkit/features/settings/domain/entities/update_channel.dart';
+import 'package:tkit/features/settings/domain/entities/window_controls_position.dart';
 
 @GenerateNiceMocks([MockSpec<SharedPreferences>(), MockSpec<AppLogger>()])
 import 'settings_local_datasource_test.mocks.dart';
@@ -56,6 +57,11 @@ void main() {
         startMinimized: false,
         autoStartMonitoring: true,
         updateChannel: UpdateChannel.stable,
+        windowControlsPosition: WindowControlsPosition.right,
+        useFramelessWindow: false,
+        invertFooterHeader: false,
+        autoSyncMappingsOnStart: true,
+        mappingsSyncIntervalHours: 6,
       );
       final jsonString = jsonEncode(testSettings.toJson());
 
@@ -94,6 +100,11 @@ void main() {
         startMinimized: false,
         autoStartMonitoring: true,
         updateChannel: UpdateChannel.stable,
+        windowControlsPosition: WindowControlsPosition.right,
+        useFramelessWindow: false,
+        invertFooterHeader: false,
+        autoSyncMappingsOnStart: true,
+        mappingsSyncIntervalHours: 6,
       );
 
       when(mockPrefs.setString(any, any)).thenAnswer((_) async => true);
@@ -154,6 +165,11 @@ void main() {
         startMinimized: false,
         autoStartMonitoring: true,
         updateChannel: UpdateChannel.stable,
+        windowControlsPosition: WindowControlsPosition.right,
+        useFramelessWindow: false,
+        invertFooterHeader: false,
+        autoSyncMappingsOnStart: true,
+        mappingsSyncIntervalHours: 6,
       );
       final jsonString = jsonEncode(testSettings.toJson());
       when(mockPrefs.getString(any)).thenReturn(jsonString);

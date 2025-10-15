@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:tkit/features/settings/domain/entities/app_settings.dart';
 import 'package:tkit/features/settings/domain/entities/fallback_behavior.dart';
 import 'package:tkit/features/settings/domain/entities/update_channel.dart';
+import 'package:tkit/features/settings/domain/entities/window_controls_position.dart';
 
 void main() {
   group('AppSettings', () {
@@ -32,6 +33,11 @@ void main() {
         startMinimized: false,
         autoStartMonitoring: true,
         updateChannel: UpdateChannel.stable,
+        windowControlsPosition: WindowControlsPosition.right,
+        useFramelessWindow: false,
+        invertFooterHeader: false,
+        autoSyncMappingsOnStart: true,
+        mappingsSyncIntervalHours: 6,
       );
 
       // Assert

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tkit/features/mapping_lists/presentation/providers/mapping_list_provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tkit/features/mapping_lists/presentation/providers/mapping_list_providers.dart';
 import 'package:tkit/features/mapping_lists/domain/entities/mapping_list.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
@@ -11,7 +11,7 @@ import 'package:tkit/shared/widgets/layout/island.dart';
 import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Dialog for managing mapping lists
-class ListManagementDialog extends StatefulWidget {
+class ListManagementDialog extends ConsumerStatefulWidget {
   const ListManagementDialog({super.key});
 
   static Future<void> show(BuildContext context) {
@@ -22,21 +22,23 @@ class ListManagementDialog extends StatefulWidget {
   }
 
   @override
-  State<ListManagementDialog> createState() => _ListManagementDialogState();
+  ConsumerState<ListManagementDialog> createState() => _ListManagementDialogState();
 }
 
-class _ListManagementDialogState extends State<ListManagementDialog> {
+class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
   @override
   void initState() {
     super.initState();
     // Load lists on dialog open
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<MappingListProvider>().loadLists();
+      ref.read(mappingListsProvider.notifier).loadLists();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(mappingListsProvider);
+
     return Dialog(
       backgroundColor: TKitColors.surface,
       child: Container(
@@ -47,21 +49,19 @@ class _ListManagementDialogState extends State<ListManagementDialog> {
           children: [
             _buildHeader(),
             Expanded(
-              child: Consumer<MappingListProvider>(
-                builder: (context, provider, child) {
-                  if (provider.isLoading && provider.lists.isEmpty) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+              child: () {
+                if (state.isLoading && state.lists.isEmpty) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-                  if (provider.lists.isEmpty) {
-                    return const Center(
-                      child: Text('No lists found'),
-                    );
-                  }
+                if (state.lists.isEmpty) {
+                  return const Center(
+                    child: Text('No lists found'),
+                  );
+                }
 
-                  return _buildListsView(provider);
-                },
-              ),
+                return _buildListsView(state);
+              }(),
             ),
             _buildFooter(),
           ],
@@ -99,22 +99,22 @@ class _ListManagementDialogState extends State<ListManagementDialog> {
     );
   }
 
-  Widget _buildListsView(MappingListProvider provider) {
+  Widget _buildListsView(MappingListState state) {
     return ListView.builder(
       padding: const EdgeInsets.all(TKitSpacing.pagePadding),
-      itemCount: provider.lists.length,
+      itemCount: state.lists.length,
       itemBuilder: (context, index) {
-        final list = provider.lists[index];
+        final list = state.lists[index];
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
-          child: _buildListTile(list, provider),
+          child: _buildListTile(list, state),
         );
       },
     );
   }
 
-  Widget _buildListTile(MappingList list, MappingListProvider provider) {
-    final isSyncing = provider.isListSyncing(list.id);
+  Widget _buildListTile(MappingList list, MappingListState state) {
+    final isSyncing = state.syncingListIds.contains(list.id);
 
     return IslandVariant.standard(
       child: Padding(
@@ -126,7 +126,7 @@ class _ListManagementDialogState extends State<ListManagementDialog> {
               width: 40,
               child: Checkbox(
                 value: list.isEnabled,
-                onChanged: (value) => provider.toggleListEnabled(list.id),
+                onChanged: (value) => ref.read(mappingListsProvider.notifier).toggleListEnabled(list.id),
                 fillColor: WidgetStateProperty.resolveWith((states) {
                   if (states.contains(WidgetState.disabled)) {
                     return TKitColors.textDisabled;
@@ -224,7 +224,7 @@ class _ListManagementDialogState extends State<ListManagementDialog> {
                         )
                       : IconButton(
                           icon: const Icon(Icons.sync, size: 18),
-                          onPressed: () => provider.syncList(list.id),
+                          onPressed: () => ref.read(mappingListsProvider.notifier).syncList(list.id),
                           tooltip: 'Sync now',
                           color: TKitColors.accent,
                           padding: EdgeInsets.zero,
@@ -294,6 +294,8 @@ class _ListManagementDialogState extends State<ListManagementDialog> {
   }
 
   Widget _buildFooter() {
+    final state = ref.watch(mappingListsProvider);
+
     return Container(
       padding: const EdgeInsets.all(TKitSpacing.pagePadding),
       decoration: const BoxDecoration(
@@ -304,32 +306,28 @@ class _ListManagementDialogState extends State<ListManagementDialog> {
           ),
         ),
       ),
-      child: Consumer<MappingListProvider>(
-        builder: (context, provider, child) {
-          return Row(
-            children: [
-              PrimaryButton(
-                text: 'Import List',
-                icon: Icons.add,
-                onPressed: () => _showImportDialog(context),
-                width: 140,
-              ),
-              HSpace.md(),
-              AccentButton(
-                text: 'Sync All',
-                icon: Icons.sync,
-                onPressed: provider.isLoading ? null : () => provider.syncAllLists(),
-                width: 120,
-              ),
-              const Spacer(),
-              AccentButton(
-                text: 'Close',
-                onPressed: () => Navigator.of(context).pop(),
-                width: 100,
-              ),
-            ],
-          );
-        },
+      child: Row(
+        children: [
+          PrimaryButton(
+            text: 'Import List',
+            icon: Icons.add,
+            onPressed: () => _showImportDialog(context),
+            width: 140,
+          ),
+          HSpace.md(),
+          AccentButton(
+            text: 'Sync All',
+            icon: Icons.sync,
+            onPressed: state.isLoading ? null : () => ref.read(mappingListsProvider.notifier).syncAllLists(),
+            width: 120,
+          ),
+          const Spacer(),
+          AccentButton(
+            text: 'Close',
+            onPressed: () => Navigator.of(context).pop(),
+            width: 100,
+          ),
+        ],
       ),
     );
   }
@@ -419,7 +417,7 @@ class _ListManagementDialogState extends State<ListManagementDialog> {
 
               Navigator.of(dialogContext).pop();
 
-              final success = await context.read<MappingListProvider>().importListFromUrl(
+              final success = await ref.read(mappingListsProvider.notifier).importListFromUrl(
                     url: url,
                     name: name.isEmpty ? 'Imported List' : name,
                     description: description.isEmpty ? null : description,

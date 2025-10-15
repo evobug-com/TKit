@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:auto_route/auto_route.dart';
@@ -11,10 +11,10 @@ import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/core/routing/app_router.dart';
 import 'package:tkit/core/config/app_config.dart';
 import 'package:tkit/core/utils/dev_utils.dart';
-import 'package:tkit/core/utils/app_logger.dart';
-import 'package:tkit/features/auth/presentation/providers/auth_provider.dart';
+import 'package:tkit/core/providers/providers.dart';
+import 'package:tkit/features/auth/presentation/providers/auth_providers.dart';
 import 'package:tkit/features/auth/presentation/states/auth_state.dart';
-import 'package:tkit/features/settings/presentation/providers/settings_provider.dart';
+import 'package:tkit/features/settings/presentation/providers/settings_providers.dart';
 import 'package:tkit/features/settings/presentation/providers/window_controls_preview_provider.dart';
 import 'package:tkit/features/settings/presentation/providers/unsaved_changes_notifier.dart';
 import 'package:tkit/features/settings/presentation/states/settings_state.dart';
@@ -24,17 +24,17 @@ import 'package:tkit/shared/widgets/badges/channel_badge.dart';
 import 'package:tkit/presentation/widgets/version_status_indicator.dart';
 
 /// Main application window with custom chrome
-class MainWindow extends StatefulWidget {
+class MainWindow extends ConsumerStatefulWidget {
   final Widget child;
   final AppRouter router;
 
   const MainWindow({super.key, required this.child, required this.router});
 
   @override
-  State<MainWindow> createState() => _MainWindowState();
+  ConsumerState<MainWindow> createState() => _MainWindowState();
 }
 
-class _MainWindowState extends State<MainWindow> {
+class _MainWindowState extends ConsumerState<MainWindow> {
   bool _isLogScreenOpen = false;
 
   @override
@@ -72,10 +72,10 @@ class _MainWindowState extends State<MainWindow> {
 
   /// Handle navigation with unsaved changes check
   void _handleNavigation(BuildContext context, PageRouteInfo route) {
-    final unsavedChangesNotifier = context.read<UnsavedChangesNotifier>();
-    if (unsavedChangesNotifier.hasUnsavedChanges) {
+    final unsavedChangesState = ref.read(unsavedChangesProvider);
+    if (unsavedChangesState.hasUnsavedChanges) {
       // Notify settings page to show shake animation
-      unsavedChangesNotifier.notifyNavigationAttempt();
+      ref.read(unsavedChangesProvider.notifier).notifyNavigationAttempt();
     } else {
       // Navigate if no unsaved changes
       widget.router.navigate(route);
@@ -93,7 +93,7 @@ class _MainWindowState extends State<MainWindow> {
       setState(() => _isLogScreenOpen = false);
     } else {
       // Open the log screen
-      final logger = context.read<AppLogger>();
+      final logger = ref.read(appLoggerProvider);
       Navigator.of(navigatorContext)
           .push(
         MaterialPageRoute(
@@ -110,6 +110,22 @@ class _MainWindowState extends State<MainWindow> {
 
   @override
   Widget build(BuildContext context) {
+    final settingsState = ref.watch(settingsProvider);
+
+    // Determine if frameless mode is enabled
+    final useFrameless = settingsState is SettingsLoaded
+        ? settingsState.settings.useFramelessWindow
+        : settingsState is SettingsSaved
+        ? settingsState.settings.useFramelessWindow
+        : false; // Default to false
+
+    // Determine if footer/header should be inverted
+    final invertFooterHeader = settingsState is SettingsLoaded
+        ? settingsState.settings.invertFooterHeader
+        : settingsState is SettingsSaved
+        ? settingsState.settings.invertFooterHeader
+        : false; // Default to false
+
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.f2): () =>
@@ -117,30 +133,8 @@ class _MainWindowState extends State<MainWindow> {
       },
       child: Focus(
         autofocus: true,
-        child: Consumer<SettingsProvider>(
-          builder: (context, settingsProvider, child) {
-            // Determine if frameless mode is enabled
-            final useFrameless = settingsProvider.state is SettingsLoaded
-                ? (settingsProvider.state as SettingsLoaded)
-                    .settings
-                    .useFramelessWindow
-                : settingsProvider.state is SettingsSaved
-                ? (settingsProvider.state as SettingsSaved)
-                    .settings
-                    .useFramelessWindow
-                : false; // Default to false
-
-            // Determine if footer/header should be inverted
-            final invertFooterHeader = settingsProvider.state is SettingsLoaded
-                ? (settingsProvider.state as SettingsLoaded)
-                    .settings
-                    .invertFooterHeader
-                : settingsProvider.state is SettingsSaved
-                ? (settingsProvider.state as SettingsSaved)
-                    .settings
-                    .invertFooterHeader
-                : false; // Default to false
-
+        child: Builder(
+          builder: (context) {
             // Build header and footer widgets
             final header = _buildHeader(context);
             final footer = _buildFooter();
@@ -182,35 +176,34 @@ class _MainWindowState extends State<MainWindow> {
     final isWelcomeScreen = currentRouteName == 'WelcomeRoute';
     final l10n = AppLocalizations.of(context)!;
 
-    return Consumer2<SettingsProvider, WindowControlsPreviewProvider>(
-      builder: (context, settingsProvider, previewProvider, child) {
-        // Get saved window controls position from settings
-        final savedPosition = settingsProvider.state is SettingsLoaded
-            ? (settingsProvider.state as SettingsLoaded)
-                  .settings
-                  .windowControlsPosition
-            : settingsProvider.state is SettingsSaved
-            ? (settingsProvider.state as SettingsSaved)
-                  .settings
-                  .windowControlsPosition
-            : WindowControlsPosition.right;
+    // Get settings state
+    final settingsState = ref.watch(settingsProvider);
 
-        // Preview position takes precedence over saved position
-        final windowControlsPosition =
-            previewProvider.previewPosition ?? savedPosition;
+    // Get preview position from Riverpod provider
+    final previewPosition = ref.watch(windowControlsPreviewProvider);
 
-        return Container(
-          height: 36,
-          decoration: const BoxDecoration(
-            color: TKitColors.surface,
-            border: Border(
-              bottom: BorderSide(color: TKitColors.border, width: 1),
-            ),
-          ),
-          child: Row(
-            children: [
-              // LEFT POSITION LAYOUT: Controls → Spacer → Tabs → Title
-              if (windowControlsPosition == WindowControlsPosition.left) ...[
+    // Get saved window controls position from settings
+    final savedPosition = settingsState is SettingsLoaded
+        ? settingsState.settings.windowControlsPosition
+        : settingsState is SettingsSaved
+        ? settingsState.settings.windowControlsPosition
+        : WindowControlsPosition.right;
+
+    // Preview position takes precedence over saved position
+    final windowControlsPosition = previewPosition ?? savedPosition;
+
+    return Container(
+      height: 36,
+      decoration: const BoxDecoration(
+        color: TKitColors.surface,
+        border: Border(
+          bottom: BorderSide(color: TKitColors.border, width: 1),
+        ),
+      ),
+      child: Row(
+        children: [
+          // LEFT POSITION LAYOUT: Controls → Spacer → Tabs → Title
+          if (windowControlsPosition == WindowControlsPosition.left) ...[
                 // Window controls on the left (reversed order)
                 _buildWindowControls(reversed: true),
 
@@ -434,8 +427,6 @@ class _MainWindowState extends State<MainWindow> {
               ],
             ],
           ),
-        );
-      },
     );
   }
 
@@ -502,6 +493,8 @@ class _MainWindowState extends State<MainWindow> {
 
   Widget _buildFooter() {
     final l10n = AppLocalizations.of(context)!;
+    final authState = ref.watch(authProvider);
+    final isAuthenticated = authState is Authenticated;
 
     return Container(
       height: 28,
@@ -526,45 +519,39 @@ class _MainWindowState extends State<MainWindow> {
                 }
               },
               child: DragToMoveArea(
-                child: Consumer<AuthProvider>(
-                  builder: (context, authProvider, child) {
-                    final isAuthenticated = authProvider.state is Authenticated;
-
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Twitch icon
-                        Icon(
-                          Icons.videocam,
-                          size: 12,
-                          color: isAuthenticated
-                              ? TKitColors.success
-                              : TKitColors.textDisabled,
-                        ),
-                        const SizedBox(width: 6),
-                        Container(
-                          width: 5,
-                          height: 5,
-                          decoration: BoxDecoration(
-                            color: isAuthenticated
-                                ? TKitColors.success
-                                : TKitColors.textDisabled,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        const SizedBox(width: 6),
-                        Text(
-                          isAuthenticated
-                              ? l10n.mainWindowStatusConnected
-                              : l10n.mainWindowStatusDisconnected,
-                          style: TKitTextStyles.bodySmall.copyWith(
-                            color: TKitColors.textMuted,
-                            fontSize: 9,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Twitch icon
+                    Icon(
+                      Icons.videocam,
+                      size: 12,
+                      color: isAuthenticated
+                          ? TKitColors.success
+                          : TKitColors.textDisabled,
+                    ),
+                    const SizedBox(width: 6),
+                    Container(
+                      width: 5,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: isAuthenticated
+                            ? TKitColors.success
+                            : TKitColors.textDisabled,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      isAuthenticated
+                          ? l10n.mainWindowStatusConnected
+                          : l10n.mainWindowStatusDisconnected,
+                      style: TKitTextStyles.bodySmall.copyWith(
+                        color: TKitColors.textMuted,
+                        fontSize: 9,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
