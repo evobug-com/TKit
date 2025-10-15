@@ -3,7 +3,7 @@ import 'package:talker/talker.dart';
 /// Centralized logging utility for the application
 /// Provides structured logging with in-app viewer support (F2 to view logs)
 class AppLogger {
-  static final AppLogger _instance = AppLogger._internal();
+  static final _instance = AppLogger._internal();
   factory AppLogger() => _instance;
 
   late final Talker _talker;

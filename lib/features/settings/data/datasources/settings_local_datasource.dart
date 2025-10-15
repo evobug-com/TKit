@@ -9,7 +9,7 @@ import 'package:tkit/features/settings/data/models/app_settings_model.dart';
 /// Local data source for settings persistence using SharedPreferences
 /// Provides reactive stream for settings changes
 class SettingsLocalDataSource {
-  static const String _settingsKey = 'app_settings';
+  static const _settingsKey = 'app_settings';
 
   final SharedPreferences _prefs;
   final AppLogger _logger;
@@ -57,7 +57,7 @@ class SettingsLocalDataSource {
       final success = await _prefs.setString(_settingsKey, settingsJson);
 
       if (!success) {
-        throw CacheException(
+        throw const CacheException(
           message: 'Failed to save settings to SharedPreferences',
         );
       }
@@ -97,7 +97,7 @@ class SettingsLocalDataSource {
       final success = await _prefs.remove(_settingsKey);
 
       if (!success) {
-        throw CacheException(
+        throw const CacheException(
           message: 'Failed to clear settings from SharedPreferences',
         );
       }

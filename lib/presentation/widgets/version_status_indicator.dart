@@ -31,9 +31,9 @@ class VersionStatusIndicator extends ConsumerStatefulWidget {
 
 class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator> {
   UpdateCheckStatus _status = UpdateCheckStatus.unknown;
-  bool _isHovering = false;
+  var _isHovering = false;
   String? _errorMessage;
-  bool _shouldShowDialog = false; // Flag to show dialog from build
+  var _shouldShowDialog = false; // Flag to show dialog from build
 
   @override
   void initState() {
@@ -248,8 +248,8 @@ class _UpdateDialog extends ConsumerStatefulWidget {
 }
 
 class _UpdateDialogState extends ConsumerState<_UpdateDialog> {
-  bool _isDownloading = false;
-  bool _isInstalling = false;
+  var _isDownloading = false;
+  var _isInstalling = false;
   DownloadProgress? _downloadProgress;
 
   @override

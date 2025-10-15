@@ -64,9 +64,9 @@ class InlineLoading extends StatelessWidget {
         SizedBox(
           width: size,
           height: size,
-          child: CircularProgressIndicator(
+          child: const CircularProgressIndicator(
             strokeWidth: 2,
-            valueColor: const AlwaysStoppedAnimation<Color>(TKitColors.accent),
+            valueColor: AlwaysStoppedAnimation<Color>(TKitColors.accent),
           ),
         ),
         if (message != null) ...[

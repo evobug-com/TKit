@@ -14,7 +14,7 @@ import 'package:tkit/core/services/updater/utils/installation_detector.dart';
 
 /// Service for checking and managing application updates from GitHub Releases
 class GitHubUpdateService {
-  static const String _ignoredVersionsKey = 'ignored_update_versions';
+  static const _ignoredVersionsKey = 'ignored_update_versions';
 
   final Dio _dio;
   final AppLogger _logger;
@@ -23,9 +23,9 @@ class GitHubUpdateService {
   late final StreamController<UpdateInfo?> _updateAvailableController;
   late final StreamController<DownloadProgress> _downloadProgressController;
   UpdateInfo? _currentUpdateValue;
-  DownloadProgress _currentDownloadProgress = DownloadProgress(status: DownloadStatus.idle);
+  var _currentDownloadProgress = DownloadProgress(status: DownloadStatus.idle);
 
-  bool _isInitialized = false;
+  var _isInitialized = false;
   DateTime? _lastCheckTime;
   CancelToken? _downloadCancelToken;
   Set<String> _ignoredVersions = {};

@@ -27,24 +27,24 @@ class ShowcasePage extends StatefulWidget {
 }
 
 class _ShowcasePageState extends State<ShowcasePage> {
-  bool _showFormError = false;
-  bool _showLoading = false;
-  double _progressValue = 0.65;
-  int _currentStep = 1;
+  var _showFormError = false;
+  var _showLoading = false;
+  var _progressValue = 0.65;
+  var _currentStep = 1;
 
   // Form controls
-  bool _checkboxValue = false;
-  bool _switchValue = true;
+  var _checkboxValue = false;
+  var _switchValue = true;
   String? _radioValue = 'option1';
   String? _dropdownValue;
   double _stepperValue = 10;
 
   // Table
-  int _currentPage = 1;
-  final int _totalPages = 5;
+  var _currentPage = 1;
+  final _totalPages = 5;
 
   // Searchable
-  String _searchQuery = '';
+  var _searchQuery = '';
 
   // Color picker
   Color _selectedColor = TKitColors.accent;
@@ -59,7 +59,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header
-            PageHeader(
+            const PageHeader(
               title: '🎨 Design System Showcase',
               subtitle: 'All UI components and design tokens (Dev Only)',
             ),
@@ -137,31 +137,31 @@ class _ShowcasePageState extends State<ShowcasePage> {
             const VSpace.xl(),
 
             // Islands Section
-            Section(
+            const Section(
               title: 'Islands',
               subtitle: 'Container components with consistent styling',
               wrapped: false,
               children: [
                 Text('Island.compact (8px padding):', style: TKitTextStyles.labelSmall),
-                const VSpace.xs(),
+                VSpace.xs(),
                 Island.compact(
                   child: Text('Compact island content', style: TKitTextStyles.bodyMedium),
                 ),
-                const VSpace.md(),
+                VSpace.md(),
                 Text('Island.standard (12px padding):', style: TKitTextStyles.labelSmall),
-                const VSpace.xs(),
+                VSpace.xs(),
                 Island.standard(
                   child: Text('Standard island content', style: TKitTextStyles.bodyMedium),
                 ),
-                const VSpace.md(),
+                VSpace.md(),
                 Text('Island.comfortable (16px padding):', style: TKitTextStyles.labelSmall),
-                const VSpace.xs(),
+                VSpace.xs(),
                 Island.comfortable(
                   child: Text('Comfortable island content', style: TKitTextStyles.bodyMedium),
                 ),
-                const VSpace.md(),
+                VSpace.md(),
                 Text('IslandVariant.standard (lighter background):', style: TKitTextStyles.labelSmall),
-                const VSpace.xs(),
+                VSpace.xs(),
                 IslandVariant.standard(
                   child: Text('Variant island with surfaceVariant color', style: TKitTextStyles.bodyMedium),
                 ),
@@ -174,7 +174,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
               title: 'Spacers',
               subtitle: 'Named spacing widgets for vertical and horizontal gaps',
               children: [
-                Text('Vertical Spacers:', style: TKitTextStyles.labelMedium),
+                const Text('Vertical Spacers:', style: TKitTextStyles.labelMedium),
                 const VSpace.xs(),
                 _buildSpacerDemo('VSpace.xs', const VSpace.xs()),
                 _buildSpacerDemo('VSpace.sm', const VSpace.sm()),
@@ -182,7 +182,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                 _buildSpacerDemo('VSpace.lg', const VSpace.lg()),
                 _buildSpacerDemo('VSpace.xl', const VSpace.xl()),
                 const VSpace.md(),
-                Text('Horizontal Spacers:', style: TKitTextStyles.labelMedium),
+                const Text('Horizontal Spacers:', style: TKitTextStyles.labelMedium),
                 const VSpace.xs(),
                 Row(
                   children: [
@@ -203,7 +203,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
             const VSpace.xl(),
 
             // StatItems Section
-            Section(
+            const Section(
               title: 'Stat Items',
               subtitle: 'Display statistics and metrics',
               wrapped: false,
@@ -211,17 +211,17 @@ class _ShowcasePageState extends State<ShowcasePage> {
                 IslandVariant.standard(
                   child: Row(
                     children: [
-                      const StatItem(
+                      StatItem(
                         label: 'Total Items',
                         value: '156',
                       ),
-                      const HSpace.xxl(),
+                      HSpace.xxl(),
                       StatItem(
                         label: 'Active',
                         value: '42',
                         valueColor: TKitColors.success,
                       ),
-                      const HSpace.xxl(),
+                      HSpace.xxl(),
                       StatItem(
                         label: 'Errors',
                         value: '3',
@@ -289,7 +289,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                       width: 130,
                     ),
                     const HSpace.md(),
-                    PrimaryButton(
+                    const PrimaryButton(
                       text: 'Disabled',
                       onPressed: null,
                       width: 130,
@@ -317,11 +317,11 @@ class _ShowcasePageState extends State<ShowcasePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      FormFieldWrapper(
+                      const FormFieldWrapper(
                         label: 'Username',
                         helpText: 'Choose a unique username',
                         required: true,
-                        child: const TKitTextField(
+                        child: TKitTextField(
                           hintText: 'Enter username',
                         ),
                       ),
@@ -336,10 +336,10 @@ class _ShowcasePageState extends State<ShowcasePage> {
                         ),
                       ),
                       const VSpace.md(),
-                      FormFieldWrapper(
+                      const FormFieldWrapper(
                         label: 'Description',
                         helpText: 'Optional description',
-                        child: const TKitTextField(
+                        child: TKitTextField(
                           hintText: 'Enter description',
                           maxLines: 3,
                         ),
@@ -452,17 +452,17 @@ class _ShowcasePageState extends State<ShowcasePage> {
                           builder: (context) => BaseDialog(
                             title: 'Custom Dialog',
                             icon: Icons.settings,
-                            content: Column(
+                            content: const Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const FormFieldWrapper(
+                                FormFieldWrapper(
                                   label: 'Setting Name',
                                   child: TKitTextField(hintText: 'Enter name'),
                                 ),
-                                const VSpace.md(),
+                                VSpace.md(),
                                 FormFieldWrapper(
                                   label: 'Value',
-                                  child: const TKitTextField(hintText: 'Enter value'),
+                                  child: TKitTextField(hintText: 'Enter value'),
                                 ),
                               ],
                             ),
@@ -545,23 +545,23 @@ class _ShowcasePageState extends State<ShowcasePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Inline Loading:', style: TKitTextStyles.labelMedium),
+                      const Text('Inline Loading:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
                       const InlineLoading(message: 'Loading data...'),
                       const VSpace.lg(),
-                      Text('Skeleton Loaders:', style: TKitTextStyles.labelMedium),
+                      const Text('Skeleton Loaders:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
-                      Row(
+                      const Row(
                         children: [
-                          const SkeletonLoader(
+                          SkeletonLoader(
                             width: 100,
                             height: 100,
                           ),
-                          const HSpace.md(),
+                          HSpace.md(),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
+                              children: [
                                 SkeletonLoader(width: double.infinity, height: 16),
                                 VSpace.xs(),
                                 SkeletonLoader(width: 200, height: 14),
@@ -573,7 +573,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                         ],
                       ),
                       const VSpace.lg(),
-                      Text('Loading Overlay Preview:', style: TKitTextStyles.labelMedium),
+                      const Text('Loading Overlay Preview:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
                       Container(
                         height: 150,
@@ -624,7 +624,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Linear Progress:', style: TKitTextStyles.labelMedium),
+                      const Text('Linear Progress:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
                       ProgressBar(
                         progress: _progressValue,
@@ -653,14 +653,14 @@ class _ShowcasePageState extends State<ShowcasePage> {
                         ],
                       ),
                       const VSpace.lg(),
-                      Text('Circular Progress:', style: TKitTextStyles.labelMedium),
+                      const Text('Circular Progress:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
                       CircularProgress(
                         progress: _progressValue,
                         size: 64,
                       ),
                       const VSpace.lg(),
-                      Text('Step Progress:', style: TKitTextStyles.labelMedium),
+                      const Text('Step Progress:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
                       StepProgress(
                         currentStep: _currentStep,
@@ -710,7 +710,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Checkbox:', style: TKitTextStyles.labelMedium),
+                      const Text('Checkbox:', style: TKitTextStyles.labelMedium),
                       const VSpace.xs(),
                       TKitCheckbox(
                         value: _checkboxValue,
@@ -718,7 +718,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                         label: 'Enable notifications',
                       ),
                       const VSpace.lg(),
-                      Text('Switch:', style: TKitTextStyles.labelMedium),
+                      const Text('Switch:', style: TKitTextStyles.labelMedium),
                       const VSpace.xs(),
                       TKitSwitch(
                         value: _switchValue,
@@ -726,7 +726,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                         label: 'Dark Mode',
                       ),
                       const VSpace.lg(),
-                      Text('Radio Group:', style: TKitTextStyles.labelMedium),
+                      const Text('Radio Group:', style: TKitTextStyles.labelMedium),
                       const VSpace.xs(),
                       TKitRadioGroup<String>(
                         value: _radioValue,
@@ -738,7 +738,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                         ],
                       ),
                       const VSpace.lg(),
-                      Text('Dropdown:', style: TKitTextStyles.labelMedium),
+                      const Text('Dropdown:', style: TKitTextStyles.labelMedium),
                       const VSpace.xs(),
                       TKitDropdown<String>(
                         value: _dropdownValue,
@@ -751,7 +751,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                         ],
                       ),
                       const VSpace.lg(),
-                      Text('Number Stepper:', style: TKitTextStyles.labelMedium),
+                      const Text('Number Stepper:', style: TKitTextStyles.labelMedium),
                       const VSpace.xs(),
                       TKitNumberStepper(
                         value: _stepperValue,
@@ -822,12 +822,12 @@ class _ShowcasePageState extends State<ShowcasePage> {
               title: 'Badges & Tags',
               subtitle: 'Status indicators and removable tags',
               children: [
-                Text('Badges:', style: TKitTextStyles.labelMedium),
+                const Text('Badges:', style: TKitTextStyles.labelMedium),
                 const VSpace.sm(),
-                Wrap(
+                const Wrap(
                   spacing: TKitSpacing.md,
                   runSpacing: TKitSpacing.sm,
-                  children: const [
+                  children: [
                     TKitBadge(text: 'Default'),
                     TKitBadge(text: 'Success', variant: TKitBadgeVariant.success),
                     TKitBadge(text: 'Error', variant: TKitBadgeVariant.error),
@@ -838,7 +838,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                   ],
                 ),
                 const VSpace.lg(),
-                Text('Tags:', style: TKitTextStyles.labelMedium),
+                const Text('Tags:', style: TKitTextStyles.labelMedium),
                 const VSpace.sm(),
                 TKitTagGroup(
                   tags: [
@@ -867,7 +867,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                         decoration: BoxDecoration(
                           border: Border.all(color: TKitColors.border),
                         ),
-                        child: Text('Hover me', style: TKitTextStyles.bodyMedium),
+                        child: const Text('Hover me', style: TKitTextStyles.bodyMedium),
                       ),
                     ),
                     const HSpace.md(),
@@ -875,7 +875,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                   ],
                 ),
                 const VSpace.md(),
-                Text('Icon Buttons:', style: TKitTextStyles.labelMedium),
+                const Text('Icon Buttons:', style: TKitTextStyles.labelMedium),
                 const VSpace.sm(),
                 Row(
                   children: [
@@ -924,7 +924,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                       actions: [
                         MenuAction(label: 'Edit', icon: Icons.edit, onTap: () {}),
                         MenuAction(label: 'Copy', icon: Icons.copy, onTap: () {}),
-                        MenuAction.divider(),
+                        const MenuAction.divider(),
                         MenuAction(label: 'Delete', icon: Icons.delete, onTap: () {}, textColor: TKitColors.error),
                       ],
                     ),
@@ -963,7 +963,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Search Field:', style: TKitTextStyles.labelMedium),
+                      const Text('Search Field:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
                       SearchField(
                         hintText: 'Search...',
@@ -974,7 +974,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                         Text('Searching for: $_searchQuery', style: TKitTextStyles.bodySmall.copyWith(color: TKitColors.textMuted)),
                       ],
                       const VSpace.lg(),
-                      Text('Searchable Dropdown:', style: TKitTextStyles.labelMedium),
+                      const Text('Searchable Dropdown:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
                       SearchableDropdown<String>(
                         items: ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry', 'Fig', 'Grape'],
@@ -996,20 +996,20 @@ class _ShowcasePageState extends State<ShowcasePage> {
               subtitle: 'Persistent notifications and contextual alerts',
               wrapped: false,
               children: [
-                Alert.info(message: 'This is an informational alert'),
+                const Alert.info(message: 'This is an informational alert'),
                 const VSpace.sm(),
-                Alert.success(message: 'Operation completed successfully!'),
+                const Alert.success(message: 'Operation completed successfully!'),
                 const VSpace.sm(),
                 Alert.warning(message: 'Please review your settings', dismissible: true, onDismiss: () {}),
                 const VSpace.sm(),
                 Alert.error(message: 'An error occurred', actionLabel: 'RETRY', onAction: () {}),
                 const VSpace.md(),
-                Text('Inline Alerts:', style: TKitTextStyles.labelMedium),
+                const Text('Inline Alerts:', style: TKitTextStyles.labelMedium),
                 const VSpace.sm(),
-                Island.standard(
+                const Island.standard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       InlineAlert.info(message: 'Helpful tip: Save often'),
                       VSpace.xs(),
                       InlineAlert.warning(message: 'This field is required'),
@@ -1030,7 +1030,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Tabs:', style: TKitTextStyles.labelMedium),
+                      const Text('Tabs:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
                       SizedBox(
                         height: 200,
@@ -1044,27 +1044,27 @@ class _ShowcasePageState extends State<ShowcasePage> {
                           children: [
                             Container(
                               padding: const EdgeInsets.all(TKitSpacing.md),
-                              child: Text('Overview content', style: TKitTextStyles.bodyMedium),
+                              child: const Text('Overview content', style: TKitTextStyles.bodyMedium),
                             ),
                             Container(
                               padding: const EdgeInsets.all(TKitSpacing.md),
-                              child: Text('Settings content', style: TKitTextStyles.bodyMedium),
+                              child: const Text('Settings content', style: TKitTextStyles.bodyMedium),
                             ),
                             Container(
                               padding: const EdgeInsets.all(TKitSpacing.md),
-                              child: Text('Help content', style: TKitTextStyles.bodyMedium),
+                              child: const Text('Help content', style: TKitTextStyles.bodyMedium),
                             ),
                           ],
                         ),
                       ),
                       const VSpace.lg(),
-                      Text('Breadcrumbs:', style: TKitTextStyles.labelMedium),
+                      const Text('Breadcrumbs:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
                       Breadcrumb(
                         items: [
                           BreadcrumbItem(label: 'Home', icon: Icons.home, onTap: () {}),
                           BreadcrumbItem(label: 'Products', onTap: () {}),
-                          BreadcrumbItem(label: 'Widget'),
+                          const BreadcrumbItem(label: 'Widget'),
                         ],
                         compact: true,
                       ),
@@ -1076,7 +1076,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
             const VSpace.xl(),
 
             // Collapsible & Accordion Section
-            Section(
+            const Section(
               title: 'Collapsible & Accordion',
               subtitle: 'Expandable content sections',
               wrapped: false,
@@ -1087,7 +1087,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                   icon: Icons.info_outline,
                   child: Text('This is the content inside the collapsible panel. It can contain any widgets.', style: TKitTextStyles.bodyMedium),
                 ),
-                const VSpace.md(),
+                VSpace.md(),
                 Accordion(
                   items: [
                     AccordionItem(
@@ -1118,7 +1118,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Color Picker:', style: TKitTextStyles.labelMedium),
+                      const Text('Color Picker:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
                       ColorPickerField(
                         label: 'Choose Color',
@@ -1126,7 +1126,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                         onColorChanged: (color) => setState(() => _selectedColor = color),
                       ),
                       const VSpace.lg(),
-                      Text('Date & Time Pickers:', style: TKitTextStyles.labelMedium),
+                      const Text('Date & Time Pickers:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
                       DatePickerField(
                         label: 'Select Date',
@@ -1140,7 +1140,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                         onTimeChanged: (time) {},
                       ),
                       const VSpace.lg(),
-                      Text('File Upload:', style: TKitTextStyles.labelMedium),
+                      const Text('File Upload:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
                       FileUploadField(
                         label: 'Upload Document',
@@ -1165,18 +1165,18 @@ class _ShowcasePageState extends State<ShowcasePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Avatars:', style: TKitTextStyles.labelMedium),
+                      const Text('Avatars:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
-                      Row(
+                      const Row(
                         children: [
-                          const Avatar.small(name: 'John Doe'),
-                          const HSpace.sm(),
-                          const Avatar.medium(name: 'Jane Smith'),
-                          const HSpace.sm(),
-                          const Avatar.large(name: 'Bob Johnson'),
-                          const HSpace.md(),
+                          Avatar.small(name: 'John Doe'),
+                          HSpace.sm(),
+                          Avatar.medium(name: 'Jane Smith'),
+                          HSpace.sm(),
+                          Avatar.large(name: 'Bob Johnson'),
+                          HSpace.md(),
                           AvatarGroup(
-                            avatars: const [
+                            avatars: [
                               Avatar.small(name: 'User 1'),
                               Avatar.small(name: 'User 2'),
                               Avatar.small(name: 'User 3'),
@@ -1187,7 +1187,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                         ],
                       ),
                       const VSpace.lg(),
-                      Text('Dividers:', style: TKitTextStyles.labelMedium),
+                      const Text('Dividers:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
                       const TKitDivider(),
                       const VSpace.sm(),
@@ -1195,7 +1195,7 @@ class _ShowcasePageState extends State<ShowcasePage> {
                       const VSpace.sm(),
                       const TKitDivider.subtle(),
                       const VSpace.lg(),
-                      Text('Tree View:', style: TKitTextStyles.labelMedium),
+                      const Text('Tree View:', style: TKitTextStyles.labelMedium),
                       const VSpace.sm(),
                       TreeView<String>(
                         nodes: [
@@ -1270,18 +1270,18 @@ Scaffold(
             const VSpace.xl(),
 
             // Documentation Links
-            IslandVariant.standard(
+            const IslandVariant.standard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.info_outline, size: 20, color: TKitColors.info),
-                      const HSpace.sm(),
+                      Icon(Icons.info_outline, size: 20, color: TKitColors.info),
+                      HSpace.sm(),
                       Text('Documentation', style: TKitTextStyles.labelLarge),
                     ],
                   ),
-                  const VSpace.sm(),
+                  VSpace.sm(),
                   Text(
                     '📚 Full documentation: /DESIGN_SYSTEM.md\n'
                     '🔄 Migration guide: /MIGRATION_GUIDE.md\n'

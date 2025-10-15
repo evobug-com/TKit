@@ -35,7 +35,7 @@ class SearchField extends StatefulWidget {
 class _SearchFieldState extends State<SearchField> {
   late TextEditingController _controller;
   Timer? _debounceTimer;
-  bool _isOwned = false;
+  var _isOwned = false;
 
   @override
   void initState() {

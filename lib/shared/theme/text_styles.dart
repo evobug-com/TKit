@@ -6,11 +6,11 @@ class TKitTextStyles {
   TKitTextStyles._();
 
   // Font family
-  static const String _fontFamily =
+  static const _fontFamily =
       'Inter'; // Will use system font if not available
 
   // Headings
-  static const TextStyle heading1 = TextStyle(
+  static const heading1 = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 18,
     fontWeight: FontWeight.w600,
@@ -19,7 +19,7 @@ class TKitTextStyles {
     color: TKitColors.textPrimary,
   );
 
-  static const TextStyle heading2 = TextStyle(
+  static const heading2 = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 16,
     fontWeight: FontWeight.w600,
@@ -28,7 +28,7 @@ class TKitTextStyles {
     color: TKitColors.textPrimary,
   );
 
-  static const TextStyle heading3 = TextStyle(
+  static const heading3 = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 14,
     fontWeight: FontWeight.w600,
@@ -37,7 +37,7 @@ class TKitTextStyles {
     color: TKitColors.textPrimary,
   );
 
-  static const TextStyle heading4 = TextStyle(
+  static const heading4 = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 12,
     fontWeight: FontWeight.w600,
@@ -47,7 +47,7 @@ class TKitTextStyles {
   );
 
   // Body text - Compact
-  static const TextStyle bodyLarge = TextStyle(
+  static const bodyLarge = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 14,
     fontWeight: FontWeight.w400,
@@ -55,7 +55,7 @@ class TKitTextStyles {
     color: TKitColors.textPrimary,
   );
 
-  static const TextStyle bodyMedium = TextStyle(
+  static const bodyMedium = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 13,
     fontWeight: FontWeight.w400,
@@ -63,7 +63,7 @@ class TKitTextStyles {
     color: TKitColors.textPrimary,
   );
 
-  static const TextStyle bodySmall = TextStyle(
+  static const bodySmall = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 11,
     fontWeight: FontWeight.w400,
@@ -72,7 +72,7 @@ class TKitTextStyles {
   );
 
   // Labels
-  static const TextStyle labelLarge = TextStyle(
+  static const labelLarge = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 14,
     fontWeight: FontWeight.w600,
@@ -81,7 +81,7 @@ class TKitTextStyles {
     color: TKitColors.textPrimary,
   );
 
-  static const TextStyle labelMedium = TextStyle(
+  static const labelMedium = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 12,
     fontWeight: FontWeight.w600,
@@ -90,7 +90,7 @@ class TKitTextStyles {
     color: TKitColors.textPrimary,
   );
 
-  static const TextStyle labelSmall = TextStyle(
+  static const labelSmall = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 11,
     fontWeight: FontWeight.w600,
@@ -100,7 +100,7 @@ class TKitTextStyles {
   );
 
   // Button text
-  static const TextStyle button = TextStyle(
+  static const button = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 14,
     fontWeight: FontWeight.w600,
@@ -109,7 +109,7 @@ class TKitTextStyles {
     color: TKitColors.textPrimary,
   );
 
-  static const TextStyle buttonSmall = TextStyle(
+  static const buttonSmall = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 12,
     fontWeight: FontWeight.w600,
@@ -119,7 +119,7 @@ class TKitTextStyles {
   );
 
   // Caption
-  static const TextStyle caption = TextStyle(
+  static const caption = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 12,
     fontWeight: FontWeight.w400,
@@ -128,7 +128,7 @@ class TKitTextStyles {
   );
 
   // Code/Monospace
-  static const TextStyle code = TextStyle(
+  static const code = TextStyle(
     fontFamily: 'Consolas',
     fontSize: 14,
     fontWeight: FontWeight.w400,
@@ -137,7 +137,7 @@ class TKitTextStyles {
   );
 
   // Link
-  static const TextStyle link = TextStyle(
+  static const link = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 14,
     fontWeight: FontWeight.w500,

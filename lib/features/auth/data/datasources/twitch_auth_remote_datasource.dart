@@ -10,7 +10,7 @@ import 'package:tkit/features/auth/data/models/twitch_user_model.dart';
 /// Implements OAuth 2.0 Device Code Flow (recommended for desktop apps)
 class TwitchAuthRemoteDataSource {
   final Dio _dio;
-  final AppLogger _logger = AppLogger();
+  final _logger = AppLogger();
 
 
   TwitchAuthRemoteDataSource(this._dio);
@@ -131,22 +131,22 @@ class TwitchAuthRemoteDataSource {
         _logger.debug('Final error value: $error');
 
         if (error == 'authorization_pending') {
-          throw AuthException(
+          throw const AuthException(
             message: 'Authorization pending',
             code: 'AUTHORIZATION_PENDING',
           );
         } else if (error == 'slow_down') {
-          throw AuthException(
+          throw const AuthException(
             message: 'Polling too fast',
             code: 'SLOW_DOWN',
           );
         } else if (error == 'expired_token') {
-          throw AuthException(
+          throw const AuthException(
             message: 'Device code expired',
             code: 'EXPIRED_TOKEN',
           );
         } else if (error == 'access_denied') {
-          throw AuthException(
+          throw const AuthException(
             message: 'User denied authorization',
             code: 'ACCESS_DENIED',
           );
@@ -278,7 +278,7 @@ class TwitchAuthRemoteDataSource {
       final users = data['data'] as List<dynamic>;
 
       if (users.isEmpty) {
-        throw AuthException(
+        throw const AuthException(
           message: 'Unable to retrieve your account information. Please try logging in again.',
           code: 'NO_USER_DATA',
           technicalDetails: 'Empty user data response',

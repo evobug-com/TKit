@@ -253,7 +253,7 @@ class TwitchApiRemoteDataSource {
       if (response.statusCode == 200) {
         final data = response.data['data'] as List;
         if (data.isEmpty) {
-          throw ServerException(
+          throw const ServerException(
             message: 'Unable to retrieve your account information. Please try logging in again.',
             code: '404',
             technicalDetails: 'Empty user data response',

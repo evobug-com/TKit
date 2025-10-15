@@ -59,9 +59,9 @@ class _SettingsPageContent extends ConsumerStatefulWidget {
 class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
     with TickerProviderStateMixin {
   AppSettings? _currentSettings;
-  bool _hasChanges = false;
-  bool _isInitialized = false;
-  int _resetKey = 0;
+  var _hasChanges = false;
+  var _isInitialized = false;
+  var _resetKey = 0;
   late TabController _tabController;
   late AnimationController _shakeController;
   late Animation<double> _shakeAnimation;
@@ -126,7 +126,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
     }
   }
 
-  void _discardChanges() async {
+  Future<void> _discardChanges() async {
     final state = ref.read(settingsProvider);
 
     // Clear the window controls preview to revert to saved position
@@ -184,7 +184,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.error_outline, size: 48, color: TKitColors.error),
+                  const Icon(Icons.error_outline, size: 48, color: TKitColors.error),
                   const VSpace.lg(),
                   Text(state.message, style: TKitTextStyles.bodyMedium),
                   const VSpace.lg(),
@@ -247,7 +247,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                         title: l10n.settingsPageTitle,
                         subtitle: l10n.settingsPageDescription,
                       ),
-                      VSpace.lg(),
+                      const VSpace.lg(),
                       // Tabs
                       _buildTabs(l10n),
                     ],
@@ -385,7 +385,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 );
               },
             ),
-            VSpace.md(),
+            const VSpace.md(),
             SettingsCheckbox(
               label: l10n.settingsAutoStartWindowsLabel,
               subtitle: l10n.settingsAutoStartWindowsSubtitle,
@@ -396,7 +396,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 );
               },
             ),
-            VSpace.sm(),
+            const VSpace.sm(),
             SettingsCheckbox(
               label: l10n.settingsStartMinimizedLabel,
               subtitle: l10n.settingsStartMinimizedSubtitle,
@@ -407,7 +407,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 );
               },
             ),
-            VSpace.sm(),
+            const VSpace.sm(),
             SettingsCheckbox(
               label: l10n.settingsMinimizeToTrayLabel,
               subtitle: l10n.settingsMinimizeToTraySubtitle,
@@ -418,7 +418,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 );
               },
             ),
-            VSpace.sm(),
+            const VSpace.sm(),
             SettingsCheckbox(
               label: l10n.settingsShowNotificationsLabel,
               subtitle: l10n.settingsShowNotificationsSubtitle,
@@ -429,7 +429,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 );
               },
             ),
-            VSpace.sm(),
+            const VSpace.sm(),
             SettingsCheckbox(
               label: l10n.settingsNotifyMissingCategoryLabel,
               subtitle: l10n.settingsNotifyMissingCategorySubtitle,
@@ -440,7 +440,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 );
               },
             ),
-            VSpace.md(),
+            const VSpace.md(),
             CustomDropdown<WindowControlsPosition>(
               label: l10n.settingsWindowControlsPositionLabel,
               description: l10n.settingsWindowControlsPositionDescription,
@@ -490,7 +490,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 );
               },
             ),
-            VSpace.md(),
+            const VSpace.md(),
             SettingsSlider(
               label: l10n.settingsDebounceTimeLabel,
               description: l10n.settingsDebounceTimeDescription,
@@ -504,12 +504,12 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 );
               },
             ),
-            VSpace.md(),
+            const VSpace.md(),
             _buildTimingExplanation(
               settings.scanIntervalSeconds,
               settings.debounceSeconds,
             ),
-            VSpace.md(),
+            const VSpace.md(),
             SettingsCheckbox(
               label: l10n.settingsAutoStartMonitoringLabel,
               subtitle: l10n.settingsAutoStartMonitoringSubtitle,
@@ -521,7 +521,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
               },
             ),
           ]),
-          VSpace.lg(),
+          const VSpace.lg(),
           _buildSection(l10n.settingsFallbackBehavior, [
             SettingsDropdown<FallbackBehavior>(
               label: l10n.settingsFallbackBehaviorLabel,
@@ -542,7 +542,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
               },
             ),
             if (settings.fallbackBehavior == FallbackBehavior.custom) ...[
-              VSpace.md(),
+              const VSpace.md(),
               FormFieldWrapper(
                 label: l10n.settingsCustomCategory,
                 child: TKitTextField(
@@ -580,7 +580,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 );
               },
             ),
-            VSpace.md(),
+            const VSpace.md(),
             SettingsSlider(
               label: 'Auto-sync interval',
               description: 'How often to automatically sync mapping lists (0 = never)',
@@ -634,7 +634,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
         children: [
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.schedule,
                 size: 16,
                 color: TKitColors.accent,
@@ -757,7 +757,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 }
               },
             ),
-            VSpace.sm(),
+            const VSpace.sm(),
             SettingsCheckbox(
               label: 'Invert Footer/Header',
               subtitle: 'Swap the positions of the header and footer sections',
@@ -834,7 +834,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
               },
             ),
           ]),
-          VSpace.lg(),
+          const VSpace.lg(),
           _buildFactoryResetSection(context),
         ],
       ),
@@ -868,7 +868,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
         child: Row(
           children: [
             const Icon(Icons.info_outline, size: 16, color: TKitColors.warning),
-            HSpace.sm(),
+            const HSpace.sm(),
             Text(
               l10n.settingsUnsavedChanges,
               style: TKitTextStyles.caption.copyWith(
@@ -880,7 +880,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
               text: l10n.settingsDiscard,
               onPressed: _discardChanges,
             ),
-            HSpace.sm(),
+            const HSpace.sm(),
             PrimaryButton(text: l10n.settingsSave, onPressed: _saveSettings),
           ],
         ),
@@ -899,7 +899,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
             color: TKitColors.textSecondary,
           ),
         ),
-        VSpace.md(),
+        const VSpace.md(),
         Island.standard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -928,7 +928,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 color: TKitColors.textSecondary,
               ),
             ),
-            VSpace.md(),
+            const VSpace.md(),
             Island.standard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -945,7 +945,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                           shape: BoxShape.circle,
                         ),
                       ),
-                      HSpace.md(),
+                      const HSpace.md(),
                       Text(
                         isAuthenticated
                             ? l10n.settingsTwitchStatusConnected
@@ -954,13 +954,13 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                       ),
                     ],
                   ),
-                  VSpace.md(),
+                  const VSpace.md(),
                   if (isAuthenticated) ...[
                     Text(
                       l10n.settingsTwitchLoggedInAs,
                       style: TKitTextStyles.caption,
                     ),
-                    VSpace.xs(),
+                    const VSpace.xs(),
                     Row(
                       children: [
                         const Icon(
@@ -968,12 +968,12 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                           size: 16,
                           color: TKitColors.accent,
                         ),
-                        HSpace.sm(),
+                        const HSpace.sm(),
                         Text(
                           authState.user.displayName,
                           style: TKitTextStyles.bodyMedium,
                         ),
-                        HSpace.sm(),
+                        const HSpace.sm(),
                         Text(
                           '(@${authState.user.login})',
                           style: TKitTextStyles.caption,
@@ -1013,7 +1013,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                                     ? TKitColors.error
                                     : TKitColors.textMuted,
                               ),
-                              HSpace.xs(),
+                              const HSpace.xs(),
                               Text(
                                 expiryText,
                                 style: TKitTextStyles.caption.copyWith(
@@ -1050,7 +1050,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                       l10n.settingsTwitchConnectDescription,
                       style: TKitTextStyles.caption,
                     ),
-                    VSpace.md(),
+                    const VSpace.md(),
                     PrimaryButton(
                       text: l10n.settingsTwitchConnect,
                       icon: Icons.link,
@@ -1104,7 +1104,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
             color: TKitColors.error,
           ),
         ),
-        VSpace.md(),
+        const VSpace.md(),
         Container(
           decoration: BoxDecoration(
             color: TKitColors.surface,
@@ -1119,7 +1119,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 size: 20,
                 color: TKitColors.error,
               ),
-              HSpace.md(),
+              const HSpace.md(),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1130,7 +1130,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                         color: TKitColors.error,
                       ),
                     ),
-                    VSpace.xs(),
+                    const VSpace.xs(),
                     Text(
                       'Reset all settings and data to factory defaults',
                       style: TKitTextStyles.caption.copyWith(
@@ -1140,7 +1140,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                   ],
                 ),
               ),
-              HSpace.md(),
+              const HSpace.md(),
               AccentButton(
                 text: 'Reset',
                 icon: Icons.restore,
@@ -1160,7 +1160,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
       builder: (dialogContext) => AlertDialog(
         title: Row(
           children: [
-            Icon(Icons.warning_amber_rounded, color: TKitColors.warning),
+            const Icon(Icons.warning_amber_rounded, color: TKitColors.warning),
             const SizedBox(width: 8),
             Text(l10n.settingsFactoryResetDialogTitle),
           ],

@@ -85,8 +85,8 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
       child: Row(
         children: [
           const Icon(Icons.list_alt, size: 20, color: TKitColors.accent),
-          HSpace.sm(),
-          Text('Manage Lists', style: TKitTextStyles.heading2),
+          const HSpace.sm(),
+          const Text('Manage Lists', style: TKitTextStyles.heading2),
           const Spacer(),
           IconButton(
             icon: const Icon(Icons.close, size: 20),
@@ -135,7 +135,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                 }),
               ),
             ),
-            HSpace.sm(),
+            const HSpace.sm(),
 
             // List info
             Expanded(
@@ -148,16 +148,16 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                         list.name,
                         style: TKitTextStyles.labelMedium,
                       ),
-                      HSpace.sm(),
+                      const HSpace.sm(),
                       _buildSourceBadge(list.sourceType),
                       if (list.isReadOnly) ...[
-                        HSpace.sm(),
+                        const HSpace.sm(),
                         _buildReadOnlyBadge(),
                       ],
                     ],
                   ),
                   if (list.description.isNotEmpty) ...[
-                    VSpace.xs(),
+                    const VSpace.xs(),
                     Text(
                       list.description,
                       style: TKitTextStyles.caption.copyWith(
@@ -165,7 +165,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                       ),
                     ),
                   ],
-                  VSpace.xs(),
+                  const VSpace.xs(),
                   Row(
                     children: [
                       Text(
@@ -174,7 +174,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                           color: TKitColors.textSecondary,
                         ),
                       ),
-                      HSpace.md(),
+                      const HSpace.md(),
                       if (list.lastSyncError != null)
                         Tooltip(
                           message: list.lastSyncError!,
@@ -182,12 +182,12 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.error_outline,
                                 size: 14,
                                 color: TKitColors.error,
                               ),
-                              HSpace.xs(),
+                              const HSpace.xs(),
                               Text(
                                 'Sync failed: ${_formatSyncTime(list.lastSyncedAt)}',
                                 style: TKitTextStyles.bodySmall.copyWith(
@@ -212,7 +212,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
 
             // Actions
             if (list.shouldSync) ...[
-              HSpace.sm(),
+              const HSpace.sm(),
               SizedBox(
                 width: 40,
                 child: Center(
@@ -247,15 +247,12 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
       case MappingListSourceType.local:
         color = const Color(0xFF6B6B6B);
         label = 'LOCAL';
-        break;
       case MappingListSourceType.official:
         color = TKitColors.info;
         label = 'OFFICIAL';
-        break;
       case MappingListSourceType.remote:
         color = TKitColors.warning;
         label = 'REMOTE';
-        break;
     }
 
     return Container(
@@ -314,7 +311,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
             onPressed: () => _showImportDialog(context),
             width: 140,
           ),
-          HSpace.md(),
+          const HSpace.md(),
           AccentButton(
             text: 'Sync All',
             icon: Icons.sync,
@@ -341,15 +338,15 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
       context: context,
       builder: (dialogContext) => AlertDialog(
         backgroundColor: TKitColors.surface,
-        title: Text('Import List', style: TKitTextStyles.heading3),
+        title: const Text('Import List', style: TKitTextStyles.heading3),
         content: SizedBox(
           width: 500,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('List URL', style: TKitTextStyles.labelSmall),
-              VSpace.sm(),
+              const Text('List URL', style: TKitTextStyles.labelSmall),
+              const VSpace.sm(),
               TextFormField(
                 controller: urlController,
                 decoration: const InputDecoration(
@@ -358,16 +355,16 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                   fillColor: TKitColors.background,
                 ),
               ),
-              VSpace.md(),
-              Text('List Name (optional)', style: TKitTextStyles.labelSmall),
-              VSpace.xs(),
+              const VSpace.md(),
+              const Text('List Name (optional)', style: TKitTextStyles.labelSmall),
+              const VSpace.xs(),
               Text(
                 'If not provided, will use name from JSON file',
                 style: TKitTextStyles.caption.copyWith(
                   color: TKitColors.textMuted,
                 ),
               ),
-              VSpace.sm(),
+              const VSpace.sm(),
               TextFormField(
                 controller: nameController,
                 decoration: const InputDecoration(
@@ -376,16 +373,16 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                   fillColor: TKitColors.background,
                 ),
               ),
-              VSpace.md(),
-              Text('Description (optional)', style: TKitTextStyles.labelSmall),
-              VSpace.xs(),
+              const VSpace.md(),
+              const Text('Description (optional)', style: TKitTextStyles.labelSmall),
+              const VSpace.xs(),
               Text(
                 'If not provided, will use description from JSON file',
                 style: TKitTextStyles.caption.copyWith(
                   color: TKitColors.textMuted,
                 ),
               ),
-              VSpace.sm(),
+              const VSpace.sm(),
               TextFormField(
                 controller: descriptionController,
                 decoration: const InputDecoration(
@@ -403,7 +400,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
             text: 'Cancel',
             onPressed: () => Navigator.of(dialogContext).pop(),
           ),
-          HSpace.sm(),
+          const HSpace.sm(),
           PrimaryButton(
             text: 'Import',
             onPressed: () async {

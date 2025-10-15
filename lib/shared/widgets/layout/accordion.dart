@@ -107,7 +107,7 @@ class _AccordionItemState extends State<AccordionItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: TKitColors.surface,
         border: Border(
           bottom: BorderSide(

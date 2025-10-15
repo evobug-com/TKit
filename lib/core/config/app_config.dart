@@ -3,8 +3,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 /// Application configuration constants
 class AppConfig {
   // App Information
-  static const String appName = 'TKit';
-  static const String appDescription =
+  static const appName = 'TKit';
+  static const appDescription =
       'Twitch Toolkit - Stream category auto-switcher';
 
   // Version info - cached from package_info_plus
@@ -24,39 +24,39 @@ class AppConfig {
   static String get appVersion => _cachedVersion ?? '0.0.0';
 
   // Database
-  static const String databaseName = 'tkit.db';
-  static const int databaseVersion = 1;
+  static const databaseName = 'tkit.db';
+  static const databaseVersion = 1;
 
   // API Configuration
-  static const String twitchClientId = 'cvl099faue5hszx1so8y21844l7avb';
+  static const twitchClientId = 'cvl099faue5hszx1so8y21844l7avb';
   static const String? twitchClientSecret =
       null; // Set if using confidential client
-  static const String twitchAuthUrl = 'https://id.twitch.tv/oauth2/authorize';
-  static const String twitchTokenUrl = 'https://id.twitch.tv/oauth2/token';
-  static const String twitchApiBaseUrl = 'https://api.twitch.tv/helix';
-  static const String twitchRedirectUri = 'http://localhost:3000/callback';
+  static const twitchAuthUrl = 'https://id.twitch.tv/oauth2/authorize';
+  static const twitchTokenUrl = 'https://id.twitch.tv/oauth2/token';
+  static const twitchApiBaseUrl = 'https://api.twitch.tv/helix';
+  static const twitchRedirectUri = 'http://localhost:3000/callback';
 
   // OAuth Scopes
-  static const List<String> twitchScopes = [
+  static const twitchScopes = <String>[
     'user:read:email',
     'channel:manage:broadcast',
   ];
 
   // Default Settings
-  static const int defaultScanIntervalSeconds = 5;
-  static const int defaultDebounceSeconds = 10;
-  static const int minScanInterval = 1;
-  static const int maxScanInterval = 300;
-  static const int minDebounceInterval = 0;
-  static const int maxDebounceInterval = 300;
+  static const defaultScanIntervalSeconds = 5;
+  static const defaultDebounceSeconds = 10;
+  static const minScanInterval = 1;
+  static const maxScanInterval = 300;
+  static const minDebounceInterval = 0;
+  static const maxDebounceInterval = 300;
 
   // Platform Channels
-  static const String processDetectionChannel =
+  static const processDetectionChannel =
       'com.evobug.tkit/process_detection';
 
   // Logging
-  static const bool enableLogging = true;
-  static const bool enableVerboseLogging = false;
+  static const enableLogging = true;
+  static const enableVerboseLogging = false;
 
   // Window Configuration
   static const double defaultWindowWidth = 1200;
@@ -65,15 +65,15 @@ class AppConfig {
   static const double minWindowHeight = 600;
 
   // System Tray
-  static const String trayTooltip = 'TKit - Twitch Toolkit';
-  static const String trayIconPath = 'assets/icons/tray_icon.ico';
+  static const trayTooltip = 'TKit - Twitch Toolkit';
+  static const trayIconPath = 'assets/icons/tray_icon.ico';
 
   // GitHub Repository for Updates
-  static const String githubOwner = 'evobug-com';
-  static const String githubRepo = 'TKit';
+  static const githubOwner = 'evobug-com';
+  static const githubRepo = 'TKit';
 
   // Community Mappings API
-  static const String communityApiUrl =
+  static const communityApiUrl =
       'https://tkit-community-api.siocom.workers.dev';
-  static const bool useCommunityApi = true;
+  static const useCommunityApi = true;
 }

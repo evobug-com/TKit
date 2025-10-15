@@ -23,7 +23,7 @@ class TKitSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     final isEnabled = enabled && onChanged != null;
 
-    Widget switchWidget = SizedBox(
+    final Widget switchWidget = SizedBox(
       height: 20,
       child: Switch(
         value: value,

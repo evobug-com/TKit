@@ -41,16 +41,16 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
   final UpdateHistoryLocalDataSource _historyDataSource;
   final UnknownProcessDataSource _unknownProcessDataSource;
   final NotificationService _notificationService;
-  final AppLogger _logger = AppLogger();
+  final _logger = AppLogger();
 
   // Callback for handling unknown games (set by UI layer)
   UnknownGameCallback? unknownGameCallback;
 
   // State management
   late final StreamController<OrchestrationStatus> _statusController;
-  OrchestrationStatus _currentStatus = OrchestrationStatus.idle();
+  var _currentStatus = OrchestrationStatus.idle();
   StreamSubscription<dynamic>? _monitoringSubscription;
-  bool _isMonitoring = false;
+  var _isMonitoring = false;
   AppSettings? _currentSettings;
   String? _lastProcessedCategoryId;
 

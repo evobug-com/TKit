@@ -178,7 +178,7 @@ class BreadcrumbCollapsed extends StatelessWidget {
         ),
         PopupMenuButton<BreadcrumbItem>(
           tooltip: 'Show path',
-          icon: Icon(
+          icon: const Icon(
             Icons.more_horiz,
             size: 16,
             color: TKitColors.textSecondary,

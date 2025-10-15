@@ -45,7 +45,7 @@ class TKitIconButton extends StatelessWidget {
     final effectiveBackgroundColor = backgroundColor ?? TKitColors.transparent;
     final effectiveBorderColor = borderColor ?? TKitColors.border;
 
-    Widget button = SizedBox(
+    final Widget button = SizedBox(
       width: size.buttonSize,
       height: size.buttonSize,
       child: Material(

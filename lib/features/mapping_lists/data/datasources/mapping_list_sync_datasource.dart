@@ -61,7 +61,7 @@ class MappingListSyncDataSource {
       List<dynamic> mappingsJson;
       String? name;
       String? description;
-      bool isReadOnly = true; // Default to readonly
+      var isReadOnly = true; // Default to readonly
       String? submissionHookUrl;
 
       if (data is List) {

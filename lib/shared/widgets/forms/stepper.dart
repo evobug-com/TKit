@@ -146,7 +146,7 @@ class _TKitNumberStepperState extends State<TKitNumberStepper> {
                 ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
+                  contentPadding: const EdgeInsets.symmetric(
                     horizontal: TKitSpacing.xs,
                     vertical: 8,
                   ),

@@ -30,7 +30,7 @@ class TKitDropdown<T> extends StatefulWidget {
 }
 
 class _TKitDropdownState<T> extends State<TKitDropdown<T>> {
-  final TextEditingController _searchController = TextEditingController();
+  final _searchController = TextEditingController();
   List<TKitDropdownOption<T>> _filteredOptions = [];
 
   @override
@@ -81,9 +81,9 @@ class _TKitDropdownState<T> extends State<TKitDropdown<T>> {
       offset: const Offset(0, 4),
       color: TKitColors.surface,
       surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.zero,
-        side: const BorderSide(color: TKitColors.border),
+        side: BorderSide(color: TKitColors.border),
       ),
       child: Container(
         height: 32,
@@ -148,24 +148,24 @@ class _TKitDropdownState<T> extends State<TKitDropdown<T>> {
                   hintStyle: TKitTextStyles.bodyMedium.copyWith(
                     color: TKitColors.textMuted,
                   ),
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.search,
                     size: 16,
                     color: TKitColors.textMuted,
                   ),
                   filled: true,
                   fillColor: TKitColors.surfaceVariant,
-                  border: OutlineInputBorder(
+                  border: const OutlineInputBorder(
                     borderRadius: BorderRadius.zero,
-                    borderSide: const BorderSide(color: TKitColors.border),
+                    borderSide: BorderSide(color: TKitColors.border),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.zero,
-                    borderSide: const BorderSide(color: TKitColors.border),
+                    borderSide: BorderSide(color: TKitColors.border),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.zero,
-                    borderSide: const BorderSide(color: TKitColors.accent),
+                    borderSide: BorderSide(color: TKitColors.accent),
                   ),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 8,

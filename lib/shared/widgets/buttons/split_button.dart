@@ -47,7 +47,7 @@ class _SplitButtonState extends State<SplitButton> {
   OverlayEntry? _overlayEntry;
 
   void _showDropdown() {
-    final RenderBox renderBox =
+    final renderBox =
         _buttonKey.currentContext!.findRenderObject() as RenderBox;
     final size = renderBox.size;
     final offset = renderBox.localToGlobal(Offset.zero);

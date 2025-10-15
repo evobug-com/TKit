@@ -163,7 +163,7 @@ class TKitApp extends ConsumerStatefulWidget {
 class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
   late final AppRouter _appRouter;
   StreamSubscription? _authSubscription;
-  bool _initialized = false;
+  var _initialized = false;
 
   @override
   void initState() {

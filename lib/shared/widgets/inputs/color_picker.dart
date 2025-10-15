@@ -144,28 +144,28 @@ class _ColorPickerFieldState extends State<ColorPickerField> {
                       horizontal: TKitSpacing.sm,
                       vertical: TKitSpacing.xs,
                     ),
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.zero,
                       borderSide: BorderSide(
                         color: TKitColors.border,
                         width: 1,
                       ),
                     ),
-                    enabledBorder: OutlineInputBorder(
+                    enabledBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.zero,
                       borderSide: BorderSide(
                         color: TKitColors.border,
                         width: 1,
                       ),
                     ),
-                    focusedBorder: OutlineInputBorder(
+                    focusedBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.zero,
                       borderSide: BorderSide(
                         color: TKitColors.accent,
                         width: 1,
                       ),
                     ),
-                    disabledBorder: OutlineInputBorder(
+                    disabledBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.zero,
                       borderSide: BorderSide(
                         color: TKitColors.border,
@@ -176,7 +176,7 @@ class _ColorPickerFieldState extends State<ColorPickerField> {
                     fillColor: TKitColors.surface,
                   ),
                   inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9A-Fa-f#]')),
+                    FilteringTextInputFormatter.allow(RegExp('[0-9A-Fa-f#]')),
                     LengthLimitingTextInputFormatter(7),
                   ],
                   onSubmitted: (_) => _onHexChanged(),
@@ -236,7 +236,7 @@ class _ColorPickerDialogState extends State<_ColorPickerDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               'Pick Color',
               style: TKitTextStyles.heading3,
             ),
@@ -295,12 +295,12 @@ class _ColorPickerDialogState extends State<_ColorPickerDialog> {
                     backgroundColor: TKitColors.accent,
                     foregroundColor: TKitColors.textPrimary,
                     elevation: 0,
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.zero,
                     ),
                     minimumSize: const Size(0, 32),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Select',
                     style: TKitTextStyles.buttonSmall,
                   ),

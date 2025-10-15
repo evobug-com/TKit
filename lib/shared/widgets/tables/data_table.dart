@@ -359,7 +359,7 @@ class TKitTableRow<T> extends StatefulWidget {
 }
 
 class _TKitTableRowState<T> extends State<TKitTableRow<T>> {
-  bool _isHovered = false;
+  var _isHovered = false;
 
   @override
   Widget build(BuildContext context) {

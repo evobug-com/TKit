@@ -7,7 +7,7 @@ import 'package:tkit/core/utils/app_logger.dart';
 /// Service for managing system tray integration
 class SystemTrayService with TrayListener {
   final AppLogger _logger;
-  bool _isInitialized = false;
+  var _isInitialized = false;
 
   VoidCallback? _onShow;
 
@@ -109,7 +109,7 @@ class SystemTrayService with TrayListener {
 /// Window manager service with minimize to tray support
 class WindowService with WindowListener {
   final AppLogger _logger;
-  bool _forceExitRequested = false;
+  var _forceExitRequested = false;
 
   WindowService(this._logger);
 

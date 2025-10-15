@@ -43,7 +43,7 @@ class RefreshExpiredMappingsUseCase {
       final List<String> successfulIds = [];
       final List<String> failedIds = [];
 
-      for (int i = 0; i < categoryIds.length; i += 100) {
+      for (var i = 0; i < categoryIds.length; i += 100) {
         final batch = categoryIds.skip(i).take(100).toList();
         final result = await twitchApiRepository.getGamesByIds(batch);
 
@@ -60,7 +60,7 @@ class RefreshExpiredMappingsUseCase {
       }
 
       // Step 4: Update mappings with fresh data
-      int refreshedCount = 0;
+      var refreshedCount = 0;
       final now = DateTime.now();
       final expiresAt = now.add(const Duration(hours: 24));
 

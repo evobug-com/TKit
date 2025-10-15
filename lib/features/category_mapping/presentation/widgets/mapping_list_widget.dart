@@ -37,8 +37,8 @@ class MappingListWidget extends StatefulWidget {
 
 class _MappingListWidgetState extends State<MappingListWidget> {
   final Set<int> _selectedIds = {};
-  final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
+  final _searchController = TextEditingController();
+  var _searchQuery = '';
 
   // Undo state
   String? _lastAction;
@@ -139,7 +139,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.category_outlined,
               size: 48,
               color: TKitColors.textMuted,
@@ -197,8 +197,8 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                     }
                     return TKitColors.surface;
                   }),
-                  border: TableBorder.symmetric(
-                    inside: const BorderSide(color: TKitColors.border),
+                  border: const TableBorder.symmetric(
+                    inside: BorderSide(color: TKitColors.border),
                   ),
                   headingTextStyle: TKitTextStyles.labelLarge.copyWith(
                     color: TKitColors.textPrimary,
@@ -289,7 +289,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                                   ),
                                   if (widget.onSourceTap != null) ...[
                                     const HSpace.xs(),
-                                    Icon(
+                                    const Icon(
                                       Icons.open_in_new,
                                       size: 10,
                                       color: TKitColors.info,
@@ -371,7 +371,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
       ),
       child: Row(
         children: [
-          Icon(
+          const Icon(
             Icons.check_circle_outline,
             size: 18,
             color: TKitColors.accent,
@@ -439,7 +439,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
             ElevatedButton.icon(
               onPressed: () => widget.onBulkExport!(_selectedMappings),
               icon: const Icon(Icons.download, size: 14),
-              label: Text(
+              label: const Text(
                 'Export',
                 style: TKitTextStyles.buttonSmall,
               ),
@@ -460,7 +460,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                 // Save current state for undo
                 setState(() {
                   _previousEnabledStates = {
-                    for (var mapping in _selectedMappings)
+                    for (final mapping in _selectedMappings)
                       mapping.id!: mapping.isEnabled
                   };
                   _lastAction = 'Enable';
@@ -469,7 +469,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                 widget.onBulkToggleEnabled!(_selectedIds.toList(), true);
               },
               icon: const Icon(Icons.check_circle, size: 14),
-              label: Text(
+              label: const Text(
                 'Enable',
                 style: TKitTextStyles.buttonSmall,
               ),
@@ -490,7 +490,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                 // Save current state for undo
                 setState(() {
                   _previousEnabledStates = {
-                    for (var mapping in _selectedMappings)
+                    for (final mapping in _selectedMappings)
                       mapping.id!: mapping.isEnabled
                   };
                   _lastAction = 'Disable';
@@ -499,7 +499,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                 widget.onBulkToggleEnabled!(_selectedIds.toList(), false);
               },
               icon: const Icon(Icons.cancel, size: 14),
-              label: Text(
+              label: const Text(
                 'Disable',
                 style: TKitTextStyles.buttonSmall,
               ),
@@ -533,7 +533,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                         _clearSelection();
                       },
                 icon: const Icon(Icons.delete, size: 14),
-                label: Text(
+                label: const Text(
                   'Delete',
                   style: TKitTextStyles.buttonSmall,
                 ),

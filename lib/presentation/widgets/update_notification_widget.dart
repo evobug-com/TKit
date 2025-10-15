@@ -33,8 +33,8 @@ class _UpdateNotificationWidgetState extends ConsumerState<UpdateNotificationWid
   late final AppLogger _logger;
   UpdateInfo? _currentUpdate;
   DownloadProgress? _downloadProgress;
-  bool _showDialog = false;
-  bool _shouldShowDialog = false;
+  var _showDialog = false;
+  var _shouldShowDialog = false;
 
   @override
   void initState() {

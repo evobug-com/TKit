@@ -25,7 +25,7 @@ class HotkeyInput extends StatefulWidget {
 }
 
 class _HotkeyInputState extends State<HotkeyInput> {
-  bool _isRecording = false;
+  var _isRecording = false;
 
   void _startRecording() {
     setState(() {

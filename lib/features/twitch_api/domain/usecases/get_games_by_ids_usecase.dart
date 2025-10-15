@@ -23,13 +23,13 @@ class GetGamesByIdsUseCase {
   ) async {
     // Validation
     if (categoryIds.isEmpty) {
-      return Left(
+      return const Left(
         ValidationFailure(message: 'Category IDs list cannot be empty'),
       );
     }
 
     if (categoryIds.length > 100) {
-      return Left(
+      return const Left(
         ValidationFailure(
           message: 'Maximum 100 category IDs allowed per request',
         ),
@@ -43,7 +43,7 @@ class GetGamesByIdsUseCase {
         .toList();
 
     if (cleanedIds.isEmpty) {
-      return Left(
+      return const Left(
         ValidationFailure(message: 'No valid category IDs provided'),
       );
     }

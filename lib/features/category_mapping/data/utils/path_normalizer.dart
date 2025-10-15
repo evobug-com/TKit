@@ -34,7 +34,7 @@ class PathNormalizer {
   /// (most specific first to avoid false matches)
   ///
   /// Supports both Windows and Linux game installation locations
-  static const List<String> _gamePathAnchors = [
+  static const _gamePathAnchors = <String>[
     // ========================================================================
     // WINDOWS PATHS
     // ========================================================================
@@ -134,8 +134,8 @@ class PathNormalizer {
     return path
         .toLowerCase()
         .replaceAll('\\', '/') // Unified separator
-        .replaceAll(RegExp(r'/+'), '/') // Collapse multiple slashes
-        .replaceAll(RegExp(r'^[a-z]:/'), '') // Remove drive letter
+        .replaceAll(RegExp('/+'), '/') // Collapse multiple slashes
+        .replaceAll(RegExp('^[a-z]:/'), '') // Remove drive letter
         .trim();
   }
 

@@ -23,7 +23,7 @@ class TKitCheckbox extends StatelessWidget {
   Widget build(BuildContext context) {
     final isEnabled = enabled && onChanged != null;
 
-    Widget checkbox = SizedBox(
+    final Widget checkbox = SizedBox(
       width: 18,
       height: 18,
       child: Checkbox(
@@ -45,7 +45,7 @@ class TKitCheckbox extends StatelessWidget {
               : TKitColors.borderSubtle,
           width: 1,
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.zero,
         ),
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

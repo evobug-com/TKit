@@ -47,8 +47,8 @@ class Pagination extends StatefulWidget {
 }
 
 class _PaginationState extends State<Pagination> {
-  final TextEditingController _jumpController = TextEditingController();
-  final FocusNode _jumpFocusNode = FocusNode();
+  final _jumpController = TextEditingController();
+  final _jumpFocusNode = FocusNode();
 
   @override
   void dispose() {
@@ -79,7 +79,7 @@ class _PaginationState extends State<Pagination> {
 
     if (widget.currentPage <= half + 2) {
       // Near the start
-      for (int i = 2; i <= widget.maxPageButtons - 1; i++) {
+      for (var i = 2; i <= widget.maxPageButtons - 1; i++) {
         pages.add(i);
       }
       pages.add(null); // Ellipsis
@@ -279,16 +279,16 @@ class _PaginationState extends State<Pagination> {
                         horizontal: TKitSpacing.xs,
                         vertical: TKitSpacing.xs,
                       ),
-                      border: OutlineInputBorder(
-                        borderSide: const BorderSide(color: TKitColors.border),
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide(color: TKitColors.border),
                         borderRadius: BorderRadius.zero,
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: TKitColors.border),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: TKitColors.border),
                         borderRadius: BorderRadius.zero,
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: TKitColors.accent),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: TKitColors.accent),
                         borderRadius: BorderRadius.zero,
                       ),
                       isDense: true,
@@ -335,7 +335,7 @@ class _PaginationButton extends StatefulWidget {
 }
 
 class _PaginationButtonState extends State<_PaginationButton> {
-  bool _isHovered = false;
+  var _isHovered = false;
 
   @override
   Widget build(BuildContext context) {

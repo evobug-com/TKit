@@ -11,7 +11,7 @@ typedef NotificationActionCallback =
 /// Service for managing local notifications using local_notifier
 class NotificationService {
   final AppLogger _logger;
-  bool _isInitialized = false;
+  var _isInitialized = false;
   NotificationActionCallback? onMissingCategoryClick;
 
   NotificationService(this._logger);

@@ -5,8 +5,8 @@ import 'package:tkit/l10n/app_localizations.dart';
 
 /// Service for managing app language/locale
 class LanguageService {
-  static const String _languageKey = 'app_language';
-  static const String _languageSetupCompletedKey = 'language_setup_completed';
+  static const _languageKey = 'app_language';
+  static const _languageSetupCompletedKey = 'language_setup_completed';
 
   final SharedPreferences _prefs;
   final AppLogger _logger;

@@ -52,7 +52,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.dark(
+            colorScheme: const ColorScheme.dark(
               primary: TKitColors.accent,
               onPrimary: TKitColors.textPrimary,
               surface: TKitColors.surface,
@@ -62,7 +62,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
               style: TextButton.styleFrom(
                 foregroundColor: TKitColors.textPrimary,
               ),
-            ), dialogTheme: DialogThemeData(backgroundColor: TKitColors.surface),
+            ), dialogTheme: const DialogThemeData(backgroundColor: TKitColors.surface),
           ),
           child: child!,
         );
@@ -141,7 +141,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
                 if (_selectedDate != null && widget.enabled)
                   GestureDetector(
                     onTap: _clearDate,
-                    child: Icon(
+                    child: const Icon(
                       Icons.close,
                       size: 14,
                       color: TKitColors.textSecondary,
@@ -197,7 +197,7 @@ class _TimePickerFieldState extends State<TimePickerField> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.dark(
+            colorScheme: const ColorScheme.dark(
               primary: TKitColors.accent,
               onPrimary: TKitColors.textPrimary,
               surface: TKitColors.surface,
@@ -207,7 +207,7 @@ class _TimePickerFieldState extends State<TimePickerField> {
               style: TextButton.styleFrom(
                 foregroundColor: TKitColors.textPrimary,
               ),
-            ), dialogTheme: DialogThemeData(backgroundColor: TKitColors.surface),
+            ), dialogTheme: const DialogThemeData(backgroundColor: TKitColors.surface),
           ),
           child: MediaQuery(
             data: MediaQuery.of(context).copyWith(
@@ -299,7 +299,7 @@ class _TimePickerFieldState extends State<TimePickerField> {
                 if (_selectedTime != null && widget.enabled)
                   GestureDetector(
                     onTap: _clearTime,
-                    child: Icon(
+                    child: const Icon(
                       Icons.close,
                       size: 14,
                       color: TKitColors.textSecondary,

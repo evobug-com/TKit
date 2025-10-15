@@ -42,11 +42,11 @@ class UnknownGameDialog extends ConsumerStatefulWidget {
 
 class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with TickerProviderStateMixin {
   final _searchController = TextEditingController();
-  int _currentStep = 0;
+  var _currentStep = 0;
   TwitchCategory? _selectedCategory;
   MappingList? _selectedList;
-  bool _showThankYou = false;
-  bool _isGridView = true;
+  var _showThankYou = false;
+  var _isGridView = true;
 
   static const _searchDebounceDelay = Duration(milliseconds: 500);
 
@@ -467,7 +467,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                         padding: const EdgeInsets.all(TKitSpacing.sm),
                         decoration: BoxDecoration(
                           color: _isGridView ? TKitColors.accent.withValues(alpha: 0.1) : Colors.transparent,
-                          border: Border(
+                          border: const Border(
                             right: BorderSide(color: TKitColors.border),
                           ),
                         ),
@@ -598,7 +598,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                           if (isIgnoreOption)
                             Container(
                               color: TKitColors.error.withValues(alpha: 0.1),
-                              child: Center(
+                              child: const Center(
                                 child: Icon(
                                   Icons.block,
                                   color: TKitColors.error,
@@ -617,7 +617,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                                   errorBuilder: (context, error, stackTrace) {
                                     return Container(
                                       color: TKitColors.surfaceVariant,
-                                      child: Center(
+                                      child: const Center(
                                         child: Icon(
                                           Icons.videogame_asset,
                                           color: TKitColors.textMuted,
@@ -653,7 +653,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                           else
                             Container(
                               color: TKitColors.surfaceVariant,
-                              child: Center(
+                              child: const Center(
                                 child: Icon(
                                   Icons.videogame_asset,
                                   color: TKitColors.textMuted,
@@ -781,7 +781,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                         ),
                         color: TKitColors.error.withValues(alpha: 0.1),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.block,
                         color: TKitColors.error,
                         size: 24,
@@ -806,7 +806,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                             category.boxArtUrl!,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                              return Icon(
+                              return const Icon(
                                 Icons.videogame_asset,
                                 color: TKitColors.textMuted,
                                 size: 20,
@@ -843,7 +843,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                         border: Border.all(color: TKitColors.border),
                         color: TKitColors.surfaceVariant,
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.videogame_asset,
                         color: TKitColors.textMuted,
                         size: 20,
@@ -917,7 +917,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
       ),
       child: Row(
         children: [
-          Icon(Icons.info_outline, size: 20, color: TKitColors.accent),
+          const Icon(Icons.info_outline, size: 20, color: TKitColors.accent),
           const HSpace.md(),
           Expanded(
             child: Column(
@@ -962,7 +962,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
               children: [
                 const Icon(Icons.error_outline, size: 48, color: TKitColors.error),
                 const VSpace.md(),
-                Text('Error loading lists', style: TKitTextStyles.bodyMedium),
+                const Text('Error loading lists', style: TKitTextStyles.bodyMedium),
                 const VSpace.xs(),
                 Text(
                   mappingListState.errorMessage!,
@@ -1018,7 +1018,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                 padding: const EdgeInsets.symmetric(vertical: TKitSpacing.xs),
                 child: Row(
                   children: [
-                    Icon(Icons.cloud_upload_outlined, size: 16, color: TKitColors.textSecondary),
+                    const Icon(Icons.cloud_upload_outlined, size: 16, color: TKitColors.textSecondary),
                     const HSpace.xs(),
                     Text(
                       'LISTS',
@@ -1039,7 +1039,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                 padding: const EdgeInsets.symmetric(vertical: TKitSpacing.xs),
                 child: Row(
                   children: [
-                    Icon(Icons.laptop_outlined, size: 16, color: TKitColors.textSecondary),
+                    const Icon(Icons.laptop_outlined, size: 16, color: TKitColors.textSecondary),
                     const HSpace.xs(),
                     Text(
                       l10n.unknownGameDialogLocalListsHeader,
@@ -1135,11 +1135,11 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.laptop, size: 9, color: TKitColors.accent),
+                              const Icon(Icons.laptop, size: 9, color: TKitColors.accent),
                               const SizedBox(width: 2),
-                              Icon(Icons.arrow_forward, size: 8, color: TKitColors.accent),
+                              const Icon(Icons.arrow_forward, size: 8, color: TKitColors.accent),
                               const SizedBox(width: 2),
-                              Icon(Icons.check_circle, size: 9, color: TKitColors.accent),
+                              const Icon(Icons.check_circle, size: 9, color: TKitColors.accent),
                               const HSpace.xs(),
                               Text(
                                 'STAGED',
@@ -1468,7 +1468,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
           ),
           child: Row(
             children: [
-              Icon(Icons.info_outline, size: 14, color: TKitColors.textMuted),
+              const Icon(Icons.info_outline, size: 14, color: TKitColors.textMuted),
               const HSpace.sm(),
               Expanded(
                 child: Text(
@@ -1550,8 +1550,8 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
   }
 
   Widget _buildWorkflowArrow() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 10),
+    return const Padding(
+      padding: EdgeInsets.only(left: 10),
       child: Icon(Icons.arrow_downward, size: 14, color: TKitColors.textMuted),
     );
   }
@@ -1717,7 +1717,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
 
   Map<String, dynamic>? _pendingResult;
 
-  void _handleSave() async {
+  Future<void> _handleSave() async {
     if (_selectedCategory == null || _selectedList == null) return;
 
     final hasSubmissionHook = _selectedList!.submissionHookUrl != null;

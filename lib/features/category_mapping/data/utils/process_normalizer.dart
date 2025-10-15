@@ -50,7 +50,7 @@ class ProcessNormalizer {
 
     // Without common prefixes
     final withoutPrefixes = normalized
-        .replaceAll(RegExp(r'^(the|a|an)'), '')
+        .replaceAll(RegExp('^(the|a|an)'), '')
         .trim();
     if (withoutPrefixes != normalized) {
       variations.add(withoutPrefixes);
@@ -61,7 +61,7 @@ class ProcessNormalizer {
     if (normalized.length > 10) {
       // Insert space before capitals in camelCase
       final withSpaces = normalized.replaceAllMapped(
-        RegExp(r'([a-z])([A-Z])'),
+        RegExp('([a-z])([A-Z])'),
         (match) => '${match.group(1)} ${match.group(2)?.toLowerCase()}',
       );
       if (withSpaces != normalized) {
@@ -121,15 +121,15 @@ class ProcessNormalizer {
       (i) => List.generate(s2.length + 1, (j) => 0),
     );
 
-    for (int i = 0; i <= s1.length; i++) {
+    for (var i = 0; i <= s1.length; i++) {
       matrix[i][0] = i;
     }
-    for (int j = 0; j <= s2.length; j++) {
+    for (var j = 0; j <= s2.length; j++) {
       matrix[0][j] = j;
     }
 
-    for (int i = 1; i <= s1.length; i++) {
-      for (int j = 1; j <= s2.length; j++) {
+    for (var i = 1; i <= s1.length; i++) {
+      for (var j = 1; j <= s2.length; j++) {
         final cost = s1[i - 1] == s2[j - 1] ? 0 : 1;
 
         matrix[i][j] = [
@@ -152,7 +152,7 @@ class ProcessNormalizer {
     double threshold = 0.7,
   }) {
     String? bestMatch;
-    double bestScore = threshold;
+    var bestScore = threshold;
 
     for (final candidate in candidates) {
       final score = similarity(processName, candidate);

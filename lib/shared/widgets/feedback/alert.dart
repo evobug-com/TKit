@@ -82,7 +82,7 @@ class Alert extends StatefulWidget {
 }
 
 class _AlertState extends State<Alert> {
-  bool _visible = true;
+  var _visible = true;
 
   void _dismiss() {
     setState(() {
@@ -184,7 +184,7 @@ class _AlertState extends State<Alert> {
             const SizedBox(width: TKitSpacing.sm),
             InkWell(
               onTap: _dismiss,
-              child: Icon(
+              child: const Icon(
                 Icons.close,
                 size: 16,
                 color: TKitColors.textMuted,

@@ -120,21 +120,21 @@ class TKitTextField extends StatelessWidget {
         errorText: errorText,
         filled: true,
         fillColor: TKitColors.background,
-        border: OutlineInputBorder(
+        border: const OutlineInputBorder(
           borderRadius: BorderRadius.zero,
-          borderSide: const BorderSide(color: TKitColors.border),
+          borderSide: BorderSide(color: TKitColors.border),
         ),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.zero,
-          borderSide: const BorderSide(color: TKitColors.border),
+          borderSide: BorderSide(color: TKitColors.border),
         ),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.zero,
-          borderSide: const BorderSide(color: TKitColors.accent, width: 2),
+          borderSide: BorderSide(color: TKitColors.accent, width: 2),
         ),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.zero,
-          borderSide: const BorderSide(color: TKitColors.error),
+          borderSide: BorderSide(color: TKitColors.error),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 10,

@@ -45,7 +45,7 @@ class MappingImporter {
       }
 
       final List<dynamic> data = json.decode(response.data.toString());
-      int importedCount = 0;
+      var importedCount = 0;
       final now = DateTime.now();
       final expiresAt = now.add(const Duration(hours: 24));
 
@@ -121,7 +121,7 @@ class MappingImporter {
       }
 
       final List<dynamic> data = json.decode(response.data.toString());
-      int importedCount = 0;
+      var importedCount = 0;
       final now = DateTime.now();
       final expiresAt = now.add(const Duration(hours: 24));
 
@@ -193,7 +193,7 @@ class MappingImporter {
       logger.info('Importing mappings from JSON');
 
       final List<dynamic> data = json.decode(jsonString);
-      int importedCount = 0;
+      var importedCount = 0;
       final now = DateTime.now();
       final expiresAt = now.add(const Duration(hours: 24));
 

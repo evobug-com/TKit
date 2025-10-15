@@ -27,7 +27,7 @@ Widget _buildDirectionalSlideTransition(
   final router = context.router;
 
   // Determine slide direction based on tab indices
-  Offset beginOffset = const Offset(1.0, 0.0); // Default: slide from right
+  var beginOffset = const Offset(1.0, 0.0); // Default: slide from right
 
   if (router.stack.length > 1) {
     final previousRoute = router.stack[router.stack.length - 2];

@@ -23,13 +23,13 @@ class GetGamesByNamesUseCase {
   ) async {
     // Validation
     if (gameNames.isEmpty) {
-      return Left(
+      return const Left(
         ValidationFailure(message: 'Game names list cannot be empty'),
       );
     }
 
     if (gameNames.length > 100) {
-      return Left(
+      return const Left(
         ValidationFailure(
           message: 'Maximum 100 game names allowed per request',
         ),
@@ -44,7 +44,7 @@ class GetGamesByNamesUseCase {
         .toList();
 
     if (cleanedNames.isEmpty) {
-      return Left(
+      return const Left(
         ValidationFailure(message: 'No valid game names provided'),
       );
     }

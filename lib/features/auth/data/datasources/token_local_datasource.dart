@@ -9,11 +9,11 @@ import 'package:tkit/features/auth/data/models/twitch_user_model.dart';
 /// Uses flutter_secure_storage for encrypted storage
 class TokenLocalDataSource {
   final FlutterSecureStorage _secureStorage;
-  final AppLogger _logger = AppLogger();
+  final _logger = AppLogger();
 
   // Storage keys
-  static const String _tokenKey = 'twitch_token';
-  static const String _userKey = 'twitch_user';
+  static const _tokenKey = 'twitch_token';
+  static const _userKey = 'twitch_user';
 
   TokenLocalDataSource(this._secureStorage);
 

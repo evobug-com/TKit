@@ -17,7 +17,7 @@ class UpdateLastUsedUseCase {
   /// Returns success or failure
   Future<Either<Failure, void>> call(int id) async {
     if (id <= 0) {
-      return Left(ValidationFailure(message: 'Invalid mapping ID'));
+      return const Left(ValidationFailure(message: 'Invalid mapping ID'));
     }
 
     return await repository.updateLastUsed(id);

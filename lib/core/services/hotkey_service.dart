@@ -145,22 +145,17 @@ class HotkeyService {
           case 'ctrl':
           case 'control':
             modifiers.add(HotKeyModifier.control);
-            break;
           case 'alt':
             modifiers.add(HotKeyModifier.alt);
-            break;
           case 'shift':
             modifiers.add(HotKeyModifier.shift);
-            break;
           case 'meta':
           case 'win':
           case 'cmd':
             modifiers.add(HotKeyModifier.meta);
-            break;
           default:
             // Parse physical key
             physicalKey = _parsePhysicalKey(trimmed);
-            break;
         }
       }
 

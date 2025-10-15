@@ -101,7 +101,7 @@ class _CollapsiblePanelState extends State<CollapsiblePanel>
                   AnimatedRotation(
                     turns: _isExpanded ? 0.25 : 0,
                     duration: const Duration(milliseconds: 200),
-                    child: Icon(
+                    child: const Icon(
                       Icons.keyboard_arrow_right,
                       size: 16,
                       color: TKitColors.textSecondary,

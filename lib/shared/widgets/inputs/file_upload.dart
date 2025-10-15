@@ -31,7 +31,7 @@ class FileUploadField extends StatefulWidget {
 
 class _FileUploadFieldState extends State<FileUploadField> {
   File? _selectedFile;
-  bool _isDragging = false;
+  var _isDragging = false;
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class _FileUploadFieldState extends State<FileUploadField> {
     if (!widget.enabled) return;
 
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: widget.allowedExtensions != null
             ? FileType.custom
             : FileType.any,
@@ -186,7 +186,7 @@ class _FileUploadFieldState extends State<FileUploadField> {
       child: Row(
         children: [
           // File icon
-          Icon(
+          const Icon(
             Icons.insert_drive_file,
             size: 20,
             color: TKitColors.accent,

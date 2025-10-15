@@ -14,7 +14,7 @@ import 'package:tkit/features/auth/data/models/device_code_response.dart';
 class AuthRepositoryImpl implements IAuthRepository {
   final TwitchAuthRemoteDataSource _remoteDataSource;
   final TokenLocalDataSource _localDataSource;
-  final AppLogger _logger = AppLogger();
+  final _logger = AppLogger();
 
   AuthRepositoryImpl(this._remoteDataSource, this._localDataSource);
 

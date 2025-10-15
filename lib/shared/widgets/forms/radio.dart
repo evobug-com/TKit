@@ -25,7 +25,7 @@ class TKitRadio<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final isEnabled = enabled && onChanged != null;
 
-    Widget radio = SizedBox(
+    final Widget radio = SizedBox(
       width: 18,
       height: 18,
       child: Radio<T>(

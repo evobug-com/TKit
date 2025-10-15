@@ -35,8 +35,8 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
   late Timer _expiryTimer;
   late Timer _pollTimer;
   late Duration _timeRemaining;
-  bool _codeCopied = false;
-  bool _isPolling = true;
+  var _codeCopied = false;
+  var _isPolling = true;
 
   @override
   void initState() {
@@ -147,7 +147,7 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
                     color: TKitColors.textSecondary,
                     size: 24,
                   ),
-                  HSpace.sm(),
+                  const HSpace.sm(),
                   Expanded(
                     child: Text(
                       l10n.authDeviceCodeTitle,
@@ -162,7 +162,7 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
                   ),
                 ],
               ),
-              VSpace.xl(),
+              const VSpace.xl(),
 
               // Instructions
               Text(
@@ -171,7 +171,7 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
                   color: TKitColors.textSecondary,
                 ),
               ),
-              VSpace.xl(),
+              const VSpace.xl(),
 
               // Step 1: Go to URL
               _buildStep(
@@ -189,7 +189,7 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
                         ),
                       ),
                     ),
-                    VSpace.md(),
+                    const VSpace.md(),
                     PrimaryButton(
                       text: l10n.authDeviceCodeOpenBrowser,
                       icon: Icons.open_in_browser,
@@ -198,7 +198,7 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
                   ],
                 ),
               ),
-              VSpace.lg(),
+              const VSpace.lg(),
 
               // Step 2: Enter code
               _buildStep(
@@ -217,7 +217,7 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
                               color: TKitColors.textMuted,
                             ),
                           ),
-                          VSpace.sm(),
+                          const VSpace.sm(),
                           SelectableText(
                             widget.deviceCodeResponse.userCode,
                             style: TKitTextStyles.heading1.copyWith(
@@ -229,7 +229,7 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
                         ],
                       ),
                     ),
-                    VSpace.md(),
+                    const VSpace.md(),
                     PrimaryButton(
                       text: _codeCopied
                           ? l10n.authDeviceCodeCopied
@@ -240,11 +240,11 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
                   ],
                 ),
               ),
-              VSpace.lg(),
+              const VSpace.lg(),
 
               // Step 3: Authorize
               _buildStep(context, number: '3', title: l10n.authDeviceCodeStep3),
-              VSpace.xl(),
+              const VSpace.xl(),
 
               // Status and timer
               IslandVariant.standard(
@@ -259,7 +259,7 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
                           valueColor: AlwaysStoppedAnimation(TKitColors.accent),
                         ),
                       ),
-                      HSpace.md(),
+                      const HSpace.md(),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,7 +268,7 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
                               l10n.authDeviceCodeWaiting,
                               style: TKitTextStyles.bodyMedium,
                             ),
-                            VSpace.xs(),
+                            const VSpace.xs(),
                             Text(
                               l10n.authDeviceCodeExpiresIn(
                                 (_timeRemaining.inMinutes % 60)
@@ -289,7 +289,7 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
                         color: TKitColors.error,
                         size: 18,
                       ),
-                      HSpace.md(),
+                      const HSpace.md(),
                       Expanded(
                         child: Text(
                           l10n.authDeviceCodeExpired,
@@ -302,7 +302,7 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
                   ],
                 ),
               ),
-              VSpace.md(),
+              const VSpace.md(),
 
               // Help text
               Text(
@@ -342,13 +342,13 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
             ),
           ),
         ),
-        HSpace.md(),
+        const HSpace.md(),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title, style: TKitTextStyles.labelLarge),
-              if (child != null) ...[VSpace.sm(), child],
+              if (child != null) ...[const VSpace.sm(), child],
             ],
           ),
         ),

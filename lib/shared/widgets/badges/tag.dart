@@ -132,7 +132,7 @@ class TKitTag extends StatelessWidget {
     );
 
     final container = Container(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: TKitSpacing.sm,
         vertical: TKitSpacing.xs,
       ),

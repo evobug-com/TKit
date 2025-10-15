@@ -16,8 +16,8 @@ class MemoryCache {
   final Map<String, _CacheEntry> _cache = {};
   final Map<String, DateTime> _accessTimes = {};
 
-  int _hitCount = 0;
-  int _missCount = 0;
+  var _hitCount = 0;
+  var _missCount = 0;
 
   MemoryCache({
     this.maxSize = 100,

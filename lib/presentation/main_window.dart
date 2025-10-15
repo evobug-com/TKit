@@ -35,7 +35,7 @@ class MainWindow extends ConsumerStatefulWidget {
 }
 
 class _MainWindowState extends ConsumerState<MainWindow> {
-  bool _isLogScreenOpen = false;
+  var _isLogScreenOpen = false;
 
   @override
   void initState() {
@@ -648,7 +648,7 @@ class _TabButton extends StatefulWidget {
 }
 
 class _TabButtonState extends State<_TabButton> {
-  bool _isHovered = false;
+  var _isHovered = false;
 
   @override
   Widget build(BuildContext context) {
@@ -715,7 +715,7 @@ class _WindowButton extends StatefulWidget {
 }
 
 class _WindowButtonState extends State<_WindowButton> {
-  bool _isHovered = false;
+  var _isHovered = false;
 
   @override
   Widget build(BuildContext context) {

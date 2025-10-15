@@ -84,7 +84,7 @@ class MappingListRepositoryImpl implements IMappingListRepository {
       final model = MappingListModel.fromEntity(list);
       final success = await _localDataSource.updateList(list.id, model);
       if (!success) {
-        return Left(CacheFailure(message: 'Failed to update list: not found'));
+        return const Left(CacheFailure(message: 'Failed to update list: not found'));
       }
       return const Right(null);
     } on CacheException catch (e) {
@@ -111,7 +111,7 @@ class MappingListRepositoryImpl implements IMappingListRepository {
     try {
       final success = await _localDataSource.toggleListEnabled(id, isEnabled);
       if (!success) {
-        return Left(CacheFailure(message: 'Failed to toggle list: not found'));
+        return const Left(CacheFailure(message: 'Failed to toggle list: not found'));
       }
       return const Right(null);
     } on CacheException catch (e) {
@@ -132,7 +132,7 @@ class MappingListRepositoryImpl implements IMappingListRepository {
 
       // Check if it has a sync URL
       if (model.sourceUrl == null) {
-        return Left(CacheFailure(message: 'List has no sync URL'));
+        return const Left(CacheFailure(message: 'List has no sync URL'));
       }
 
       // Fetch mappings and metadata from URL
@@ -183,7 +183,7 @@ class MappingListRepositoryImpl implements IMappingListRepository {
   Future<Either<Failure, int>> syncAllLists() async {
     try {
       final listsToSync = await _localDataSource.getListsNeedingSync();
-      int successCount = 0;
+      var successCount = 0;
 
       for (final list in listsToSync) {
         final result = await syncList(list.id);
@@ -212,13 +212,13 @@ class MappingListRepositoryImpl implements IMappingListRepository {
       // Validate URL first
       final isValid = await _syncDataSource.validateListUrl(url);
       if (!isValid) {
-        return Left(NetworkFailure(message: 'Invalid URL or unreachable'));
+        return const Left(NetworkFailure(message: 'Invalid URL or unreachable'));
       }
 
       // Fetch mappings and metadata from remote source
       final remoteData = await _syncDataSource.fetchListFromUrl(url);
       if (remoteData.mappings.isEmpty) {
-        return Left(ServerFailure(message: 'List is empty or invalid'));
+        return const Left(ServerFailure(message: 'List is empty or invalid'));
       }
 
       // Create list entity using metadata from JSON (fallback to user-provided values)
@@ -333,7 +333,7 @@ class MappingListRepositoryImpl implements IMappingListRepository {
       }
 
       // Find and remove duplicates
-      int removedCount = 0;
+      var removedCount = 0;
       for (final pending in pendingMappings) {
         // Check if this pending mapping now exists in the synced list
         final isDuplicate = syncedMappings.any((synced) =>

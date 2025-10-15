@@ -32,12 +32,12 @@ class ImportMappingsUseCase {
       final List<dynamic> jsonData = json.decode(jsonString);
 
       if (jsonData.isEmpty) {
-        return Left(
+        return const Left(
           ValidationFailure(message: 'No mappings found in JSON'),
         );
       }
 
-      int importedCount = 0;
+      var importedCount = 0;
       final now = DateTime.now();
 
       for (final item in jsonData) {

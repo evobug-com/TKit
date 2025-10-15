@@ -35,13 +35,13 @@ class WelcomePage extends ConsumerStatefulWidget {
 
 class _WelcomePageState extends ConsumerState<WelcomePage>
     with SingleTickerProviderStateMixin {
-  int _currentGreetingIndex = 0;
+  var _currentGreetingIndex = 0;
   Timer? _greetingTimer;
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
 
-  String _selectedLanguage = 'en';
-  int _currentStep = 0; // 0 = language, 1 = twitch, 2 = behavior
+  var _selectedLanguage = 'en';
+  var _currentStep = 0; // 0 = language, 1 = twitch, 2 = behavior
 
   @override
   void initState() {
@@ -198,7 +198,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                     ),
                   ),
                 ),
-                VSpace.xl(),
+                const VSpace.xl(),
 
                 // Simple step dots
                 Row(
@@ -221,7 +221,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                     );
                   }),
                 ),
-                VSpace.xl(),
+                const VSpace.xl(),
 
                 // Main card with fade transition
                 FadeTransition(
@@ -251,18 +251,18 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
           style: TKitTextStyles.heading2,
           textAlign: TextAlign.center,
         ),
-        VSpace.xl(),
+        const VSpace.xl(),
         FormFieldWrapper(
           label: l10n.languageLabel,
           child: _buildLanguageDropdown(l10n),
         ),
-        VSpace.md(),
+        const VSpace.md(),
         Text(
           l10n.welcomeLanguageChangeLater,
           style: TKitTextStyles.caption,
           textAlign: TextAlign.center,
         ),
-        VSpace.xxl(),
+        const VSpace.xxl(),
         _buildFooterButtons(l10n),
       ],
     );
@@ -283,7 +283,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
               style: TKitTextStyles.heading2,
               textAlign: TextAlign.center,
             ),
-            VSpace.md(),
+            const VSpace.md(),
             Text(
               l10n.welcomeTwitchDescription,
               style: TKitTextStyles.bodyMedium.copyWith(
@@ -291,7 +291,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
               ),
               textAlign: TextAlign.center,
             ),
-            VSpace.xl(),
+            const VSpace.xl(),
 
             // Status or auth button
             if (isAuthenticated) ...[
@@ -304,7 +304,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                       color: TKitColors.success,
                       size: 18,
                     ),
-                    HSpace.sm(),
+                    const HSpace.sm(),
                     Text(
                       l10n.welcomeTwitchConnectedAs(
                         authState.user.displayName,
@@ -316,7 +316,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                   ],
                 ),
               ),
-              VSpace.xl(),
+              const VSpace.xl(),
             ] else ...[
               PrimaryButton(
                 text: l10n.welcomeTwitchAuthorizeButton,
@@ -349,13 +349,13 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                         }
                       },
               ),
-              VSpace.md(),
+              const VSpace.md(),
               Text(
                 l10n.welcomeTwitchOptionalInfo,
                 style: TKitTextStyles.caption,
                 textAlign: TextAlign.center,
               ),
-              VSpace.xl(),
+              const VSpace.xl(),
             ],
 
             _buildFooterButtons(l10n),
@@ -384,7 +384,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
               style: TKitTextStyles.heading2,
               textAlign: TextAlign.center,
             ),
-            VSpace.md(),
+            const VSpace.md(),
             Text(
               l10n.welcomeBehaviorDescription,
               style: TKitTextStyles.bodyMedium.copyWith(
@@ -392,7 +392,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
               ),
               textAlign: TextAlign.center,
             ),
-            VSpace.xl(),
+            const VSpace.xl(),
 
             // Settings checkboxes
             SettingsCheckbox(
@@ -405,7 +405,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                 );
               },
             ),
-            VSpace.sm(),
+            const VSpace.sm(),
 
             SettingsCheckbox(
               label: l10n.settingsStartMinimizedLabel,
@@ -417,7 +417,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                 );
               },
             ),
-            VSpace.sm(),
+            const VSpace.sm(),
 
             SettingsCheckbox(
               label: l10n.settingsMinimizeToTrayLabel,
@@ -429,7 +429,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                 );
               },
             ),
-            VSpace.xl(),
+            const VSpace.xl(),
 
             // Window controls position
             FormFieldWrapper(
@@ -452,14 +452,14 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                 },
               ),
             ),
-            VSpace.xl(),
+            const VSpace.xl(),
 
             Text(
               l10n.welcomeBehaviorOptionalInfo,
               style: TKitTextStyles.caption,
               textAlign: TextAlign.center,
             ),
-            VSpace.xxl(),
+            const VSpace.xxl(),
 
             _buildFooterButtons(l10n),
           ],
@@ -509,7 +509,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
             text: l10n.welcomeButtonBack,
             onPressed: _goToPreviousStep,
           ),
-          HSpace.md(),
+          const HSpace.md(),
           PrimaryButton(
             text: l10n.welcomeButtonNext,
             icon: Icons.arrow_forward,
@@ -525,7 +525,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
             text: l10n.welcomeButtonBack,
             onPressed: _goToPreviousStep,
           ),
-          HSpace.md(),
+          const HSpace.md(),
           PrimaryButton(
             text: l10n.continueButton,
             icon: Icons.check,

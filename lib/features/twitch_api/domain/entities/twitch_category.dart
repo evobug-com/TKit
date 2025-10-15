@@ -26,7 +26,7 @@ class TwitchCategory extends Equatable {
     if (boxArtUrl == null) return null;
 
     // Handle both template format and hardcoded dimensions
-    String url = boxArtUrl!;
+    final String url = boxArtUrl!;
 
     // If URL has {width}x{height} placeholders, replace them
     if (url.contains('{width}') && url.contains('{height}')) {

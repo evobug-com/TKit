@@ -52,7 +52,7 @@ class IconToggleButton extends StatelessWidget {
     final effectiveTooltip =
         isActive ? (activeTooltip ?? tooltip) : tooltip;
 
-    Widget button = SizedBox(
+    final Widget button = SizedBox(
       width: size,
       height: size,
       child: Material(

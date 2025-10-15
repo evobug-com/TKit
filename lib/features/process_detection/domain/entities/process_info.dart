@@ -15,7 +15,7 @@ class ProcessInfo extends Equatable {
   });
 
   /// Create an empty/null process info
-  static const ProcessInfo empty = ProcessInfo(
+  static const empty = ProcessInfo(
     processName: '',
     pid: 0,
     windowTitle: '',
