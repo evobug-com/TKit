@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
@@ -20,56 +20,34 @@ import 'package:tkit/shared/widgets/dialogs/error_dialog.dart';
 import 'package:tkit/shared/widgets/indicators/loading_indicator.dart';
 import 'package:tkit/shared/widgets/feedback/toast.dart';
 import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
-import 'package:tkit/features/category_mapping/presentation/providers/category_mapping_provider.dart';
+import 'package:tkit/features/category_mapping/presentation/providers/category_mapping_providers.dart';
 import 'package:tkit/features/category_mapping/presentation/widgets/add_mapping_dialog.dart';
 import 'package:tkit/features/category_mapping/presentation/widgets/mapping_list_widget.dart';
 import 'package:tkit/features/mapping_lists/presentation/dialogs/list_management_dialog.dart';
-import 'package:tkit/features/mapping_lists/presentation/providers/mapping_list_provider.dart';
+import 'package:tkit/features/mapping_lists/presentation/providers/mapping_list_providers.dart';
 
 /// Page for managing category mappings
 ///
 /// Displays unified view of all mappings from enabled lists
 @RoutePage()
-class CategoryMappingEditorPage extends StatefulWidget {
+class CategoryMappingEditorPage extends ConsumerStatefulWidget {
   const CategoryMappingEditorPage({super.key});
 
   @override
-  State<CategoryMappingEditorPage> createState() =>
+  ConsumerState<CategoryMappingEditorPage> createState() =>
       _CategoryMappingEditorPageState();
 }
 
-class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage> {
-  MappingListProvider? _listProvider;
-  CategoryMappingProvider? _mappingProvider;
-
+class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEditorPage> {
   @override
   void initState() {
     super.initState();
 
     // Load mappings and lists
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _mappingProvider = context.read<CategoryMappingProvider>();
-      _listProvider = context.read<MappingListProvider>();
-
-      _mappingProvider!.loadMappings();
-      _listProvider!.loadLists();
-
-      // Listen to list changes and reload mappings
-      _listProvider!.addListener(_onListsChanged);
+      ref.read(categoryMappingsProvider.notifier).loadMappings();
+      ref.read(mappingListsProvider.notifier).loadLists();
     });
-  }
-
-  @override
-  void dispose() {
-    _listProvider?.removeListener(_onListsChanged);
-    super.dispose();
-  }
-
-  void _onListsChanged() {
-    // Reload mappings when lists change (e.g., when toggled)
-    if (mounted && _mappingProvider != null) {
-      _mappingProvider!.loadMappings();
-    }
   }
 
   @override
@@ -101,111 +79,110 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage> {
   }
 
   Widget _buildMappingsView(BuildContext context) {
-    return Consumer2<CategoryMappingProvider, MappingListProvider>(
-      builder: (context, mappingProvider, listProvider, child) {
-        final l10n = AppLocalizations.of(context)!;
-        final errorMsg = mappingProvider.errorMessage;
-        final successMsg = mappingProvider.successMessage;
+    final l10n = AppLocalizations.of(context)!;
+    final mappingState = ref.watch(categoryMappingsProvider);
+    final listState = ref.watch(mappingListsProvider);
 
-        // Handle success/error messages from mapping provider
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (successMsg != null) {
-            Toast.success(context, successMsg);
-            mappingProvider.clearMessages();
-          } else if (errorMsg != null) {
-            showDialog(
-              context: context,
-              builder: (dialogContext) => ErrorDialog(
-                title: l10n.categoryMappingErrorDialogTitle,
-                message: errorMsg,
-              ),
-            );
-            mappingProvider.clearMessages();
-          }
+    final errorMsg = mappingState.errorMessage;
+    final successMsg = mappingState.successMessage;
 
-          // Handle messages from list provider
-          if (listProvider.successMessage != null) {
-            Toast.success(context, listProvider.successMessage!);
-            listProvider.clearMessages();
-          } else if (listProvider.errorMessage != null) {
-            Toast.error(context, listProvider.errorMessage!);
-            listProvider.clearMessages();
-          }
-        });
-
-        // Only show full loading indicator on initial load (when there are no mappings)
-        if (mappingProvider.isLoading && mappingProvider.mappings.isEmpty) {
-          return const Center(child: LoadingIndicator());
-        }
-
-        if (mappingProvider.errorMessage != null && mappingProvider.mappings.isEmpty) {
-          return _buildErrorView(context, mappingProvider.errorMessage!);
-        }
-
-        final mappings = mappingProvider.mappings;
-        final enabledLists = listProvider.lists.where((l) => l.isEnabled).length;
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Stats bar with actions
-            IslandVariant.standard(
-              child: Row(
-                children: [
-                  StatItem(
-                    label: l10n.categoryMappingStatsTotalMappings,
-                    value: mappings.length.toString(),
-                    valueColor: TKitColors.accent,
-                  ),
-                  const HSpace.xxl(),
-                  StatItem(
-                    label: 'Active Lists',
-                    value: enabledLists.toString(),
-                  ),
-                  const HSpace.xxl(),
-                  StatItem(
-                    label: l10n.categoryMappingStatsUserDefined,
-                    value: mappings.where((m) => m.manualOverride).length.toString(),
-                  ),
-                  const Spacer(),
-                  AccentButton(
-                    text: 'View Lists',
-                    icon: Icons.list_alt,
-                    onPressed: () => ListManagementDialog.show(context),
-                    width: 140,
-                  ),
-                  const HSpace.md(),
-                  PrimaryButton(
-                    text: l10n.categoryMappingAddMappingButton,
-                    icon: Icons.add,
-                    onPressed: () => _showAddMappingDialog(context),
-                    width: 180,
-                  ),
-                ],
-              ),
-            ),
-            const VSpace.md(),
-
-            // Mappings table
-            Expanded(
-              child: MappingListWidget(
-                mappings: mappings,
-                onDelete: (id) => _handleDelete(context, id),
-                onEdit: (mapping) => _showEditMappingDialog(context, mapping),
-                onToggleEnabled: (mapping) {
-                  context.read<CategoryMappingProvider>().toggleEnabled(mapping);
-                },
-                onBulkDelete: (ids) => _handleBulkDelete(context, ids),
-                onBulkExport: (mappings) => _handleBulkExport(context, mappings),
-                onBulkToggleEnabled: (ids, enabled) =>
-                    _handleBulkToggleEnabled(context, ids, enabled),
-                onBulkRestore: (mappings) => _handleBulkRestore(context, mappings),
-                onSourceTap: (listId) => _handleSourceTap(context, listId),
-              ),
-            ),
-          ],
+    // Handle success/error messages from mapping provider
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (successMsg != null) {
+        Toast.success(context, successMsg);
+        ref.read(categoryMappingsProvider.notifier).clearMessages();
+      } else if (errorMsg != null) {
+        showDialog(
+          context: context,
+          builder: (dialogContext) => ErrorDialog(
+            title: l10n.categoryMappingErrorDialogTitle,
+            message: errorMsg,
+          ),
         );
-      },
+        ref.read(categoryMappingsProvider.notifier).clearMessages();
+      }
+
+      // Handle messages from list provider
+      if (listState.successMessage != null) {
+        Toast.success(context, listState.successMessage!);
+        ref.read(mappingListsProvider.notifier).clearMessages();
+      } else if (listState.errorMessage != null) {
+        Toast.error(context, listState.errorMessage!);
+        ref.read(mappingListsProvider.notifier).clearMessages();
+      }
+    });
+
+    // Only show full loading indicator on initial load (when there are no mappings)
+    if (mappingState.isLoading && mappingState.mappings.isEmpty) {
+      return const Center(child: LoadingIndicator());
+    }
+
+    if (mappingState.errorMessage != null && mappingState.mappings.isEmpty) {
+      return _buildErrorView(context, mappingState.errorMessage!);
+    }
+
+    final mappings = mappingState.mappings;
+    final enabledLists = listState.lists.where((l) => l.isEnabled).length;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Stats bar with actions
+        IslandVariant.standard(
+          child: Row(
+            children: [
+              StatItem(
+                label: l10n.categoryMappingStatsTotalMappings,
+                value: mappings.length.toString(),
+                valueColor: TKitColors.accent,
+              ),
+              const HSpace.xxl(),
+              StatItem(
+                label: 'Active Lists',
+                value: enabledLists.toString(),
+              ),
+              const HSpace.xxl(),
+              StatItem(
+                label: l10n.categoryMappingStatsUserDefined,
+                value: mappings.where((m) => m.manualOverride).length.toString(),
+              ),
+              const Spacer(),
+              AccentButton(
+                text: 'View Lists',
+                icon: Icons.list_alt,
+                onPressed: () => ListManagementDialog.show(context),
+                width: 140,
+              ),
+              const HSpace.md(),
+              PrimaryButton(
+                text: l10n.categoryMappingAddMappingButton,
+                icon: Icons.add,
+                onPressed: () => _showAddMappingDialog(context),
+                width: 180,
+              ),
+            ],
+          ),
+        ),
+        const VSpace.md(),
+
+        // Mappings table
+        Expanded(
+          child: MappingListWidget(
+            mappings: mappings,
+            onDelete: (id) => _handleDelete(context, id),
+            onEdit: (mapping) => _showEditMappingDialog(context, mapping),
+            onToggleEnabled: (mapping) {
+              ref.read(categoryMappingsProvider.notifier).toggleEnabled(mapping);
+            },
+            onBulkDelete: (ids) => _handleBulkDelete(context, ids),
+            onBulkExport: (mappings) => _handleBulkExport(context, mappings),
+            onBulkToggleEnabled: (ids, enabled) =>
+                _handleBulkToggleEnabled(context, ids, enabled),
+            onBulkRestore: (mappings) => _handleBulkRestore(context, mappings),
+            onSourceTap: (listId) => _handleSourceTap(context, listId),
+          ),
+        ),
+      ],
     );
   }
 
@@ -218,7 +195,7 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage> {
         text: AppLocalizations.of(context)!.categoryMappingRetryButton,
         icon: Icons.refresh,
         onPressed: () {
-          context.read<CategoryMappingProvider>().loadMappings();
+          ref.read(categoryMappingsProvider.notifier).loadMappings();
         },
       ),
     );
@@ -231,7 +208,7 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage> {
     );
 
     if (result != null && context.mounted) {
-      context.read<CategoryMappingProvider>().addMapping(result);
+      ref.read(categoryMappingsProvider.notifier).addMapping(result);
     }
   }
 
@@ -245,7 +222,7 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage> {
     );
 
     if (result != null && context.mounted) {
-      context.read<CategoryMappingProvider>().updateMapping(result);
+      ref.read(categoryMappingsProvider.notifier).updateMapping(result);
     }
   }
 
@@ -262,7 +239,7 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage> {
     );
 
     if (confirmed == true && context.mounted) {
-      context.read<CategoryMappingProvider>().deleteMapping(id);
+      ref.read(categoryMappingsProvider.notifier).deleteMapping(id);
     }
   }
 
@@ -280,7 +257,7 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage> {
     );
 
     if (confirmed == true && context.mounted) {
-      context.read<CategoryMappingProvider>().bulkDelete(ids);
+      ref.read(categoryMappingsProvider.notifier).bulkDelete(ids);
     }
   }
 
@@ -378,14 +355,14 @@ class _CategoryMappingEditorPageState extends State<CategoryMappingEditorPage> {
     List<int> ids,
     bool enabled,
   ) async {
-    context.read<CategoryMappingProvider>().bulkToggleEnabled(ids, enabled);
+    ref.read(categoryMappingsProvider.notifier).bulkToggleEnabled(ids, enabled);
   }
 
   Future<void> _handleBulkRestore(
     BuildContext context,
     List<CategoryMapping> mappings,
   ) async {
-    context.read<CategoryMappingProvider>().bulkRestore(mappings);
+    ref.read(categoryMappingsProvider.notifier).bulkRestore(mappings);
   }
 
   void _handleSourceTap(BuildContext context, String? listId) {

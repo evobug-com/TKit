@@ -177,6 +177,48 @@ final class WatchSettingsUseCaseProvider
 String _$watchSettingsUseCaseHash() =>
     r'bd1d1bc0fd2bfcf9a2de574db5482b7ec7e03f27';
 
+@ProviderFor(factoryResetUseCase)
+const factoryResetUseCaseProvider = FactoryResetUseCaseProvider._();
+
+final class FactoryResetUseCaseProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<FactoryResetUseCase>,
+          FactoryResetUseCase,
+          FutureOr<FactoryResetUseCase>
+        >
+    with
+        $FutureModifier<FactoryResetUseCase>,
+        $FutureProvider<FactoryResetUseCase> {
+  const FactoryResetUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'factoryResetUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$factoryResetUseCaseHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<FactoryResetUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<FactoryResetUseCase> create(Ref ref) {
+    return factoryResetUseCase(ref);
+  }
+}
+
+String _$factoryResetUseCaseHash() =>
+    r'abe92be7ec5649baf701481bcbb8d59813177c90';
+
 @ProviderFor(Settings)
 const settingsProvider = SettingsProvider._();
 
@@ -209,7 +251,7 @@ final class SettingsProvider
   }
 }
 
-String _$settingsHash() => r'be32c99cf20b34237f2ab7a86994466f32add703';
+String _$settingsHash() => r'39949f82902078af65d1e9650c4e17b0b31b58fc';
 
 abstract class _$Settings extends $Notifier<SettingsState> {
   SettingsState build();

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
@@ -11,12 +11,12 @@ import 'package:tkit/shared/widgets/buttons/accent_button.dart';
 import 'package:tkit/shared/widgets/indicators/loading_indicator.dart';
 import 'package:tkit/shared/widgets/forms/search_field.dart';
 import 'package:tkit/features/twitch_api/domain/entities/twitch_category.dart';
-import 'package:tkit/features/twitch_api/presentation/providers/twitch_api_provider.dart';
-import 'package:tkit/features/auth/presentation/providers/auth_provider.dart';
+import 'package:tkit/features/twitch_api/presentation/providers/twitch_api_providers.dart';
+import 'package:tkit/features/auth/presentation/providers/auth_providers.dart';
 import 'package:tkit/features/auth/presentation/states/auth_state.dart';
 import 'package:tkit/features/category_mapping/data/utils/path_normalizer.dart';
 import 'package:tkit/features/mapping_lists/domain/entities/mapping_list.dart';
-import 'package:tkit/features/mapping_lists/presentation/providers/mapping_list_provider.dart';
+import 'package:tkit/features/mapping_lists/presentation/providers/mapping_list_providers.dart';
 
 /// Dialog shown when an unmapped game is detected
 ///
@@ -24,7 +24,7 @@ import 'package:tkit/features/mapping_lists/presentation/providers/mapping_list_
 /// 1. Select Twitch category
 /// 2. Choose destination list
 /// 3. Review and confirm
-class UnknownGameDialog extends StatefulWidget {
+class UnknownGameDialog extends ConsumerStatefulWidget {
   final String processName;
   final String? executablePath;
   final String? windowTitle;
@@ -37,10 +37,10 @@ class UnknownGameDialog extends StatefulWidget {
   });
 
   @override
-  State<UnknownGameDialog> createState() => _UnknownGameDialogState();
+  ConsumerState<UnknownGameDialog> createState() => _UnknownGameDialogState();
 }
 
-class _UnknownGameDialogState extends State<UnknownGameDialog> with TickerProviderStateMixin {
+class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with TickerProviderStateMixin {
   final _searchController = TextEditingController();
   int _currentStep = 0;
   TwitchCategory? _selectedCategory;
@@ -60,12 +60,12 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> with TickerProvid
     _loadViewPreference();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<MappingListProvider>().loadLists();
+      ref.read(mappingListsProvider.notifier).loadLists();
 
       if (searchQuery.isNotEmpty) {
-        final authProvider = context.read<AuthProvider>();
-        if (authProvider.state is Authenticated) {
-          context.read<TwitchApiProvider>().searchCategories(searchQuery);
+        final authState = ref.read(authProvider);
+        if (authState is Authenticated) {
+          ref.read(twitchApiProvider.notifier).searchCategories(searchQuery);
         }
       }
     });
@@ -441,9 +441,9 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> with TickerProvid
                   debounceDuration: _searchDebounceDelay,
                   onSearch: (value) {
                     if (value.trim().isNotEmpty) {
-                      final authProvider = context.read<AuthProvider>();
-                      if (authProvider.state is Authenticated) {
-                        context.read<TwitchApiProvider>().searchCategories(value);
+                      final authState = ref.read(authProvider);
+                      if (authState is Authenticated) {
+                        ref.read(twitchApiProvider.notifier).searchCategories(value);
                       }
                     }
                   },
@@ -508,15 +508,16 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> with TickerProvid
   }
 
   Widget _buildCategoryResults(BuildContext context) {
-    return Consumer<TwitchApiProvider>(
-      builder: (context, provider, child) {
+    return Consumer(
+      builder: (context, ref, child) {
         final l10n = AppLocalizations.of(context)!;
+        final twitchApiState = ref.watch(twitchApiProvider);
 
-        if (provider.isLoading) {
+        if (twitchApiState.isLoading) {
           return const Center(child: LoadingIndicator());
         }
 
-        if (provider.errorMessage != null) {
+        if (twitchApiState.errorMessage != null) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -529,7 +530,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> with TickerProvid
                 ),
                 const VSpace.xs(),
                 Text(
-                  provider.errorMessage!,
+                  twitchApiState.errorMessage!,
                   style: TKitTextStyles.caption.copyWith(color: TKitColors.textSecondary),
                   textAlign: TextAlign.center,
                 ),
@@ -538,7 +539,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> with TickerProvid
           );
         }
 
-        if (!provider.hasSearched) {
+        if (!twitchApiState.hasSearched) {
           return Center(
             child: Text(
               l10n.unknownGameDialogSearchPrompt,
@@ -549,7 +550,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> with TickerProvid
 
         // Add "Ignore" option as first item
         const ignoreCategory = TwitchCategory(id: '-1', name: 'Ignore Process');
-        final categoriesWithIgnore = [ignoreCategory, ...provider.categories];
+        final categoriesWithIgnore = [ignoreCategory, ...twitchApiState.categories];
 
         return _isGridView ? _buildGridView(categoriesWithIgnore) : _buildListView(categoriesWithIgnore);
       },
@@ -945,15 +946,16 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> with TickerProvid
   }
 
   Widget _buildListSelection(BuildContext context) {
-    return Consumer<MappingListProvider>(
-      builder: (context, provider, child) {
+    return Consumer(
+      builder: (context, ref, child) {
         final l10n = AppLocalizations.of(context)!;
+        final mappingListState = ref.watch(mappingListsProvider);
 
-        if (provider.isLoading) {
+        if (mappingListState.isLoading) {
           return const Center(child: LoadingIndicator());
         }
 
-        if (provider.errorMessage != null) {
+        if (mappingListState.errorMessage != null) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -963,7 +965,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> with TickerProvid
                 Text('Error loading lists', style: TKitTextStyles.bodyMedium),
                 const VSpace.xs(),
                 Text(
-                  provider.errorMessage!,
+                  mappingListState.errorMessage!,
                   style: TKitTextStyles.caption.copyWith(color: TKitColors.textSecondary),
                   textAlign: TextAlign.center,
                 ),
@@ -972,14 +974,14 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> with TickerProvid
           );
         }
 
-        final localLists = provider.lists
+        final localLists = mappingListState.lists
             .where((list) =>
                 !list.isReadOnly &&
                 list.isEnabled &&
                 list.sourceType == MappingListSourceType.local)
             .toList();
 
-        final submissionLists = provider.lists
+        final submissionLists = mappingListState.lists
             .where((list) =>
                 list.isEnabled &&
                 list.submissionHookUrl != null &&

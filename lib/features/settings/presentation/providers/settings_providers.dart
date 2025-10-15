@@ -6,6 +6,7 @@ import 'package:tkit/features/settings/domain/repositories/i_settings_repository
 import 'package:tkit/features/settings/domain/usecases/get_settings_usecase.dart';
 import 'package:tkit/features/settings/domain/usecases/update_settings_usecase.dart';
 import 'package:tkit/features/settings/domain/usecases/watch_settings_usecase.dart';
+import 'package:tkit/features/settings/domain/usecases/factory_reset_usecase.dart';
 import 'package:tkit/features/settings/presentation/states/settings_state.dart';
 import 'package:tkit/features/settings/domain/entities/app_settings.dart';
 
@@ -42,6 +43,20 @@ Future<UpdateSettingsUseCase> updateSettingsUseCase(Ref ref) async {
 Future<WatchSettingsUseCase> watchSettingsUseCase(Ref ref) async {
   final repository = await ref.watch(settingsRepositoryProvider.future);
   return WatchSettingsUseCase(repository);
+}
+
+@Riverpod(keepAlive: true)
+Future<FactoryResetUseCase> factoryResetUseCase(Ref ref) async {
+  final settingsRepository = await ref.watch(settingsRepositoryProvider.future);
+  final database = ref.watch(appDatabaseProvider);
+  final secureStorage = ref.watch(secureStorageProvider);
+  final sharedPreferences = await ref.watch(sharedPreferencesProvider.future);
+  return FactoryResetUseCase(
+    settingsRepository,
+    database,
+    secureStorage,
+    sharedPreferences,
+  );
 }
 
 // =============================================================================
@@ -105,5 +120,16 @@ class Settings extends _$Settings {
         });
       },
     );
+  }
+
+  /// Check if settings have unsaved changes
+  bool hasUnsavedChanges(AppSettings settings) {
+    final currentState = state;
+    if (currentState is SettingsLoaded) {
+      return currentState.settings != settings;
+    } else if (currentState is SettingsSaved) {
+      return currentState.settings != settings;
+    }
+    return false;
   }
 }

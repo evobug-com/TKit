@@ -281,7 +281,7 @@ final class CategoryMappingsProvider
   }
 }
 
-String _$categoryMappingsHash() => r'cf8f497de10ddca4abc7e601026ac2a24132a3b8';
+String _$categoryMappingsHash() => r'6d2d1762ffeddd7c7259b581b0511f33615dc038';
 
 abstract class _$CategoryMappings extends $Notifier<CategoryMappingState> {
   CategoryMappingState build();

@@ -2,7 +2,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
-import 'package:tkit/features/auto_switcher/presentation/providers/auto_switcher_provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tkit/features/auto_switcher/presentation/providers/auto_switcher_providers.dart';
 import 'package:tkit/features/settings/domain/usecases/get_settings_usecase.dart';
 import 'package:tkit/features/settings/domain/usecases/watch_settings_usecase.dart';
 import 'package:tkit/core/utils/app_logger.dart';
@@ -12,7 +13,7 @@ import 'package:tkit/core/utils/app_logger.dart';
 class HotkeyService {
   final GetSettingsUseCase _getSettings;
   final WatchSettingsUseCase _watchSettings;
-  final AutoSwitcherProvider _autoSwitcherProvider;
+  final Ref _ref;
   final AppLogger _logger;
 
   StreamSubscription? _settingsSubscription;
@@ -21,7 +22,7 @@ class HotkeyService {
   HotkeyService(
     this._getSettings,
     this._watchSettings,
-    this._autoSwitcherProvider,
+    this._ref,
     this._logger,
   );
 
@@ -100,7 +101,7 @@ class HotkeyService {
         hotKey,
         keyDownHandler: (hotKey) {
           _logger.info('Manual update hotkey pressed');
-          _autoSwitcherProvider.manualUpdate();
+          _ref.read(autoSwitcherProvider.notifier).manualUpdate();
         },
       );
 

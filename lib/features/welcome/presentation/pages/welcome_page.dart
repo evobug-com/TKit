@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'dart:async';
-import 'package:tkit/core/services/language_service.dart';
+import 'package:tkit/core/providers/providers.dart';
 import 'package:tkit/core/routing/app_router.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
@@ -15,28 +15,26 @@ import 'package:tkit/shared/widgets/buttons/accent_button.dart';
 import 'package:tkit/shared/widgets/indicators/loading_indicator.dart';
 import 'package:tkit/shared/widgets/forms/form_field_wrapper.dart';
 import 'package:tkit/shared/widgets/forms/dropdown.dart';
-import 'package:tkit/features/auth/presentation/providers/auth_provider.dart';
+import 'package:tkit/features/auth/presentation/providers/auth_providers.dart';
 import 'package:tkit/features/auth/presentation/states/auth_state.dart';
 import 'package:tkit/features/auth/presentation/pages/device_code_auth_page.dart';
-import 'package:tkit/features/settings/presentation/providers/settings_provider.dart';
+import 'package:tkit/features/settings/presentation/providers/settings_providers.dart';
 import 'package:tkit/features/settings/presentation/states/settings_state.dart';
 import 'package:tkit/features/settings/presentation/widgets/settings_checkbox.dart';
 import 'package:tkit/features/settings/domain/entities/window_controls_position.dart';
 
 @RoutePage()
-class WelcomePage extends StatefulWidget {
+class WelcomePage extends ConsumerStatefulWidget {
   final void Function(Locale)? onLocaleChange;
 
   const WelcomePage({super.key, this.onLocaleChange});
 
   @override
-  State<WelcomePage> createState() => _WelcomePageState();
+  ConsumerState<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _WelcomePageState extends State<WelcomePage>
+class _WelcomePageState extends ConsumerState<WelcomePage>
     with SingleTickerProviderStateMixin {
-  late final LanguageService _languageService;
-
   int _currentGreetingIndex = 0;
   Timer? _greetingTimer;
   late AnimationController _fadeController;
@@ -49,11 +47,8 @@ class _WelcomePageState extends State<WelcomePage>
   void initState() {
     super.initState();
 
-    // Get dependencies from Provider
-    _languageService = context.read<LanguageService>();
-
     // Detect system language and set as default
-    _selectedLanguage = _languageService.detectSystemLanguage();
+    _initializeLanguage();
 
     // Set initial locale after build completes
     if (widget.onLocaleChange != null) {
@@ -95,14 +90,26 @@ class _WelcomePageState extends State<WelcomePage>
     super.dispose();
   }
 
-  void _onLanguageChanged(String languageCode) {
+  Future<void> _initializeLanguage() async {
+    final languageService = await ref.read(languageServiceProvider.future);
+    final detectedLanguage = languageService.detectSystemLanguage();
+
+    if (mounted) {
+      setState(() {
+        _selectedLanguage = detectedLanguage;
+      });
+    }
+  }
+
+  Future<void> _onLanguageChanged(String languageCode) async {
     // Update selected language
     setState(() {
       _selectedLanguage = languageCode;
     });
 
     // Save language preference
-    _languageService.saveLanguage(languageCode);
+    final languageService = await ref.read(languageServiceProvider.future);
+    await languageService.saveLanguage(languageCode);
 
     // Notify parent to change locale - this triggers MaterialApp rebuild
     if (widget.onLocaleChange != null) {
@@ -132,7 +139,8 @@ class _WelcomePageState extends State<WelcomePage>
 
   Future<void> _onComplete() async {
     // Mark setup as completed
-    await _languageService.markSetupCompleted();
+    final languageService = await ref.read(languageServiceProvider.future);
+    await languageService.markSetupCompleted();
 
     if (mounted) {
       // Navigate to the main app
@@ -261,9 +269,9 @@ class _WelcomePageState extends State<WelcomePage>
   }
 
   Widget _buildTwitchStep(AppLocalizations l10n) {
-    return Consumer<AuthProvider>(
-      builder: (context, authProvider, child) {
-        final authState = authProvider.state;
+    return Consumer(
+      builder: (context, ref, child) {
+        final authState = ref.watch(authProvider);
         final isAuthenticated = authState is Authenticated;
         final isLoading = authState is AuthLoading;
 
@@ -318,8 +326,8 @@ class _WelcomePageState extends State<WelcomePage>
                 onPressed: isLoading
                     ? null
                     : () async {
-                        final authProvider = context.read<AuthProvider>();
-                        final deviceCodeResponse = await authProvider
+                        final notifier = ref.read(authProvider.notifier);
+                        final deviceCodeResponse = await notifier
                             .initiateDeviceCodeAuth();
 
                         if (deviceCodeResponse != null && context.mounted) {
@@ -330,11 +338,11 @@ class _WelcomePageState extends State<WelcomePage>
                               deviceCodeResponse: deviceCodeResponse,
                               onSuccess: () {
                                 Navigator.of(dialogContext).pop();
-                                context.read<AuthProvider>().checkAuthStatus();
+                                ref.read(authProvider.notifier).checkAuthStatus();
                               },
                               onCancel: () {
                                 Navigator.of(dialogContext).pop();
-                                context.read<AuthProvider>().checkAuthStatus();
+                                ref.read(authProvider.notifier).checkAuthStatus();
                               },
                             ),
                           );
@@ -358,9 +366,9 @@ class _WelcomePageState extends State<WelcomePage>
   }
 
   Widget _buildBehaviorStep(AppLocalizations l10n) {
-    return Consumer<SettingsProvider>(
-      builder: (context, settingsProvider, child) {
-        final settingsState = settingsProvider.state;
+    return Consumer(
+      builder: (context, ref, child) {
+        final settingsState = ref.watch(settingsProvider);
 
         if (settingsState is! SettingsLoaded) {
           return const Center(child: LoadingIndicator());
@@ -392,7 +400,7 @@ class _WelcomePageState extends State<WelcomePage>
               subtitle: l10n.settingsAutoStartWindowsSubtitle,
               value: settings.autoStartWithWindows,
               onChanged: (value) {
-                settingsProvider.updateSettings(
+                ref.read(settingsProvider.notifier).updateSettings(
                   settings.copyWith(autoStartWithWindows: value),
                 );
               },
@@ -404,7 +412,7 @@ class _WelcomePageState extends State<WelcomePage>
               subtitle: l10n.settingsStartMinimizedSubtitle,
               value: settings.startMinimized,
               onChanged: (value) {
-                settingsProvider.updateSettings(
+                ref.read(settingsProvider.notifier).updateSettings(
                   settings.copyWith(startMinimized: value),
                 );
               },
@@ -416,7 +424,7 @@ class _WelcomePageState extends State<WelcomePage>
               subtitle: l10n.settingsMinimizeToTraySubtitle,
               value: settings.minimizeToTray,
               onChanged: (value) {
-                settingsProvider.updateSettings(
+                ref.read(settingsProvider.notifier).updateSettings(
                   settings.copyWith(minimizeToTray: value),
                 );
               },
@@ -437,7 +445,7 @@ class _WelcomePageState extends State<WelcomePage>
                 }).toList(),
                 onChanged: (WindowControlsPosition? newValue) {
                   if (newValue != null) {
-                    settingsProvider.updateSettings(
+                    ref.read(settingsProvider.notifier).updateSettings(
                       settings.copyWith(windowControlsPosition: newValue),
                     );
                   }

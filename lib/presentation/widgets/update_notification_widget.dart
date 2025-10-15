@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/core/services/updater/github_update_service.dart';
 import 'package:tkit/core/services/updater/models/update_info.dart';
 import 'package:tkit/core/services/updater/models/download_progress.dart';
 import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/core/providers/providers.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/widgets/buttons/primary_button.dart';
 import 'package:tkit/shared/widgets/buttons/accent_button.dart';
 
 /// Widget that displays update notifications and handles the update process
-class UpdateNotificationWidget extends StatefulWidget {
+class UpdateNotificationWidget extends ConsumerStatefulWidget {
   final Widget child;
   final GlobalKey<NavigatorState>? navigatorKey;
 
@@ -23,11 +24,11 @@ class UpdateNotificationWidget extends StatefulWidget {
   });
 
   @override
-  State<UpdateNotificationWidget> createState() =>
+  ConsumerState<UpdateNotificationWidget> createState() =>
       _UpdateNotificationWidgetState();
 }
 
-class _UpdateNotificationWidgetState extends State<UpdateNotificationWidget> {
+class _UpdateNotificationWidgetState extends ConsumerState<UpdateNotificationWidget> {
   late final GitHubUpdateService _updateService;
   late final AppLogger _logger;
   UpdateInfo? _currentUpdate;
@@ -38,8 +39,8 @@ class _UpdateNotificationWidgetState extends State<UpdateNotificationWidget> {
   @override
   void initState() {
     super.initState();
-    _updateService = context.read<GitHubUpdateService>();
-    _logger = context.read<AppLogger>();
+    _updateService = ref.read(githubUpdateServiceProvider);
+    _logger = ref.read(appLoggerProvider);
 
     // Listen for available updates
     _updateService.updateAvailable.listen((update) {
@@ -130,7 +131,7 @@ class _UpdateNotificationWidgetState extends State<UpdateNotificationWidget> {
   }
 }
 
-class _UpdateDialog extends StatefulWidget {
+class _UpdateDialog extends ConsumerStatefulWidget {
   final UpdateInfo updateInfo;
   final DownloadProgress? downloadProgress;
   final VoidCallback onDownload;
@@ -146,10 +147,10 @@ class _UpdateDialog extends StatefulWidget {
   });
 
   @override
-  State<_UpdateDialog> createState() => _UpdateDialogState();
+  ConsumerState<_UpdateDialog> createState() => _UpdateDialogState();
 }
 
-class _UpdateDialogState extends State<_UpdateDialog> {
+class _UpdateDialogState extends ConsumerState<_UpdateDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -386,7 +387,7 @@ class _UpdateDialogState extends State<_UpdateDialog> {
           AccentButton(
             text: l10n.updateDialogCancel,
             onPressed: () {
-              context.read<GitHubUpdateService>().cancelDownload();
+              ref.read(githubUpdateServiceProvider).cancelDownload();
               Navigator.of(context).pop();
             },
           ),
@@ -401,8 +402,8 @@ class _UpdateDialogState extends State<_UpdateDialog> {
             text: l10n.updateDialogInstallRestart,
             icon: Icons.install_desktop,
             onPressed: () async {
-              final logger = context.read<AppLogger>();
-              final service = context.read<GitHubUpdateService>();
+              final logger = ref.read(appLoggerProvider);
+              final service = ref.read(githubUpdateServiceProvider);
 
               logger.info('[UpdateDialog] Install & Restart button clicked');
 
