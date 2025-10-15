@@ -52,8 +52,11 @@ jobs:
       - name: Run code generation
         run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Run analyzer
+      - name: Run Dart analyzer
         run: dart analyze
+
+      - name: Run Custom analyzer
+        run: dart run custom_lint
 
       - name: Run tests
         run: flutter test
