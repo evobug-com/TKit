@@ -1186,10 +1186,6 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
         context,
         listen: false,
       );
-      final mappingListRepository = Provider.of<IMappingListRepository>(
-        context,
-        listen: false,
-      );
       final submitMappingUseCase = Provider.of<SubmitMappingUseCase>(
         context,
         listen: false,
@@ -1251,28 +1247,13 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
             // Normalize process name: remove .exe extension for cross-platform compatibility
             final normalizedProcessName = processName.toLowerCase().replaceAll('.exe', '');
 
-            // Get submission URL from an enabled list's submission hook
-            String? submissionUrl;
-            final listsResult = await mappingListRepository.getAllLists();
-            listsResult.fold(
-              (failure) => logger.warning('Failed to get lists for submission: ${failure.message}'),
-              (lists) {
-                // Find an enabled list with a submission hook URL (prefer official)
-                final listWithSubmissionHook = lists.firstWhere(
-                  (list) => list.isEnabled && list.submissionHookUrl != null,
-                  orElse: () => lists.firstWhere(
-                    (list) => list.submissionHookUrl != null,
-                    orElse: () => lists.first,
-                  ),
-                );
-                submissionUrl = listWithSubmissionHook.submissionHookUrl;
-                logger.debug('Using submission URL from list "${listWithSubmissionHook.name}": $submissionUrl');
-              },
-            );
+            // Use the submission URL from the user's selected list
+            final submissionUrl = result['submissionUrl'] as String?;
 
             if (submissionUrl != null) {
+              logger.debug('Using submission URL from user-selected list: $submissionUrl');
               final result = await submitMappingUseCase(
-                submissionUrl: submissionUrl!,
+                submissionUrl: submissionUrl,
                 processName: normalizedProcessName,
                 twitchCategoryId: category.id,
                 twitchCategoryName: category.name,

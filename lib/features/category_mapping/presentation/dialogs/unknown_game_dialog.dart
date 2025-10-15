@@ -1616,12 +1616,14 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> with TickerProvid
   Widget _buildThankYouOverlay(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0.0, end: 1.0),
-      duration: const Duration(milliseconds: 800),
-      curve: Curves.easeOut,
-      builder: (context, value, child) {
-        return Container(
+    return GestureDetector(
+      onTap: _skipThankYou,
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0.0, end: 1.0),
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.easeOut,
+        builder: (context, value, child) {
+          return Container(
           width: 850,
           height: 700,
           color: TKitColors.surface.withValues(alpha: 0.95 * value),
@@ -1685,6 +1687,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> with TickerProvid
           ),
         );
       },
+      ),
     );
   }
 
@@ -1710,39 +1713,61 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> with TickerProvid
     );
   }
 
+  Map<String, dynamic>? _pendingResult;
+
   void _handleSave() async {
     if (_selectedCategory == null || _selectedList == null) return;
 
     final hasSubmissionHook = _selectedList!.submissionHookUrl != null;
     final isIgnored = _selectedCategory!.id == '-1';
 
-    // Show thank you animation for community submissions (but not for ignored processes)
-    if (hasSubmissionHook && !isIgnored) {
-      setState(() => _showThankYou = true);
-
-      // Wait for animation to play
-      await Future.delayed(const Duration(milliseconds: 2000));
-    }
-
     final normalizedPath = widget.executablePath != null
         ? PathNormalizer.extractGamePath(widget.executablePath!)
         : null;
 
+    // If submitting to community, always save to local list first (as per workflow)
+    // Only use the selected list ID if it's a direct local save (no submission)
+    final targetListId = hasSubmissionHook ? 'my-custom-mappings' : _selectedList!.id;
+
     final result = {
       'category': _selectedCategory!,
       'saveLocally': true,
-      'contributeToCommunity': hasSubmissionHook && !isIgnored,
+      'contributeToCommunity': hasSubmissionHook,
       'submissionUrl': _selectedList!.submissionHookUrl,
       'processName': widget.processName,
       'executablePath': widget.executablePath,
       'normalizedInstallPath': normalizedPath,
       'windowTitle': widget.windowTitle,
       'isEnabled': true, // Always enabled - ignore logic handled by categoryId == '-1'
-      'listId': _selectedList!.id,
+      'listId': targetListId,
     };
 
-    if (mounted) {
-      Navigator.of(context).pop(result);
+    // Show thank you animation for community submissions
+    if (hasSubmissionHook) {
+      setState(() {
+        _showThankYou = true;
+        _pendingResult = result;
+      });
+
+      // Wait for animation to play (5 seconds total) or until user clicks to skip
+      await Future.delayed(const Duration(milliseconds: 5000));
+
+      // If still showing thank you (not skipped), close now
+      if (mounted && _showThankYou) {
+        Navigator.of(context).pop(result);
+      }
+    } else {
+      // No animation, close immediately
+      if (mounted) {
+        Navigator.of(context).pop(result);
+      }
+    }
+  }
+
+  void _skipThankYou() {
+    if (_pendingResult != null && mounted) {
+      setState(() => _showThankYou = false);
+      Navigator.of(context).pop(_pendingResult);
     }
   }
 }

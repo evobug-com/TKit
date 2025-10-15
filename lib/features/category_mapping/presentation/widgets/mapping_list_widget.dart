@@ -108,6 +108,11 @@ class _MappingListWidgetState extends State<MappingListWidget> {
     return widget.mappings.where((m) => _selectedIds.contains(m.id)).toList();
   }
 
+  /// Check if any selected mappings are from read-only lists
+  bool get _hasReadOnlySelection {
+    return _selectedMappings.any((m) => m.sourceListIsReadOnly);
+  }
+
   void _handleUndo() {
     if (_lastAction == null) return;
 
@@ -510,29 +515,38 @@ class _MappingListWidgetState extends State<MappingListWidget> {
             ),
           const HSpace.sm(),
           if (widget.onBulkDelete != null)
-            ElevatedButton.icon(
-              onPressed: () {
-                // Save deleted mappings for undo
-                setState(() {
-                  _deletedMappings = List.from(_selectedMappings);
-                  _lastAction = 'Delete';
-                  _previousEnabledStates = null;
-                });
-                widget.onBulkDelete!(_selectedIds.toList());
-                _clearSelection();
-              },
-              icon: const Icon(Icons.delete, size: 14),
-              label: Text(
-                'Delete',
-                style: TKitTextStyles.buttonSmall,
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: TKitColors.error,
-                foregroundColor: Colors.white,
-                elevation: 0,
-                shape: const RoundedRectangleBorder(),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                minimumSize: const Size(0, 32),
+            Tooltip(
+              message: _hasReadOnlySelection
+                  ? 'Cannot delete mappings from read-only lists'
+                  : 'Delete selected mappings',
+              child: ElevatedButton.icon(
+                onPressed: _hasReadOnlySelection
+                    ? null
+                    : () {
+                        // Save deleted mappings for undo
+                        setState(() {
+                          _deletedMappings = List.from(_selectedMappings);
+                          _lastAction = 'Delete';
+                          _previousEnabledStates = null;
+                        });
+                        widget.onBulkDelete!(_selectedIds.toList());
+                        _clearSelection();
+                      },
+                icon: const Icon(Icons.delete, size: 14),
+                label: Text(
+                  'Delete',
+                  style: TKitTextStyles.buttonSmall,
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _hasReadOnlySelection ? TKitColors.border : TKitColors.error,
+                  foregroundColor: _hasReadOnlySelection ? TKitColors.textMuted : Colors.white,
+                  elevation: 0,
+                  shape: const RoundedRectangleBorder(),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  minimumSize: const Size(0, 32),
+                  disabledBackgroundColor: TKitColors.surfaceVariant,
+                  disabledForegroundColor: TKitColors.textMuted,
+                ),
               ),
             ),
         ],

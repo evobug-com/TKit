@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:tkit/core/utils/app_logger.dart';
 
@@ -24,14 +25,56 @@ class MappingSubmissionDataSource {
     try {
       _logger.info('Submitting mapping to: $submissionUrl');
 
+      // Generate a title for the GitHub issue/PR
+      final isIgnored = twitchCategoryId == '-1';
+      final title = isIgnored
+          ? 'Add ignored process: $processName'
+          : 'Add mapping: $processName → $twitchCategoryName';
+
       // Prepare submission payload
-      final payload = {
+      // Create a markdown body for the GitHub PR with embedded JSON
+      final bodyText = StringBuffer();
+      bodyText.writeln('## Process Information');
+      bodyText.writeln('- **Process Name:** `$processName`');
+      bodyText.writeln('- **Twitch Category:** $twitchCategoryName');
+      bodyText.writeln('- **Category ID:** `$twitchCategoryId`');
+      if (normalizedInstallPath != null) {
+        bodyText.writeln('- **Install Path:** `$normalizedInstallPath`');
+      }
+      if (windowTitle != null) {
+        bodyText.writeln('- **Window Title:** $windowTitle');
+      }
+      bodyText.writeln();
+      bodyText.writeln('## Mapping Data');
+      bodyText.writeln('```json');
+
+      // Build the JSON object
+      final mappingJson = <String, dynamic>{
         'processName': processName,
         'twitchCategoryId': twitchCategoryId,
         'twitchCategoryName': twitchCategoryName,
-        if (windowTitle != null) 'windowTitle': windowTitle,
-        if (normalizedInstallPath != null) 'normalizedInstallPath': normalizedInstallPath,
       };
+
+      // Only include normalizedInstallPaths if not null
+      if (normalizedInstallPath != null) {
+        mappingJson['normalizedInstallPaths'] = [normalizedInstallPath];
+      }
+
+      bodyText.writeln(const JsonEncoder.withIndent('  ').convert(mappingJson));
+      bodyText.writeln('```');
+      bodyText.writeln();
+      bodyText.writeln('---');
+      bodyText.writeln('*Submitted via TKit Community Mapping*');
+
+      final payload = {
+        'title': title,
+        'body': bodyText.toString(),
+      };
+
+      // Log the payload being sent for debugging
+      _logger.info('Submission payload: $payload');
+      _logger.debug('Payload type: ${payload.runtimeType}');
+      _logger.debug('Submission URL: $submissionUrl');
 
       final response = await _dio.post(
         submissionUrl,
@@ -44,19 +87,31 @@ class MappingSubmissionDataSource {
         ),
       );
 
+      _logger.debug('Response status: ${response.statusCode}');
+      _logger.debug('Response headers: ${response.headers}');
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         _logger.info('Mapping submitted successfully');
 
         // Parse response
         final responseData = response.data as Map<String, dynamic>? ?? {};
 
+        // The worker returns 'prUrl' not 'issueUrl'
+        final prUrl = responseData['prUrl'] as String?;
+        if (prUrl != null) {
+          _logger.info('PR created: $prUrl');
+        }
+
         return {
-          'isVerification': responseData['isVerification'] as bool? ?? false,
-          'issueUrl': responseData['issueUrl'] as String?,
+          'isVerification': false, // Always a new submission for this worker
+          'issueUrl': prUrl, // Map prUrl to issueUrl for compatibility
+          'prNumber': responseData['prNumber'],
+          'message': responseData['message'],
         };
       } else {
         _logger.error('Failed to submit mapping: HTTP ${response.statusCode}');
-        throw Exception('Failed to submit mapping: HTTP ${response.statusCode}');
+        _logger.error('Response body: ${response.data}');
+        throw Exception('Failed to submit mapping: HTTP ${response.statusCode} - ${response.data}');
       }
     } on DioException catch (e, stackTrace) {
       _logger.error('Network error submitting mapping', e, stackTrace);
