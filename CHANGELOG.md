@@ -44,6 +44,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Code cleanup and refactoring improvements
 
 #### Fixed
+- Ignore mappings now always enabled
+- Disabled mappings now show unknown game dialog instead of silent skip
+- Process names now remove .exe extension for cross-platform compatibility
 - Twitch error when adding items to ignored list
 - Application hang on close
 - Loading mappings from database

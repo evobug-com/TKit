@@ -537,19 +537,12 @@ void main() async {
           logger.info('Window set to normal mode with hidden title bar');
         }
 
-        // Also set minimize to tray setting
-        windowService.setMinimizeToTray(settings.minimizeToTray);
         logger.info('Initial minimize to tray setting: ${settings.minimizeToTray}');
       },
     );
 
     // Initialize window service
     await windowService.initialize();
-
-    // Watch for settings changes and update window service
-    watchSettingsUseCase().listen((settings) {
-      windowService.setMinimizeToTray(settings.minimizeToTray);
-    });
 
     // Initialize system tray
     await systemTrayService.initialize(
@@ -879,6 +872,33 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
   /// Called when the window is about to close
   @override
   Future<void> onWindowClose() async {
+    // Check if we should minimize to tray instead of closing
+    try {
+      // Get services before any async operations to avoid BuildContext issues
+      final getSettingsUseCase = Provider.of<GetSettingsUseCase>(context, listen: false);
+      final windowService = Provider.of<WindowService>(context, listen: false);
+
+      final settingsResult = await getSettingsUseCase();
+
+      final shouldMinimizeToTray = settingsResult.fold(
+        (failure) {
+          _logger.warning('Could not load settings, assuming close to tray disabled');
+          return false;
+        },
+        (settings) => settings.minimizeToTray,
+      );
+
+      if (shouldMinimizeToTray) {
+        // Hide window instead of closing
+        _logger.info('Close to tray enabled - hiding window');
+        await windowService.hideWindow();
+        return; // Don't proceed with cleanup/destroy
+      }
+    } catch (e) {
+      _logger.error('Error checking minimize to tray setting', e);
+      // Fall through to normal close behavior on error
+    }
+
     _logger.info('Window close requested - starting fast shutdown');
 
     // Start cleanup but don't wait - let it run in background

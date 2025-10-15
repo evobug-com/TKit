@@ -109,7 +109,6 @@ class SystemTrayService with TrayListener {
 /// Window manager service with minimize to tray support
 class WindowService with WindowListener {
   final AppLogger _logger;
-  bool _minimizeToTray = true;
 
   WindowService(this._logger);
 
@@ -118,11 +117,6 @@ class WindowService with WindowListener {
     windowManager.addListener(this);
     // Prevent window from closing immediately - trigger onWindowClose instead
     await windowManager.setPreventClose(true);
-  }
-
-  /// Set minimize to tray preference
-  void setMinimizeToTray(bool enabled) {
-    _minimizeToTray = enabled;
   }
 
   /// Show the main window
@@ -161,14 +155,9 @@ class WindowService with WindowListener {
   }
 
   @override
-  void onWindowClose() {
-    // If minimize to tray is enabled, just hide the window
-    if (_minimizeToTray) {
-      hideWindow();
-    } else {
-      // Otherwise, actually close the app
-      windowManager.destroy();
-    }
+  Future<void> onWindowClose() async {
+    // Window close is now handled in _TKitAppState.onWindowClose()
+    // This ensures proper cleanup and respects the minimizeToTray setting
   }
 
   @override
