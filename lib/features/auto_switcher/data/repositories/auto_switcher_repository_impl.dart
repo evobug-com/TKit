@@ -145,9 +145,10 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
             (mapping) {
               if (mapping == null) return null;
 
-              // Check if mapping is disabled - skip silently
+              // Check if mapping is disabled - treat as unknown game
               if (!mapping.isEnabled) {
-                return {'process': process, 'mapping': null, 'disabled': true};
+                _logger.debug('[AutoSwitcher] Mapping found but disabled for: ${process.processName}, treating as unknown');
+                return null; // Return null to trigger _handleUnknownGame
               }
 
               return {'process': process, 'mapping': mapping};
@@ -163,7 +164,7 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
             }
 
             if (data == null) {
-              // No mapping found - handle via callback or fallback
+              // No mapping found (or disabled mapping) - handle via callback or fallback
               final processName = _currentStatus.currentProcess;
               if (processName != null && processName.isNotEmpty) {
                 await _handleUnknownGame(
@@ -172,16 +173,6 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
                   windowTitle: null, // Not available in stream context
                 );
               }
-              return;
-            }
-
-            // Check if this was a disabled mapping - skip silently
-            if (data['disabled'] == true) {
-              _currentStatus = _currentStatus.copyWith(
-                state: OrchestrationState.detectingProcess,
-                currentProcess: null,
-              );
-              _statusController.add(_currentStatus);
               return;
             }
 
@@ -298,15 +289,14 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
             );
           }
 
-          // Check if mapping is disabled - skip silently
+          // Check if mapping is disabled - treat as unknown game
           if (!mapping.isEnabled) {
-            _logger.debug('[AutoSwitcher] Mapping found but disabled for: ${process.processName}');
-            _currentStatus = _currentStatus.copyWith(
-              state: OrchestrationState.idle,
-              currentProcess: null,
+            _logger.debug('[AutoSwitcher] Mapping found but disabled for: ${process.processName}, treating as unknown');
+            return await _handleUnknownGame(
+              processName: process.processName,
+              executablePath: process.executablePath,
+              windowTitle: null, // Not available in this context
             );
-            _statusController.add(_currentStatus);
-            return const Right(null);
           }
 
           // Perform update

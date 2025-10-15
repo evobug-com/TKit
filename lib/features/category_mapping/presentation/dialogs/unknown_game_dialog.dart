@@ -1737,7 +1737,7 @@ class _UnknownGameDialogState extends State<UnknownGameDialog> with TickerProvid
       'executablePath': widget.executablePath,
       'normalizedInstallPath': normalizedPath,
       'windowTitle': widget.windowTitle,
-      'isEnabled': !isIgnored, // Disabled if ignored
+      'isEnabled': true, // Always enabled - ignore logic handled by categoryId == '-1'
       'listId': _selectedList!.id,
     };
 

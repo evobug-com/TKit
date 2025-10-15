@@ -491,9 +491,13 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
         normalizedPaths.add(normalizedPath);
       }
 
+      // Remove .exe extension for cross-platform compatibility
+      final sanitizedProcessName = _processNameController.text.trim()
+          .replaceAll(RegExp(r'\.exe$', caseSensitive: false), '');
+
       final mapping = CategoryMapping(
         id: widget.mapping?.id,
-        processName: _processNameController.text.trim(),
+        processName: sanitizedProcessName,
         executablePath: executablePath,
         normalizedInstallPaths: normalizedPaths,
         twitchCategoryId: _categoryIdController.text.trim(),

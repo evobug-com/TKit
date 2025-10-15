@@ -1137,8 +1137,11 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
             // Save locally if requested
             if (saveLocally) {
               try {
+                // Remove .exe extension for cross-platform compatibility
+                final sanitizedProcessName = processName.replaceAll(RegExp(r'\.exe$', caseSensitive: false), '');
+
                 final mapping = CategoryMapping(
-                  processName: processName,
+                  processName: sanitizedProcessName,
                   executablePath: executablePath,
                   normalizedInstallPaths: normalizedPath != null ? [normalizedPath] : [],
                   twitchCategoryId: category.id,
@@ -1308,8 +1311,11 @@ class _TKitAppState extends State<TKitApp> with WindowListener {
         // Create the mapping to be saved locally
         CategoryMapping? mappingToReturn;
         if (saveLocally) {
+          // Remove .exe extension for cross-platform compatibility
+          final sanitizedProcessName = processName.replaceAll(RegExp(r'\.exe$', caseSensitive: false), '');
+
           mappingToReturn = CategoryMapping(
-            processName: processName,
+            processName: sanitizedProcessName,
             executablePath: executablePath,
             normalizedInstallPaths: normalizedPath != null ? [normalizedPath] : [],
             twitchCategoryId: category.id,

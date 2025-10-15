@@ -108,7 +108,7 @@ class MappingListSyncDataSource {
     return MappingListItem(
       processName: json['processName'] as String,
       normalizedInstallPaths: _parseInstallPaths(json['normalizedInstallPaths']),
-      twitchCategoryId: json['twitchCategoryId'] as String,
+      twitchCategoryId: json['twitchCategoryId'].toString(),
       twitchCategoryName: json['twitchCategoryName'] as String,
       verificationCount: json['verificationCount'] as int? ?? 1,
       category: json['category'] as String?,
