@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:auto_route/auto_route.dart';
@@ -194,12 +195,6 @@ class _MainWindowState extends ConsumerState<MainWindow> {
 
     return Container(
       height: 36,
-      decoration: const BoxDecoration(
-        color: TKitColors.surface,
-        border: Border(
-          bottom: BorderSide(color: TKitColors.border, width: 1),
-        ),
-      ),
       child: Row(
         children: [
           // LEFT POSITION LAYOUT: Controls → Spacer → Tabs → Title
@@ -498,13 +493,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
 
     return Container(
       height: 28,
-      decoration: const BoxDecoration(
-        color: TKitColors.surface,
-        border: Border(
-          top: BorderSide(color: TKitColors.borderSubtle, width: 1),
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.pagePadding),
       child: Row(
         children: [
           // Twitch connection status - left side (draggable)

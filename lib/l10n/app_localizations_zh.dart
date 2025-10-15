@@ -365,6 +365,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get updateDialogRemindLater => '稍后提醒';
 
   @override
+  String get updateDialogIgnore => 'Ignore This Version';
+
+  @override
   String get settingsDebounceTimeDescription => '应用更改后切换分类前的等待时间（防止快速切换）';
 
   @override

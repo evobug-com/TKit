@@ -368,6 +368,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get updateDialogRemindLater => '나중에 알림';
 
   @override
+  String get updateDialogIgnore => 'Ignore This Version';
+
+  @override
   String get settingsDebounceTimeDescription =>
       '앱 변경 후 카테고리 전환 전 대기 시간(빠른 전환 방지)';
 

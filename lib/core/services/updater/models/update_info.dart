@@ -112,18 +112,18 @@ class UpdateInfo {
 
     // Fallback for unknown installations: prefer MSIX (safer, sandboxed)
     if (installationType == InstallationType.unknown) {
-      // Try MSIX first
+      // Try EXE first
       for (final asset in assets) {
         final name = (asset['name'] as String).toLowerCase();
-        if (name.endsWith('.msix')) {
+        if (name.endsWith('.exe')) {
           return asset as Map<String, dynamic>;
         }
       }
 
-      // Then try EXE
+      // Then try MSIX
       for (final asset in assets) {
         final name = (asset['name'] as String).toLowerCase();
-        if (name.endsWith('.exe')) {
+        if (name.endsWith('.msix')) {
           return asset as Map<String, dynamic>;
         }
       }

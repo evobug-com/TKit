@@ -53,10 +53,11 @@ class Island extends StatelessWidget {
       padding: padding ?? const EdgeInsets.all(TKitSpacing.cardPadding),
       decoration: BoxDecoration(
         color: backgroundColor ?? TKitColors.surface,
-        border: Border.all(
-          color: borderColor ?? TKitColors.border,
-          width: borderWidth ?? 1.0,
-        ),
+        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+        // border: Border.all(
+        //   color: borderColor ?? TKitColors.border,
+        //   width: borderWidth ?? 1.0,
+        // ),
       ),
       child: child,
     );

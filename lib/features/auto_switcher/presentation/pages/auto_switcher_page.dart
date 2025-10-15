@@ -76,7 +76,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
               title: AppLocalizations.of(context)!.autoSwitcherPageTitle,
               subtitle: AppLocalizations.of(context)!.autoSwitcherPageDescription,
             ),
-            const VSpace.lg(),
+            const VSpace.sm(),
 
             // Two-column layout
             Expanded(
@@ -106,7 +106,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                       // Left column - Status Dashboard (2/3 width)
                       Expanded(flex: 2, child: StatusDashboard(status: status)),
 
-                      const HSpace.lg(),
+                      const HSpace.sm(),
 
                       // Right column - Control Panel (1/3 width)
                       Expanded(

@@ -822,6 +822,12 @@ abstract class AppLocalizations {
   /// **'Remind Me Later'**
   String get updateDialogRemindLater;
 
+  /// Ignore this version button
+  ///
+  /// In en, this message translates to:
+  /// **'Ignore This Version'**
+  String get updateDialogIgnore;
+
   /// Debounce time setting description
   ///
   /// In en, this message translates to:

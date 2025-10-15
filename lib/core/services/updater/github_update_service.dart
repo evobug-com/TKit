@@ -78,8 +78,8 @@ class GitHubUpdateService {
       _isInitialized = true;
       _logger.info('GitHub update service initialized successfully');
 
-      // Check for updates on startup (delayed)
-      Future.delayed(const Duration(seconds: 30), () async {
+      // Check for updates on startup (brief delay to let app finish initializing)
+      Future.delayed(const Duration(seconds: 2), () async {
         // Get channel from provider if available, otherwise use stable
         final channel = _channelProvider != null
             ? await _channelProvider!()
@@ -276,10 +276,28 @@ class GitHubUpdateService {
   /// Download the update installer
   Future<File?> downloadUpdate(UpdateInfo updateInfo) async {
     try {
-      // If already downloaded, return the cached file
-      if (_downloadedFile != null && _downloadedFile!.existsSync()) {
-        _logger.info('Update already downloaded: ${_downloadedFile!.path}');
-        return _downloadedFile;
+      // Use a consistent temp directory path (not a new random one each time)
+      final tempDirPath = '${Directory.systemTemp.path}${Platform.pathSeparator}tkit_updates';
+      final savePath = '$tempDirPath${Platform.pathSeparator}${updateInfo.assetName}';
+      final file = File(savePath);
+
+      // Check if file already exists on disk (works even after app restart)
+      if (file.existsSync()) {
+        _logger.info('Update already exists on disk: $savePath');
+        _logger.info('File size: ${file.lengthSync()} bytes');
+
+        // Cache it in memory for this session
+        _downloadedFile = file;
+
+        // Set progress to completed
+        _currentDownloadProgress = DownloadProgress(
+          status: DownloadStatus.completed,
+          bytesReceived: updateInfo.fileSize,
+          totalBytes: updateInfo.fileSize,
+        );
+        _downloadProgressController.add(_currentDownloadProgress);
+
+        return file;
       }
 
       _logger.info('=== STARTING UPDATE DOWNLOAD ===');
@@ -294,9 +312,14 @@ class GitHubUpdateService {
       );
       _downloadProgressController.add(_currentDownloadProgress);
 
-      // Create temp directory
-      final tempDir = Directory.systemTemp.createTempSync('tkit_update_');
-      final savePath = '${tempDir.path}${Platform.pathSeparator}${updateInfo.assetName}';
+      final tempDir = Directory(tempDirPath);
+
+      // Create the directory if it doesn't exist
+      if (!tempDir.existsSync()) {
+        tempDir.createSync(recursive: true);
+        _logger.info('Created temp directory: $tempDirPath');
+      }
+
       _logger.info('Save path: $savePath');
 
       _downloadCancelToken = CancelToken();
@@ -320,8 +343,7 @@ class GitHubUpdateService {
         },
       );
 
-      final file = File(savePath);
-
+      // file is already declared at the top of the function
       if (!file.existsSync()) {
         throw Exception('Downloaded file not found');
       }
@@ -377,58 +399,51 @@ class GitHubUpdateService {
 
       _logger.info('File size: ${installerFile.lengthSync()} bytes');
 
-      // Launch the installer based on file type
+      // Determine file type and launch appropriately
       final fileName = installerFile.path.toLowerCase();
       _logger.info('Detected file extension: ${fileName.substring(fileName.lastIndexOf('.'))}');
 
-      if (fileName.endsWith('.msix')) {
-        // For MSIX files, use cmd.exe to launch with default handler
-        // This opens the Windows App Installer UI
-        _logger.info('Launching MSIX package via cmd.exe...');
-        _logger.info('Command: cmd.exe /c start "" "${installerFile.path}"');
-
-        final process = await Process.start(
-          'cmd.exe',
-          [
-            '/c',
-            'start',
-            '""',
-            installerFile.path,
-          ],
-          mode: ProcessStartMode.detached,
-        );
-
-        _logger.info('CMD process started with PID: ${process.pid}');
-      } else if (fileName.endsWith('.exe')) {
-        // For .exe files, launch with silent install flags if supported
-        _logger.info('Launching EXE installer...');
+      if (fileName.endsWith('.exe')) {
+        // For .exe files: Launch directly with silent install flags
+        // This allows passing command-line arguments for silent install + auto-launch
+        _logger.info('Launching EXE installer with silent mode...');
+        _logger.info('Command: ${installerFile.path} /VERYSILENT /NORESTART /RESTARTAPPLICATIONS');
 
         final process = await Process.start(
           installerFile.path,
-          ['/VERYSILENT', '/NORESTART'],
+          [
+            '/VERYSILENT',        // Completely silent install (Inno Setup)
+            '/NORESTART',          // Don't restart the computer
+            '/RESTARTAPPLICATIONS', // Restart applications after install (auto-launch)
+          ],
           mode: ProcessStartMode.detached,
+          runInShell: false,
         );
 
-        _logger.info('EXE process started with PID: ${process.pid}');
+        _logger.info('EXE installer launched with PID: ${process.pid}');
       } else {
-        // For other file types, just open them with default handler
-        _logger.info('Opening installer with default handler...');
+        // For MSIX and other files: Use explorer.exe for true process independence
+        // This ensures the installer continues running even after the app exits
+        _logger.info('Launching installer via explorer.exe for independent process...');
+        _logger.info('File: ${installerFile.path}');
 
         final process = await Process.start(
-          'cmd.exe',
-          ['/c', 'start', '""', installerFile.path],
+          'explorer.exe',
+          [installerFile.path],
           mode: ProcessStartMode.detached,
+          runInShell: false,
         );
 
-        _logger.info('Process started with PID: ${process.pid}');
+        _logger.info('Installer launched via explorer.exe with PID: ${process.pid}');
       }
 
       _logger.info('Installer launched successfully');
-      _logger.info('Application will exit in 2 seconds...');
+      _logger.info('Application will exit in 3 seconds...');
 
       // Exit the current application to allow update
       // Give the installer process time to fully start before exiting
-      Future.delayed(const Duration(seconds: 2), () {
+      // Increased delay to ensure explorer.exe fully launches the installer
+      Future.delayed(const Duration(seconds: 3), () {
         _logger.info('Exiting application for update installation');
         exit(0);
       });
@@ -496,6 +511,37 @@ class GitHubUpdateService {
 
   /// Check if service is initialized
   bool get isInitialized => _isInitialized;
+
+  /// Check if update is already downloaded
+  bool get isUpdateDownloaded {
+    // First check in-memory cache
+    if (_downloadedFile != null && _downloadedFile!.existsSync()) {
+      return true;
+    }
+
+    // Then check on disk if we have current update info
+    if (_currentUpdateValue != null) {
+      final tempDirPath = '${Directory.systemTemp.path}${Platform.pathSeparator}tkit_updates';
+      final savePath = '$tempDirPath${Platform.pathSeparator}${_currentUpdateValue!.assetName}';
+      final file = File(savePath);
+
+      if (file.existsSync()) {
+        // Cache it for next time
+        _downloadedFile = file;
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /// Get the downloaded file if it exists
+  File? get downloadedFile {
+    if (isUpdateDownloaded) {
+      return _downloadedFile;
+    }
+    return null;
+  }
 
   /// Dispose resources
   void dispose() {

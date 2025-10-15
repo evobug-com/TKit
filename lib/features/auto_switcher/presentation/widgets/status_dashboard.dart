@@ -5,6 +5,7 @@ import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/widgets/layout/spacer.dart';
+import 'package:tkit/shared/widgets/layout/island.dart';
 import 'package:tkit/features/auto_switcher/domain/entities/orchestration_status.dart';
 import 'package:tkit/features/auto_switcher/presentation/widgets/update_status_indicator.dart';
 
@@ -18,12 +19,7 @@ class StatusDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Container(
-      padding: const EdgeInsets.all(TKitSpacing.lg),
-      decoration: BoxDecoration(
-        color: TKitColors.surface,
-        border: Border.all(color: TKitColors.border, width: 1),
-      ),
+    return Island.comfortable(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -31,7 +27,7 @@ class StatusDashboard extends StatelessWidget {
           Text(l10n.autoSwitcherStatusHeader, style: TKitTextStyles.labelSmall.copyWith(
             letterSpacing: 1.2,
           )),
-          const VSpace.md(),
+          const VSpace.sm(),
 
           // Current Process
           _buildStatusItem(
@@ -43,7 +39,7 @@ class StatusDashboard extends StatelessWidget {
                 : TKitColors.textMuted,
           ),
 
-          const VSpace.md(),
+          const VSpace.sm(),
 
           // Matched Category
           _buildStatusItem(
@@ -55,7 +51,7 @@ class StatusDashboard extends StatelessWidget {
                 : TKitColors.textMuted,
           ),
 
-          const VSpace.md(),
+          const VSpace.sm(),
 
           // Last Update Time
           _buildStatusItem(
@@ -67,12 +63,12 @@ class StatusDashboard extends StatelessWidget {
             valueColor: TKitColors.textSecondary,
           ),
 
-          const VSpace.md(),
+          const VSpace.sm(),
 
           // Update Status
           _buildUpdateStatus(context),
 
-          const VSpace.lg(),
+          const VSpace.sm(),
 
           // Orchestration State
           _buildOrchestrationState(context),
@@ -165,12 +161,7 @@ class StatusDashboard extends StatelessWidget {
 
   Widget _buildOrchestrationState(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Container(
-      padding: const EdgeInsets.all(TKitSpacing.md),
-      decoration: BoxDecoration(
-        color: TKitColors.surface,
-        border: Border.all(color: TKitColors.border, width: 1),
-      ),
+    return IslandVariant.standard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -382,6 +382,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get updateDialogRemindLater => 'Recordar más tarde';
 
   @override
+  String get updateDialogIgnore => 'Ignore This Version';
+
+  @override
   String get settingsDebounceTimeDescription =>
       'Tiempo de espera antes de cambiar la categoría después del cambio de aplicación (evita cambios rápidos)';
 

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Redesigned autoupdate screen
+
+### Fixed
+- Fixed autoupdate (it was running in subprocess and on app exit it closed the updater too)
+
 ## [0.0.1-dev.6] - 2025-10-15
 
 ### TKit

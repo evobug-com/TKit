@@ -20,7 +20,7 @@ class TKitSpacing {
   static const double gap = sm;             // Gap between elements
   static const double sectionGap = lg;      // Gap between sections
   static const double cardPadding = md;     // Padding inside cards
-  static const double pagePadding = lg;     // Padding around pages
+  static const double pagePadding = sm;     // Padding around pages
   static const headerGap = 3.0;      // Gap between header title and subtitle
 }
 

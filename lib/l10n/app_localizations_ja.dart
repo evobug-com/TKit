@@ -369,6 +369,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get updateDialogRemindLater => '後で通知する';
 
   @override
+  String get updateDialogIgnore => 'Ignore This Version';
+
+  @override
   String get settingsDebounceTimeDescription =>
       'アプリ変更後にカテゴリを切り替えるまでの待機時間（高速な切り替えを防止）';
 

@@ -480,6 +480,10 @@
   "@updateDialogRemindLater": {
     "description": "Remind later button"
   },
+  "updateDialogIgnore": "Ignore This Version",
+  "@updateDialogIgnore": {
+    "description": "Ignore this version button"
+  },
   "settingsDebounceTimeDescription": "Wait time before switching category after app change (prevents rapid switching)",
   "@settingsDebounceTimeDescription": {
     "description": "Debounce time setting description"

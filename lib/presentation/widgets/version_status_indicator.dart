@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/foundation.dart';
-import 'package:gpt_markdown/gpt_markdown.dart';
-import 'package:tkit/core/services/updater/models/download_progress.dart';
-import 'package:tkit/core/services/updater/models/update_info.dart';
 import 'package:tkit/core/providers/providers.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
-import 'package:tkit/shared/theme/text_styles.dart';
-import 'package:tkit/shared/widgets/buttons/primary_button.dart';
-import 'package:tkit/shared/widgets/buttons/accent_button.dart';
+import 'package:tkit/presentation/widgets/update_notification_widget.dart';
 
 /// Status indicator that shows whether the app is up to date
 enum UpdateCheckStatus {
@@ -35,6 +30,7 @@ class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator>
   var _isHovering = false;
   String? _errorMessage;
   var _shouldShowDialog = false; // Flag to show dialog from build
+  var _isDialogOpen = false; // Prevent opening dialog twice
 
   @override
   void initState() {
@@ -158,6 +154,11 @@ class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator>
   }
 
   void _showUpdateDialog(BuildContext context) {
+    // Prevent opening dialog twice
+    if (_isDialogOpen) {
+      return;
+    }
+
     final logger = ref.read(appLoggerProvider);
     final updateService = ref.read(githubUpdateServiceProvider);
     final updateInfo = updateService.currentUpdate;
@@ -172,12 +173,14 @@ class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator>
     // Use navigator key context if available, otherwise fall back to widget context
     final dialogContext = widget.navigatorKey?.currentContext ?? context;
 
-    showDialog(
+    _isDialogOpen = true;
+    showDialog<void>(
       context: dialogContext,
       barrierDismissible: false,
-      builder: (context) => _UpdateDialog(updateInfo: updateInfo),
+      builder: (context) => UpdateDialog(updateInfo: updateInfo),
     ).then((_) {
       logger.info('[VersionIndicator] Update dialog closed');
+      _isDialogOpen = false;
     });
   }
 
@@ -238,283 +241,3 @@ class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator>
   }
 }
 
-/// Dialog for downloading and installing updates
-class _UpdateDialog extends ConsumerStatefulWidget {
-  final UpdateInfo updateInfo;
-
-  const _UpdateDialog({required this.updateInfo});
-
-  @override
-  ConsumerState<_UpdateDialog> createState() => _UpdateDialogState();
-}
-
-class _UpdateDialogState extends ConsumerState<_UpdateDialog> {
-  var _isDownloading = false;
-  var _isInstalling = false;
-  DownloadProgress? _downloadProgress;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _listenToDownloadProgress();
-    });
-  }
-
-  void _listenToDownloadProgress() {
-    final updateService = ref.read(githubUpdateServiceProvider);
-    updateService.downloadProgress.listen((progress) {
-      if (mounted) {
-        setState(() {
-          _downloadProgress = progress;
-          if (progress.status == DownloadStatus.completed) {
-            _isDownloading = false;
-          } else if (progress.status == DownloadStatus.failed ||
-              progress.status == DownloadStatus.cancelled) {
-            _isDownloading = false;
-          }
-        });
-      }
-    });
-  }
-
-  Future<void> _downloadAndInstall() async {
-    final logger = ref.read(appLoggerProvider);
-    final updateService = ref.read(githubUpdateServiceProvider);
-
-    logger.info('[VersionIndicator] Download & Install clicked for version ${widget.updateInfo.version}');
-
-    setState(() {
-      _isDownloading = true;
-    });
-
-    logger.info('[VersionIndicator] Starting download...');
-
-    // Download the update
-    final file = await updateService.downloadUpdate(widget.updateInfo);
-
-    if (file == null) {
-      // Download failed
-      logger.error('[VersionIndicator] Download failed');
-      if (mounted) {
-        setState(() {
-          _isDownloading = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to download update'),
-            backgroundColor: TKitColors.error,
-          ),
-        );
-      }
-      return;
-    }
-
-    logger.info('[VersionIndicator] Download completed: ${file.path}');
-
-    setState(() {
-      _isDownloading = false;
-      _isInstalling = true;
-    });
-
-    logger.info('[VersionIndicator] Starting installation...');
-
-    // Install the update
-    final success = await updateService.installUpdate(file);
-
-    if (!success && mounted) {
-      logger.error('[VersionIndicator] Installation failed');
-      setState(() {
-        _isInstalling = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to install update'),
-          backgroundColor: TKitColors.error,
-        ),
-      );
-    } else {
-      logger.info('[VersionIndicator] Installation started successfully, app will exit');
-    }
-    // If successful, the app will close automatically
-  }
-
-  String _formatDate(DateTime date) {
-    final now = DateTime.now();
-    final difference = now.difference(date);
-
-    if (difference.inDays == 0) {
-      return 'today';
-    } else if (difference.inDays == 1) {
-      return 'yesterday';
-    } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
-    } else {
-      return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final updateInfo = widget.updateInfo;
-
-    return AlertDialog(
-      backgroundColor: TKitColors.surface,
-      title: Text(
-        'Update Available',
-        style: TKitTextStyles.heading3.copyWith(color: TKitColors.textPrimary),
-      ),
-      content: SizedBox(
-        width: 400,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Version ${updateInfo.version} is now available.',
-              style: TKitTextStyles.bodyMedium.copyWith(color: TKitColors.textPrimary),
-            ),
-            const SizedBox(height: 16),
-            if (updateInfo.releaseNotes != null) ...[
-              Text(
-                'What\'s New:',
-                style: TKitTextStyles.bodySmall.copyWith(
-                  color: TKitColors.textSecondary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Container(
-                constraints: const BoxConstraints(maxHeight: 300),
-                decoration: BoxDecoration(
-                  color: TKitColors.background,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: TKitColors.border),
-                ),
-                child: updateInfo.versionChangelogs.isEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: GptMarkdown(
-                          updateInfo.releaseNotes,
-                          style: TKitTextStyles.bodyMedium,
-                        ),
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.all(12),
-                        itemCount: updateInfo.versionChangelogs.length,
-                        itemBuilder: (context, index) {
-                          final changelog = updateInfo.versionChangelogs[index];
-                          final isFirst = index == 0;
-
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (!isFirst) const Divider(height: 24),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Version ${changelog.version}',
-                                    style: TKitTextStyles.bodySmall.copyWith(
-                                      color: TKitColors.accentBright,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    '(${_formatDate(changelog.publishedAt)})',
-                                    style: TKitTextStyles.caption.copyWith(
-                                      color: TKitColors.textMuted,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              GptMarkdown(
-                                changelog.notes,
-                                style: TKitTextStyles.bodySmall,
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-              ),
-              const SizedBox(height: 16),
-            ],
-            if (_isDownloading || _isInstalling) ...[
-              const SizedBox(height: 16),
-              if (_isDownloading && _downloadProgress != null) ...[
-                Text(
-                  'Downloading update...',
-                  style: TKitTextStyles.bodySmall.copyWith(
-                    color: TKitColors.textSecondary,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                LinearProgressIndicator(
-                  value: _downloadProgress!.progress,
-                  backgroundColor: TKitColors.borderLight,
-                  valueColor: const AlwaysStoppedAnimation<Color>(TKitColors.accentBright),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  _downloadProgress!.progressPercentage,
-                  style: TKitTextStyles.caption.copyWith(
-                    color: TKitColors.textMuted,
-                  ),
-                ),
-              ],
-              if (_isInstalling) ...[
-                Text(
-                  'Installing update...',
-                  style: TKitTextStyles.bodySmall.copyWith(
-                    color: TKitColors.textSecondary,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const LinearProgressIndicator(
-                  backgroundColor: TKitColors.borderLight,
-                  valueColor: AlwaysStoppedAnimation<Color>(TKitColors.accentBright),
-                ),
-              ],
-            ],
-          ],
-        ),
-      ),
-      actions: [
-        if (!_isDownloading && !_isInstalling) ...[
-          AccentButton(
-            text: 'Ignore',
-            onPressed: () async {
-              // Ignore this update version - won't auto-show dialog again, but indicator stays visible
-              await ref.read(githubUpdateServiceProvider).ignoreUpdate();
-              if (context.mounted) {
-                Navigator.of(context).pop();
-              }
-            },
-          ),
-          const SizedBox(width: 8),
-          AccentButton(
-            text: 'Later',
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          const SizedBox(width: 8),
-          PrimaryButton(
-            text: 'Download & Install',
-            icon: Icons.download,
-            onPressed: _downloadAndInstall,
-          ),
-        ],
-        if (_isDownloading) ...[
-          AccentButton(
-            text: 'Cancel',
-            onPressed: () {
-              ref.read(githubUpdateServiceProvider).cancelDownload();
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ],
-    );
-  }
-}

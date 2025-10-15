@@ -378,6 +378,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get updateDialogRemindLater => 'Připomenout později';
 
   @override
+  String get updateDialogIgnore => 'Ignore This Version';
+
+  @override
   String get settingsDebounceTimeDescription =>
       'Čekací doba před přepnutím kategorie po změně aplikace (zabraňuje rychlému přepínání)';
 

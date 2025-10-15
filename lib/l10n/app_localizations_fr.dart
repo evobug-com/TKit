@@ -384,6 +384,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get updateDialogRemindLater => 'Me rappeler plus tard';
 
   @override
+  String get updateDialogIgnore => 'Ignore This Version';
+
+  @override
   String get settingsDebounceTimeDescription =>
       'Temps d\'attente avant de changer de catégorie après le changement d\'application (évite les changements rapides)';
 
