@@ -99,13 +99,8 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
 
   @override
   void dispose() {
-    // Clean up the navigation attempt callback
-    try {
-      ref.read(unsavedChangesProvider.notifier).setOnNavigationAttempt(null);
-      ref.read(unsavedChangesProvider.notifier).setHasChanges(false);
-    } catch (_) {
-      // Ignore if context is no longer available
-    }
+    // Note: Intentionally not cleaning up unsavedChangesProvider here to avoid
+    // accessing ref during dispose. The provider manages its own lifecycle.
     _tabController.dispose();
     _shakeController.dispose();
     super.dispose();
@@ -811,6 +806,10 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                   .toList(),
               onChanged: (value) async {
                 if (value != null && _currentSettings != null) {
+                  // Capture context-dependent values before async gap
+                  final localizedChannelName = value.localizedName(context);
+                  final successMessage = l10n.settingsUpdateChannelChanged(localizedChannelName);
+
                   final updatedSettings = _currentSettings!.copyWith(
                     updateChannel: value,
                   );
@@ -820,7 +819,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                     updatedSettings,
                   );
 
-                  if (!context.mounted) return;
+                  if (!mounted) return;
 
                   final updateService = ref.read(githubUpdateServiceProvider);
                   await updateService.checkForUpdates(
@@ -828,14 +827,9 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                     channel: value,
                   );
 
-                  if (!context.mounted) return;
+                  if (!mounted) return;
 
-                  Toast.success(
-                    context,
-                    l10n.settingsUpdateChannelChanged(
-                      value.localizedName(context),
-                    ),
-                  );
+                  Toast.success(context, successMessage);
                 }
               },
             ),

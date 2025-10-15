@@ -81,7 +81,6 @@ void main() async {
           await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
           logger.info('Window set to normal mode with hidden title bar');
         }
-        windowService.setMinimizeToTray(settings.minimizeToTray);
         logger.info('Initial minimize to tray setting: ${settings.minimizeToTray}');
       },
     );
@@ -92,7 +91,8 @@ void main() async {
     // Watch for settings changes
     final watchSettingsUseCase = await container.read(watchSettingsUseCaseProvider.future);
     watchSettingsUseCase().listen((settings) {
-      windowService.setMinimizeToTray(settings.minimizeToTray);
+      // Settings changes are handled automatically by each component
+      logger.debug('Settings updated: minimize to tray = ${settings.minimizeToTray}');
     });
 
 

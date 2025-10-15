@@ -1721,7 +1721,6 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
     if (_selectedCategory == null || _selectedList == null) return;
 
     final hasSubmissionHook = _selectedList!.submissionHookUrl != null;
-    final isIgnored = _selectedCategory!.id == '-1';
 
     final normalizedPath = widget.executablePath != null
         ? PathNormalizer.extractGamePath(widget.executablePath!)
