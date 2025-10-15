@@ -90,10 +90,17 @@ class CategoryMappingRepositoryImpl implements ICategoryMappingRepository {
   @override
   Future<Either<Failure, void>> deleteMapping(int id) async {
     try {
+      // First, get the mapping to retrieve its process name for cache invalidation
+      final allMappings = await localDataSource.getAllMappings();
+      final mappingToDelete = allMappings.where((m) => m.id == id).firstOrNull;
+
+      // Delete from database
       await localDataSource.deleteMapping(id);
 
-      // Note: Can't easily remove from cache by ID, so we clear expired entries
-      memoryCache.clearExpired();
+      // Remove from cache if we found the mapping
+      if (mappingToDelete != null) {
+        memoryCache.remove(mappingToDelete.processName);
+      }
 
       return const Right(null);
     } on CacheException catch (e) {

@@ -335,8 +335,9 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
     int? mappingId,
   }) async {
     // Never send -1 (ignored processes) to Twitch
-    if (categoryId == '-1') {
-      _logger.debug('[AutoSwitcher] Skipping Twitch update for ignored process: $processName');
+    // Check for both string '-1' and any invalid/empty category IDs
+    if (categoryId == '-1' || categoryId.trim().isEmpty) {
+      _logger.debug('[AutoSwitcher] Skipping Twitch update for ignored/invalid process: $processName (categoryId: $categoryId)');
       _currentStatus = _currentStatus.copyWith(
         state: _isMonitoring
             ? OrchestrationState.detectingProcess

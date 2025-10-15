@@ -240,8 +240,11 @@ void main() {
     });
 
     group('deleteMapping', () {
-      test('should delete mapping through data source', () async {
+      test('should delete mapping and remove from cache', () async {
         // arrange
+        when(
+          mockLocalDataSource.getAllMappings(),
+        ).thenAnswer((_) async => [testMappingModel]);
         when(
           mockLocalDataSource.deleteMapping(any),
         ).thenAnswer((_) async => Future.value());
@@ -251,14 +254,37 @@ void main() {
 
         // assert
         expect(result, const Right(null));
+        verify(mockLocalDataSource.getAllMappings());
         verify(mockLocalDataSource.deleteMapping(1));
-        verify(mockMemoryCache.clearExpired());
+        verify(mockMemoryCache.remove('League of Legends.exe'));
+      });
+
+      test('should delete mapping even when not found in cache', () async {
+        // arrange
+        when(
+          mockLocalDataSource.getAllMappings(),
+        ).thenAnswer((_) async => []); // Mapping not found
+        when(
+          mockLocalDataSource.deleteMapping(any),
+        ).thenAnswer((_) async => Future.value());
+
+        // act
+        final result = await repository.deleteMapping(1);
+
+        // assert
+        expect(result, const Right(null));
+        verify(mockLocalDataSource.getAllMappings());
+        verify(mockLocalDataSource.deleteMapping(1));
+        verifyNever(mockMemoryCache.remove(any)); // Should not try to remove
       });
 
       test(
         'should return CacheFailure when data source throws CacheException',
         () async {
           // arrange
+          when(
+            mockLocalDataSource.getAllMappings(),
+          ).thenAnswer((_) async => [testMappingModel]);
           when(
             mockLocalDataSource.deleteMapping(any),
           ).thenThrow(CacheException(message: 'Failed to delete'));
