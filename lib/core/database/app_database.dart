@@ -316,6 +316,9 @@ class AppDatabase extends _$AppDatabase {
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (Migrator m) async {
+      final logger = AppLogger();
+      logger.info('Creating new database with schema v$schemaVersion');
+
       await m.createAll();
 
       // Create indexes
@@ -344,7 +347,17 @@ class AppDatabase extends _$AppDatabase {
         'ON community_mappings(process_name)',
       );
 
-      // No seed data - will be populated from community sync
+      // Create index for mapping lists (v6+)
+      await customStatement(
+        'CREATE INDEX IF NOT EXISTS idx_mapping_lists_priority '
+        'ON mapping_lists(priority, is_enabled)',
+      );
+
+      // Seed default mapping lists
+      logger.info('Seeding default mapping lists');
+      await _createDefaultLists();
+
+      logger.info('Database creation completed');
     },
     onUpgrade: (Migrator m, int from, int to) async {
       if (from <= 1 && to >= 2) {
