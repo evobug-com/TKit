@@ -307,10 +307,8 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
     final locale = ref.watch(localeProvider);
 
     // Listen to auth state changes (must be in build method)
-    ref.listen<AsyncValue<AuthState>>(authProvider, (previous, next) {
-      next.whenData((authState) {
-        _handleAuthStateChange(authState);
-      });
+    ref.listen<AuthState>(authProvider, (previous, next) {
+      _handleAuthStateChange(next);
     });
 
     return MaterialApp.router(
