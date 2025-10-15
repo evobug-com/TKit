@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
@@ -11,11 +11,11 @@ import 'package:tkit/shared/widgets/layout/island.dart';
 import 'package:tkit/shared/widgets/buttons/primary_button.dart';
 import 'package:tkit/shared/widgets/buttons/icon_button.dart';
 import 'package:tkit/features/auth/data/models/device_code_response.dart';
-import 'package:tkit/features/auth/presentation/providers/auth_provider.dart';
+import 'package:tkit/features/auth/presentation/providers/auth_providers.dart';
 
 /// Device Code Authentication Page
 /// Displays the user code and guides the user through Twitch activation
-class DeviceCodeAuthPage extends StatefulWidget {
+class DeviceCodeAuthPage extends ConsumerStatefulWidget {
   final DeviceCodeResponse deviceCodeResponse;
   final VoidCallback? onSuccess;
   final VoidCallback? onCancel;
@@ -28,10 +28,10 @@ class DeviceCodeAuthPage extends StatefulWidget {
   });
 
   @override
-  State<DeviceCodeAuthPage> createState() => _DeviceCodeAuthPageState();
+  ConsumerState<DeviceCodeAuthPage> createState() => _DeviceCodeAuthPageState();
 }
 
-class _DeviceCodeAuthPageState extends State<DeviceCodeAuthPage> {
+class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
   late Timer _expiryTimer;
   late Timer _pollTimer;
   late Duration _timeRemaining;
@@ -73,8 +73,8 @@ class _DeviceCodeAuthPageState extends State<DeviceCodeAuthPage> {
     if (!_isPolling || !mounted) return;
 
     try {
-      final authProvider = context.read<AuthProvider>();
-      await authProvider.authenticateWithDeviceCode(
+      // Use Riverpod ref to access the auth notifier
+      await ref.read(authProvider.notifier).authenticateWithDeviceCode(
         widget.deviceCodeResponse.deviceCode,
       );
 

@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as provider;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
@@ -25,13 +26,13 @@ import 'package:tkit/features/settings/domain/usecases/factory_reset_usecase.dar
 import 'package:tkit/features/settings/presentation/providers/settings_provider.dart';
 import 'package:tkit/features/settings/presentation/providers/window_controls_preview_provider.dart';
 import 'package:tkit/features/settings/presentation/providers/unsaved_changes_notifier.dart';
+import 'package:tkit/features/auth/presentation/providers/auth_providers.dart';
 import 'package:tkit/features/settings/presentation/states/settings_state.dart';
 import 'package:tkit/features/settings/presentation/widgets/settings_checkbox.dart';
 import 'package:tkit/features/settings/presentation/widgets/settings_dropdown.dart';
 import 'package:tkit/features/settings/presentation/widgets/custom_dropdown.dart';
 import 'package:tkit/features/settings/presentation/widgets/settings_slider.dart';
 import 'package:tkit/features/settings/presentation/widgets/hotkey_input.dart';
-import 'package:tkit/features/auth/presentation/providers/auth_provider.dart';
 import 'package:tkit/features/auth/presentation/states/auth_state.dart';
 import 'package:tkit/features/auth/presentation/pages/device_code_auth_page.dart';
 
@@ -43,7 +44,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Get SettingsProvider from parent context (should be provided at app level)
-    final settingsProvider = Provider.of<SettingsProvider>(
+    final settingsProvider = provider.Provider.of<SettingsProvider>(
       context,
       listen: false,
     );
@@ -57,14 +58,14 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
-class _SettingsPageContent extends StatefulWidget {
+class _SettingsPageContent extends ConsumerStatefulWidget {
   const _SettingsPageContent();
 
   @override
-  State<_SettingsPageContent> createState() => _SettingsPageContentState();
+  ConsumerState<_SettingsPageContent> createState() => _SettingsPageContentState();
 }
 
-class _SettingsPageContentState extends State<_SettingsPageContent>
+class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
     with TickerProviderStateMixin {
   AppSettings? _currentSettings;
   bool _hasChanges = false;
@@ -135,16 +136,15 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
     if (_currentSettings != null) {
       context.read<SettingsProvider>().updateSettings(_currentSettings!);
       // Clear the window controls preview after saving
-      context.read<WindowControlsPreviewProvider>().clearPreview();
+      ref.read(windowControlsPreviewProvider.notifier).clearPreview();
     }
   }
 
   void _discardChanges() async {
     final provider = context.read<SettingsProvider>();
-    final previewProvider = context.read<WindowControlsPreviewProvider>();
 
     // Clear the window controls preview to revert to saved position
-    previewProvider.clearPreview();
+    ref.read(windowControlsPreviewProvider.notifier).clearPreview();
 
     setState(() {
       _hasChanges = false;
@@ -168,9 +168,9 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<SettingsProvider>(
-        builder: (context, provider, child) {
-          final state = provider.state;
+      body: provider.Consumer<SettingsProvider>(
+        builder: (context, settingsProvider, child) {
+          final state = settingsProvider?.state;
 
           // Handle state changes (similar to BlocConsumer listener)
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -335,14 +335,10 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
         children: [
           _buildSection(l10n.settingsApplication, [
             // Language selection
-            Builder(
-              builder: (context) {
+            Consumer(
+              builder: (context, ref, child) {
                 final l10n = AppLocalizations.of(context)!;
-                final languageService = Provider.of<LanguageService>(
-                  context,
-                  listen: false,
-                );
-                final localeProvider = Provider.of<LocaleProvider>(
+                final languageService = provider.Provider.of<LanguageService>(
                   context,
                   listen: false,
                 );
@@ -380,7 +376,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                   onChanged: (languageCode) async {
                     if (languageCode != null) {
                       await languageService.saveLanguage(languageCode);
-                      localeProvider.setLocale(Locale(languageCode));
+                      ref.read(localeProvider.notifier).setLocale(Locale(languageCode));
 
                       if (context.mounted) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -473,9 +469,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                     windowControlsPosition: value,
                   );
                   _updateSettings(updatedSettings);
-                  context
-                      .read<WindowControlsPreviewProvider>()
-                      .setPreviewPosition(value);
+                  ref.read(windowControlsPreviewProvider.notifier).setPreviewPosition(value);
                 }
               },
             ),
@@ -932,9 +926,9 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
 
   Widget _buildTwitchAuthSection(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Consumer<AuthProvider>(
-      builder: (context, authProvider, child) {
-        final authState = authProvider.state;
+    return Consumer(
+      builder: (context, ref, child) {
+        final authState = ref.watch(authProvider);
         final isAuthenticated = authState is Authenticated;
         final isLoading = authState is AuthLoading;
 
@@ -1002,7 +996,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                     ),
                     const SizedBox(height: 8),
                     FutureBuilder<DateTime?>(
-                      future: authProvider.getTokenExpiration(),
+                      future: ref.read(authProvider.notifier).getTokenExpiration(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data != null) {
                           final expiresAt = snapshot.data!;
@@ -1059,7 +1053,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                             onPressed: isLoading
                                 ? null
                                 : () {
-                                    context.read<AuthProvider>().logout();
+                                    ref.read(authProvider.notifier).logout();
                                   },
                           ),
                         ),
@@ -1078,9 +1072,8 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                       onPressed: isLoading
                           ? null
                           : () async {
-                              final authProvider = context.read<AuthProvider>();
-                              final deviceCodeResponse = await authProvider
-                                  .initiateDeviceCodeAuth();
+                              final notifier = ref.read(authProvider.notifier);
+                              final deviceCodeResponse = await notifier.initiateDeviceCodeAuth();
 
                               if (deviceCodeResponse != null &&
                                   context.mounted) {
@@ -1092,15 +1085,11 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
                                         deviceCodeResponse: deviceCodeResponse,
                                         onSuccess: () {
                                           Navigator.of(dialogContext).pop();
-                                          context
-                                              .read<AuthProvider>()
-                                              .checkAuthStatus();
+                                          ref.read(authProvider.notifier).checkAuthStatus();
                                         },
                                         onCancel: () {
                                           Navigator.of(dialogContext).pop();
-                                          context
-                                              .read<AuthProvider>()
-                                              .checkAuthStatus();
+                                          ref.read(authProvider.notifier).checkAuthStatus();
                                         },
                                       ),
                                 );
@@ -1223,7 +1212,7 @@ class _SettingsPageContentState extends State<_SettingsPageContent>
     try {
       // Get the FactoryResetUseCase from Provider
       // This will be wired up in main.dart
-      final factoryResetUseCase = Provider.of<FactoryResetUseCase>(
+      final factoryResetUseCase = provider.Provider.of<FactoryResetUseCase>(
         context,
         listen: false,
       );

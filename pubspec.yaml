@@ -57,6 +57,9 @@ dependencies:
 
   # Markdown
   flutter_markdown: ^0.7.7+1
+  hooks_riverpod: ^3.0.3
+  flutter_hooks: ^0.21.3+1
+  riverpod_annotation: ^3.0.3
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +80,9 @@ dev_dependencies:
 
   # MSIX packaging
   msix: ^3.16.12
+  riverpod_generator: ^3.0.3
+  custom_lint: ^0.8.1
+  riverpod_lint: ^3.0.3
 
 # Dependency Overrides - force newer build_runner version
 dependency_overrides:

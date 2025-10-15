@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' hide Consumer;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:auto_route/auto_route.dart';
@@ -117,8 +118,9 @@ class _MainWindowState extends State<MainWindow> {
       },
       child: Focus(
         autofocus: true,
-        child: Consumer<SettingsProvider>(
-          builder: (context, settingsProvider, child) {
+        child: Builder(
+          builder: (context) {
+            final settingsProvider = context.watch<SettingsProvider>();
             // Determine if frameless mode is enabled
             final useFrameless = settingsProvider.state is SettingsLoaded
                 ? (settingsProvider.state as SettingsLoaded)
@@ -182,8 +184,14 @@ class _MainWindowState extends State<MainWindow> {
     final isWelcomeScreen = currentRouteName == 'WelcomeRoute';
     final l10n = AppLocalizations.of(context)!;
 
-    return Consumer2<SettingsProvider, WindowControlsPreviewProvider>(
-      builder: (context, settingsProvider, previewProvider, child) {
+    return Consumer(
+      builder: (context, ref, child) {
+        // Get settings provider (old Provider pattern)
+        final settingsProvider = context.watch<SettingsProvider>();
+
+        // Get preview position from Riverpod provider
+        final previewPosition = ref.watch(windowControlsPreviewProvider);
+
         // Get saved window controls position from settings
         final savedPosition = settingsProvider.state is SettingsLoaded
             ? (settingsProvider.state as SettingsLoaded)
@@ -196,8 +204,7 @@ class _MainWindowState extends State<MainWindow> {
             : WindowControlsPosition.right;
 
         // Preview position takes precedence over saved position
-        final windowControlsPosition =
-            previewProvider.previewPosition ?? savedPosition;
+        final windowControlsPosition = previewPosition ?? savedPosition;
 
         return Container(
           height: 36,
@@ -526,8 +533,9 @@ class _MainWindowState extends State<MainWindow> {
                 }
               },
               child: DragToMoveArea(
-                child: Consumer<AuthProvider>(
-                  builder: (context, authProvider, child) {
+                child: Builder(
+                  builder: (context) {
+                    final authProvider = context.watch<AuthProvider>();
                     final isAuthenticated = authProvider.state is Authenticated;
 
                     return Row(
