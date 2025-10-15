@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:tkit/core/utils/app_logger.dart';
 import 'package:tkit/features/twitch_api/domain/repositories/i_twitch_api_repository.dart';
 import 'package:tkit/features/category_mapping/data/datasources/category_mapping_local_datasource.dart';
+import 'package:tkit/features/category_mapping/data/models/category_mapping_model.dart';
 import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
 
 /// Service for importing category mappings from community sources
@@ -44,7 +45,7 @@ class MappingImporter {
         throw Exception('Failed to fetch data: ${response.statusCode}');
       }
 
-      final List<dynamic> data = json.decode(response.data.toString());
+      final List<dynamic> data = json.decode(response.data.toString()) as List<dynamic>;
       var importedCount = 0;
       final now = DateTime.now();
       final expiresAt = now.add(const Duration(hours: 24));
@@ -83,7 +84,7 @@ class MappingImporter {
                   manualOverride: false,
                 );
 
-                await localDataSource.saveMapping(mapping as dynamic);
+                await localDataSource.saveMapping(CategoryMappingModel.fromEntity(mapping));
                 importedCount++;
               },
             );
@@ -120,7 +121,7 @@ class MappingImporter {
         throw Exception('Failed to fetch data: ${response.statusCode}');
       }
 
-      final List<dynamic> data = json.decode(response.data.toString());
+      final List<dynamic> data = json.decode(response.data.toString()) as List<dynamic>;
       var importedCount = 0;
       final now = DateTime.now();
       final expiresAt = now.add(const Duration(hours: 24));
@@ -159,7 +160,7 @@ class MappingImporter {
                 manualOverride: false,
               );
 
-              await localDataSource.saveMapping(mapping as dynamic);
+              await localDataSource.saveMapping(CategoryMappingModel.fromEntity(mapping));
               importedCount++;
               break; // Only create one mapping per game
             }
@@ -192,7 +193,7 @@ class MappingImporter {
     try {
       logger.info('Importing mappings from JSON');
 
-      final List<dynamic> data = json.decode(jsonString);
+      final List<dynamic> data = json.decode(jsonString) as List<dynamic>;
       var importedCount = 0;
       final now = DateTime.now();
       final expiresAt = now.add(const Duration(hours: 24));
@@ -222,7 +223,7 @@ class MappingImporter {
               manualOverride: false,
             );
 
-            await localDataSource.saveMapping(mapping as dynamic);
+            await localDataSource.saveMapping(CategoryMappingModel.fromEntity(mapping));
             importedCount++;
           }
         } catch (e) {

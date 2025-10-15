@@ -36,7 +36,7 @@ class TwitchAuthRemoteDataSource {
         );
       }
 
-      final deviceCodeResponse = DeviceCodeResponse.fromJson(response.data);
+      final deviceCodeResponse = DeviceCodeResponse.fromJson(response.data as Map<String, dynamic>);
       _logger.info('Device code generated: ${deviceCodeResponse.userCode}');
       return deviceCodeResponse;
     } on DioException catch (e, stackTrace) {
@@ -86,7 +86,7 @@ class TwitchAuthRemoteDataSource {
       if (response.statusCode == 200) {
         _logger.debug('Attempting to parse token from 200 response');
         _logger.debug('Response data before parsing: ${response.data}');
-        final token = TwitchTokenModel.fromTokenResponse(response.data);
+        final token = TwitchTokenModel.fromTokenResponse(response.data as Map<String, dynamic>);
         _logger.info('Device code authorization successful');
         return token;
       } else if (response.statusCode == 400) {
@@ -200,7 +200,7 @@ class TwitchAuthRemoteDataSource {
         );
       }
 
-      final token = TwitchTokenModel.fromTokenResponse(response.data);
+      final token = TwitchTokenModel.fromTokenResponse(response.data as Map<String, dynamic>);
       _logger.info('Access token refreshed successfully');
       return token;
     } on DioException catch (e, stackTrace) {

@@ -18,6 +18,7 @@ import 'package:tkit/shared/widgets/forms/dropdown.dart';
 import 'package:tkit/features/auth/presentation/providers/auth_providers.dart';
 import 'package:tkit/features/auth/presentation/states/auth_state.dart';
 import 'package:tkit/features/auth/presentation/pages/device_code_auth_page.dart';
+import 'package:tkit/features/auth/data/models/device_code_response.dart';
 import 'package:tkit/features/settings/presentation/providers/settings_providers.dart';
 import 'package:tkit/features/settings/presentation/states/settings_state.dart';
 import 'package:tkit/features/settings/presentation/widgets/settings_checkbox.dart';
@@ -335,7 +336,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                             context: context,
                             barrierDismissible: false,
                             builder: (dialogContext) => DeviceCodeAuthPage(
-                              deviceCodeResponse: deviceCodeResponse,
+                              deviceCodeResponse: deviceCodeResponse as DeviceCodeResponse,
                               onSuccess: () {
                                 Navigator.of(dialogContext).pop();
                                 ref.read(authProvider.notifier).checkAuthStatus();

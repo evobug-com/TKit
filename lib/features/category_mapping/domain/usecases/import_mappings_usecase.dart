@@ -29,7 +29,7 @@ class ImportMappingsUseCase {
   }) async {
     try {
       // Parse JSON
-      final List<dynamic> jsonData = json.decode(jsonString);
+      final jsonData = json.decode(jsonString) as List<dynamic>;
 
       if (jsonData.isEmpty) {
         return const Left(

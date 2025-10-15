@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:tkit/core/services/updater/models/download_progress.dart';
+import 'package:tkit/core/services/updater/models/update_info.dart';
 import 'package:tkit/core/providers/providers.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
@@ -239,7 +240,7 @@ class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator>
 
 /// Dialog for downloading and installing updates
 class _UpdateDialog extends ConsumerStatefulWidget {
-  final dynamic updateInfo;
+  final UpdateInfo updateInfo;
 
   const _UpdateDialog({required this.updateInfo});
 

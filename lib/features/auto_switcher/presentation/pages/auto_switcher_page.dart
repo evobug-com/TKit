@@ -9,6 +9,7 @@ import 'package:tkit/shared/widgets/layout/spacer.dart';
 import 'package:tkit/shared/widgets/feedback/toast.dart';
 import 'package:tkit/features/settings/presentation/providers/settings_providers.dart';
 import 'package:tkit/features/settings/presentation/states/settings_state.dart';
+import 'package:tkit/features/auto_switcher/domain/entities/orchestration_status.dart';
 import 'package:tkit/features/auto_switcher/presentation/providers/auto_switcher_providers.dart';
 import 'package:tkit/features/auto_switcher/presentation/states/auto_switcher_state.dart';
 import 'package:tkit/features/auto_switcher/presentation/widgets/control_panel.dart';
@@ -140,7 +141,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
     );
   }
 
-  dynamic _getStatusFromState(AutoSwitcherState state) {
+  OrchestrationStatus? _getStatusFromState(AutoSwitcherState state) {
     return switch (state) {
       MonitoringActive(:final status) => status,
       MonitoringInactive(:final status) => status,

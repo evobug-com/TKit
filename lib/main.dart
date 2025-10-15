@@ -244,7 +244,7 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
     logger.info('Window close requested - starting fast shutdown');
 
     _cleanupResources().catchError((e, stackTrace) {
-      logger.error('Cleanup error', e, stackTrace);
+      logger.error('Cleanup error', e, stackTrace as StackTrace?);
     });
 
     try {
