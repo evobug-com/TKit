@@ -4,14 +4,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tkit/core/database/app_database.dart';
 import 'package:tkit/core/platform/windows_platform_channel.dart';
-import 'package:tkit/core/services/hotkey_service.dart';
 import 'package:tkit/core/services/language_service.dart';
 import 'package:tkit/core/services/notification_service.dart';
 import 'package:tkit/core/services/system_tray_service.dart';
 import 'package:tkit/core/services/updater/github_update_service.dart';
 import 'package:tkit/core/utils/app_logger.dart';
-import 'package:tkit/features/settings/presentation/providers/settings_providers.dart';
-import 'package:tkit/features/auto_switcher/presentation/providers/auto_switcher_providers.dart';
 
 part 'providers.g.dart';
 

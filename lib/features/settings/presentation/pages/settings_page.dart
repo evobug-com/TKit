@@ -170,7 +170,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
     return Scaffold(
       body: provider.Consumer<SettingsProvider>(
         builder: (context, settingsProvider, child) {
-          final state = settingsProvider?.state;
+          final state = settingsProvider.state;
 
           // Handle state changes (similar to BlocConsumer listener)
           WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -4,7 +4,6 @@ import 'package:tkit/features/auth/data/datasources/token_local_datasource.dart'
 import 'package:tkit/features/auth/data/datasources/twitch_auth_remote_datasource.dart';
 import 'package:tkit/features/auto_switcher/data/datasources/update_history_local_datasource.dart';
 import 'package:tkit/features/category_mapping/data/datasources/category_mapping_local_datasource.dart';
-import 'package:tkit/features/category_mapping/data/datasources/mapping_importer.dart';
 import 'package:tkit/features/category_mapping/data/datasources/memory_cache.dart';
 import 'package:tkit/features/category_mapping/data/datasources/unknown_process_datasource.dart';
 import 'package:tkit/features/mapping_lists/data/datasources/mapping_list_local_datasource.dart';

@@ -1,6 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tkit/core/providers/datasource_providers.dart';
-import 'package:tkit/core/providers/providers.dart';
 import 'package:tkit/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:tkit/features/auth/domain/repositories/i_auth_repository.dart';
 import 'package:tkit/features/auth/domain/usecases/check_auth_status_usecase.dart';
