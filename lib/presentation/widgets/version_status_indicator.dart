@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:tkit/core/services/updater/models/download_progress.dart';
 import 'package:tkit/core/services/updater/models/update_info.dart';
 import 'package:tkit/core/providers/providers.dart';
@@ -392,21 +392,11 @@ class _UpdateDialogState extends ConsumerState<_UpdateDialog> {
                   border: Border.all(color: TKitColors.border),
                 ),
                 child: updateInfo.versionChangelogs.isEmpty
-                    ? Markdown(
-                        data: updateInfo.releaseNotes,
-                        shrinkWrap: true,
+                    ? Padding(
                         padding: const EdgeInsets.all(12),
-                        styleSheet: MarkdownStyleSheet(
-                          p: TKitTextStyles.bodyMedium,
-                          h1: TKitTextStyles.heading2,
-                          h2: TKitTextStyles.heading3,
-                          h3: TKitTextStyles.heading4,
-                          code: TKitTextStyles.code,
-                          listBullet: TKitTextStyles.bodyMedium,
-                          a: TKitTextStyles.bodyMedium.copyWith(
-                            color: TKitColors.accentBright,
-                            decoration: TextDecoration.underline,
-                          ),
+                        child: GptMarkdown(
+                          updateInfo.releaseNotes,
+                          style: TKitTextStyles.bodyMedium,
                         ),
                       )
                     : ListView.builder(
@@ -440,22 +430,9 @@ class _UpdateDialogState extends ConsumerState<_UpdateDialog> {
                                 ],
                               ),
                               const SizedBox(height: 8),
-                              Markdown(
-                                data: changelog.notes,
-                                shrinkWrap: true,
-                                padding: EdgeInsets.zero,
-                                styleSheet: MarkdownStyleSheet(
-                                  p: TKitTextStyles.bodySmall,
-                                  h1: TKitTextStyles.heading3,
-                                  h2: TKitTextStyles.heading4,
-                                  h3: TKitTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.bold),
-                                  code: TKitTextStyles.code.copyWith(fontSize: 12),
-                                  listBullet: TKitTextStyles.bodySmall,
-                                  a: TKitTextStyles.bodySmall.copyWith(
-                                    color: TKitColors.accentBright,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
+                              GptMarkdown(
+                                changelog.notes,
+                                style: TKitTextStyles.bodySmall,
                               ),
                             ],
                           );
