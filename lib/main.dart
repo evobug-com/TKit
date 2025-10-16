@@ -8,9 +8,13 @@ import 'package:tkit/core/routing/app_router.dart';
 import 'package:tkit/core/services/locale_provider.dart';
 import 'package:tkit/features/auth/presentation/states/auth_state.dart';
 import 'package:tkit/features/auth/presentation/providers/auth_providers.dart';
+import 'package:tkit/features/auto_switcher/data/repositories/auto_switcher_repository_impl.dart';
 import 'package:tkit/features/auto_switcher/presentation/providers/auto_switcher_providers.dart';
+import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
+import 'package:tkit/features/category_mapping/presentation/dialogs/unknown_game_dialog.dart';
 import 'package:tkit/features/settings/domain/entities/update_channel.dart';
 import 'package:tkit/features/settings/presentation/providers/settings_providers.dart';
+import 'package:tkit/features/twitch_api/domain/entities/twitch_category.dart';
 import 'package:tkit/presentation/main_window.dart';
 import 'package:tkit/presentation/widgets/update_notification_widget.dart';
 import 'package:tkit/shared/theme/app_theme.dart';
@@ -123,6 +127,10 @@ void main() async {
     // Initialize notification service
     final notificationService = container.read(notificationServiceProvider);
     await notificationService.initialize();
+
+    // Initialize hotkey service
+    final hotkeyService = await container.read(hotkeyServiceProvider.future);
+    await hotkeyService.initialize();
 
     // Configure and initialize update service
     final updateService = container.read(updateServiceProvider);
@@ -393,15 +401,86 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
     }
   }
 
-  void _handleAuthStateChange(AuthState state) {
+  Future<void> _handleAuthStateChange(AuthState state) async {
     if (state is Authenticated) {
-      // TODO(auth): Re-add initialization logic later
-      // This includes:
-      // - Updating cached access token for Twitch API
-      // - Initializing periodic sync scheduler
-      // - Setting up notification click handler
-      // - Wiring up unknown game dialog callback
+      // Wire up notification click handler
+      final notificationService = ref.read(notificationServiceProvider);
+      notificationService.onMissingCategoryClick = ({
+        required String processName,
+        String? executablePath,
+      }) async {
+        await _showUnknownGameDialog(
+          processName: processName,
+          executablePath: executablePath,
+          windowTitle: null,
+        );
+      };
+
+      // Wire up unknown game dialog callback
+      final autoSwitcherRepo = await ref.read(
+        autoSwitcherRepositoryProvider.future,
+      );
+      // Cast to implementation to access unknownGameCallback
+      if (autoSwitcherRepo is AutoSwitcherRepositoryImpl) {
+        autoSwitcherRepo.unknownGameCallback = ({
+          required String processName,
+          String? executablePath,
+          String? windowTitle,
+        }) async {
+          return await _showUnknownGameDialog(
+            processName: processName,
+            executablePath: executablePath,
+            windowTitle: windowTitle,
+          );
+        };
+      }
     }
+  }
+
+  Future<CategoryMapping?> _showUnknownGameDialog({
+    required String processName,
+    String? executablePath,
+    String? windowTitle,
+  }) async {
+    final navigatorContext = _appRouter.navigatorKey.currentContext;
+    if (navigatorContext == null) {
+      return null;
+    }
+
+    final result = await showDialog<Map<String, dynamic>>(
+      context: navigatorContext,
+      barrierDismissible: false,
+      builder: (context) => UnknownGameDialog(
+        processName: processName,
+        executablePath: executablePath,
+        windowTitle: windowTitle,
+      ),
+    );
+
+    if (result != null) {
+      final category = result['category'] as TwitchCategory?;
+      if (category != null) {
+        final now = DateTime.now();
+        final normalizedPath = result['normalizedInstallPath'] as String?;
+
+        // Create and return a CategoryMapping with all required fields
+        return CategoryMapping(
+          processName: processName,
+          executablePath: executablePath,
+          normalizedInstallPaths: normalizedPath != null ? [normalizedPath] : [],
+          twitchCategoryId: category.id,
+          twitchCategoryName: category.name,
+          createdAt: now,
+          lastApiFetch: now,
+          cacheExpiresAt: now.add(const Duration(hours: 24)),
+          manualOverride: true, // User-created mappings are manual overrides
+          listId: result['listId'] as String? ?? 'my-custom-mappings',
+          isEnabled: result['isEnabled'] as bool? ?? true,
+        );
+      }
+    }
+
+    return null;
   }
 
   @override

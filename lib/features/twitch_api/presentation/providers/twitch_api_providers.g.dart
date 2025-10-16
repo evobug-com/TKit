@@ -55,7 +55,7 @@ final class TwitchApiRepositoryProvider
 }
 
 String _$twitchApiRepositoryHash() =>
-    r'e4e45072af8f1a712f89997d9a8c289c6dca6815';
+    r'e8f8a34da4b8db0ba530b1bbb02bc5e4e31f6d5e';
 
 @ProviderFor(searchCategoriesUseCase)
 const searchCategoriesUseCaseProvider = SearchCategoriesUseCaseProvider._();

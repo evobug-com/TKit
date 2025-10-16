@@ -22,7 +22,7 @@ class TwitchApiRepositoryImpl implements ITwitchApiRepository {
 
   /// Set the token provider for the remote data source
   /// This should be called by the auth module when token is available
-  void setTokenProvider(String? Function() provider) {
+  void setTokenProvider(Future<String?> Function() provider) {
     _remoteDataSource.setTokenProvider(provider);
   }
 

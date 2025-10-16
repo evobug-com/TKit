@@ -4,11 +4,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tkit/core/database/app_database.dart';
 import 'package:tkit/core/platform/windows_platform_channel.dart';
+import 'package:tkit/core/services/hotkey_service.dart';
 import 'package:tkit/core/services/language_service.dart';
 import 'package:tkit/core/services/notification_service.dart';
 import 'package:tkit/core/services/system_tray_service.dart';
 import 'package:tkit/core/services/updater/github_update_service.dart';
 import 'package:tkit/core/utils/app_logger.dart';
+import 'package:tkit/features/settings/presentation/providers/settings_providers.dart';
 
 part 'providers.g.dart';
 
@@ -120,6 +122,19 @@ NotificationService notificationService(Ref ref) {
 WindowService windowService(Ref ref) {
   final logger = ref.watch(appLoggerProvider);
   final service = WindowService(logger);
+  ref.onDispose(() {
+    service.dispose();
+  });
+  return service;
+}
+
+/// Provides HotkeyService
+@Riverpod(keepAlive: true)
+Future<HotkeyService> hotkeyService(Ref ref) async {
+  final getSettings = await ref.watch(getSettingsUseCaseProvider.future);
+  final watchSettings = await ref.watch(watchSettingsUseCaseProvider.future);
+  final logger = ref.watch(appLoggerProvider);
+  final service = HotkeyService(getSettings, watchSettings, ref, logger);
   ref.onDispose(() {
     service.dispose();
   });

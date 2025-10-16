@@ -13,7 +13,7 @@ class TwitchApiRemoteDataSource {
   final AppLogger _logger;
 
   // Token provider callback - will be set by the repository
-  String? Function()? _tokenProvider;
+  Future<String?> Function()? _tokenProvider;
 
   // Refresh token callback - will be set by the repository
   // Returns new access token after refresh, or null if refresh fails
@@ -25,7 +25,7 @@ class TwitchApiRemoteDataSource {
 
   /// Set the token provider callback
   /// This allows the auth module to provide fresh tokens
-  void setTokenProvider(String? Function() provider) {
+  void setTokenProvider(Future<String?> Function() provider) {
     _tokenProvider = provider;
   }
 
@@ -45,7 +45,7 @@ class TwitchApiRemoteDataSource {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final token = _tokenProvider?.call();
+          final token = await _tokenProvider?.call();
           if (token == null) {
             _logger.error('No access token available for Twitch API request');
             return handler.reject(

@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tkit/core/providers/datasource_providers.dart';
 import 'package:tkit/core/providers/providers.dart';
+import 'package:tkit/features/auth/presentation/providers/auth_providers.dart';
 import 'package:tkit/features/twitch_api/data/repositories/twitch_api_repository_impl.dart';
 import 'package:tkit/features/twitch_api/domain/repositories/i_twitch_api_repository.dart';
 import 'package:tkit/features/twitch_api/domain/usecases/search_categories_usecase.dart';
@@ -16,7 +17,41 @@ part 'twitch_api_providers.g.dart';
 ITwitchApiRepository twitchApiRepository(Ref ref) {
   final dataSource = ref.watch(twitchApiRemoteDataSourceProvider);
   final logger = ref.watch(appLoggerProvider);
-  return TwitchApiRepositoryImpl(dataSource, logger);
+  final tokenDataSource = ref.watch(tokenLocalDataSourceProvider);
+  final authRepository = ref.watch(authRepositoryProvider);
+
+  final repository = TwitchApiRepositoryImpl(dataSource, logger);
+
+  // Set up token provider to get access token from secure storage
+  repository.setTokenProvider(() async {
+    try {
+      final token = await tokenDataSource.getToken();
+      return token?.accessToken;
+    } catch (e) {
+      logger.error('Failed to get token', e);
+      return null;
+    }
+  });
+
+  // Set up refresh token callback
+  repository.setRefreshTokenCallback(() async {
+    try {
+      // Use the auth repository to refresh the token
+      final result = await authRepository.refreshToken();
+      return result.fold(
+        (failure) {
+          logger.error('Token refresh failed: ${failure.message}');
+          return null;
+        },
+        (token) => token.accessToken,
+      );
+    } catch (e) {
+      logger.error('Failed to refresh token', e);
+      return null;
+    }
+  });
+
+  return repository;
 }
 
 // =============================================================================

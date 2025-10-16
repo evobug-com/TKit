@@ -588,3 +588,47 @@ final class WindowServiceProvider
 }
 
 String _$windowServiceHash() => r'ade4ff8dbf17ac1eaee4ac59fe7d8ed2077c6b82';
+
+/// Provides HotkeyService
+
+@ProviderFor(hotkeyService)
+const hotkeyServiceProvider = HotkeyServiceProvider._();
+
+/// Provides HotkeyService
+
+final class HotkeyServiceProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<HotkeyService>,
+          HotkeyService,
+          FutureOr<HotkeyService>
+        >
+    with $FutureModifier<HotkeyService>, $FutureProvider<HotkeyService> {
+  /// Provides HotkeyService
+  const HotkeyServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'hotkeyServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$hotkeyServiceHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<HotkeyService> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<HotkeyService> create(Ref ref) {
+    return hotkeyService(ref);
+  }
+}
+
+String _$hotkeyServiceHash() => r'928e56386df23d251f6b7e2b31cb161798a3541e';

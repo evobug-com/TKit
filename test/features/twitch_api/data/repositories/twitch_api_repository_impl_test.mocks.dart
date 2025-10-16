@@ -57,10 +57,11 @@ class MockTwitchApiRemoteDataSource extends _i1.Mock
   }
 
   @override
-  void setTokenProvider(String? Function()? provider) => super.noSuchMethod(
-    Invocation.method(#setTokenProvider, [provider]),
-    returnValueForMissingStub: null,
-  );
+  void setTokenProvider(_i6.Future<String?> Function()? provider) =>
+      super.noSuchMethod(
+        Invocation.method(#setTokenProvider, [provider]),
+        returnValueForMissingStub: null,
+      );
 
   @override
   void setRefreshTokenCallback(_i6.Future<String?> Function()? callback) =>

@@ -60,6 +60,24 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
     final settingsState = ref.watch(settingsProvider);
     final autoSwitcherAsync = ref.watch(autoSwitcherProvider);
 
+    // Listen for state changes to show toasts (only fires when state changes, not on rebuilds)
+    ref.listen<AsyncValue<AutoSwitcherState>>(
+      autoSwitcherProvider,
+      (previous, next) {
+        next.whenData((state) {
+          // Show toast for errors
+          if (state is UpdateError) {
+            Toast.error(context, state.errorMessage);
+          }
+
+          // Show success message
+          if (state is UpdateSuccess && state.message != null) {
+            Toast.success(context, state.message!);
+          }
+        });
+      },
+    );
+
     // Extract hotkey from settings
     String? manualUpdateHotkey;
     if (settingsState is SettingsLoaded) {
@@ -79,19 +97,6 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
             Expanded(
               child: autoSwitcherAsync.when(
                 data: (state) {
-                  // Show toast for errors
-                  if (state is UpdateError) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Toast.error(context, state.errorMessage);
-                    });
-                  }
-
-                  // Show success message
-                  if (state is UpdateSuccess && state.message != null) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Toast.success(context, state.message!);
-                    });
-                  }
 
                   final status = _getStatusFromState(state);
                   final isMonitoring = _isMonitoringActive(state);
