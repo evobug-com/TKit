@@ -1540,6 +1540,50 @@
       }
     }
   },
+  "updateDialogVersionLabel": "バージョン",
+  "@updateDialogVersionLabel": {
+    "description": "Version label in update dialog"
+  },
+  "updateDialogSize": "サイズ",
+  "@updateDialogSize": {
+    "description": "Size label in update dialog"
+  },
+  "updateDialogPublishedLabel": "公開日",
+  "@updateDialogPublishedLabel": {
+    "description": "Published label in update dialog"
+  },
+  "updateDialogDownloading": "ダウンロード中",
+  "@updateDialogDownloading": {
+    "description": "Downloading status text"
+  },
+  "updateDialogReadyToInstall": "インストール準備完了",
+  "@updateDialogReadyToInstall": {
+    "description": "Ready to install status text"
+  },
+  "updateDialogClickInstallRestart": "インストールして再起動をクリック",
+  "@updateDialogClickInstallRestart": {
+    "description": "Instruction to click install and restart"
+  },
+  "updateDialogDownloadFailedTitle": "ダウンロード失敗",
+  "@updateDialogDownloadFailedTitle": {
+    "description": "Download failed title"
+  },
+  "updateDialogNeverShowTooltip": "このバージョンを二度と表示しない",
+  "@updateDialogNeverShowTooltip": {
+    "description": "Tooltip for ignore button"
+  },
+  "updateDialogIgnoreButton": "無視",
+  "@updateDialogIgnoreButton": {
+    "description": "Ignore button text"
+  },
+  "updateDialogRemindTooltip": "次回通知する",
+  "@updateDialogRemindTooltip": {
+    "description": "Tooltip for postpone button"
+  },
+  "updateDialogPostpone": "延期",
+  "@updateDialogPostpone": {
+    "description": "Postpone button text"
+  },
   "categoryMappingAddDialogEditTitle": "マッピングを編集",
   "@categoryMappingAddDialogEditTitle": {
     "description": "Edit mapping dialog title"

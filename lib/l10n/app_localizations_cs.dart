@@ -502,6 +502,41 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
+  String get updateDialogVersionLabel => 'VERZE';
+
+  @override
+  String get updateDialogSize => 'Velikost';
+
+  @override
+  String get updateDialogPublishedLabel => 'Vydáno';
+
+  @override
+  String get updateDialogDownloading => 'Stahování';
+
+  @override
+  String get updateDialogReadyToInstall => 'Připraveno k instalaci';
+
+  @override
+  String get updateDialogClickInstallRestart =>
+      'Klikněte na Instalovat a restartovat';
+
+  @override
+  String get updateDialogDownloadFailedTitle => 'Stahování selhalo';
+
+  @override
+  String get updateDialogNeverShowTooltip =>
+      'Tuto verzi již nikdy nezobrazovat';
+
+  @override
+  String get updateDialogIgnoreButton => 'Ignorovat';
+
+  @override
+  String get updateDialogRemindTooltip => 'Připomenout příště';
+
+  @override
+  String get updateDialogPostpone => 'Odložit';
+
+  @override
   String get categoryMappingAddDialogEditTitle => 'UPRAVIT MAPOVÁNÍ';
 
   @override

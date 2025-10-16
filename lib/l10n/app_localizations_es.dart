@@ -506,6 +506,40 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get updateDialogVersionLabel => 'VERSIÓN';
+
+  @override
+  String get updateDialogSize => 'Tamaño';
+
+  @override
+  String get updateDialogPublishedLabel => 'Publicado';
+
+  @override
+  String get updateDialogDownloading => 'Descargando';
+
+  @override
+  String get updateDialogReadyToInstall => 'Listo para Instalar';
+
+  @override
+  String get updateDialogClickInstallRestart =>
+      'Haz clic en Instalar y Reiniciar';
+
+  @override
+  String get updateDialogDownloadFailedTitle => 'Error en la Descarga';
+
+  @override
+  String get updateDialogNeverShowTooltip => 'No volver a mostrar esta versión';
+
+  @override
+  String get updateDialogIgnoreButton => 'Ignorar';
+
+  @override
+  String get updateDialogRemindTooltip => 'Recordarme la próxima vez';
+
+  @override
+  String get updateDialogPostpone => 'Posponer';
+
+  @override
   String get categoryMappingAddDialogEditTitle => 'EDITAR MAPEO';
 
   @override

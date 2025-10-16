@@ -512,6 +512,41 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get updateDialogVersionLabel => 'VERSION';
+
+  @override
+  String get updateDialogSize => 'Größe';
+
+  @override
+  String get updateDialogPublishedLabel => 'Veröffentlicht';
+
+  @override
+  String get updateDialogDownloading => 'Wird heruntergeladen';
+
+  @override
+  String get updateDialogReadyToInstall => 'Bereit zur Installation';
+
+  @override
+  String get updateDialogClickInstallRestart =>
+      'Klicken Sie auf Installieren & Neu starten';
+
+  @override
+  String get updateDialogDownloadFailedTitle => 'Download fehlgeschlagen';
+
+  @override
+  String get updateDialogNeverShowTooltip =>
+      'Diese Version nie wieder anzeigen';
+
+  @override
+  String get updateDialogIgnoreButton => 'Ignorieren';
+
+  @override
+  String get updateDialogRemindTooltip => 'Beim nächsten Mal erinnern';
+
+  @override
+  String get updateDialogPostpone => 'Verschieben';
+
+  @override
   String get categoryMappingAddDialogEditTitle => 'ZUORDNUNG BEARBEITEN';
 
   @override

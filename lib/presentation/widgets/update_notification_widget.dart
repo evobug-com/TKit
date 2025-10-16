@@ -257,7 +257,7 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                           children: [
                             // Version
                             Text(
-                              'VERSION',
+                              l10n.updateDialogVersionLabel,
                               style: TKitTextStyles.labelSmall.copyWith(
                                 color: TKitColors.textMuted,
                                 letterSpacing: 0.5,
@@ -277,7 +277,7 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                             // Download Size
                             _buildInfoRow(
                               Icons.download_rounded,
-                              'Size',
+                              l10n.updateDialogSize,
                               _formatBytes(widget.updateInfo.fileSize),
                             ),
                             const VSpace.md(),
@@ -285,7 +285,7 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                             // Published Date
                             _buildInfoRow(
                               Icons.calendar_today,
-                              'Published',
+                              l10n.updateDialogPublishedLabel,
                               _formatDate(widget.updateInfo.publishedAt, l10n),
                             ),
                             const VSpace.md(),
@@ -297,8 +297,8 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
-                                    'Downloading',
+                                  Text(
+                                    l10n.updateDialogDownloading,
                                     style: TKitTextStyles.labelMedium,
                                   ),
                                   Text(
@@ -328,24 +328,24 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                             if (progress != null && progress.isCompleted) ...[
                               const Divider(color: TKitColors.border, height: 1),
                               const VSpace.md(),
-                              const Row(
+                              Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.check_circle_rounded,
                                     color: TKitColors.success,
                                     size: 18,
                                   ),
-                                  HSpace.sm(),
+                                  const HSpace.sm(),
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Ready to Install',
+                                          l10n.updateDialogReadyToInstall,
                                           style: TKitTextStyles.labelMedium,
                                         ),
                                         Text(
-                                          'Click Install & Restart',
+                                          l10n.updateDialogClickInstallRestart,
                                           style: TKitTextStyles.bodySmall,
                                         ),
                                       ],
@@ -373,7 +373,7 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Download Failed',
+                                          l10n.updateDialogDownloadFailedTitle,
                                           style: TKitTextStyles.labelMedium.copyWith(
                                             color: TKitColors.error,
                                           ),
@@ -412,9 +412,9 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                         children: [
                           Expanded(
                             child: Tooltip(
-                              message: 'Never show this version again',
+                              message: l10n.updateDialogNeverShowTooltip,
                               child: AccentButton(
-                                text: 'Ignore',
+                                text: l10n.updateDialogIgnoreButton,
                                 onPressed: () {
                                   if (widget.onIgnore != null) {
                                     widget.onIgnore!(context);
@@ -428,9 +428,9 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                           const HSpace.sm(),
                           Expanded(
                             child: Tooltip(
-                              message: 'Remind me next time',
+                              message: l10n.updateDialogRemindTooltip,
                               child: AccentButton(
-                                text: 'Postpone',
+                                text: l10n.updateDialogPostpone,
                                 onPressed: () {
                                   if (widget.onDismiss != null) {
                                     widget.onDismiss!(context);

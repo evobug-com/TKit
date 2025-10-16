@@ -490,6 +490,39 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get updateDialogVersionLabel => '버전';
+
+  @override
+  String get updateDialogSize => '크기';
+
+  @override
+  String get updateDialogPublishedLabel => '배포일';
+
+  @override
+  String get updateDialogDownloading => '다운로드 중';
+
+  @override
+  String get updateDialogReadyToInstall => '설치 준비 완료';
+
+  @override
+  String get updateDialogClickInstallRestart => '설치 및 재시작 클릭';
+
+  @override
+  String get updateDialogDownloadFailedTitle => '다운로드 실패';
+
+  @override
+  String get updateDialogNeverShowTooltip => '이 버전을 다시 표시하지 않음';
+
+  @override
+  String get updateDialogIgnoreButton => '무시';
+
+  @override
+  String get updateDialogRemindTooltip => '다음에 다시 알림';
+
+  @override
+  String get updateDialogPostpone => '연기';
+
+  @override
   String get categoryMappingAddDialogEditTitle => '매핑 편집';
 
   @override

@@ -501,6 +501,39 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get updateDialogVersionLabel => 'VERSION';
+
+  @override
+  String get updateDialogSize => 'Size';
+
+  @override
+  String get updateDialogPublishedLabel => 'Published';
+
+  @override
+  String get updateDialogDownloading => 'Downloading';
+
+  @override
+  String get updateDialogReadyToInstall => 'Ready to Install';
+
+  @override
+  String get updateDialogClickInstallRestart => 'Click Install & Restart';
+
+  @override
+  String get updateDialogDownloadFailedTitle => 'Download Failed';
+
+  @override
+  String get updateDialogNeverShowTooltip => 'Never show this version again';
+
+  @override
+  String get updateDialogIgnoreButton => 'Ignore';
+
+  @override
+  String get updateDialogRemindTooltip => 'Remind me next time';
+
+  @override
+  String get updateDialogPostpone => 'Postpone';
+
+  @override
   String get categoryMappingAddDialogEditTitle => 'EDIT MAPPING';
 
   @override

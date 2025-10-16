@@ -1680,6 +1680,50 @@
       }
     }
   },
+  "updateDialogVersionLabel": "VERZE",
+  "@updateDialogVersionLabel": {
+    "description": "Version label in update dialog"
+  },
+  "updateDialogSize": "Velikost",
+  "@updateDialogSize": {
+    "description": "Size label in update dialog"
+  },
+  "updateDialogPublishedLabel": "Vydáno",
+  "@updateDialogPublishedLabel": {
+    "description": "Published label in update dialog"
+  },
+  "updateDialogDownloading": "Stahování",
+  "@updateDialogDownloading": {
+    "description": "Downloading status text"
+  },
+  "updateDialogReadyToInstall": "Připraveno k instalaci",
+  "@updateDialogReadyToInstall": {
+    "description": "Ready to install status text"
+  },
+  "updateDialogClickInstallRestart": "Klikněte na Instalovat a restartovat",
+  "@updateDialogClickInstallRestart": {
+    "description": "Instruction to click install and restart"
+  },
+  "updateDialogDownloadFailedTitle": "Stahování selhalo",
+  "@updateDialogDownloadFailedTitle": {
+    "description": "Download failed title"
+  },
+  "updateDialogNeverShowTooltip": "Tuto verzi již nikdy nezobrazovat",
+  "@updateDialogNeverShowTooltip": {
+    "description": "Tooltip for ignore button"
+  },
+  "updateDialogIgnoreButton": "Ignorovat",
+  "@updateDialogIgnoreButton": {
+    "description": "Ignore button text"
+  },
+  "updateDialogRemindTooltip": "Připomenout příště",
+  "@updateDialogRemindTooltip": {
+    "description": "Tooltip for postpone button"
+  },
+  "updateDialogPostpone": "Odložit",
+  "@updateDialogPostpone": {
+    "description": "Postpone button text"
+  },
   "categoryMappingAddDialogEditTitle": "UPRAVIT MAPOVÁNÍ",
   "@categoryMappingAddDialogEditTitle": {
     "description": "Edit mapping dialog title"

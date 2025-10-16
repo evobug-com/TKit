@@ -1540,6 +1540,50 @@
       }
     }
   },
+  "updateDialogVersionLabel": "WERSJA",
+  "@updateDialogVersionLabel": {
+    "description": "Version label in update dialog"
+  },
+  "updateDialogSize": "Rozmiar",
+  "@updateDialogSize": {
+    "description": "Size label in update dialog"
+  },
+  "updateDialogPublishedLabel": "Opublikowano",
+  "@updateDialogPublishedLabel": {
+    "description": "Published label in update dialog"
+  },
+  "updateDialogDownloading": "Pobieranie",
+  "@updateDialogDownloading": {
+    "description": "Downloading status text"
+  },
+  "updateDialogReadyToInstall": "Gotowe do instalacji",
+  "@updateDialogReadyToInstall": {
+    "description": "Ready to install status text"
+  },
+  "updateDialogClickInstallRestart": "Kliknij Zainstaluj i uruchom ponownie",
+  "@updateDialogClickInstallRestart": {
+    "description": "Instruction to click install and restart"
+  },
+  "updateDialogDownloadFailedTitle": "Pobieranie nie powiodło się",
+  "@updateDialogDownloadFailedTitle": {
+    "description": "Download failed title"
+  },
+  "updateDialogNeverShowTooltip": "Nigdy więcej nie pokazuj tej wersji",
+  "@updateDialogNeverShowTooltip": {
+    "description": "Tooltip for ignore button"
+  },
+  "updateDialogIgnoreButton": "Ignoruj",
+  "@updateDialogIgnoreButton": {
+    "description": "Ignore button text"
+  },
+  "updateDialogRemindTooltip": "Przypomnij mi następnym razem",
+  "@updateDialogRemindTooltip": {
+    "description": "Tooltip for postpone button"
+  },
+  "updateDialogPostpone": "Odłóż",
+  "@updateDialogPostpone": {
+    "description": "Postpone button text"
+  },
   "categoryMappingAddDialogEditTitle": "EDYTUJ MAPOWANIE",
   "@categoryMappingAddDialogEditTitle": {
     "description": "Edit mapping dialog title"

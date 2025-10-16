@@ -482,6 +482,39 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get updateDialogVersionLabel => '版本';
+
+  @override
+  String get updateDialogSize => '大小';
+
+  @override
+  String get updateDialogPublishedLabel => '发布日期';
+
+  @override
+  String get updateDialogDownloading => '下载中';
+
+  @override
+  String get updateDialogReadyToInstall => '准备安装';
+
+  @override
+  String get updateDialogClickInstallRestart => '点击安装并重启';
+
+  @override
+  String get updateDialogDownloadFailedTitle => '下载失败';
+
+  @override
+  String get updateDialogNeverShowTooltip => '不再显示此版本';
+
+  @override
+  String get updateDialogIgnoreButton => '忽略';
+
+  @override
+  String get updateDialogRemindTooltip => '下次提醒我';
+
+  @override
+  String get updateDialogPostpone => '推迟';
+
+  @override
   String get categoryMappingAddDialogEditTitle => '编辑映射';
 
   @override

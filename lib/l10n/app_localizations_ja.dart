@@ -491,6 +491,39 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get updateDialogVersionLabel => 'バージョン';
+
+  @override
+  String get updateDialogSize => 'サイズ';
+
+  @override
+  String get updateDialogPublishedLabel => '公開日';
+
+  @override
+  String get updateDialogDownloading => 'ダウンロード中';
+
+  @override
+  String get updateDialogReadyToInstall => 'インストール準備完了';
+
+  @override
+  String get updateDialogClickInstallRestart => 'インストールして再起動をクリック';
+
+  @override
+  String get updateDialogDownloadFailedTitle => 'ダウンロード失敗';
+
+  @override
+  String get updateDialogNeverShowTooltip => 'このバージョンを二度と表示しない';
+
+  @override
+  String get updateDialogIgnoreButton => '無視';
+
+  @override
+  String get updateDialogRemindTooltip => '次回通知する';
+
+  @override
+  String get updateDialogPostpone => '延期';
+
+  @override
   String get categoryMappingAddDialogEditTitle => 'マッピングを編集';
 
   @override

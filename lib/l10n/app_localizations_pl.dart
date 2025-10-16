@@ -507,6 +507,41 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String get updateDialogVersionLabel => 'WERSJA';
+
+  @override
+  String get updateDialogSize => 'Rozmiar';
+
+  @override
+  String get updateDialogPublishedLabel => 'Opublikowano';
+
+  @override
+  String get updateDialogDownloading => 'Pobieranie';
+
+  @override
+  String get updateDialogReadyToInstall => 'Gotowe do instalacji';
+
+  @override
+  String get updateDialogClickInstallRestart =>
+      'Kliknij Zainstaluj i uruchom ponownie';
+
+  @override
+  String get updateDialogDownloadFailedTitle => 'Pobieranie nie powiodło się';
+
+  @override
+  String get updateDialogNeverShowTooltip =>
+      'Nigdy więcej nie pokazuj tej wersji';
+
+  @override
+  String get updateDialogIgnoreButton => 'Ignoruj';
+
+  @override
+  String get updateDialogRemindTooltip => 'Przypomnij mi następnym razem';
+
+  @override
+  String get updateDialogPostpone => 'Odłóż';
+
+  @override
   String get categoryMappingAddDialogEditTitle => 'EDYTUJ MAPOWANIE';
 
   @override

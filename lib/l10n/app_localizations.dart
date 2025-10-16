@@ -1044,6 +1044,72 @@ abstract class AppLocalizations {
   /// **'Published {date}'**
   String updateDialogPublished(String date);
 
+  /// Version label in update dialog
+  ///
+  /// In en, this message translates to:
+  /// **'VERSION'**
+  String get updateDialogVersionLabel;
+
+  /// Size label in update dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Size'**
+  String get updateDialogSize;
+
+  /// Published label in update dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Published'**
+  String get updateDialogPublishedLabel;
+
+  /// Downloading status text
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading'**
+  String get updateDialogDownloading;
+
+  /// Ready to install status text
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to Install'**
+  String get updateDialogReadyToInstall;
+
+  /// Instruction to click install and restart
+  ///
+  /// In en, this message translates to:
+  /// **'Click Install & Restart'**
+  String get updateDialogClickInstallRestart;
+
+  /// Download failed title
+  ///
+  /// In en, this message translates to:
+  /// **'Download Failed'**
+  String get updateDialogDownloadFailedTitle;
+
+  /// Tooltip for ignore button
+  ///
+  /// In en, this message translates to:
+  /// **'Never show this version again'**
+  String get updateDialogNeverShowTooltip;
+
+  /// Ignore button text
+  ///
+  /// In en, this message translates to:
+  /// **'Ignore'**
+  String get updateDialogIgnoreButton;
+
+  /// Tooltip for postpone button
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me next time'**
+  String get updateDialogRemindTooltip;
+
+  /// Postpone button text
+  ///
+  /// In en, this message translates to:
+  /// **'Postpone'**
+  String get updateDialogPostpone;
+
   /// Edit mapping dialog title
   ///
   /// In en, this message translates to:
