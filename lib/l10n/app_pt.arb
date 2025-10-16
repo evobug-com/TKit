@@ -452,6 +452,935 @@
   "@updateDialogRemindLater": {
     "description": "Remind later button"
   },
+  "updateDialogIgnore": "Ignorar esta versão",
+  "@updateDialogIgnore": {
+    "description": "Ignore this version button"
+  },
+  "notificationMissingCategoryTitle": "Mapeamento de categoria não encontrado",
+  "@notificationMissingCategoryTitle": {
+    "description": "Notification title for missing category mapping"
+  },
+  "notificationMissingCategoryBody": "Nenhuma categoria da Twitch encontrada para: {processName}",
+  "@notificationMissingCategoryBody": {
+    "description": "Notification body for missing category mapping",
+    "placeholders": {
+      "processName": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationActionAssignCategory": "Atribuir categoria",
+  "@notificationActionAssignCategory": {
+    "description": "Notification action button to assign category"
+  },
+  "notificationCategoryUpdatedTitle": "Categoria atualizada",
+  "@notificationCategoryUpdatedTitle": {
+    "description": "Notification title for successful category update"
+  },
+  "notificationCategoryUpdatedBody": "Alternado para \"{categoryName}\" para {processName}",
+  "@notificationCategoryUpdatedBody": {
+    "description": "Notification body for successful category update",
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      },
+      "processName": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingListColumnSource": "Origem",
+  "@mappingListColumnSource": {
+    "description": "Source column header in mapping list"
+  },
+  "mappingListColumnEnabled": "Ativado",
+  "@mappingListColumnEnabled": {
+    "description": "Enabled column header in mapping list"
+  },
+  "mappingListTooltipIgnored": "Esta categoria é ignorada",
+  "@mappingListTooltipIgnored": {
+    "description": "Tooltip for ignored category"
+  },
+  "mappingListTooltipTwitchId": "ID da Twitch: {twitchCategoryId}",
+  "@mappingListTooltipTwitchId": {
+    "description": "Tooltip showing Twitch category ID",
+    "placeholders": {
+      "twitchCategoryId": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingListCategoryIgnored": "Ignorado",
+  "@mappingListCategoryIgnored": {
+    "description": "Text for ignored category"
+  },
+  "mappingListSourceUnknown": "Desconhecido",
+  "@mappingListSourceUnknown": {
+    "description": "Unknown source fallback text"
+  },
+  "mappingListSelected": "{count} selecionado",
+  "@mappingListSelected": {
+    "description": "Selection count status",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingListSelectedVisible": "{count} selecionado ({visible} visível)",
+  "@mappingListSelectedVisible": {
+    "description": "Selection count with visible count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "visible": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingListButtonInvert": "Inverter",
+  "@mappingListButtonInvert": {
+    "description": "Invert selection button"
+  },
+  "mappingListButtonClear": "Limpar",
+  "@mappingListButtonClear": {
+    "description": "Clear selection button"
+  },
+  "mappingListButtonUndo": "Desfazer {action}",
+  "@mappingListButtonUndo": {
+    "description": "Undo action button",
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingListButtonExport": "Exportar",
+  "@mappingListButtonExport": {
+    "description": "Export mappings button"
+  },
+  "mappingListButtonEnable": "Ativar",
+  "@mappingListButtonEnable": {
+    "description": "Enable selected mappings button"
+  },
+  "mappingListButtonDisable": "Desativar",
+  "@mappingListButtonDisable": {
+    "description": "Disable selected mappings button"
+  },
+  "mappingListButtonDelete": "Excluir",
+  "@mappingListButtonDelete": {
+    "description": "Delete selected mappings button"
+  },
+  "mappingListTooltipCannotDelete": "Não é possível excluir mapeamentos de listas somente leitura",
+  "@mappingListTooltipCannotDelete": {
+    "description": "Tooltip when delete is disabled"
+  },
+  "mappingListTooltipDelete": "Excluir mapeamentos selecionados",
+  "@mappingListTooltipDelete": {
+    "description": "Tooltip for delete button"
+  },
+  "mappingListSearchHint": "Pesquisar por nome do processo ou categoria...",
+  "@mappingListSearchHint": {
+    "description": "Search input placeholder"
+  },
+  "mappingListTooltipClearSearch": "Limpar pesquisa",
+  "@mappingListTooltipClearSearch": {
+    "description": "Tooltip for clear search button"
+  },
+  "listManagementEmptyState": "Nenhuma lista encontrada",
+  "@listManagementEmptyState": {
+    "description": "Empty state message for list management"
+  },
+  "listManagementTitle": "Gerenciar listas",
+  "@listManagementTitle": {
+    "description": "List management dialog title"
+  },
+  "listManagementSyncNow": "Sincronizar agora",
+  "@listManagementSyncNow": {
+    "description": "Sync now tooltip"
+  },
+  "listManagementBadgeLocal": "LOCAL",
+  "@listManagementBadgeLocal": {
+    "description": "Badge for local lists"
+  },
+  "listManagementBadgeOfficial": "OFICIAL",
+  "@listManagementBadgeOfficial": {
+    "description": "Badge for official lists"
+  },
+  "listManagementBadgeRemote": "REMOTO",
+  "@listManagementBadgeRemote": {
+    "description": "Badge for remote lists"
+  },
+  "listManagementBadgeReadOnly": "SOMENTE LEITURA",
+  "@listManagementBadgeReadOnly": {
+    "description": "Badge for read-only lists"
+  },
+  "listManagementButtonImport": "Importar lista",
+  "@listManagementButtonImport": {
+    "description": "Import list button"
+  },
+  "listManagementButtonSyncAll": "Sincronizar tudo",
+  "@listManagementButtonSyncAll": {
+    "description": "Sync all lists button"
+  },
+  "listManagementButtonClose": "Fechar",
+  "@listManagementButtonClose": {
+    "description": "Close dialog button"
+  },
+  "listManagementImportTitle": "Importar lista",
+  "@listManagementImportTitle": {
+    "description": "Import list dialog title"
+  },
+  "listManagementImportUrl": "URL da lista",
+  "@listManagementImportUrl": {
+    "description": "URL field label"
+  },
+  "listManagementImportUrlPlaceholder": "https://exemplo.com/mapeamentos.json",
+  "@listManagementImportUrlPlaceholder": {
+    "description": "URL field placeholder"
+  },
+  "listManagementImportName": "Nome da lista (opcional)",
+  "@listManagementImportName": {
+    "description": "Name field label"
+  },
+  "listManagementImportNameHelper": "Se não fornecido, usará o nome do arquivo JSON",
+  "@listManagementImportNameHelper": {
+    "description": "Name field helper text"
+  },
+  "listManagementImportNamePlaceholder": "Minha lista personalizada",
+  "@listManagementImportNamePlaceholder": {
+    "description": "Name field placeholder"
+  },
+  "listManagementImportDescription": "Descrição (opcional)",
+  "@listManagementImportDescription": {
+    "description": "Description field label"
+  },
+  "listManagementImportDescriptionHelper": "Se não fornecido, usará a descrição do arquivo JSON",
+  "@listManagementImportDescriptionHelper": {
+    "description": "Description field helper text"
+  },
+  "listManagementImportDescriptionPlaceholder": "Uma coleção de mapeamentos de jogos",
+  "@listManagementImportDescriptionPlaceholder": {
+    "description": "Description field placeholder"
+  },
+  "listManagementButtonCancel": "Cancelar",
+  "@listManagementButtonCancel": {
+    "description": "Cancel import button"
+  },
+  "listManagementButtonImportConfirm": "Importar",
+  "@listManagementButtonImportConfirm": {
+    "description": "Confirm import button"
+  },
+  "listManagementDefaultName": "Lista importada",
+  "@listManagementDefaultName": {
+    "description": "Default name for imported lists"
+  },
+  "listManagementImportSuccess": "Lista importada com sucesso",
+  "@listManagementImportSuccess": {
+    "description": "Success message after import"
+  },
+  "listManagementSyncNever": "nunca",
+  "@listManagementSyncNever": {
+    "description": "Sync time: never synced"
+  },
+  "listManagementSyncJustNow": "agora mesmo",
+  "@listManagementSyncJustNow": {
+    "description": "Sync time: just now"
+  },
+  "listManagementSyncMinutesAgo": "{minutes}m atrás",
+  "@listManagementSyncMinutesAgo": {
+    "description": "Sync time: minutes ago",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncHoursAgo": "{hours}h atrás",
+  "@listManagementSyncHoursAgo": {
+    "description": "Sync time: hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncDaysAgo": "{days}d atrás",
+  "@listManagementSyncDaysAgo": {
+    "description": "Sync time: days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncDaysHoursAgo": "{days}d {hours}h atrás",
+  "@listManagementSyncDaysHoursAgo": {
+    "description": "Sync time: days and hours ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementMappingsCount": "{count} mapeamentos",
+  "@listManagementMappingsCount": {
+    "description": "Mapping count display",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncFailed": "Sincronização falhou:",
+  "@listManagementSyncFailed": {
+    "description": "Sync failed error prefix"
+  },
+  "listManagementLastSynced": "Última sincronização:",
+  "@listManagementLastSynced": {
+    "description": "Last synced label"
+  },
+  "unknownGameIgnoreProcess": "Ignorar processo",
+  "@unknownGameIgnoreProcess": {
+    "description": "Option to ignore a process"
+  },
+  "unknownGameCategoryId": "ID: {id}",
+  "@unknownGameCategoryId": {
+    "description": "Category ID display",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameSubmissionTitle": "Envio necessário",
+  "@unknownGameSubmissionTitle": {
+    "description": "Submission section title"
+  },
+  "unknownGameSubmissionInfo": "Este mapeamento será salvo localmente e enviado ao proprietário da lista para aprovação. Uma vez aprovado e sincronizado, sua cópia local será automaticamente substituída.",
+  "@unknownGameSubmissionInfo": {
+    "description": "Submission workflow information"
+  },
+  "unknownGameSectionLists": "LISTAS",
+  "@unknownGameSectionLists": {
+    "description": "Lists section header"
+  },
+  "unknownGameListMappingCount": "{count} mapeamentos",
+  "@unknownGameListMappingCount": {
+    "description": "Mapping count for a list",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "unknownGameBadgeStaged": "PREPARADO",
+  "@unknownGameBadgeStaged": {
+    "description": "Badge for staged mappings"
+  },
+  "unknownGameIgnoredProcess": "PROCESSO IGNORADO",
+  "@unknownGameIgnoredProcess": {
+    "description": "Label for ignored process"
+  },
+  "unknownGameSelectedCategoryId": "ID: {id}",
+  "@unknownGameSelectedCategoryId": {
+    "description": "Selected category ID display",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameWorkflowTitle": "Fluxo de envio",
+  "@unknownGameWorkflowTitle": {
+    "description": "Workflow explanation title"
+  },
+  "unknownGameWorkflowTitleAlt": "O que acontece a seguir",
+  "@unknownGameWorkflowTitleAlt": {
+    "description": "Alternative workflow title"
+  },
+  "unknownGameWorkflowStepLocal": "Salvo localmente em Meus mapeamentos personalizados",
+  "@unknownGameWorkflowStepLocal": {
+    "description": "Local save workflow step"
+  },
+  "unknownGameWorkflowStepLocalDesc": "Armazenado primeiro no seu dispositivo, para que o mapeamento funcione imediatamente",
+  "@unknownGameWorkflowStepLocalDesc": {
+    "description": "Local save workflow step description"
+  },
+  "unknownGameWorkflowStepSubmit": "Enviado para {listName}",
+  "@unknownGameWorkflowStepSubmit": {
+    "description": "Submission workflow step",
+    "placeholders": {
+      "listName": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameWorkflowStepSubmitDesc": "Enviado automaticamente ao proprietário da lista para revisão e aprovação",
+  "@unknownGameWorkflowStepSubmitDesc": {
+    "description": "Submission workflow step description"
+  },
+  "unknownGameWorkflowStepReplace": "Cópia local substituída quando aprovado",
+  "@unknownGameWorkflowStepReplace": {
+    "description": "Replacement workflow step"
+  },
+  "unknownGameWorkflowStepReplaceDesc": "Uma vez aceito e sincronizado, sua cópia local é removida e substituída pela versão oficial de {listName}",
+  "@unknownGameWorkflowStepReplaceDesc": {
+    "description": "Replacement workflow step description",
+    "placeholders": {
+      "listName": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameSavedTo": "Salvo em {listName}",
+  "@unknownGameSavedTo": {
+    "description": "Confirmation of save destination",
+    "placeholders": {
+      "listName": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameIgnoredInfo": "Este processo será ignorado e não acionará notificações",
+  "@unknownGameIgnoredInfo": {
+    "description": "Information about ignoring a process"
+  },
+  "unknownGameLocalSaveInfo": "Seu mapeamento está salvo localmente e funcionará imediatamente",
+  "@unknownGameLocalSaveInfo": {
+    "description": "Information about local save"
+  },
+  "unknownGamePrivacyInfo": "Este mapeamento é privado e armazenado apenas no seu dispositivo",
+  "@unknownGamePrivacyInfo": {
+    "description": "Privacy information for local mappings"
+  },
+  "autoSwitcherError": "Erro: {error}",
+  "@autoSwitcherError": {
+    "description": "Error message display",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "autoSwitcherStatusActive": "Alternância automática ativa",
+  "@autoSwitcherStatusActive": {
+    "description": "Auto-switcher active status"
+  },
+  "autoSwitcherStatusInactive": "Não está monitorando",
+  "@autoSwitcherStatusInactive": {
+    "description": "Auto-switcher inactive status"
+  },
+  "autoSwitcherLabelActiveApp": "Aplicativo ativo",
+  "@autoSwitcherLabelActiveApp": {
+    "description": "Label for active app display"
+  },
+  "autoSwitcherLabelCategory": "Categoria",
+  "@autoSwitcherLabelCategory": {
+    "description": "Label for category display"
+  },
+  "autoSwitcherValueNone": "Nenhum",
+  "@autoSwitcherValueNone": {
+    "description": "None value"
+  },
+  "autoSwitcherDescriptionActive": "Sua categoria muda automaticamente quando você alterna aplicativos.",
+  "@autoSwitcherDescriptionActive": {
+    "description": "Description when auto-switcher is active"
+  },
+  "autoSwitcherButtonTurnOff": "Desligar",
+  "@autoSwitcherButtonTurnOff": {
+    "description": "Turn off auto-switcher button"
+  },
+  "autoSwitcherInstructionPress": "Pressione",
+  "@autoSwitcherInstructionPress": {
+    "description": "Instruction text before hotkey"
+  },
+  "autoSwitcherInstructionManual": "para atualizar manualmente para o processo em foco",
+  "@autoSwitcherInstructionManual": {
+    "description": "Instruction for manual update"
+  },
+  "autoSwitcherHeadingEnable": "Ativar alternância automática",
+  "@autoSwitcherHeadingEnable": {
+    "description": "Heading for enable section"
+  },
+  "autoSwitcherDescriptionInactive": "As categorias mudarão automaticamente quando você alternar entre aplicativos.",
+  "@autoSwitcherDescriptionInactive": {
+    "description": "Description when auto-switcher is inactive"
+  },
+  "autoSwitcherButtonTurnOn": "Ligar",
+  "@autoSwitcherButtonTurnOn": {
+    "description": "Turn on auto-switcher button"
+  },
+  "autoSwitcherInstructionOr": "Ou pressione",
+  "@autoSwitcherInstructionOr": {
+    "description": "Alternative instruction text"
+  },
+  "settingsTabMappings": "Mapeamentos",
+  "@settingsTabMappings": {
+    "description": "Mappings settings tab"
+  },
+  "settingsTabTheme": "Tema",
+  "@settingsTabTheme": {
+    "description": "Theme settings tab"
+  },
+  "settingsAutoSyncOnStart": "Sincronizar mapeamentos automaticamente ao iniciar o aplicativo",
+  "@settingsAutoSyncOnStart": {
+    "description": "Auto-sync on start setting label"
+  },
+  "settingsAutoSyncOnStartDesc": "Sincronizar automaticamente as listas de mapeamento quando o aplicativo iniciar",
+  "@settingsAutoSyncOnStartDesc": {
+    "description": "Auto-sync on start setting description"
+  },
+  "settingsAutoSyncInterval": "Intervalo de sincronização automática",
+  "@settingsAutoSyncInterval": {
+    "description": "Auto-sync interval setting label"
+  },
+  "settingsAutoSyncIntervalDesc": "Com que frequência sincronizar automaticamente as listas de mapeamento (0 = nunca)",
+  "@settingsAutoSyncIntervalDesc": {
+    "description": "Auto-sync interval setting description"
+  },
+  "settingsAutoSyncNever": "Nunca",
+  "@settingsAutoSyncNever": {
+    "description": "Never sync option"
+  },
+  "settingsTimingTitle": "COMO ESSAS CONFIGURAÇÕES FUNCIONAM JUNTAS",
+  "@settingsTimingTitle": {
+    "description": "Timing explanation section title"
+  },
+  "settingsTimingStep1": "O aplicativo verifica a janela em foco a cada {scanInterval}s",
+  "@settingsTimingStep1": {
+    "description": "Timing explanation step 1",
+    "placeholders": {
+      "scanInterval": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTimingStep2Instant": "A categoria muda imediatamente quando um novo aplicativo é detectado",
+  "@settingsTimingStep2Instant": {
+    "description": "Timing explanation step 2 (instant)"
+  },
+  "settingsTimingStep2Debounce": "Aguarda {debounce}s após detectar novo aplicativo (debounce)",
+  "@settingsTimingStep2Debounce": {
+    "description": "Timing explanation step 2 (with debounce)",
+    "placeholders": {
+      "debounce": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTimingStep3Instant": "Tempo total de troca: {scanInterval}s (instantâneo após detecção)",
+  "@settingsTimingStep3Instant": {
+    "description": "Timing explanation step 3 (instant)",
+    "placeholders": {
+      "scanInterval": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTimingStep3Debounce": "Tempo total de troca: {scanInterval}s a {scanDebounce}s",
+  "@settingsTimingStep3Debounce": {
+    "description": "Timing explanation step 3 (with debounce)",
+    "placeholders": {
+      "scanInterval": {
+        "type": "int"
+      },
+      "scanDebounce": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsFramelessWindow": "Usar janela sem moldura",
+  "@settingsFramelessWindow": {
+    "description": "Frameless window setting label"
+  },
+  "settingsFramelessWindowDesc": "Remover a barra de título do Windows para uma aparência moderna sem bordas com cantos arredondados",
+  "@settingsFramelessWindowDesc": {
+    "description": "Frameless window setting description"
+  },
+  "settingsInvertLayout": "Inverter rodapé/cabeçalho",
+  "@settingsInvertLayout": {
+    "description": "Invert layout setting label"
+  },
+  "settingsInvertLayoutDesc": "Trocar as posições das seções de cabeçalho e rodapé",
+  "@settingsInvertLayoutDesc": {
+    "description": "Invert layout setting description"
+  },
+  "settingsTokenExpired": "Expirado",
+  "@settingsTokenExpired": {
+    "description": "Token expired status"
+  },
+  "settingsTokenExpiresDays": "Expira em {days}d {hours}h",
+  "@settingsTokenExpiresDays": {
+    "description": "Token expires in days and hours",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTokenExpiresHours": "Expira em {hours}h {minutes}m",
+  "@settingsTokenExpiresHours": {
+    "description": "Token expires in hours and minutes",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTokenExpiresMinutes": "Expira em {minutes}m",
+  "@settingsTokenExpiresMinutes": {
+    "description": "Token expires in minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsResetDesc": "Redefinir todas as configurações e dados para os padrões de fábrica",
+  "@settingsResetDesc": {
+    "description": "Reset settings description"
+  },
+  "settingsButtonReset": "Redefinir",
+  "@settingsButtonReset": {
+    "description": "Reset button"
+  },
+  "mappingEditorSummary": "{count} mapeamento{plural} de processo de {lists} lista{pluralLists} ativa{pluralLists}",
+  "@mappingEditorSummary": {
+    "description": "Mapping editor summary text",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      },
+      "lists": {
+        "type": "int"
+      },
+      "pluralLists": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingEditorBreakdown": "{custom} personalizado, {community} de listas da comunidade",
+  "@mappingEditorBreakdown": {
+    "description": "Mapping breakdown text",
+    "placeholders": {
+      "custom": {
+        "type": "int"
+      },
+      "community": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingEditorButtonLists": "Listas",
+  "@mappingEditorButtonLists": {
+    "description": "Lists button"
+  },
+  "mappingEditorButtonAdd": "Adicionar",
+  "@mappingEditorButtonAdd": {
+    "description": "Add mapping button"
+  },
+  "mappingEditorDeleteTitle": "Excluir múltiplos mapeamentos",
+  "@mappingEditorDeleteTitle": {
+    "description": "Delete confirmation dialog title"
+  },
+  "mappingEditorDeleteMessage": "Tem certeza de que deseja excluir {count} mapeamento{plural}? Esta ação não pode ser desfeita.",
+  "@mappingEditorDeleteMessage": {
+    "description": "Delete confirmation message",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingEditorExportTitle": "Exportar mapeamentos",
+  "@mappingEditorExportTitle": {
+    "description": "Export dialog title"
+  },
+  "mappingEditorExportFilename": "meus-mapeamentos.json",
+  "@mappingEditorExportFilename": {
+    "description": "Default export filename"
+  },
+  "mappingEditorExportSuccess": "Exportado {count} mapeamento{plural} para",
+  "@mappingEditorExportSuccess": {
+    "description": "Export success message",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingEditorExportFailed": "Falha na exportação",
+  "@mappingEditorExportFailed": {
+    "description": "Export failed error title"
+  },
+  "addMappingPrivacySafe": "Caminho seguro para privacidade",
+  "@addMappingPrivacySafe": {
+    "description": "Privacy-safe path label"
+  },
+  "addMappingCustomLocation": "Localização personalizada",
+  "@addMappingCustomLocation": {
+    "description": "Custom location label"
+  },
+  "addMappingOnlyFolder": "Apenas nomes de pasta de jogo armazenados",
+  "@addMappingOnlyFolder": {
+    "description": "Privacy info: only folder names"
+  },
+  "addMappingNotStored": "Caminho não armazenado por privacidade",
+  "@addMappingNotStored": {
+    "description": "Privacy info: path not stored"
+  },
+  "colorPickerTitle": "Escolher cor",
+  "@colorPickerTitle": {
+    "description": "Color picker dialog title"
+  },
+  "colorPickerHue": "Matiz",
+  "@colorPickerHue": {
+    "description": "Hue slider label"
+  },
+  "colorPickerSaturation": "Saturação",
+  "@colorPickerSaturation": {
+    "description": "Saturation slider label"
+  },
+  "colorPickerValue": "Valor",
+  "@colorPickerValue": {
+    "description": "Value slider label"
+  },
+  "colorPickerButtonCancel": "Cancelar",
+  "@colorPickerButtonCancel": {
+    "description": "Color picker cancel button"
+  },
+  "colorPickerButtonSelect": "Selecionar",
+  "@colorPickerButtonSelect": {
+    "description": "Color picker select button"
+  },
+  "dropdownPlaceholder": "Selecione uma opção",
+  "@dropdownPlaceholder": {
+    "description": "Dropdown placeholder text"
+  },
+  "dropdownSearchHint": "Pesquisar...",
+  "@dropdownSearchHint": {
+    "description": "Dropdown search hint"
+  },
+  "dropdownNoResults": "Nenhum resultado encontrado",
+  "@dropdownNoResults": {
+    "description": "Dropdown no results message"
+  },
+  "paginationPageInfo": "Página {current} de {total}",
+  "@paginationPageInfo": {
+    "description": "Pagination page information",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "paginationGoTo": "Ir para:",
+  "@paginationGoTo": {
+    "description": "Jump to page label"
+  },
+  "datePickerPlaceholder": "Selecionar data",
+  "@datePickerPlaceholder": {
+    "description": "Date picker placeholder"
+  },
+  "timePickerAM": "AM",
+  "@timePickerAM": {
+    "description": "AM time period"
+  },
+  "timePickerPM": "PM",
+  "@timePickerPM": {
+    "description": "PM time period"
+  },
+  "timePickerPlaceholder": "Selecionar hora",
+  "@timePickerPlaceholder": {
+    "description": "Time picker placeholder"
+  },
+  "fileUploadInstruction": "Clique para enviar arquivo",
+  "@fileUploadInstruction": {
+    "description": "File upload instruction"
+  },
+  "fileUploadAllowed": "Permitido: {extensions}",
+  "@fileUploadAllowed": {
+    "description": "Allowed file extensions",
+    "placeholders": {
+      "extensions": {
+        "type": "String"
+      }
+    }
+  },
+  "menuButtonTooltip": "Mais opções",
+  "@menuButtonTooltip": {
+    "description": "Default menu button tooltip"
+  },
+  "breadcrumbEllipsis": "...",
+  "@breadcrumbEllipsis": {
+    "description": "Breadcrumb ellipsis"
+  },
+  "breadcrumbTooltipShowPath": "Mostrar caminho",
+  "@breadcrumbTooltipShowPath": {
+    "description": "Breadcrumb show path tooltip"
+  },
+  "hotkeyModCtrl": "Ctrl",
+  "@hotkeyModCtrl": {
+    "description": "Ctrl modifier key"
+  },
+  "hotkeyModAlt": "Alt",
+  "@hotkeyModAlt": {
+    "description": "Alt modifier key"
+  },
+  "hotkeyModShift": "Shift",
+  "@hotkeyModShift": {
+    "description": "Shift modifier key"
+  },
+  "hotkeyModWin": "Win",
+  "@hotkeyModWin": {
+    "description": "Windows modifier key"
+  },
+  "hotkeySpace": "Espaço",
+  "@hotkeySpace": {
+    "description": "Space key"
+  },
+  "hotkeyEnter": "Enter",
+  "@hotkeyEnter": {
+    "description": "Enter key"
+  },
+  "hotkeyTab": "Tab",
+  "@hotkeyTab": {
+    "description": "Tab key"
+  },
+  "hotkeyBackspace": "Backspace",
+  "@hotkeyBackspace": {
+    "description": "Backspace key"
+  },
+  "hotkeyDelete": "Del",
+  "@hotkeyDelete": {
+    "description": "Delete key"
+  },
+  "hotkeyEscape": "Esc",
+  "@hotkeyEscape": {
+    "description": "Escape key"
+  },
+  "hotkeyHome": "Home",
+  "@hotkeyHome": {
+    "description": "Home key"
+  },
+  "hotkeyEnd": "End",
+  "@hotkeyEnd": {
+    "description": "End key"
+  },
+  "hotkeyPageUp": "PgUp",
+  "@hotkeyPageUp": {
+    "description": "Page Up key"
+  },
+  "hotkeyPageDown": "PgDn",
+  "@hotkeyPageDown": {
+    "description": "Page Down key"
+  },
+  "statusDashboardCurrentActivity": "Atividade atual",
+  "@statusDashboardCurrentActivity": {
+    "description": "Current activity label"
+  },
+  "statusDashboardNotStarted": "Não iniciado",
+  "@statusDashboardNotStarted": {
+    "description": "Not started status"
+  },
+  "statusDashboardReady": "Pronto",
+  "@statusDashboardReady": {
+    "description": "Ready status"
+  },
+  "statusDashboardCheckingApp": "Verificando aplicativo ativo",
+  "@statusDashboardCheckingApp": {
+    "description": "Checking app status"
+  },
+  "statusDashboardFindingCategory": "Procurando categoria",
+  "@statusDashboardFindingCategory": {
+    "description": "Finding category status"
+  },
+  "statusDashboardUpdating": "Atualizando categoria",
+  "@statusDashboardUpdating": {
+    "description": "Updating status"
+  },
+  "statusDashboardWaiting": "Aguardando confirmação",
+  "@statusDashboardWaiting": {
+    "description": "Waiting status"
+  },
+  "statusDashboardError": "Ocorreu um erro",
+  "@statusDashboardError": {
+    "description": "Error status"
+  },
+  "mappingListOfCount": "{count} de {total}",
+  "@mappingListOfCount": {
+    "description": "Count display for filtered mappings",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingListActionDelete": "Excluir",
+  "@mappingListActionDelete": {
+    "description": "Action label for delete"
+  },
+  "mappingListActionEnable": "Ativar",
+  "@mappingListActionEnable": {
+    "description": "Action label for enable"
+  },
+  "mappingListActionDisable": "Desativar",
+  "@mappingListActionDisable": {
+    "description": "Action label for disable"
+  },
+  "autoSwitcherTimeSecondsAgo": "{seconds}s atrás",
+  "@autoSwitcherTimeSecondsAgo": {
+    "description": "Time format for seconds ago",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "autoSwitcherTimeMinutesAgo": "{minutes}m atrás",
+  "@autoSwitcherTimeMinutesAgo": {
+    "description": "Time format for minutes ago",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "autoSwitcherTimeHoursAgo": "{hours}h atrás",
+  "@autoSwitcherTimeHoursAgo": {
+    "description": "Time format for hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "settingsDebounceTimeDescription": "Tempo de espera antes de alternar a categoria após mudança de aplicativo (evita alternâncias rápidas)",
   "@settingsDebounceTimeDescription": {
     "description": "Debounce time setting description"

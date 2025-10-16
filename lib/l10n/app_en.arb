@@ -1398,5 +1398,930 @@
   "versionStatusPlatformNotSupported": "Updates not supported on this platform",
   "@versionStatusPlatformNotSupported": {
     "description": "Version status tooltip when platform doesn't support updates"
+  },
+  "notificationMissingCategoryTitle": "Category Mapping Not Found",
+  "@notificationMissingCategoryTitle": {
+    "description": "Notification title for missing category mapping"
+  },
+  "notificationMissingCategoryBody": "No Twitch category found for: {processName}",
+  "@notificationMissingCategoryBody": {
+    "description": "Notification body for missing category mapping",
+    "placeholders": {
+      "processName": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationActionAssignCategory": "Assign Category",
+  "@notificationActionAssignCategory": {
+    "description": "Notification action button to assign category"
+  },
+  "notificationCategoryUpdatedTitle": "Category Updated",
+  "@notificationCategoryUpdatedTitle": {
+    "description": "Notification title for successful category update"
+  },
+  "notificationCategoryUpdatedBody": "Switched to \"{categoryName}\" for {processName}",
+  "@notificationCategoryUpdatedBody": {
+    "description": "Notification body for successful category update",
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      },
+      "processName": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingListColumnSource": "Source",
+  "@mappingListColumnSource": {
+    "description": "Source column header in mapping list"
+  },
+  "mappingListColumnEnabled": "Enabled",
+  "@mappingListColumnEnabled": {
+    "description": "Enabled column header in mapping list"
+  },
+  "mappingListTooltipIgnored": "This category is ignored",
+  "@mappingListTooltipIgnored": {
+    "description": "Tooltip for ignored category"
+  },
+  "mappingListTooltipTwitchId": "Twitch ID: {twitchCategoryId}",
+  "@mappingListTooltipTwitchId": {
+    "description": "Tooltip showing Twitch category ID",
+    "placeholders": {
+      "twitchCategoryId": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingListCategoryIgnored": "Ignored",
+  "@mappingListCategoryIgnored": {
+    "description": "Text for ignored category"
+  },
+  "mappingListSourceUnknown": "Unknown",
+  "@mappingListSourceUnknown": {
+    "description": "Unknown source fallback text"
+  },
+  "mappingListSelected": "{count} selected",
+  "@mappingListSelected": {
+    "description": "Selection count status",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingListSelectedVisible": "{count} selected ({visible} visible)",
+  "@mappingListSelectedVisible": {
+    "description": "Selection count with visible count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "visible": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingListButtonInvert": "Invert",
+  "@mappingListButtonInvert": {
+    "description": "Invert selection button"
+  },
+  "mappingListButtonClear": "Clear",
+  "@mappingListButtonClear": {
+    "description": "Clear selection button"
+  },
+  "mappingListButtonUndo": "Undo {action}",
+  "@mappingListButtonUndo": {
+    "description": "Undo action button",
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingListButtonExport": "Export",
+  "@mappingListButtonExport": {
+    "description": "Export mappings button"
+  },
+  "mappingListButtonEnable": "Enable",
+  "@mappingListButtonEnable": {
+    "description": "Enable selected mappings button"
+  },
+  "mappingListButtonDisable": "Disable",
+  "@mappingListButtonDisable": {
+    "description": "Disable selected mappings button"
+  },
+  "mappingListButtonDelete": "Delete",
+  "@mappingListButtonDelete": {
+    "description": "Delete selected mappings button"
+  },
+  "mappingListTooltipCannotDelete": "Cannot delete mappings from read-only lists",
+  "@mappingListTooltipCannotDelete": {
+    "description": "Tooltip when delete is disabled"
+  },
+  "mappingListTooltipDelete": "Delete selected mappings",
+  "@mappingListTooltipDelete": {
+    "description": "Tooltip for delete button"
+  },
+  "mappingListSearchHint": "Search by process name or category...",
+  "@mappingListSearchHint": {
+    "description": "Search input placeholder"
+  },
+  "mappingListTooltipClearSearch": "Clear search",
+  "@mappingListTooltipClearSearch": {
+    "description": "Tooltip for clear search button"
+  },
+  "listManagementEmptyState": "No lists found",
+  "@listManagementEmptyState": {
+    "description": "Empty state message for list management"
+  },
+  "listManagementTitle": "Manage Lists",
+  "@listManagementTitle": {
+    "description": "List management dialog title"
+  },
+  "listManagementSyncNow": "Sync now",
+  "@listManagementSyncNow": {
+    "description": "Sync now tooltip"
+  },
+  "listManagementBadgeLocal": "LOCAL",
+  "@listManagementBadgeLocal": {
+    "description": "Badge for local lists"
+  },
+  "listManagementBadgeOfficial": "OFFICIAL",
+  "@listManagementBadgeOfficial": {
+    "description": "Badge for official lists"
+  },
+  "listManagementBadgeRemote": "REMOTE",
+  "@listManagementBadgeRemote": {
+    "description": "Badge for remote lists"
+  },
+  "listManagementBadgeReadOnly": "READ-ONLY",
+  "@listManagementBadgeReadOnly": {
+    "description": "Badge for read-only lists"
+  },
+  "listManagementButtonImport": "Import List",
+  "@listManagementButtonImport": {
+    "description": "Import list button"
+  },
+  "listManagementButtonSyncAll": "Sync All",
+  "@listManagementButtonSyncAll": {
+    "description": "Sync all lists button"
+  },
+  "listManagementButtonClose": "Close",
+  "@listManagementButtonClose": {
+    "description": "Close dialog button"
+  },
+  "listManagementImportTitle": "Import List",
+  "@listManagementImportTitle": {
+    "description": "Import list dialog title"
+  },
+  "listManagementImportUrl": "List URL",
+  "@listManagementImportUrl": {
+    "description": "URL field label"
+  },
+  "listManagementImportUrlPlaceholder": "https://example.com/mappings.json",
+  "@listManagementImportUrlPlaceholder": {
+    "description": "URL field placeholder"
+  },
+  "listManagementImportName": "List Name (optional)",
+  "@listManagementImportName": {
+    "description": "Name field label"
+  },
+  "listManagementImportNameHelper": "If not provided, will use name from JSON file",
+  "@listManagementImportNameHelper": {
+    "description": "Name field helper text"
+  },
+  "listManagementImportNamePlaceholder": "My Custom List",
+  "@listManagementImportNamePlaceholder": {
+    "description": "Name field placeholder"
+  },
+  "listManagementImportDescription": "Description (optional)",
+  "@listManagementImportDescription": {
+    "description": "Description field label"
+  },
+  "listManagementImportDescriptionHelper": "If not provided, will use description from JSON file",
+  "@listManagementImportDescriptionHelper": {
+    "description": "Description field helper text"
+  },
+  "listManagementImportDescriptionPlaceholder": "A collection of game mappings",
+  "@listManagementImportDescriptionPlaceholder": {
+    "description": "Description field placeholder"
+  },
+  "listManagementButtonCancel": "Cancel",
+  "@listManagementButtonCancel": {
+    "description": "Cancel import button"
+  },
+  "listManagementButtonImportConfirm": "Import",
+  "@listManagementButtonImportConfirm": {
+    "description": "Confirm import button"
+  },
+  "listManagementDefaultName": "Imported List",
+  "@listManagementDefaultName": {
+    "description": "Default name for imported lists"
+  },
+  "listManagementImportSuccess": "List imported successfully",
+  "@listManagementImportSuccess": {
+    "description": "Success message after import"
+  },
+  "listManagementSyncNever": "never",
+  "@listManagementSyncNever": {
+    "description": "Sync time: never synced"
+  },
+  "listManagementSyncJustNow": "just now",
+  "@listManagementSyncJustNow": {
+    "description": "Sync time: just now"
+  },
+  "listManagementSyncMinutesAgo": "{minutes}m ago",
+  "@listManagementSyncMinutesAgo": {
+    "description": "Sync time: minutes ago",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncHoursAgo": "{hours}h ago",
+  "@listManagementSyncHoursAgo": {
+    "description": "Sync time: hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncDaysAgo": "{days}d ago",
+  "@listManagementSyncDaysAgo": {
+    "description": "Sync time: days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncDaysHoursAgo": "{days}d {hours}h ago",
+  "@listManagementSyncDaysHoursAgo": {
+    "description": "Sync time: days and hours ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementMappingsCount": "{count} mappings",
+  "@listManagementMappingsCount": {
+    "description": "Mapping count display",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncFailed": "Sync failed:",
+  "@listManagementSyncFailed": {
+    "description": "Sync failed error prefix"
+  },
+  "listManagementLastSynced": "Last synced:",
+  "@listManagementLastSynced": {
+    "description": "Last synced label"
+  },
+  "unknownGameIgnoreProcess": "Ignore Process",
+  "@unknownGameIgnoreProcess": {
+    "description": "Option to ignore a process"
+  },
+  "unknownGameCategoryId": "ID: {id}",
+  "@unknownGameCategoryId": {
+    "description": "Category ID display",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameSubmissionTitle": "Submission Required",
+  "@unknownGameSubmissionTitle": {
+    "description": "Submission section title"
+  },
+  "unknownGameSubmissionInfo": "This mapping will be saved locally and submitted to the list owner for approval. Once approved and synced, your local copy will be automatically replaced.",
+  "@unknownGameSubmissionInfo": {
+    "description": "Submission workflow information"
+  },
+  "unknownGameSectionLists": "LISTS",
+  "@unknownGameSectionLists": {
+    "description": "Lists section header"
+  },
+  "unknownGameListMappingCount": "{count} mappings",
+  "@unknownGameListMappingCount": {
+    "description": "Mapping count for a list",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "unknownGameBadgeStaged": "STAGED",
+  "@unknownGameBadgeStaged": {
+    "description": "Badge for staged mappings"
+  },
+  "unknownGameIgnoredProcess": "IGNORED PROCESS",
+  "@unknownGameIgnoredProcess": {
+    "description": "Label for ignored process"
+  },
+  "unknownGameSelectedCategoryId": "ID: {id}",
+  "@unknownGameSelectedCategoryId": {
+    "description": "Selected category ID display",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameWorkflowTitle": "Submission Workflow",
+  "@unknownGameWorkflowTitle": {
+    "description": "Workflow explanation title"
+  },
+  "unknownGameWorkflowTitleAlt": "What Happens Next",
+  "@unknownGameWorkflowTitleAlt": {
+    "description": "Alternative workflow title"
+  },
+  "unknownGameWorkflowStepLocal": "Saved locally to My Custom Mappings",
+  "@unknownGameWorkflowStepLocal": {
+    "description": "Local save workflow step"
+  },
+  "unknownGameWorkflowStepLocalDesc": "Stored on your device first, so the mapping works immediately",
+  "@unknownGameWorkflowStepLocalDesc": {
+    "description": "Local save workflow step description"
+  },
+  "unknownGameWorkflowStepSubmit": "Submitted to {listName}",
+  "@unknownGameWorkflowStepSubmit": {
+    "description": "Submission workflow step",
+    "placeholders": {
+      "listName": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameWorkflowStepSubmitDesc": "Automatically sent to the list owner for review and approval",
+  "@unknownGameWorkflowStepSubmitDesc": {
+    "description": "Submission workflow step description"
+  },
+  "unknownGameWorkflowStepReplace": "Local copy replaced when approved",
+  "@unknownGameWorkflowStepReplace": {
+    "description": "Replacement workflow step"
+  },
+  "unknownGameWorkflowStepReplaceDesc": "Once accepted and synced, your local copy is removed and replaced with the official version from {listName}",
+  "@unknownGameWorkflowStepReplaceDesc": {
+    "description": "Replacement workflow step description",
+    "placeholders": {
+      "listName": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameSavedTo": "Saved to {listName}",
+  "@unknownGameSavedTo": {
+    "description": "Confirmation of save destination",
+    "placeholders": {
+      "listName": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameIgnoredInfo": "This process will be ignored and won't trigger notifications",
+  "@unknownGameIgnoredInfo": {
+    "description": "Information about ignoring a process"
+  },
+  "unknownGameLocalSaveInfo": "Your mapping is saved locally and will work immediately",
+  "@unknownGameLocalSaveInfo": {
+    "description": "Information about local save"
+  },
+  "unknownGamePrivacyInfo": "This mapping is private and only stored on your device",
+  "@unknownGamePrivacyInfo": {
+    "description": "Privacy information for local mappings"
+  },
+  "autoSwitcherError": "Error: {error}",
+  "@autoSwitcherError": {
+    "description": "Error message display",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "autoSwitcherStatusActive": "Auto-switching active",
+  "@autoSwitcherStatusActive": {
+    "description": "Auto-switcher active status"
+  },
+  "autoSwitcherStatusInactive": "Not monitoring",
+  "@autoSwitcherStatusInactive": {
+    "description": "Auto-switcher inactive status"
+  },
+  "autoSwitcherLabelActiveApp": "Active app",
+  "@autoSwitcherLabelActiveApp": {
+    "description": "Label for active app display"
+  },
+  "autoSwitcherLabelCategory": "Category",
+  "@autoSwitcherLabelCategory": {
+    "description": "Label for category display"
+  },
+  "autoSwitcherValueNone": "None",
+  "@autoSwitcherValueNone": {
+    "description": "None value"
+  },
+  "autoSwitcherDescriptionActive": "Your category automatically changes when you switch apps.",
+  "@autoSwitcherDescriptionActive": {
+    "description": "Description when auto-switcher is active"
+  },
+  "autoSwitcherButtonTurnOff": "Turn Off",
+  "@autoSwitcherButtonTurnOff": {
+    "description": "Turn off auto-switcher button"
+  },
+  "autoSwitcherInstructionPress": "Press",
+  "@autoSwitcherInstructionPress": {
+    "description": "Instruction text before hotkey"
+  },
+  "autoSwitcherInstructionManual": "to update manually to focused process",
+  "@autoSwitcherInstructionManual": {
+    "description": "Instruction for manual update"
+  },
+  "autoSwitcherHeadingEnable": "Enable automatic switching",
+  "@autoSwitcherHeadingEnable": {
+    "description": "Heading for enable section"
+  },
+  "autoSwitcherDescriptionInactive": "Categories will change automatically when you switch between apps.",
+  "@autoSwitcherDescriptionInactive": {
+    "description": "Description when auto-switcher is inactive"
+  },
+  "autoSwitcherButtonTurnOn": "Turn On",
+  "@autoSwitcherButtonTurnOn": {
+    "description": "Turn on auto-switcher button"
+  },
+  "autoSwitcherInstructionOr": "Or press",
+  "@autoSwitcherInstructionOr": {
+    "description": "Alternative instruction text"
+  },
+  "settingsTabMappings": "Mappings",
+  "@settingsTabMappings": {
+    "description": "Mappings settings tab"
+  },
+  "settingsTabTheme": "Theme",
+  "@settingsTabTheme": {
+    "description": "Theme settings tab"
+  },
+  "settingsAutoSyncOnStart": "Auto-sync mappings on app start",
+  "@settingsAutoSyncOnStart": {
+    "description": "Auto-sync on start setting label"
+  },
+  "settingsAutoSyncOnStartDesc": "Automatically sync mapping lists when the application starts",
+  "@settingsAutoSyncOnStartDesc": {
+    "description": "Auto-sync on start setting description"
+  },
+  "settingsAutoSyncInterval": "Auto-sync interval",
+  "@settingsAutoSyncInterval": {
+    "description": "Auto-sync interval setting label"
+  },
+  "settingsAutoSyncIntervalDesc": "How often to automatically sync mapping lists (0 = never)",
+  "@settingsAutoSyncIntervalDesc": {
+    "description": "Auto-sync interval setting description"
+  },
+  "settingsAutoSyncNever": "Never",
+  "@settingsAutoSyncNever": {
+    "description": "Never sync option"
+  },
+  "settingsTimingTitle": "HOW THESE SETTINGS WORK TOGETHER",
+  "@settingsTimingTitle": {
+    "description": "Timing explanation section title"
+  },
+  "settingsTimingStep1": "App checks for focused window every {scanInterval}s",
+  "@settingsTimingStep1": {
+    "description": "Timing explanation step 1",
+    "placeholders": {
+      "scanInterval": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTimingStep2Instant": "Category switches immediately when new app detected",
+  "@settingsTimingStep2Instant": {
+    "description": "Timing explanation step 2 (instant)"
+  },
+  "settingsTimingStep2Debounce": "Waits {debounce}s after detecting new app (debounce)",
+  "@settingsTimingStep2Debounce": {
+    "description": "Timing explanation step 2 (with debounce)",
+    "placeholders": {
+      "debounce": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTimingStep3Instant": "Total switch time: {scanInterval}s (instant after detection)",
+  "@settingsTimingStep3Instant": {
+    "description": "Timing explanation step 3 (instant)",
+    "placeholders": {
+      "scanInterval": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTimingStep3Debounce": "Total switch time: {scanInterval}s to {scanDebounce}s",
+  "@settingsTimingStep3Debounce": {
+    "description": "Timing explanation step 3 (with debounce)",
+    "placeholders": {
+      "scanInterval": {
+        "type": "int"
+      },
+      "scanDebounce": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsFramelessWindow": "Use Frameless Window",
+  "@settingsFramelessWindow": {
+    "description": "Frameless window setting label"
+  },
+  "settingsFramelessWindowDesc": "Remove the Windows title bar for a modern, borderless look with rounded corners",
+  "@settingsFramelessWindowDesc": {
+    "description": "Frameless window setting description"
+  },
+  "settingsInvertLayout": "Invert Footer/Header",
+  "@settingsInvertLayout": {
+    "description": "Invert layout setting label"
+  },
+  "settingsInvertLayoutDesc": "Swap the positions of the header and footer sections",
+  "@settingsInvertLayoutDesc": {
+    "description": "Invert layout setting description"
+  },
+  "settingsTokenExpired": "Expired",
+  "@settingsTokenExpired": {
+    "description": "Token expired status"
+  },
+  "settingsTokenExpiresDays": "Expires in {days}d {hours}h",
+  "@settingsTokenExpiresDays": {
+    "description": "Token expires in days and hours",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTokenExpiresHours": "Expires in {hours}h {minutes}m",
+  "@settingsTokenExpiresHours": {
+    "description": "Token expires in hours and minutes",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTokenExpiresMinutes": "Expires in {minutes}m",
+  "@settingsTokenExpiresMinutes": {
+    "description": "Token expires in minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsResetDesc": "Reset all settings and data to factory defaults",
+  "@settingsResetDesc": {
+    "description": "Reset settings description"
+  },
+  "settingsButtonReset": "Reset",
+  "@settingsButtonReset": {
+    "description": "Reset button"
+  },
+  "mappingEditorSummary": "{count} process mapping{plural} from {lists} active list{pluralLists}",
+  "@mappingEditorSummary": {
+    "description": "Mapping editor summary text",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      },
+      "lists": {
+        "type": "int"
+      },
+      "pluralLists": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingEditorBreakdown": "{custom} custom, {community} from community lists",
+  "@mappingEditorBreakdown": {
+    "description": "Mapping breakdown text",
+    "placeholders": {
+      "custom": {
+        "type": "int"
+      },
+      "community": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingEditorButtonLists": "Lists",
+  "@mappingEditorButtonLists": {
+    "description": "Lists button"
+  },
+  "mappingEditorButtonAdd": "Add",
+  "@mappingEditorButtonAdd": {
+    "description": "Add mapping button"
+  },
+  "mappingEditorDeleteTitle": "Delete Multiple Mappings",
+  "@mappingEditorDeleteTitle": {
+    "description": "Delete confirmation dialog title"
+  },
+  "mappingEditorDeleteMessage": "Are you sure you want to delete {count} mapping{plural}? This action cannot be undone.",
+  "@mappingEditorDeleteMessage": {
+    "description": "Delete confirmation message",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingEditorExportTitle": "Export Mappings",
+  "@mappingEditorExportTitle": {
+    "description": "Export dialog title"
+  },
+  "mappingEditorExportFilename": "my-mappings.json",
+  "@mappingEditorExportFilename": {
+    "description": "Default export filename"
+  },
+  "mappingEditorExportSuccess": "Exported {count} mapping{plural} to",
+  "@mappingEditorExportSuccess": {
+    "description": "Export success message",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingEditorExportFailed": "Export Failed",
+  "@mappingEditorExportFailed": {
+    "description": "Export failed error title"
+  },
+  "addMappingPrivacySafe": "Privacy-Safe Path",
+  "@addMappingPrivacySafe": {
+    "description": "Privacy-safe path label"
+  },
+  "addMappingCustomLocation": "Custom Location",
+  "@addMappingCustomLocation": {
+    "description": "Custom location label"
+  },
+  "addMappingOnlyFolder": "Only game folder names stored",
+  "@addMappingOnlyFolder": {
+    "description": "Privacy info: only folder names"
+  },
+  "addMappingNotStored": "Path not stored for privacy",
+  "@addMappingNotStored": {
+    "description": "Privacy info: path not stored"
+  },
+  "colorPickerTitle": "Pick Color",
+  "@colorPickerTitle": {
+    "description": "Color picker dialog title"
+  },
+  "colorPickerHue": "Hue",
+  "@colorPickerHue": {
+    "description": "Hue slider label"
+  },
+  "colorPickerSaturation": "Saturation",
+  "@colorPickerSaturation": {
+    "description": "Saturation slider label"
+  },
+  "colorPickerValue": "Value",
+  "@colorPickerValue": {
+    "description": "Value slider label"
+  },
+  "colorPickerButtonCancel": "Cancel",
+  "@colorPickerButtonCancel": {
+    "description": "Color picker cancel button"
+  },
+  "colorPickerButtonSelect": "Select",
+  "@colorPickerButtonSelect": {
+    "description": "Color picker select button"
+  },
+  "dropdownPlaceholder": "Select an option",
+  "@dropdownPlaceholder": {
+    "description": "Dropdown placeholder text"
+  },
+  "dropdownSearchHint": "Search...",
+  "@dropdownSearchHint": {
+    "description": "Dropdown search hint"
+  },
+  "dropdownNoResults": "No results found",
+  "@dropdownNoResults": {
+    "description": "Dropdown no results message"
+  },
+  "paginationPageInfo": "Page {current} of {total}",
+  "@paginationPageInfo": {
+    "description": "Pagination page information",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "paginationGoTo": "Go to:",
+  "@paginationGoTo": {
+    "description": "Jump to page label"
+  },
+  "datePickerPlaceholder": "Select date",
+  "@datePickerPlaceholder": {
+    "description": "Date picker placeholder"
+  },
+  "timePickerAM": "AM",
+  "@timePickerAM": {
+    "description": "AM time period"
+  },
+  "timePickerPM": "PM",
+  "@timePickerPM": {
+    "description": "PM time period"
+  },
+  "timePickerPlaceholder": "Select time",
+  "@timePickerPlaceholder": {
+    "description": "Time picker placeholder"
+  },
+  "fileUploadInstruction": "Click to upload file",
+  "@fileUploadInstruction": {
+    "description": "File upload instruction"
+  },
+  "fileUploadAllowed": "Allowed: {extensions}",
+  "@fileUploadAllowed": {
+    "description": "Allowed file extensions",
+    "placeholders": {
+      "extensions": {
+        "type": "String"
+      }
+    }
+  },
+  "menuButtonTooltip": "More options",
+  "@menuButtonTooltip": {
+    "description": "Default menu button tooltip"
+  },
+  "breadcrumbEllipsis": "...",
+  "@breadcrumbEllipsis": {
+    "description": "Breadcrumb ellipsis"
+  },
+  "breadcrumbTooltipShowPath": "Show path",
+  "@breadcrumbTooltipShowPath": {
+    "description": "Breadcrumb show path tooltip"
+  },
+  "hotkeyModCtrl": "Ctrl",
+  "@hotkeyModCtrl": {
+    "description": "Ctrl modifier key"
+  },
+  "hotkeyModAlt": "Alt",
+  "@hotkeyModAlt": {
+    "description": "Alt modifier key"
+  },
+  "hotkeyModShift": "Shift",
+  "@hotkeyModShift": {
+    "description": "Shift modifier key"
+  },
+  "hotkeyModWin": "Win",
+  "@hotkeyModWin": {
+    "description": "Windows modifier key"
+  },
+  "hotkeySpace": "Space",
+  "@hotkeySpace": {
+    "description": "Space key"
+  },
+  "hotkeyEnter": "Enter",
+  "@hotkeyEnter": {
+    "description": "Enter key"
+  },
+  "hotkeyTab": "Tab",
+  "@hotkeyTab": {
+    "description": "Tab key"
+  },
+  "hotkeyBackspace": "Bksp",
+  "@hotkeyBackspace": {
+    "description": "Backspace key"
+  },
+  "hotkeyDelete": "Del",
+  "@hotkeyDelete": {
+    "description": "Delete key"
+  },
+  "hotkeyEscape": "Esc",
+  "@hotkeyEscape": {
+    "description": "Escape key"
+  },
+  "hotkeyHome": "Home",
+  "@hotkeyHome": {
+    "description": "Home key"
+  },
+  "hotkeyEnd": "End",
+  "@hotkeyEnd": {
+    "description": "End key"
+  },
+  "hotkeyPageUp": "PgUp",
+  "@hotkeyPageUp": {
+    "description": "Page Up key"
+  },
+  "hotkeyPageDown": "PgDn",
+  "@hotkeyPageDown": {
+    "description": "Page Down key"
+  },
+  "statusDashboardCurrentActivity": "Current Activity",
+  "@statusDashboardCurrentActivity": {
+    "description": "Current activity label"
+  },
+  "statusDashboardNotStarted": "Not started",
+  "@statusDashboardNotStarted": {
+    "description": "Not started status"
+  },
+  "statusDashboardReady": "Ready",
+  "@statusDashboardReady": {
+    "description": "Ready status"
+  },
+  "statusDashboardCheckingApp": "Checking active app",
+  "@statusDashboardCheckingApp": {
+    "description": "Checking app status"
+  },
+  "statusDashboardFindingCategory": "Finding category",
+  "@statusDashboardFindingCategory": {
+    "description": "Finding category status"
+  },
+  "statusDashboardUpdating": "Updating category",
+  "@statusDashboardUpdating": {
+    "description": "Updating status"
+  },
+  "statusDashboardWaiting": "Waiting for confirmation",
+  "@statusDashboardWaiting": {
+    "description": "Waiting status"
+  },
+  "statusDashboardError": "Error occurred",
+  "@statusDashboardError": {
+    "description": "Error status"
+  },
+  "mappingListOfCount": "{count} of {total}",
+  "@mappingListOfCount": {
+    "description": "Count display for filtered mappings",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingListActionDelete": "Delete",
+  "@mappingListActionDelete": {
+    "description": "Action label for delete"
+  },
+  "mappingListActionEnable": "Enable",
+  "@mappingListActionEnable": {
+    "description": "Action label for enable"
+  },
+  "mappingListActionDisable": "Disable",
+  "@mappingListActionDisable": {
+    "description": "Action label for disable"
+  },
+  "autoSwitcherTimeSecondsAgo": "{seconds}s ago",
+  "@autoSwitcherTimeSecondsAgo": {
+    "description": "Time format for seconds ago",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "autoSwitcherTimeMinutesAgo": "{minutes}m ago",
+  "@autoSwitcherTimeMinutesAgo": {
+    "description": "Time format for minutes ago",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "autoSwitcherTimeHoursAgo": "{hours}h ago",
+  "@autoSwitcherTimeHoursAgo": {
+    "description": "Time format for hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
   }
 }

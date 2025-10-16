@@ -295,9 +295,9 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
       tabs: [
         Tab(text: l10n.settingsTabGeneral),
         Tab(text: l10n.settingsTabAutoSwitcher),
-        const Tab(text: 'Mappings'),
+        Tab(text: l10n.settingsTabMappings),
         Tab(text: l10n.settingsTabKeyboard),
-        const Tab(text: 'Theme'),
+        Tab(text: l10n.settingsTabTheme),
         Tab(text: l10n.settingsTabTwitch),
         Tab(text: l10n.settingsTabAdvanced),
       ],
@@ -579,8 +579,8 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
             SettingsCheckbox(
-              label: 'Auto-sync mappings on app start',
-              subtitle: 'Automatically sync mapping lists when the application starts',
+              label: l10n.settingsAutoSyncOnStart,
+              subtitle: l10n.settingsAutoSyncOnStartDesc,
               value: settings.autoSyncMappingsOnStart,
               onChanged: (value) {
                 _updateSettings(
@@ -590,13 +590,13 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
             ),
             const VSpace.md(),
             SettingsSlider(
-              label: 'Auto-sync interval',
-              description: 'How often to automatically sync mapping lists (0 = never)',
+              label: l10n.settingsAutoSyncInterval,
+              description: l10n.settingsAutoSyncIntervalDesc,
               value: settings.mappingsSyncIntervalHours.toDouble(),
               min: 0,
               max: 168,
               divisions: 168,
-              valueFormatter: (value) => _formatSyncInterval(value.toInt()),
+              valueFormatter: (value) => _formatSyncInterval(value.toInt(), l10n),
               onChanged: (value) {
                 _updateSettings(
                   settings.copyWith(mappingsSyncIntervalHours: value.toInt()),
@@ -611,9 +611,9 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
     );
   }
 
-  String _formatSyncInterval(int hours) {
+  String _formatSyncInterval(int hours, AppLocalizations l10n) {
     if (hours == 0) {
-      return 'Never';
+      return l10n.settingsAutoSyncNever;
     } else if (hours < 24) {
       return '${hours}h';
     } else {
@@ -629,6 +629,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
   }
 
   Widget _buildTimingExplanation(int scanInterval, int debounce) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(TKitSpacing.md),
       decoration: BoxDecoration(
@@ -651,7 +652,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
               ),
               const SizedBox(width: 8),
               Text(
-                'HOW THESE SETTINGS WORK TOGETHER',
+                l10n.settingsTimingTitle,
                 style: TKitTextStyles.labelSmall.copyWith(
                   color: TKitColors.accent,
                   fontWeight: FontWeight.bold,
@@ -663,23 +664,23 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
           const SizedBox(height: 8),
           _buildTimingStep(
             '1',
-            'App checks for focused window every ${scanInterval}s',
+            l10n.settingsTimingStep1(scanInterval),
             TKitColors.accent,
           ),
           const SizedBox(height: 4),
           _buildTimingStep(
             '2',
             debounce == 0
-                ? 'Category switches immediately when new app detected'
-                : 'Waits ${debounce}s after detecting new app (debounce)',
+                ? l10n.settingsTimingStep2Instant
+                : l10n.settingsTimingStep2Debounce(debounce),
             TKitColors.accent,
           ),
           const SizedBox(height: 4),
           _buildTimingStep(
             '→',
             debounce == 0
-                ? 'Total switch time: ${scanInterval}s (instant after detection)'
-                : 'Total switch time: ${scanInterval}s to ${scanInterval + debounce}s',
+                ? l10n.settingsTimingStep3Instant(scanInterval)
+                : l10n.settingsTimingStep3Debounce(scanInterval, scanInterval + debounce),
             TKitColors.success,
           ),
         ],
@@ -760,8 +761,8 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
             SettingsCheckbox(
-              label: 'Use Frameless Window',
-              subtitle: 'Remove the Windows title bar for a modern, borderless look with rounded corners',
+              label: l10n.settingsFramelessWindow,
+              subtitle: l10n.settingsFramelessWindowDesc,
               value: settings.useFramelessWindow,
               onChanged: (value) async {
                 final newValue = value ?? false;
@@ -777,8 +778,8 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
             ),
             const VSpace.sm(),
             SettingsCheckbox(
-              label: 'Invert Footer/Header',
-              subtitle: 'Swap the positions of the header and footer sections',
+              label: l10n.settingsInvertLayout,
+              subtitle: l10n.settingsInvertLayoutDesc,
               value: settings.invertFooterHeader,
               onChanged: (value) {
                 _updateSettings(
@@ -981,6 +982,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                       future: ref.read(authProvider.notifier).getTokenExpiration(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data != null) {
+                          final l10n = AppLocalizations.of(context)!;
                           final expiresAt = snapshot.data!;
                           final now = DateTime.now();
                           final isExpired = expiresAt.isBefore(now);
@@ -988,16 +990,21 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
 
                           String expiryText;
                           if (isExpired) {
-                            expiryText = 'Expired';
+                            expiryText = l10n.settingsTokenExpired;
                           } else if (timeRemaining.inDays > 0) {
-                            expiryText =
-                                'Expires in ${timeRemaining.inDays}d ${timeRemaining.inHours % 24}h';
+                            expiryText = l10n.settingsTokenExpiresDays(
+                              timeRemaining.inDays,
+                              timeRemaining.inHours % 24,
+                            );
                           } else if (timeRemaining.inHours > 0) {
-                            expiryText =
-                                'Expires in ${timeRemaining.inHours}h ${timeRemaining.inMinutes % 60}m';
+                            expiryText = l10n.settingsTokenExpiresHours(
+                              timeRemaining.inHours,
+                              timeRemaining.inMinutes % 60,
+                            );
                           } else {
-                            expiryText =
-                                'Expires in ${timeRemaining.inMinutes}m';
+                            expiryText = l10n.settingsTokenExpiresMinutes(
+                              timeRemaining.inMinutes,
+                            );
                           }
 
                           return Row(
@@ -1115,7 +1122,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                     ),
                     const VSpace.xs(),
                     Text(
-                      'Reset all settings and data to factory defaults',
+                      l10n.settingsResetDesc,
                       style: TKitTextStyles.caption.copyWith(
                         color: TKitColors.textSecondary,
                       ),
@@ -1125,7 +1132,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
               ),
               const HSpace.md(),
               AccentButton(
-                text: 'Reset',
+                text: l10n.settingsButtonReset,
                 icon: Icons.restore,
                 onPressed: () => _showFactoryResetDialog(context),
               ),

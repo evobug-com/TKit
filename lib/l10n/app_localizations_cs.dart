@@ -378,7 +378,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get updateDialogRemindLater => 'Připomenout později';
 
   @override
-  String get updateDialogIgnore => 'Ignore This Version';
+  String get updateDialogIgnore => 'Ignorovat tuto verzi';
 
   @override
   String get settingsDebounceTimeDescription =>
@@ -1128,4 +1128,637 @@ class AppLocalizationsCs extends AppLocalizations {
   @override
   String get versionStatusPlatformNotSupported =>
       'Aktualizace nejsou na této platformě podporovány';
+
+  @override
+  String get notificationMissingCategoryTitle =>
+      'Mapování kategorie nenalezeno';
+
+  @override
+  String notificationMissingCategoryBody(String processName) {
+    return 'Nebyla nalezena kategorie Twitch pro: $processName';
+  }
+
+  @override
+  String get notificationActionAssignCategory => 'Přiřadit kategorii';
+
+  @override
+  String get notificationCategoryUpdatedTitle => 'Kategorie aktualizována';
+
+  @override
+  String notificationCategoryUpdatedBody(
+    String categoryName,
+    String processName,
+  ) {
+    return 'Přepnuto na \"$categoryName\" pro $processName';
+  }
+
+  @override
+  String get mappingListColumnSource => 'Zdroj';
+
+  @override
+  String get mappingListColumnEnabled => 'Povoleno';
+
+  @override
+  String get mappingListTooltipIgnored => 'Tato kategorie je ignorována';
+
+  @override
+  String mappingListTooltipTwitchId(String twitchCategoryId) {
+    return 'Twitch ID: $twitchCategoryId';
+  }
+
+  @override
+  String get mappingListCategoryIgnored => 'Ignorováno';
+
+  @override
+  String get mappingListSourceUnknown => 'Neznámý';
+
+  @override
+  String mappingListSelected(int count) {
+    return '$count vybráno';
+  }
+
+  @override
+  String mappingListSelectedVisible(int count, int visible) {
+    return '$count vybráno ($visible viditelných)';
+  }
+
+  @override
+  String get mappingListButtonInvert => 'Invertovat';
+
+  @override
+  String get mappingListButtonClear => 'Vymazat';
+
+  @override
+  String mappingListButtonUndo(String action) {
+    return 'Vrátit $action';
+  }
+
+  @override
+  String get mappingListButtonExport => 'Exportovat';
+
+  @override
+  String get mappingListButtonEnable => 'Povolit';
+
+  @override
+  String get mappingListButtonDisable => 'Zakázat';
+
+  @override
+  String get mappingListButtonDelete => 'Smazat';
+
+  @override
+  String get mappingListTooltipCannotDelete =>
+      'Nelze smazat mapování ze seznamů pouze pro čtení';
+
+  @override
+  String get mappingListTooltipDelete => 'Smazat vybraná mapování';
+
+  @override
+  String get mappingListSearchHint =>
+      'Hledat podle názvu procesu nebo kategorie...';
+
+  @override
+  String get mappingListTooltipClearSearch => 'Vymazat vyhledávání';
+
+  @override
+  String get listManagementEmptyState => 'Nebyly nalezeny žádné seznamy';
+
+  @override
+  String get listManagementTitle => 'Spravovat seznamy';
+
+  @override
+  String get listManagementSyncNow => 'Synchronizovat nyní';
+
+  @override
+  String get listManagementBadgeLocal => 'MÍSTNÍ';
+
+  @override
+  String get listManagementBadgeOfficial => 'OFICIÁLNÍ';
+
+  @override
+  String get listManagementBadgeRemote => 'VZDÁLENÝ';
+
+  @override
+  String get listManagementBadgeReadOnly => 'POUZE PRO ČTENÍ';
+
+  @override
+  String get listManagementButtonImport => 'Importovat seznam';
+
+  @override
+  String get listManagementButtonSyncAll => 'Synchronizovat vše';
+
+  @override
+  String get listManagementButtonClose => 'Zavřít';
+
+  @override
+  String get listManagementImportTitle => 'Importovat seznam';
+
+  @override
+  String get listManagementImportUrl => 'URL seznamu';
+
+  @override
+  String get listManagementImportUrlPlaceholder =>
+      'https://example.com/mappings.json';
+
+  @override
+  String get listManagementImportName => 'Název seznamu (volitelné)';
+
+  @override
+  String get listManagementImportNameHelper =>
+      'Pokud není zadán, použije se název z JSON souboru';
+
+  @override
+  String get listManagementImportNamePlaceholder => 'Můj vlastní seznam';
+
+  @override
+  String get listManagementImportDescription => 'Popis (volitelné)';
+
+  @override
+  String get listManagementImportDescriptionHelper =>
+      'Pokud není zadán, použije se popis z JSON souboru';
+
+  @override
+  String get listManagementImportDescriptionPlaceholder =>
+      'Sbírka herních mapování';
+
+  @override
+  String get listManagementButtonCancel => 'Zrušit';
+
+  @override
+  String get listManagementButtonImportConfirm => 'Importovat';
+
+  @override
+  String get listManagementDefaultName => 'Importovaný seznam';
+
+  @override
+  String get listManagementImportSuccess => 'Seznam úspěšně importován';
+
+  @override
+  String get listManagementSyncNever => 'nikdy';
+
+  @override
+  String get listManagementSyncJustNow => 'právě teď';
+
+  @override
+  String listManagementSyncMinutesAgo(int minutes) {
+    return 'před ${minutes}m';
+  }
+
+  @override
+  String listManagementSyncHoursAgo(int hours) {
+    return 'před ${hours}h';
+  }
+
+  @override
+  String listManagementSyncDaysAgo(int days) {
+    return 'před ${days}d';
+  }
+
+  @override
+  String listManagementSyncDaysHoursAgo(int days, int hours) {
+    return 'před ${days}d ${hours}h';
+  }
+
+  @override
+  String listManagementMappingsCount(int count) {
+    return '$count mapování';
+  }
+
+  @override
+  String get listManagementSyncFailed => 'Synchronizace selhala:';
+
+  @override
+  String get listManagementLastSynced => 'Naposledy synchronizováno:';
+
+  @override
+  String get unknownGameIgnoreProcess => 'Ignorovat proces';
+
+  @override
+  String unknownGameCategoryId(String id) {
+    return 'ID: $id';
+  }
+
+  @override
+  String get unknownGameSubmissionTitle => 'Vyžadováno odeslání';
+
+  @override
+  String get unknownGameSubmissionInfo =>
+      'Toto mapování bude uloženo místně a odesláno vlastníkovi seznamu ke schválení. Po schválení a synchronizaci bude vaše místní kopie automaticky nahrazena.';
+
+  @override
+  String get unknownGameSectionLists => 'SEZNAMY';
+
+  @override
+  String unknownGameListMappingCount(int count) {
+    return '$count mapování';
+  }
+
+  @override
+  String get unknownGameBadgeStaged => 'PŘIPRAVENO';
+
+  @override
+  String get unknownGameIgnoredProcess => 'IGNOROVANÝ PROCES';
+
+  @override
+  String unknownGameSelectedCategoryId(String id) {
+    return 'ID: $id';
+  }
+
+  @override
+  String get unknownGameWorkflowTitle => 'Proces odeslání';
+
+  @override
+  String get unknownGameWorkflowTitleAlt => 'Co se stane dále';
+
+  @override
+  String get unknownGameWorkflowStepLocal =>
+      'Uloženo místně do Mých vlastních mapování';
+
+  @override
+  String get unknownGameWorkflowStepLocalDesc =>
+      'Nejprve uloženo na vašem zařízení, takže mapování funguje okamžitě';
+
+  @override
+  String unknownGameWorkflowStepSubmit(String listName) {
+    return 'Odesláno do $listName';
+  }
+
+  @override
+  String get unknownGameWorkflowStepSubmitDesc =>
+      'Automaticky odesláno vlastníkovi seznamu ke kontrole a schválení';
+
+  @override
+  String get unknownGameWorkflowStepReplace =>
+      'Místní kopie nahrazena po schválení';
+
+  @override
+  String unknownGameWorkflowStepReplaceDesc(String listName) {
+    return 'Po přijetí a synchronizaci bude vaše místní kopie odstraněna a nahrazena oficiální verzí z $listName';
+  }
+
+  @override
+  String unknownGameSavedTo(String listName) {
+    return 'Uloženo do $listName';
+  }
+
+  @override
+  String get unknownGameIgnoredInfo =>
+      'Tento proces bude ignorován a nespustí notifikace';
+
+  @override
+  String get unknownGameLocalSaveInfo =>
+      'Vaše mapování je uloženo místně a bude fungovat okamžitě';
+
+  @override
+  String get unknownGamePrivacyInfo =>
+      'Toto mapování je soukromé a uloženo pouze na vašem zařízení';
+
+  @override
+  String autoSwitcherError(String error) {
+    return 'Chyba: $error';
+  }
+
+  @override
+  String get autoSwitcherStatusActive => 'Automatické přepínání aktivní';
+
+  @override
+  String get autoSwitcherStatusInactive => 'Nemonitoruje se';
+
+  @override
+  String get autoSwitcherLabelActiveApp => 'Aktivní aplikace';
+
+  @override
+  String get autoSwitcherLabelCategory => 'Kategorie';
+
+  @override
+  String get autoSwitcherValueNone => 'Žádná';
+
+  @override
+  String get autoSwitcherDescriptionActive =>
+      'Vaše kategorie se automaticky mění při přepínání aplikací.';
+
+  @override
+  String get autoSwitcherButtonTurnOff => 'Vypnout';
+
+  @override
+  String get autoSwitcherInstructionPress => 'Stiskněte';
+
+  @override
+  String get autoSwitcherInstructionManual =>
+      'pro ruční aktualizaci na zaměřený proces';
+
+  @override
+  String get autoSwitcherHeadingEnable => 'Povolit automatické přepínání';
+
+  @override
+  String get autoSwitcherDescriptionInactive =>
+      'Kategorie se budou automaticky měnit při přepínání mezi aplikacemi.';
+
+  @override
+  String get autoSwitcherButtonTurnOn => 'Zapnout';
+
+  @override
+  String get autoSwitcherInstructionOr => 'Nebo stiskněte';
+
+  @override
+  String get settingsTabMappings => 'Mapování';
+
+  @override
+  String get settingsTabTheme => 'Motiv';
+
+  @override
+  String get settingsAutoSyncOnStart =>
+      'Automaticky synchronizovat mapování při spuštění aplikace';
+
+  @override
+  String get settingsAutoSyncOnStartDesc =>
+      'Automaticky synchronizovat seznamy mapování při startu aplikace';
+
+  @override
+  String get settingsAutoSyncInterval => 'Interval automatické synchronizace';
+
+  @override
+  String get settingsAutoSyncIntervalDesc =>
+      'Jak často automaticky synchronizovat seznamy mapování (0 = nikdy)';
+
+  @override
+  String get settingsAutoSyncNever => 'Nikdy';
+
+  @override
+  String get settingsTimingTitle => 'JAK TATO NASTAVENÍ SPOLUPRACUJÍ';
+
+  @override
+  String settingsTimingStep1(int scanInterval) {
+    return 'Aplikace kontroluje zaměřené okno každých ${scanInterval}s';
+  }
+
+  @override
+  String get settingsTimingStep2Instant =>
+      'Kategorie se přepne okamžitě po detekci nové aplikace';
+
+  @override
+  String settingsTimingStep2Debounce(int debounce) {
+    return 'Čeká ${debounce}s po detekci nové aplikace (prodleva)';
+  }
+
+  @override
+  String settingsTimingStep3Instant(int scanInterval) {
+    return 'Celkový čas přepnutí: ${scanInterval}s (okamžitě po detekci)';
+  }
+
+  @override
+  String settingsTimingStep3Debounce(int scanInterval, int scanDebounce) {
+    return 'Celkový čas přepnutí: ${scanInterval}s až ${scanDebounce}s';
+  }
+
+  @override
+  String get settingsFramelessWindow => 'Použít okno bez rámečku';
+
+  @override
+  String get settingsFramelessWindowDesc =>
+      'Odstranit záhlaví okna Windows pro moderní vzhled bez okrajů se zaoblenými rohy';
+
+  @override
+  String get settingsInvertLayout => 'Invertovat zápatí/záhlaví';
+
+  @override
+  String get settingsInvertLayoutDesc => 'Prohodit pozice záhlaví a zápatí';
+
+  @override
+  String get settingsTokenExpired => 'Vypršel';
+
+  @override
+  String settingsTokenExpiresDays(int days, int hours) {
+    return 'Vyprší za ${days}d ${hours}h';
+  }
+
+  @override
+  String settingsTokenExpiresHours(int hours, int minutes) {
+    return 'Vyprší za ${hours}h ${minutes}m';
+  }
+
+  @override
+  String settingsTokenExpiresMinutes(int minutes) {
+    return 'Vyprší za ${minutes}m';
+  }
+
+  @override
+  String get settingsResetDesc =>
+      'Obnovit všechna nastavení a data na tovární výchozí hodnoty';
+
+  @override
+  String get settingsButtonReset => 'Obnovit';
+
+  @override
+  String mappingEditorSummary(
+    int count,
+    String plural,
+    int lists,
+    String pluralLists,
+  ) {
+    return '$count mapování proces$plural z $lists aktivního seznam$pluralLists';
+  }
+
+  @override
+  String mappingEditorBreakdown(int custom, int community) {
+    return '$custom vlastních, $community z komunitních seznamů';
+  }
+
+  @override
+  String get mappingEditorButtonLists => 'Seznamy';
+
+  @override
+  String get mappingEditorButtonAdd => 'Přidat';
+
+  @override
+  String get mappingEditorDeleteTitle => 'Smazat více mapování';
+
+  @override
+  String mappingEditorDeleteMessage(int count, String plural) {
+    return 'Opravdu chcete smazat $count mapování$plural? Tuto akci nelze vrátit zpět.';
+  }
+
+  @override
+  String get mappingEditorExportTitle => 'Exportovat mapování';
+
+  @override
+  String get mappingEditorExportFilename => 'moje-mapovani.json';
+
+  @override
+  String mappingEditorExportSuccess(int count, String plural) {
+    return 'Exportováno $count mapování$plural do';
+  }
+
+  @override
+  String get mappingEditorExportFailed => 'Export selhal';
+
+  @override
+  String get addMappingPrivacySafe => 'Cesta bezpečná pro soukromí';
+
+  @override
+  String get addMappingCustomLocation => 'Vlastní umístění';
+
+  @override
+  String get addMappingOnlyFolder => 'Uloženy pouze názvy herních složek';
+
+  @override
+  String get addMappingNotStored => 'Cesta není uložena kvůli soukromí';
+
+  @override
+  String get colorPickerTitle => 'Vybrat barvu';
+
+  @override
+  String get colorPickerHue => 'Odstín';
+
+  @override
+  String get colorPickerSaturation => 'Sytost';
+
+  @override
+  String get colorPickerValue => 'Hodnota';
+
+  @override
+  String get colorPickerButtonCancel => 'Zrušit';
+
+  @override
+  String get colorPickerButtonSelect => 'Vybrat';
+
+  @override
+  String get dropdownPlaceholder => 'Vyberte možnost';
+
+  @override
+  String get dropdownSearchHint => 'Hledat...';
+
+  @override
+  String get dropdownNoResults => 'Nebyly nalezeny žádné výsledky';
+
+  @override
+  String paginationPageInfo(int current, int total) {
+    return 'Stránka $current z $total';
+  }
+
+  @override
+  String get paginationGoTo => 'Přejít na:';
+
+  @override
+  String get datePickerPlaceholder => 'Vybrat datum';
+
+  @override
+  String get timePickerAM => 'AM';
+
+  @override
+  String get timePickerPM => 'PM';
+
+  @override
+  String get timePickerPlaceholder => 'Vybrat čas';
+
+  @override
+  String get fileUploadInstruction => 'Klikněte pro nahrání souboru';
+
+  @override
+  String fileUploadAllowed(String extensions) {
+    return 'Povoleno: $extensions';
+  }
+
+  @override
+  String get menuButtonTooltip => 'Více možností';
+
+  @override
+  String get breadcrumbEllipsis => '...';
+
+  @override
+  String get breadcrumbTooltipShowPath => 'Zobrazit cestu';
+
+  @override
+  String get hotkeyModCtrl => 'Ctrl';
+
+  @override
+  String get hotkeyModAlt => 'Alt';
+
+  @override
+  String get hotkeyModShift => 'Shift';
+
+  @override
+  String get hotkeyModWin => 'Win';
+
+  @override
+  String get hotkeySpace => 'Mezerník';
+
+  @override
+  String get hotkeyEnter => 'Enter';
+
+  @override
+  String get hotkeyTab => 'Tab';
+
+  @override
+  String get hotkeyBackspace => 'Backspace';
+
+  @override
+  String get hotkeyDelete => 'Del';
+
+  @override
+  String get hotkeyEscape => 'Esc';
+
+  @override
+  String get hotkeyHome => 'Home';
+
+  @override
+  String get hotkeyEnd => 'End';
+
+  @override
+  String get hotkeyPageUp => 'PgUp';
+
+  @override
+  String get hotkeyPageDown => 'PgDn';
+
+  @override
+  String get statusDashboardCurrentActivity => 'Aktuální aktivita';
+
+  @override
+  String get statusDashboardNotStarted => 'Nezahájeno';
+
+  @override
+  String get statusDashboardReady => 'Připraven';
+
+  @override
+  String get statusDashboardCheckingApp => 'Kontrola aktivní aplikace';
+
+  @override
+  String get statusDashboardFindingCategory => 'Hledání kategorie';
+
+  @override
+  String get statusDashboardUpdating => 'Aktualizace kategorie';
+
+  @override
+  String get statusDashboardWaiting => 'Čekání na potvrzení';
+
+  @override
+  String get statusDashboardError => 'Došlo k chybě';
+
+  @override
+  String mappingListOfCount(int count, int total) {
+    return '$count z $total';
+  }
+
+  @override
+  String get mappingListActionDelete => 'Smazat';
+
+  @override
+  String get mappingListActionEnable => 'Povolit';
+
+  @override
+  String get mappingListActionDisable => 'Zakázat';
+
+  @override
+  String autoSwitcherTimeSecondsAgo(int seconds) {
+    return 'před ${seconds}s';
+  }
+
+  @override
+  String autoSwitcherTimeMinutesAgo(int minutes) {
+    return 'před ${minutes}m';
+  }
+
+  @override
+  String autoSwitcherTimeHoursAgo(int hours) {
+    return 'před ${hours}h';
+  }
 }

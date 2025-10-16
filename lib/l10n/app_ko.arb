@@ -452,6 +452,935 @@
   "@updateDialogRemindLater": {
     "description": "Remind later button"
   },
+  "updateDialogIgnore": "이 버전 무시",
+  "@updateDialogIgnore": {
+    "description": "Ignore this version button"
+  },
+  "notificationMissingCategoryTitle": "카테고리 매핑을 찾을 수 없음",
+  "@notificationMissingCategoryTitle": {
+    "description": "Notification title for missing category mapping"
+  },
+  "notificationMissingCategoryBody": "{processName}에 대한 Twitch 카테고리를 찾을 수 없습니다",
+  "@notificationMissingCategoryBody": {
+    "description": "Notification body for missing category mapping",
+    "placeholders": {
+      "processName": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationActionAssignCategory": "카테고리 할당",
+  "@notificationActionAssignCategory": {
+    "description": "Notification action button to assign category"
+  },
+  "notificationCategoryUpdatedTitle": "카테고리 업데이트됨",
+  "@notificationCategoryUpdatedTitle": {
+    "description": "Notification title for successful category update"
+  },
+  "notificationCategoryUpdatedBody": "{processName}을(를) 위해 \"{categoryName}\"(으)로 전환했습니다",
+  "@notificationCategoryUpdatedBody": {
+    "description": "Notification body for successful category update",
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      },
+      "processName": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingListColumnSource": "소스",
+  "@mappingListColumnSource": {
+    "description": "Source column header in mapping list"
+  },
+  "mappingListColumnEnabled": "활성화됨",
+  "@mappingListColumnEnabled": {
+    "description": "Enabled column header in mapping list"
+  },
+  "mappingListTooltipIgnored": "이 카테고리는 무시됨",
+  "@mappingListTooltipIgnored": {
+    "description": "Tooltip for ignored category"
+  },
+  "mappingListTooltipTwitchId": "Twitch ID: {twitchCategoryId}",
+  "@mappingListTooltipTwitchId": {
+    "description": "Tooltip showing Twitch category ID",
+    "placeholders": {
+      "twitchCategoryId": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingListCategoryIgnored": "무시됨",
+  "@mappingListCategoryIgnored": {
+    "description": "Text for ignored category"
+  },
+  "mappingListSourceUnknown": "알 수 없음",
+  "@mappingListSourceUnknown": {
+    "description": "Unknown source fallback text"
+  },
+  "mappingListSelected": "{count}개 선택됨",
+  "@mappingListSelected": {
+    "description": "Selection count status",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingListSelectedVisible": "{count}개 선택됨 ({visible}개 표시됨)",
+  "@mappingListSelectedVisible": {
+    "description": "Selection count with visible count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "visible": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingListButtonInvert": "반전",
+  "@mappingListButtonInvert": {
+    "description": "Invert selection button"
+  },
+  "mappingListButtonClear": "지우기",
+  "@mappingListButtonClear": {
+    "description": "Clear selection button"
+  },
+  "mappingListButtonUndo": "{action} 실행 취소",
+  "@mappingListButtonUndo": {
+    "description": "Undo action button",
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingListButtonExport": "내보내기",
+  "@mappingListButtonExport": {
+    "description": "Export mappings button"
+  },
+  "mappingListButtonEnable": "활성화",
+  "@mappingListButtonEnable": {
+    "description": "Enable selected mappings button"
+  },
+  "mappingListButtonDisable": "비활성화",
+  "@mappingListButtonDisable": {
+    "description": "Disable selected mappings button"
+  },
+  "mappingListButtonDelete": "삭제",
+  "@mappingListButtonDelete": {
+    "description": "Delete selected mappings button"
+  },
+  "mappingListTooltipCannotDelete": "읽기 전용 목록의 매핑은 삭제할 수 없습니다",
+  "@mappingListTooltipCannotDelete": {
+    "description": "Tooltip when delete is disabled"
+  },
+  "mappingListTooltipDelete": "선택한 매핑 삭제",
+  "@mappingListTooltipDelete": {
+    "description": "Tooltip for delete button"
+  },
+  "mappingListSearchHint": "프로세스 이름 또는 카테고리로 검색...",
+  "@mappingListSearchHint": {
+    "description": "Search input placeholder"
+  },
+  "mappingListTooltipClearSearch": "검색 지우기",
+  "@mappingListTooltipClearSearch": {
+    "description": "Tooltip for clear search button"
+  },
+  "listManagementEmptyState": "목록을 찾을 수 없음",
+  "@listManagementEmptyState": {
+    "description": "Empty state message for list management"
+  },
+  "listManagementTitle": "목록 관리",
+  "@listManagementTitle": {
+    "description": "List management dialog title"
+  },
+  "listManagementSyncNow": "지금 동기화",
+  "@listManagementSyncNow": {
+    "description": "Sync now tooltip"
+  },
+  "listManagementBadgeLocal": "로컬",
+  "@listManagementBadgeLocal": {
+    "description": "Badge for local lists"
+  },
+  "listManagementBadgeOfficial": "공식",
+  "@listManagementBadgeOfficial": {
+    "description": "Badge for official lists"
+  },
+  "listManagementBadgeRemote": "원격",
+  "@listManagementBadgeRemote": {
+    "description": "Badge for remote lists"
+  },
+  "listManagementBadgeReadOnly": "읽기 전용",
+  "@listManagementBadgeReadOnly": {
+    "description": "Badge for read-only lists"
+  },
+  "listManagementButtonImport": "목록 가져오기",
+  "@listManagementButtonImport": {
+    "description": "Import list button"
+  },
+  "listManagementButtonSyncAll": "모두 동기화",
+  "@listManagementButtonSyncAll": {
+    "description": "Sync all lists button"
+  },
+  "listManagementButtonClose": "닫기",
+  "@listManagementButtonClose": {
+    "description": "Close dialog button"
+  },
+  "listManagementImportTitle": "목록 가져오기",
+  "@listManagementImportTitle": {
+    "description": "Import list dialog title"
+  },
+  "listManagementImportUrl": "목록 URL",
+  "@listManagementImportUrl": {
+    "description": "URL field label"
+  },
+  "listManagementImportUrlPlaceholder": "https://example.com/mappings.json",
+  "@listManagementImportUrlPlaceholder": {
+    "description": "URL field placeholder"
+  },
+  "listManagementImportName": "목록 이름 (선택 사항)",
+  "@listManagementImportName": {
+    "description": "Name field label"
+  },
+  "listManagementImportNameHelper": "제공되지 않으면 JSON 파일의 이름을 사용합니다",
+  "@listManagementImportNameHelper": {
+    "description": "Name field helper text"
+  },
+  "listManagementImportNamePlaceholder": "나만의 커스텀 목록",
+  "@listManagementImportNamePlaceholder": {
+    "description": "Name field placeholder"
+  },
+  "listManagementImportDescription": "설명 (선택 사항)",
+  "@listManagementImportDescription": {
+    "description": "Description field label"
+  },
+  "listManagementImportDescriptionHelper": "제공되지 않으면 JSON 파일의 설명을 사용합니다",
+  "@listManagementImportDescriptionHelper": {
+    "description": "Description field helper text"
+  },
+  "listManagementImportDescriptionPlaceholder": "게임 매핑 모음",
+  "@listManagementImportDescriptionPlaceholder": {
+    "description": "Description field placeholder"
+  },
+  "listManagementButtonCancel": "취소",
+  "@listManagementButtonCancel": {
+    "description": "Cancel import button"
+  },
+  "listManagementButtonImportConfirm": "가져오기",
+  "@listManagementButtonImportConfirm": {
+    "description": "Confirm import button"
+  },
+  "listManagementDefaultName": "가져온 목록",
+  "@listManagementDefaultName": {
+    "description": "Default name for imported lists"
+  },
+  "listManagementImportSuccess": "목록을 성공적으로 가져왔습니다",
+  "@listManagementImportSuccess": {
+    "description": "Success message after import"
+  },
+  "listManagementSyncNever": "한 번도 없음",
+  "@listManagementSyncNever": {
+    "description": "Sync time: never synced"
+  },
+  "listManagementSyncJustNow": "방금",
+  "@listManagementSyncJustNow": {
+    "description": "Sync time: just now"
+  },
+  "listManagementSyncMinutesAgo": "{minutes}분 전",
+  "@listManagementSyncMinutesAgo": {
+    "description": "Sync time: minutes ago",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncHoursAgo": "{hours}시간 전",
+  "@listManagementSyncHoursAgo": {
+    "description": "Sync time: hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncDaysAgo": "{days}일 전",
+  "@listManagementSyncDaysAgo": {
+    "description": "Sync time: days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncDaysHoursAgo": "{days}일 {hours}시간 전",
+  "@listManagementSyncDaysHoursAgo": {
+    "description": "Sync time: days and hours ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementMappingsCount": "{count}개 매핑",
+  "@listManagementMappingsCount": {
+    "description": "Mapping count display",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncFailed": "동기화 실패:",
+  "@listManagementSyncFailed": {
+    "description": "Sync failed error prefix"
+  },
+  "listManagementLastSynced": "마지막 동기화:",
+  "@listManagementLastSynced": {
+    "description": "Last synced label"
+  },
+  "unknownGameIgnoreProcess": "프로세스 무시",
+  "@unknownGameIgnoreProcess": {
+    "description": "Option to ignore a process"
+  },
+  "unknownGameCategoryId": "ID: {id}",
+  "@unknownGameCategoryId": {
+    "description": "Category ID display",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameSubmissionTitle": "제출 필요",
+  "@unknownGameSubmissionTitle": {
+    "description": "Submission section title"
+  },
+  "unknownGameSubmissionInfo": "이 매핑은 로컬에 저장되고 승인을 위해 목록 소유자에게 제출됩니다. 승인 및 동기화되면 로컬 사본이 자동으로 교체됩니다.",
+  "@unknownGameSubmissionInfo": {
+    "description": "Submission workflow information"
+  },
+  "unknownGameSectionLists": "목록",
+  "@unknownGameSectionLists": {
+    "description": "Lists section header"
+  },
+  "unknownGameListMappingCount": "{count}개 매핑",
+  "@unknownGameListMappingCount": {
+    "description": "Mapping count for a list",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "unknownGameBadgeStaged": "준비됨",
+  "@unknownGameBadgeStaged": {
+    "description": "Badge for staged mappings"
+  },
+  "unknownGameIgnoredProcess": "무시된 프로세스",
+  "@unknownGameIgnoredProcess": {
+    "description": "Label for ignored process"
+  },
+  "unknownGameSelectedCategoryId": "ID: {id}",
+  "@unknownGameSelectedCategoryId": {
+    "description": "Selected category ID display",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameWorkflowTitle": "제출 워크플로",
+  "@unknownGameWorkflowTitle": {
+    "description": "Workflow explanation title"
+  },
+  "unknownGameWorkflowTitleAlt": "다음에 일어날 일",
+  "@unknownGameWorkflowTitleAlt": {
+    "description": "Alternative workflow title"
+  },
+  "unknownGameWorkflowStepLocal": "나만의 커스텀 매핑에 로컬로 저장됨",
+  "@unknownGameWorkflowStepLocal": {
+    "description": "Local save workflow step"
+  },
+  "unknownGameWorkflowStepLocalDesc": "먼저 기기에 저장되므로 매핑이 즉시 작동합니다",
+  "@unknownGameWorkflowStepLocalDesc": {
+    "description": "Local save workflow step description"
+  },
+  "unknownGameWorkflowStepSubmit": "{listName}에 제출됨",
+  "@unknownGameWorkflowStepSubmit": {
+    "description": "Submission workflow step",
+    "placeholders": {
+      "listName": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameWorkflowStepSubmitDesc": "검토 및 승인을 위해 목록 소유자에게 자동으로 전송됩니다",
+  "@unknownGameWorkflowStepSubmitDesc": {
+    "description": "Submission workflow step description"
+  },
+  "unknownGameWorkflowStepReplace": "승인 시 로컬 사본 교체됨",
+  "@unknownGameWorkflowStepReplace": {
+    "description": "Replacement workflow step"
+  },
+  "unknownGameWorkflowStepReplaceDesc": "승인 및 동기화되면 로컬 사본이 제거되고 {listName}의 공식 버전으로 교체됩니다",
+  "@unknownGameWorkflowStepReplaceDesc": {
+    "description": "Replacement workflow step description",
+    "placeholders": {
+      "listName": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameSavedTo": "{listName}에 저장됨",
+  "@unknownGameSavedTo": {
+    "description": "Confirmation of save destination",
+    "placeholders": {
+      "listName": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameIgnoredInfo": "이 프로세스는 무시되며 알림을 트리거하지 않습니다",
+  "@unknownGameIgnoredInfo": {
+    "description": "Information about ignoring a process"
+  },
+  "unknownGameLocalSaveInfo": "매핑이 로컬에 저장되었으며 즉시 작동합니다",
+  "@unknownGameLocalSaveInfo": {
+    "description": "Information about local save"
+  },
+  "unknownGamePrivacyInfo": "이 매핑은 비공개이며 기기에만 저장됩니다",
+  "@unknownGamePrivacyInfo": {
+    "description": "Privacy information for local mappings"
+  },
+  "autoSwitcherError": "오류: {error}",
+  "@autoSwitcherError": {
+    "description": "Error message display",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "autoSwitcherStatusActive": "자동 전환 활성화",
+  "@autoSwitcherStatusActive": {
+    "description": "Auto-switcher active status"
+  },
+  "autoSwitcherStatusInactive": "모니터링하지 않음",
+  "@autoSwitcherStatusInactive": {
+    "description": "Auto-switcher inactive status"
+  },
+  "autoSwitcherLabelActiveApp": "활성 앱",
+  "@autoSwitcherLabelActiveApp": {
+    "description": "Label for active app display"
+  },
+  "autoSwitcherLabelCategory": "카테고리",
+  "@autoSwitcherLabelCategory": {
+    "description": "Label for category display"
+  },
+  "autoSwitcherValueNone": "없음",
+  "@autoSwitcherValueNone": {
+    "description": "None value"
+  },
+  "autoSwitcherDescriptionActive": "앱을 전환하면 카테고리가 자동으로 변경됩니다.",
+  "@autoSwitcherDescriptionActive": {
+    "description": "Description when auto-switcher is active"
+  },
+  "autoSwitcherButtonTurnOff": "끄기",
+  "@autoSwitcherButtonTurnOff": {
+    "description": "Turn off auto-switcher button"
+  },
+  "autoSwitcherInstructionPress": "누르기",
+  "@autoSwitcherInstructionPress": {
+    "description": "Instruction text before hotkey"
+  },
+  "autoSwitcherInstructionManual": "포커스된 프로세스로 수동 업데이트",
+  "@autoSwitcherInstructionManual": {
+    "description": "Instruction for manual update"
+  },
+  "autoSwitcherHeadingEnable": "자동 전환 활성화",
+  "@autoSwitcherHeadingEnable": {
+    "description": "Heading for enable section"
+  },
+  "autoSwitcherDescriptionInactive": "앱을 전환하면 카테고리가 자동으로 변경됩니다.",
+  "@autoSwitcherDescriptionInactive": {
+    "description": "Description when auto-switcher is inactive"
+  },
+  "autoSwitcherButtonTurnOn": "켜기",
+  "@autoSwitcherButtonTurnOn": {
+    "description": "Turn on auto-switcher button"
+  },
+  "autoSwitcherInstructionOr": "또는 누르기",
+  "@autoSwitcherInstructionOr": {
+    "description": "Alternative instruction text"
+  },
+  "settingsTabMappings": "매핑",
+  "@settingsTabMappings": {
+    "description": "Mappings settings tab"
+  },
+  "settingsTabTheme": "테마",
+  "@settingsTabTheme": {
+    "description": "Theme settings tab"
+  },
+  "settingsAutoSyncOnStart": "앱 시작 시 매핑 자동 동기화",
+  "@settingsAutoSyncOnStart": {
+    "description": "Auto-sync on start setting label"
+  },
+  "settingsAutoSyncOnStartDesc": "애플리케이션 시작 시 매핑 목록을 자동으로 동기화합니다",
+  "@settingsAutoSyncOnStartDesc": {
+    "description": "Auto-sync on start setting description"
+  },
+  "settingsAutoSyncInterval": "자동 동기화 간격",
+  "@settingsAutoSyncInterval": {
+    "description": "Auto-sync interval setting label"
+  },
+  "settingsAutoSyncIntervalDesc": "매핑 목록을 자동으로 동기화하는 주기 (0 = 사용 안 함)",
+  "@settingsAutoSyncIntervalDesc": {
+    "description": "Auto-sync interval setting description"
+  },
+  "settingsAutoSyncNever": "사용 안 함",
+  "@settingsAutoSyncNever": {
+    "description": "Never sync option"
+  },
+  "settingsTimingTitle": "이 설정들이 함께 작동하는 방법",
+  "@settingsTimingTitle": {
+    "description": "Timing explanation section title"
+  },
+  "settingsTimingStep1": "앱이 {scanInterval}초마다 포커스된 창을 확인합니다",
+  "@settingsTimingStep1": {
+    "description": "Timing explanation step 1",
+    "placeholders": {
+      "scanInterval": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTimingStep2Instant": "새 앱이 감지되면 즉시 카테고리 전환",
+  "@settingsTimingStep2Instant": {
+    "description": "Timing explanation step 2 (instant)"
+  },
+  "settingsTimingStep2Debounce": "새 앱 감지 후 {debounce}초 대기 (디바운스)",
+  "@settingsTimingStep2Debounce": {
+    "description": "Timing explanation step 2 (with debounce)",
+    "placeholders": {
+      "debounce": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTimingStep3Instant": "총 전환 시간: {scanInterval}초 (감지 후 즉시)",
+  "@settingsTimingStep3Instant": {
+    "description": "Timing explanation step 3 (instant)",
+    "placeholders": {
+      "scanInterval": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTimingStep3Debounce": "총 전환 시간: {scanInterval}초 ~ {scanDebounce}초",
+  "@settingsTimingStep3Debounce": {
+    "description": "Timing explanation step 3 (with debounce)",
+    "placeholders": {
+      "scanInterval": {
+        "type": "int"
+      },
+      "scanDebounce": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsFramelessWindow": "프레임 없는 창 사용",
+  "@settingsFramelessWindow": {
+    "description": "Frameless window setting label"
+  },
+  "settingsFramelessWindowDesc": "모던하고 테두리 없는 느낌과 둥근 모서리를 위해 Windows 제목 표시줄을 제거합니다",
+  "@settingsFramelessWindowDesc": {
+    "description": "Frameless window setting description"
+  },
+  "settingsInvertLayout": "푸터/헤더 반전",
+  "@settingsInvertLayout": {
+    "description": "Invert layout setting label"
+  },
+  "settingsInvertLayoutDesc": "헤더와 푸터 섹션의 위치를 교환합니다",
+  "@settingsInvertLayoutDesc": {
+    "description": "Invert layout setting description"
+  },
+  "settingsTokenExpired": "만료됨",
+  "@settingsTokenExpired": {
+    "description": "Token expired status"
+  },
+  "settingsTokenExpiresDays": "{days}일 {hours}시간 후 만료",
+  "@settingsTokenExpiresDays": {
+    "description": "Token expires in days and hours",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTokenExpiresHours": "{hours}시간 {minutes}분 후 만료",
+  "@settingsTokenExpiresHours": {
+    "description": "Token expires in hours and minutes",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTokenExpiresMinutes": "{minutes}분 후 만료",
+  "@settingsTokenExpiresMinutes": {
+    "description": "Token expires in minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsResetDesc": "모든 설정 및 데이터를 공장 기본값으로 재설정",
+  "@settingsResetDesc": {
+    "description": "Reset settings description"
+  },
+  "settingsButtonReset": "재설정",
+  "@settingsButtonReset": {
+    "description": "Reset button"
+  },
+  "mappingEditorSummary": "{lists}개 활성 목록에서 {count}개 프로세스 매핑{plural}",
+  "@mappingEditorSummary": {
+    "description": "Mapping editor summary text",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      },
+      "lists": {
+        "type": "int"
+      },
+      "pluralLists": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingEditorBreakdown": "{custom}개 커스텀, {community}개 커뮤니티 목록",
+  "@mappingEditorBreakdown": {
+    "description": "Mapping breakdown text",
+    "placeholders": {
+      "custom": {
+        "type": "int"
+      },
+      "community": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingEditorButtonLists": "목록",
+  "@mappingEditorButtonLists": {
+    "description": "Lists button"
+  },
+  "mappingEditorButtonAdd": "추가",
+  "@mappingEditorButtonAdd": {
+    "description": "Add mapping button"
+  },
+  "mappingEditorDeleteTitle": "여러 매핑 삭제",
+  "@mappingEditorDeleteTitle": {
+    "description": "Delete confirmation dialog title"
+  },
+  "mappingEditorDeleteMessage": "{count}개 매핑{plural}을(를) 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
+  "@mappingEditorDeleteMessage": {
+    "description": "Delete confirmation message",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingEditorExportTitle": "매핑 내보내기",
+  "@mappingEditorExportTitle": {
+    "description": "Export dialog title"
+  },
+  "mappingEditorExportFilename": "my-mappings.json",
+  "@mappingEditorExportFilename": {
+    "description": "Default export filename"
+  },
+  "mappingEditorExportSuccess": "{count}개 매핑{plural}을(를) 내보냈습니다",
+  "@mappingEditorExportSuccess": {
+    "description": "Export success message",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingEditorExportFailed": "내보내기 실패",
+  "@mappingEditorExportFailed": {
+    "description": "Export failed error title"
+  },
+  "addMappingPrivacySafe": "개인정보 보호 경로",
+  "@addMappingPrivacySafe": {
+    "description": "Privacy-safe path label"
+  },
+  "addMappingCustomLocation": "사용자 지정 위치",
+  "@addMappingCustomLocation": {
+    "description": "Custom location label"
+  },
+  "addMappingOnlyFolder": "게임 폴더 이름만 저장됨",
+  "@addMappingOnlyFolder": {
+    "description": "Privacy info: only folder names"
+  },
+  "addMappingNotStored": "개인정보 보호를 위해 경로가 저장되지 않음",
+  "@addMappingNotStored": {
+    "description": "Privacy info: path not stored"
+  },
+  "colorPickerTitle": "색상 선택",
+  "@colorPickerTitle": {
+    "description": "Color picker dialog title"
+  },
+  "colorPickerHue": "색상",
+  "@colorPickerHue": {
+    "description": "Hue slider label"
+  },
+  "colorPickerSaturation": "채도",
+  "@colorPickerSaturation": {
+    "description": "Saturation slider label"
+  },
+  "colorPickerValue": "명도",
+  "@colorPickerValue": {
+    "description": "Value slider label"
+  },
+  "colorPickerButtonCancel": "취소",
+  "@colorPickerButtonCancel": {
+    "description": "Color picker cancel button"
+  },
+  "colorPickerButtonSelect": "선택",
+  "@colorPickerButtonSelect": {
+    "description": "Color picker select button"
+  },
+  "dropdownPlaceholder": "옵션을 선택하세요",
+  "@dropdownPlaceholder": {
+    "description": "Dropdown placeholder text"
+  },
+  "dropdownSearchHint": "검색...",
+  "@dropdownSearchHint": {
+    "description": "Dropdown search hint"
+  },
+  "dropdownNoResults": "결과를 찾을 수 없음",
+  "@dropdownNoResults": {
+    "description": "Dropdown no results message"
+  },
+  "paginationPageInfo": "페이지 {current} / {total}",
+  "@paginationPageInfo": {
+    "description": "Pagination page information",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "paginationGoTo": "이동:",
+  "@paginationGoTo": {
+    "description": "Jump to page label"
+  },
+  "datePickerPlaceholder": "날짜 선택",
+  "@datePickerPlaceholder": {
+    "description": "Date picker placeholder"
+  },
+  "timePickerAM": "오전",
+  "@timePickerAM": {
+    "description": "AM time period"
+  },
+  "timePickerPM": "오후",
+  "@timePickerPM": {
+    "description": "PM time period"
+  },
+  "timePickerPlaceholder": "시간 선택",
+  "@timePickerPlaceholder": {
+    "description": "Time picker placeholder"
+  },
+  "fileUploadInstruction": "클릭하여 파일 업로드",
+  "@fileUploadInstruction": {
+    "description": "File upload instruction"
+  },
+  "fileUploadAllowed": "허용됨: {extensions}",
+  "@fileUploadAllowed": {
+    "description": "Allowed file extensions",
+    "placeholders": {
+      "extensions": {
+        "type": "String"
+      }
+    }
+  },
+  "menuButtonTooltip": "더 많은 옵션",
+  "@menuButtonTooltip": {
+    "description": "Default menu button tooltip"
+  },
+  "breadcrumbEllipsis": "...",
+  "@breadcrumbEllipsis": {
+    "description": "Breadcrumb ellipsis"
+  },
+  "breadcrumbTooltipShowPath": "경로 표시",
+  "@breadcrumbTooltipShowPath": {
+    "description": "Breadcrumb show path tooltip"
+  },
+  "hotkeyModCtrl": "Ctrl",
+  "@hotkeyModCtrl": {
+    "description": "Ctrl modifier key"
+  },
+  "hotkeyModAlt": "Alt",
+  "@hotkeyModAlt": {
+    "description": "Alt modifier key"
+  },
+  "hotkeyModShift": "Shift",
+  "@hotkeyModShift": {
+    "description": "Shift modifier key"
+  },
+  "hotkeyModWin": "Win",
+  "@hotkeyModWin": {
+    "description": "Windows modifier key"
+  },
+  "hotkeySpace": "Space",
+  "@hotkeySpace": {
+    "description": "Space key"
+  },
+  "hotkeyEnter": "Enter",
+  "@hotkeyEnter": {
+    "description": "Enter key"
+  },
+  "hotkeyTab": "Tab",
+  "@hotkeyTab": {
+    "description": "Tab key"
+  },
+  "hotkeyBackspace": "Bksp",
+  "@hotkeyBackspace": {
+    "description": "Backspace key"
+  },
+  "hotkeyDelete": "Del",
+  "@hotkeyDelete": {
+    "description": "Delete key"
+  },
+  "hotkeyEscape": "Esc",
+  "@hotkeyEscape": {
+    "description": "Escape key"
+  },
+  "hotkeyHome": "Home",
+  "@hotkeyHome": {
+    "description": "Home key"
+  },
+  "hotkeyEnd": "End",
+  "@hotkeyEnd": {
+    "description": "End key"
+  },
+  "hotkeyPageUp": "PgUp",
+  "@hotkeyPageUp": {
+    "description": "Page Up key"
+  },
+  "hotkeyPageDown": "PgDn",
+  "@hotkeyPageDown": {
+    "description": "Page Down key"
+  },
+  "statusDashboardCurrentActivity": "현재 활동",
+  "@statusDashboardCurrentActivity": {
+    "description": "Current activity label"
+  },
+  "statusDashboardNotStarted": "시작 안 됨",
+  "@statusDashboardNotStarted": {
+    "description": "Not started status"
+  },
+  "statusDashboardReady": "준비",
+  "@statusDashboardReady": {
+    "description": "Ready status"
+  },
+  "statusDashboardCheckingApp": "활성 앱 확인 중",
+  "@statusDashboardCheckingApp": {
+    "description": "Checking app status"
+  },
+  "statusDashboardFindingCategory": "카테고리 찾는 중",
+  "@statusDashboardFindingCategory": {
+    "description": "Finding category status"
+  },
+  "statusDashboardUpdating": "카테고리 업데이트 중",
+  "@statusDashboardUpdating": {
+    "description": "Updating status"
+  },
+  "statusDashboardWaiting": "확인 대기 중",
+  "@statusDashboardWaiting": {
+    "description": "Waiting status"
+  },
+  "statusDashboardError": "오류 발생",
+  "@statusDashboardError": {
+    "description": "Error status"
+  },
+  "mappingListOfCount": "{total}개 중 {count}개",
+  "@mappingListOfCount": {
+    "description": "Count display for filtered mappings",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingListActionDelete": "삭제",
+  "@mappingListActionDelete": {
+    "description": "Action label for delete"
+  },
+  "mappingListActionEnable": "활성화",
+  "@mappingListActionEnable": {
+    "description": "Action label for enable"
+  },
+  "mappingListActionDisable": "비활성화",
+  "@mappingListActionDisable": {
+    "description": "Action label for disable"
+  },
+  "autoSwitcherTimeSecondsAgo": "{seconds}초 전",
+  "@autoSwitcherTimeSecondsAgo": {
+    "description": "Time format for seconds ago",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "autoSwitcherTimeMinutesAgo": "{minutes}분 전",
+  "@autoSwitcherTimeMinutesAgo": {
+    "description": "Time format for minutes ago",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "autoSwitcherTimeHoursAgo": "{hours}시간 전",
+  "@autoSwitcherTimeHoursAgo": {
+    "description": "Time format for hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "settingsDebounceTimeDescription": "앱 변경 후 카테고리 전환 전 대기 시간(빠른 전환 방지)",
   "@settingsDebounceTimeDescription": {
     "description": "Debounce time setting description"

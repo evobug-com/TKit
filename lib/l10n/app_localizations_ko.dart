@@ -368,7 +368,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get updateDialogRemindLater => '나중에 알림';
 
   @override
-  String get updateDialogIgnore => 'Ignore This Version';
+  String get updateDialogIgnore => '이 버전 무시';
 
   @override
   String get settingsDebounceTimeDescription =>
@@ -1061,4 +1061,619 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get versionStatusPlatformNotSupported => '이 플랫폼에서는 업데이트가 지원되지 않습니다';
+
+  @override
+  String get notificationMissingCategoryTitle => '카테고리 매핑을 찾을 수 없음';
+
+  @override
+  String notificationMissingCategoryBody(String processName) {
+    return '$processName에 대한 Twitch 카테고리를 찾을 수 없습니다';
+  }
+
+  @override
+  String get notificationActionAssignCategory => '카테고리 할당';
+
+  @override
+  String get notificationCategoryUpdatedTitle => '카테고리 업데이트됨';
+
+  @override
+  String notificationCategoryUpdatedBody(
+    String categoryName,
+    String processName,
+  ) {
+    return '$processName을(를) 위해 \"$categoryName\"(으)로 전환했습니다';
+  }
+
+  @override
+  String get mappingListColumnSource => '소스';
+
+  @override
+  String get mappingListColumnEnabled => '활성화됨';
+
+  @override
+  String get mappingListTooltipIgnored => '이 카테고리는 무시됨';
+
+  @override
+  String mappingListTooltipTwitchId(String twitchCategoryId) {
+    return 'Twitch ID: $twitchCategoryId';
+  }
+
+  @override
+  String get mappingListCategoryIgnored => '무시됨';
+
+  @override
+  String get mappingListSourceUnknown => '알 수 없음';
+
+  @override
+  String mappingListSelected(int count) {
+    return '$count개 선택됨';
+  }
+
+  @override
+  String mappingListSelectedVisible(int count, int visible) {
+    return '$count개 선택됨 ($visible개 표시됨)';
+  }
+
+  @override
+  String get mappingListButtonInvert => '반전';
+
+  @override
+  String get mappingListButtonClear => '지우기';
+
+  @override
+  String mappingListButtonUndo(String action) {
+    return '$action 실행 취소';
+  }
+
+  @override
+  String get mappingListButtonExport => '내보내기';
+
+  @override
+  String get mappingListButtonEnable => '활성화';
+
+  @override
+  String get mappingListButtonDisable => '비활성화';
+
+  @override
+  String get mappingListButtonDelete => '삭제';
+
+  @override
+  String get mappingListTooltipCannotDelete => '읽기 전용 목록의 매핑은 삭제할 수 없습니다';
+
+  @override
+  String get mappingListTooltipDelete => '선택한 매핑 삭제';
+
+  @override
+  String get mappingListSearchHint => '프로세스 이름 또는 카테고리로 검색...';
+
+  @override
+  String get mappingListTooltipClearSearch => '검색 지우기';
+
+  @override
+  String get listManagementEmptyState => '목록을 찾을 수 없음';
+
+  @override
+  String get listManagementTitle => '목록 관리';
+
+  @override
+  String get listManagementSyncNow => '지금 동기화';
+
+  @override
+  String get listManagementBadgeLocal => '로컬';
+
+  @override
+  String get listManagementBadgeOfficial => '공식';
+
+  @override
+  String get listManagementBadgeRemote => '원격';
+
+  @override
+  String get listManagementBadgeReadOnly => '읽기 전용';
+
+  @override
+  String get listManagementButtonImport => '목록 가져오기';
+
+  @override
+  String get listManagementButtonSyncAll => '모두 동기화';
+
+  @override
+  String get listManagementButtonClose => '닫기';
+
+  @override
+  String get listManagementImportTitle => '목록 가져오기';
+
+  @override
+  String get listManagementImportUrl => '목록 URL';
+
+  @override
+  String get listManagementImportUrlPlaceholder =>
+      'https://example.com/mappings.json';
+
+  @override
+  String get listManagementImportName => '목록 이름 (선택 사항)';
+
+  @override
+  String get listManagementImportNameHelper => '제공되지 않으면 JSON 파일의 이름을 사용합니다';
+
+  @override
+  String get listManagementImportNamePlaceholder => '나만의 커스텀 목록';
+
+  @override
+  String get listManagementImportDescription => '설명 (선택 사항)';
+
+  @override
+  String get listManagementImportDescriptionHelper =>
+      '제공되지 않으면 JSON 파일의 설명을 사용합니다';
+
+  @override
+  String get listManagementImportDescriptionPlaceholder => '게임 매핑 모음';
+
+  @override
+  String get listManagementButtonCancel => '취소';
+
+  @override
+  String get listManagementButtonImportConfirm => '가져오기';
+
+  @override
+  String get listManagementDefaultName => '가져온 목록';
+
+  @override
+  String get listManagementImportSuccess => '목록을 성공적으로 가져왔습니다';
+
+  @override
+  String get listManagementSyncNever => '한 번도 없음';
+
+  @override
+  String get listManagementSyncJustNow => '방금';
+
+  @override
+  String listManagementSyncMinutesAgo(int minutes) {
+    return '$minutes분 전';
+  }
+
+  @override
+  String listManagementSyncHoursAgo(int hours) {
+    return '$hours시간 전';
+  }
+
+  @override
+  String listManagementSyncDaysAgo(int days) {
+    return '$days일 전';
+  }
+
+  @override
+  String listManagementSyncDaysHoursAgo(int days, int hours) {
+    return '$days일 $hours시간 전';
+  }
+
+  @override
+  String listManagementMappingsCount(int count) {
+    return '$count개 매핑';
+  }
+
+  @override
+  String get listManagementSyncFailed => '동기화 실패:';
+
+  @override
+  String get listManagementLastSynced => '마지막 동기화:';
+
+  @override
+  String get unknownGameIgnoreProcess => '프로세스 무시';
+
+  @override
+  String unknownGameCategoryId(String id) {
+    return 'ID: $id';
+  }
+
+  @override
+  String get unknownGameSubmissionTitle => '제출 필요';
+
+  @override
+  String get unknownGameSubmissionInfo =>
+      '이 매핑은 로컬에 저장되고 승인을 위해 목록 소유자에게 제출됩니다. 승인 및 동기화되면 로컬 사본이 자동으로 교체됩니다.';
+
+  @override
+  String get unknownGameSectionLists => '목록';
+
+  @override
+  String unknownGameListMappingCount(int count) {
+    return '$count개 매핑';
+  }
+
+  @override
+  String get unknownGameBadgeStaged => '준비됨';
+
+  @override
+  String get unknownGameIgnoredProcess => '무시된 프로세스';
+
+  @override
+  String unknownGameSelectedCategoryId(String id) {
+    return 'ID: $id';
+  }
+
+  @override
+  String get unknownGameWorkflowTitle => '제출 워크플로';
+
+  @override
+  String get unknownGameWorkflowTitleAlt => '다음에 일어날 일';
+
+  @override
+  String get unknownGameWorkflowStepLocal => '나만의 커스텀 매핑에 로컬로 저장됨';
+
+  @override
+  String get unknownGameWorkflowStepLocalDesc => '먼저 기기에 저장되므로 매핑이 즉시 작동합니다';
+
+  @override
+  String unknownGameWorkflowStepSubmit(String listName) {
+    return '$listName에 제출됨';
+  }
+
+  @override
+  String get unknownGameWorkflowStepSubmitDesc =>
+      '검토 및 승인을 위해 목록 소유자에게 자동으로 전송됩니다';
+
+  @override
+  String get unknownGameWorkflowStepReplace => '승인 시 로컬 사본 교체됨';
+
+  @override
+  String unknownGameWorkflowStepReplaceDesc(String listName) {
+    return '승인 및 동기화되면 로컬 사본이 제거되고 $listName의 공식 버전으로 교체됩니다';
+  }
+
+  @override
+  String unknownGameSavedTo(String listName) {
+    return '$listName에 저장됨';
+  }
+
+  @override
+  String get unknownGameIgnoredInfo => '이 프로세스는 무시되며 알림을 트리거하지 않습니다';
+
+  @override
+  String get unknownGameLocalSaveInfo => '매핑이 로컬에 저장되었으며 즉시 작동합니다';
+
+  @override
+  String get unknownGamePrivacyInfo => '이 매핑은 비공개이며 기기에만 저장됩니다';
+
+  @override
+  String autoSwitcherError(String error) {
+    return '오류: $error';
+  }
+
+  @override
+  String get autoSwitcherStatusActive => '자동 전환 활성화';
+
+  @override
+  String get autoSwitcherStatusInactive => '모니터링하지 않음';
+
+  @override
+  String get autoSwitcherLabelActiveApp => '활성 앱';
+
+  @override
+  String get autoSwitcherLabelCategory => '카테고리';
+
+  @override
+  String get autoSwitcherValueNone => '없음';
+
+  @override
+  String get autoSwitcherDescriptionActive => '앱을 전환하면 카테고리가 자동으로 변경됩니다.';
+
+  @override
+  String get autoSwitcherButtonTurnOff => '끄기';
+
+  @override
+  String get autoSwitcherInstructionPress => '누르기';
+
+  @override
+  String get autoSwitcherInstructionManual => '포커스된 프로세스로 수동 업데이트';
+
+  @override
+  String get autoSwitcherHeadingEnable => '자동 전환 활성화';
+
+  @override
+  String get autoSwitcherDescriptionInactive => '앱을 전환하면 카테고리가 자동으로 변경됩니다.';
+
+  @override
+  String get autoSwitcherButtonTurnOn => '켜기';
+
+  @override
+  String get autoSwitcherInstructionOr => '또는 누르기';
+
+  @override
+  String get settingsTabMappings => '매핑';
+
+  @override
+  String get settingsTabTheme => '테마';
+
+  @override
+  String get settingsAutoSyncOnStart => '앱 시작 시 매핑 자동 동기화';
+
+  @override
+  String get settingsAutoSyncOnStartDesc => '애플리케이션 시작 시 매핑 목록을 자동으로 동기화합니다';
+
+  @override
+  String get settingsAutoSyncInterval => '자동 동기화 간격';
+
+  @override
+  String get settingsAutoSyncIntervalDesc =>
+      '매핑 목록을 자동으로 동기화하는 주기 (0 = 사용 안 함)';
+
+  @override
+  String get settingsAutoSyncNever => '사용 안 함';
+
+  @override
+  String get settingsTimingTitle => '이 설정들이 함께 작동하는 방법';
+
+  @override
+  String settingsTimingStep1(int scanInterval) {
+    return '앱이 $scanInterval초마다 포커스된 창을 확인합니다';
+  }
+
+  @override
+  String get settingsTimingStep2Instant => '새 앱이 감지되면 즉시 카테고리 전환';
+
+  @override
+  String settingsTimingStep2Debounce(int debounce) {
+    return '새 앱 감지 후 $debounce초 대기 (디바운스)';
+  }
+
+  @override
+  String settingsTimingStep3Instant(int scanInterval) {
+    return '총 전환 시간: $scanInterval초 (감지 후 즉시)';
+  }
+
+  @override
+  String settingsTimingStep3Debounce(int scanInterval, int scanDebounce) {
+    return '총 전환 시간: $scanInterval초 ~ $scanDebounce초';
+  }
+
+  @override
+  String get settingsFramelessWindow => '프레임 없는 창 사용';
+
+  @override
+  String get settingsFramelessWindowDesc =>
+      '모던하고 테두리 없는 느낌과 둥근 모서리를 위해 Windows 제목 표시줄을 제거합니다';
+
+  @override
+  String get settingsInvertLayout => '푸터/헤더 반전';
+
+  @override
+  String get settingsInvertLayoutDesc => '헤더와 푸터 섹션의 위치를 교환합니다';
+
+  @override
+  String get settingsTokenExpired => '만료됨';
+
+  @override
+  String settingsTokenExpiresDays(int days, int hours) {
+    return '$days일 $hours시간 후 만료';
+  }
+
+  @override
+  String settingsTokenExpiresHours(int hours, int minutes) {
+    return '$hours시간 $minutes분 후 만료';
+  }
+
+  @override
+  String settingsTokenExpiresMinutes(int minutes) {
+    return '$minutes분 후 만료';
+  }
+
+  @override
+  String get settingsResetDesc => '모든 설정 및 데이터를 공장 기본값으로 재설정';
+
+  @override
+  String get settingsButtonReset => '재설정';
+
+  @override
+  String mappingEditorSummary(
+    int count,
+    String plural,
+    int lists,
+    String pluralLists,
+  ) {
+    return '$lists개 활성 목록에서 $count개 프로세스 매핑$plural';
+  }
+
+  @override
+  String mappingEditorBreakdown(int custom, int community) {
+    return '$custom개 커스텀, $community개 커뮤니티 목록';
+  }
+
+  @override
+  String get mappingEditorButtonLists => '목록';
+
+  @override
+  String get mappingEditorButtonAdd => '추가';
+
+  @override
+  String get mappingEditorDeleteTitle => '여러 매핑 삭제';
+
+  @override
+  String mappingEditorDeleteMessage(int count, String plural) {
+    return '$count개 매핑$plural을(를) 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.';
+  }
+
+  @override
+  String get mappingEditorExportTitle => '매핑 내보내기';
+
+  @override
+  String get mappingEditorExportFilename => 'my-mappings.json';
+
+  @override
+  String mappingEditorExportSuccess(int count, String plural) {
+    return '$count개 매핑$plural을(를) 내보냈습니다';
+  }
+
+  @override
+  String get mappingEditorExportFailed => '내보내기 실패';
+
+  @override
+  String get addMappingPrivacySafe => '개인정보 보호 경로';
+
+  @override
+  String get addMappingCustomLocation => '사용자 지정 위치';
+
+  @override
+  String get addMappingOnlyFolder => '게임 폴더 이름만 저장됨';
+
+  @override
+  String get addMappingNotStored => '개인정보 보호를 위해 경로가 저장되지 않음';
+
+  @override
+  String get colorPickerTitle => '색상 선택';
+
+  @override
+  String get colorPickerHue => '색상';
+
+  @override
+  String get colorPickerSaturation => '채도';
+
+  @override
+  String get colorPickerValue => '명도';
+
+  @override
+  String get colorPickerButtonCancel => '취소';
+
+  @override
+  String get colorPickerButtonSelect => '선택';
+
+  @override
+  String get dropdownPlaceholder => '옵션을 선택하세요';
+
+  @override
+  String get dropdownSearchHint => '검색...';
+
+  @override
+  String get dropdownNoResults => '결과를 찾을 수 없음';
+
+  @override
+  String paginationPageInfo(int current, int total) {
+    return '페이지 $current / $total';
+  }
+
+  @override
+  String get paginationGoTo => '이동:';
+
+  @override
+  String get datePickerPlaceholder => '날짜 선택';
+
+  @override
+  String get timePickerAM => '오전';
+
+  @override
+  String get timePickerPM => '오후';
+
+  @override
+  String get timePickerPlaceholder => '시간 선택';
+
+  @override
+  String get fileUploadInstruction => '클릭하여 파일 업로드';
+
+  @override
+  String fileUploadAllowed(String extensions) {
+    return '허용됨: $extensions';
+  }
+
+  @override
+  String get menuButtonTooltip => '더 많은 옵션';
+
+  @override
+  String get breadcrumbEllipsis => '...';
+
+  @override
+  String get breadcrumbTooltipShowPath => '경로 표시';
+
+  @override
+  String get hotkeyModCtrl => 'Ctrl';
+
+  @override
+  String get hotkeyModAlt => 'Alt';
+
+  @override
+  String get hotkeyModShift => 'Shift';
+
+  @override
+  String get hotkeyModWin => 'Win';
+
+  @override
+  String get hotkeySpace => 'Space';
+
+  @override
+  String get hotkeyEnter => 'Enter';
+
+  @override
+  String get hotkeyTab => 'Tab';
+
+  @override
+  String get hotkeyBackspace => 'Bksp';
+
+  @override
+  String get hotkeyDelete => 'Del';
+
+  @override
+  String get hotkeyEscape => 'Esc';
+
+  @override
+  String get hotkeyHome => 'Home';
+
+  @override
+  String get hotkeyEnd => 'End';
+
+  @override
+  String get hotkeyPageUp => 'PgUp';
+
+  @override
+  String get hotkeyPageDown => 'PgDn';
+
+  @override
+  String get statusDashboardCurrentActivity => '현재 활동';
+
+  @override
+  String get statusDashboardNotStarted => '시작 안 됨';
+
+  @override
+  String get statusDashboardReady => '준비';
+
+  @override
+  String get statusDashboardCheckingApp => '활성 앱 확인 중';
+
+  @override
+  String get statusDashboardFindingCategory => '카테고리 찾는 중';
+
+  @override
+  String get statusDashboardUpdating => '카테고리 업데이트 중';
+
+  @override
+  String get statusDashboardWaiting => '확인 대기 중';
+
+  @override
+  String get statusDashboardError => '오류 발생';
+
+  @override
+  String mappingListOfCount(int count, int total) {
+    return '$total개 중 $count개';
+  }
+
+  @override
+  String get mappingListActionDelete => '삭제';
+
+  @override
+  String get mappingListActionEnable => '활성화';
+
+  @override
+  String get mappingListActionDisable => '비활성화';
+
+  @override
+  String autoSwitcherTimeSecondsAgo(int seconds) {
+    return '$seconds초 전';
+  }
+
+  @override
+  String autoSwitcherTimeMinutesAgo(int minutes) {
+    return '$minutes분 전';
+  }
+
+  @override
+  String autoSwitcherTimeHoursAgo(int hours) {
+    return '$hours시간 전';
+  }
 }

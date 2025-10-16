@@ -592,6 +592,935 @@
   "@updateDialogRemindLater": {
     "description": "Remind later button"
   },
+  "updateDialogIgnore": "Ignorovat tuto verzi",
+  "@updateDialogIgnore": {
+    "description": "Ignore this version button"
+  },
+  "notificationMissingCategoryTitle": "Mapování kategorie nenalezeno",
+  "@notificationMissingCategoryTitle": {
+    "description": "Notification title for missing category mapping"
+  },
+  "notificationMissingCategoryBody": "Nebyla nalezena kategorie Twitch pro: {processName}",
+  "@notificationMissingCategoryBody": {
+    "description": "Notification body for missing category mapping",
+    "placeholders": {
+      "processName": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationActionAssignCategory": "Přiřadit kategorii",
+  "@notificationActionAssignCategory": {
+    "description": "Notification action button to assign category"
+  },
+  "notificationCategoryUpdatedTitle": "Kategorie aktualizována",
+  "@notificationCategoryUpdatedTitle": {
+    "description": "Notification title for successful category update"
+  },
+  "notificationCategoryUpdatedBody": "Přepnuto na \"{categoryName}\" pro {processName}",
+  "@notificationCategoryUpdatedBody": {
+    "description": "Notification body for successful category update",
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      },
+      "processName": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingListColumnSource": "Zdroj",
+  "@mappingListColumnSource": {
+    "description": "Source column header in mapping list"
+  },
+  "mappingListColumnEnabled": "Povoleno",
+  "@mappingListColumnEnabled": {
+    "description": "Enabled column header in mapping list"
+  },
+  "mappingListTooltipIgnored": "Tato kategorie je ignorována",
+  "@mappingListTooltipIgnored": {
+    "description": "Tooltip for ignored category"
+  },
+  "mappingListTooltipTwitchId": "Twitch ID: {twitchCategoryId}",
+  "@mappingListTooltipTwitchId": {
+    "description": "Tooltip showing Twitch category ID",
+    "placeholders": {
+      "twitchCategoryId": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingListCategoryIgnored": "Ignorováno",
+  "@mappingListCategoryIgnored": {
+    "description": "Text for ignored category"
+  },
+  "mappingListSourceUnknown": "Neznámý",
+  "@mappingListSourceUnknown": {
+    "description": "Unknown source fallback text"
+  },
+  "mappingListSelected": "{count} vybráno",
+  "@mappingListSelected": {
+    "description": "Selection count status",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingListSelectedVisible": "{count} vybráno ({visible} viditelných)",
+  "@mappingListSelectedVisible": {
+    "description": "Selection count with visible count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "visible": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingListButtonInvert": "Invertovat",
+  "@mappingListButtonInvert": {
+    "description": "Invert selection button"
+  },
+  "mappingListButtonClear": "Vymazat",
+  "@mappingListButtonClear": {
+    "description": "Clear selection button"
+  },
+  "mappingListButtonUndo": "Vrátit {action}",
+  "@mappingListButtonUndo": {
+    "description": "Undo action button",
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingListButtonExport": "Exportovat",
+  "@mappingListButtonExport": {
+    "description": "Export mappings button"
+  },
+  "mappingListButtonEnable": "Povolit",
+  "@mappingListButtonEnable": {
+    "description": "Enable selected mappings button"
+  },
+  "mappingListButtonDisable": "Zakázat",
+  "@mappingListButtonDisable": {
+    "description": "Disable selected mappings button"
+  },
+  "mappingListButtonDelete": "Smazat",
+  "@mappingListButtonDelete": {
+    "description": "Delete selected mappings button"
+  },
+  "mappingListTooltipCannotDelete": "Nelze smazat mapování ze seznamů pouze pro čtení",
+  "@mappingListTooltipCannotDelete": {
+    "description": "Tooltip when delete is disabled"
+  },
+  "mappingListTooltipDelete": "Smazat vybraná mapování",
+  "@mappingListTooltipDelete": {
+    "description": "Tooltip for delete button"
+  },
+  "mappingListSearchHint": "Hledat podle názvu procesu nebo kategorie...",
+  "@mappingListSearchHint": {
+    "description": "Search input placeholder"
+  },
+  "mappingListTooltipClearSearch": "Vymazat vyhledávání",
+  "@mappingListTooltipClearSearch": {
+    "description": "Tooltip for clear search button"
+  },
+  "listManagementEmptyState": "Nebyly nalezeny žádné seznamy",
+  "@listManagementEmptyState": {
+    "description": "Empty state message for list management"
+  },
+  "listManagementTitle": "Spravovat seznamy",
+  "@listManagementTitle": {
+    "description": "List management dialog title"
+  },
+  "listManagementSyncNow": "Synchronizovat nyní",
+  "@listManagementSyncNow": {
+    "description": "Sync now tooltip"
+  },
+  "listManagementBadgeLocal": "MÍSTNÍ",
+  "@listManagementBadgeLocal": {
+    "description": "Badge for local lists"
+  },
+  "listManagementBadgeOfficial": "OFICIÁLNÍ",
+  "@listManagementBadgeOfficial": {
+    "description": "Badge for official lists"
+  },
+  "listManagementBadgeRemote": "VZDÁLENÝ",
+  "@listManagementBadgeRemote": {
+    "description": "Badge for remote lists"
+  },
+  "listManagementBadgeReadOnly": "POUZE PRO ČTENÍ",
+  "@listManagementBadgeReadOnly": {
+    "description": "Badge for read-only lists"
+  },
+  "listManagementButtonImport": "Importovat seznam",
+  "@listManagementButtonImport": {
+    "description": "Import list button"
+  },
+  "listManagementButtonSyncAll": "Synchronizovat vše",
+  "@listManagementButtonSyncAll": {
+    "description": "Sync all lists button"
+  },
+  "listManagementButtonClose": "Zavřít",
+  "@listManagementButtonClose": {
+    "description": "Close dialog button"
+  },
+  "listManagementImportTitle": "Importovat seznam",
+  "@listManagementImportTitle": {
+    "description": "Import list dialog title"
+  },
+  "listManagementImportUrl": "URL seznamu",
+  "@listManagementImportUrl": {
+    "description": "URL field label"
+  },
+  "listManagementImportUrlPlaceholder": "https://example.com/mappings.json",
+  "@listManagementImportUrlPlaceholder": {
+    "description": "URL field placeholder"
+  },
+  "listManagementImportName": "Název seznamu (volitelné)",
+  "@listManagementImportName": {
+    "description": "Name field label"
+  },
+  "listManagementImportNameHelper": "Pokud není zadán, použije se název z JSON souboru",
+  "@listManagementImportNameHelper": {
+    "description": "Name field helper text"
+  },
+  "listManagementImportNamePlaceholder": "Můj vlastní seznam",
+  "@listManagementImportNamePlaceholder": {
+    "description": "Name field placeholder"
+  },
+  "listManagementImportDescription": "Popis (volitelné)",
+  "@listManagementImportDescription": {
+    "description": "Description field label"
+  },
+  "listManagementImportDescriptionHelper": "Pokud není zadán, použije se popis z JSON souboru",
+  "@listManagementImportDescriptionHelper": {
+    "description": "Description field helper text"
+  },
+  "listManagementImportDescriptionPlaceholder": "Sbírka herních mapování",
+  "@listManagementImportDescriptionPlaceholder": {
+    "description": "Description field placeholder"
+  },
+  "listManagementButtonCancel": "Zrušit",
+  "@listManagementButtonCancel": {
+    "description": "Cancel import button"
+  },
+  "listManagementButtonImportConfirm": "Importovat",
+  "@listManagementButtonImportConfirm": {
+    "description": "Confirm import button"
+  },
+  "listManagementDefaultName": "Importovaný seznam",
+  "@listManagementDefaultName": {
+    "description": "Default name for imported lists"
+  },
+  "listManagementImportSuccess": "Seznam úspěšně importován",
+  "@listManagementImportSuccess": {
+    "description": "Success message after import"
+  },
+  "listManagementSyncNever": "nikdy",
+  "@listManagementSyncNever": {
+    "description": "Sync time: never synced"
+  },
+  "listManagementSyncJustNow": "právě teď",
+  "@listManagementSyncJustNow": {
+    "description": "Sync time: just now"
+  },
+  "listManagementSyncMinutesAgo": "před {minutes}m",
+  "@listManagementSyncMinutesAgo": {
+    "description": "Sync time: minutes ago",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncHoursAgo": "před {hours}h",
+  "@listManagementSyncHoursAgo": {
+    "description": "Sync time: hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncDaysAgo": "před {days}d",
+  "@listManagementSyncDaysAgo": {
+    "description": "Sync time: days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncDaysHoursAgo": "před {days}d {hours}h",
+  "@listManagementSyncDaysHoursAgo": {
+    "description": "Sync time: days and hours ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementMappingsCount": "{count} mapování",
+  "@listManagementMappingsCount": {
+    "description": "Mapping count display",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "listManagementSyncFailed": "Synchronizace selhala:",
+  "@listManagementSyncFailed": {
+    "description": "Sync failed error prefix"
+  },
+  "listManagementLastSynced": "Naposledy synchronizováno:",
+  "@listManagementLastSynced": {
+    "description": "Last synced label"
+  },
+  "unknownGameIgnoreProcess": "Ignorovat proces",
+  "@unknownGameIgnoreProcess": {
+    "description": "Option to ignore a process"
+  },
+  "unknownGameCategoryId": "ID: {id}",
+  "@unknownGameCategoryId": {
+    "description": "Category ID display",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameSubmissionTitle": "Vyžadováno odeslání",
+  "@unknownGameSubmissionTitle": {
+    "description": "Submission section title"
+  },
+  "unknownGameSubmissionInfo": "Toto mapování bude uloženo místně a odesláno vlastníkovi seznamu ke schválení. Po schválení a synchronizaci bude vaše místní kopie automaticky nahrazena.",
+  "@unknownGameSubmissionInfo": {
+    "description": "Submission workflow information"
+  },
+  "unknownGameSectionLists": "SEZNAMY",
+  "@unknownGameSectionLists": {
+    "description": "Lists section header"
+  },
+  "unknownGameListMappingCount": "{count} mapování",
+  "@unknownGameListMappingCount": {
+    "description": "Mapping count for a list",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "unknownGameBadgeStaged": "PŘIPRAVENO",
+  "@unknownGameBadgeStaged": {
+    "description": "Badge for staged mappings"
+  },
+  "unknownGameIgnoredProcess": "IGNOROVANÝ PROCES",
+  "@unknownGameIgnoredProcess": {
+    "description": "Label for ignored process"
+  },
+  "unknownGameSelectedCategoryId": "ID: {id}",
+  "@unknownGameSelectedCategoryId": {
+    "description": "Selected category ID display",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameWorkflowTitle": "Proces odeslání",
+  "@unknownGameWorkflowTitle": {
+    "description": "Workflow explanation title"
+  },
+  "unknownGameWorkflowTitleAlt": "Co se stane dále",
+  "@unknownGameWorkflowTitleAlt": {
+    "description": "Alternative workflow title"
+  },
+  "unknownGameWorkflowStepLocal": "Uloženo místně do Mých vlastních mapování",
+  "@unknownGameWorkflowStepLocal": {
+    "description": "Local save workflow step"
+  },
+  "unknownGameWorkflowStepLocalDesc": "Nejprve uloženo na vašem zařízení, takže mapování funguje okamžitě",
+  "@unknownGameWorkflowStepLocalDesc": {
+    "description": "Local save workflow step description"
+  },
+  "unknownGameWorkflowStepSubmit": "Odesláno do {listName}",
+  "@unknownGameWorkflowStepSubmit": {
+    "description": "Submission workflow step",
+    "placeholders": {
+      "listName": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameWorkflowStepSubmitDesc": "Automaticky odesláno vlastníkovi seznamu ke kontrole a schválení",
+  "@unknownGameWorkflowStepSubmitDesc": {
+    "description": "Submission workflow step description"
+  },
+  "unknownGameWorkflowStepReplace": "Místní kopie nahrazena po schválení",
+  "@unknownGameWorkflowStepReplace": {
+    "description": "Replacement workflow step"
+  },
+  "unknownGameWorkflowStepReplaceDesc": "Po přijetí a synchronizaci bude vaše místní kopie odstraněna a nahrazena oficiální verzí z {listName}",
+  "@unknownGameWorkflowStepReplaceDesc": {
+    "description": "Replacement workflow step description",
+    "placeholders": {
+      "listName": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameSavedTo": "Uloženo do {listName}",
+  "@unknownGameSavedTo": {
+    "description": "Confirmation of save destination",
+    "placeholders": {
+      "listName": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownGameIgnoredInfo": "Tento proces bude ignorován a nespustí notifikace",
+  "@unknownGameIgnoredInfo": {
+    "description": "Information about ignoring a process"
+  },
+  "unknownGameLocalSaveInfo": "Vaše mapování je uloženo místně a bude fungovat okamžitě",
+  "@unknownGameLocalSaveInfo": {
+    "description": "Information about local save"
+  },
+  "unknownGamePrivacyInfo": "Toto mapování je soukromé a uloženo pouze na vašem zařízení",
+  "@unknownGamePrivacyInfo": {
+    "description": "Privacy information for local mappings"
+  },
+  "autoSwitcherError": "Chyba: {error}",
+  "@autoSwitcherError": {
+    "description": "Error message display",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "autoSwitcherStatusActive": "Automatické přepínání aktivní",
+  "@autoSwitcherStatusActive": {
+    "description": "Auto-switcher active status"
+  },
+  "autoSwitcherStatusInactive": "Nemonitoruje se",
+  "@autoSwitcherStatusInactive": {
+    "description": "Auto-switcher inactive status"
+  },
+  "autoSwitcherLabelActiveApp": "Aktivní aplikace",
+  "@autoSwitcherLabelActiveApp": {
+    "description": "Label for active app display"
+  },
+  "autoSwitcherLabelCategory": "Kategorie",
+  "@autoSwitcherLabelCategory": {
+    "description": "Label for category display"
+  },
+  "autoSwitcherValueNone": "Žádná",
+  "@autoSwitcherValueNone": {
+    "description": "None value"
+  },
+  "autoSwitcherDescriptionActive": "Vaše kategorie se automaticky mění při přepínání aplikací.",
+  "@autoSwitcherDescriptionActive": {
+    "description": "Description when auto-switcher is active"
+  },
+  "autoSwitcherButtonTurnOff": "Vypnout",
+  "@autoSwitcherButtonTurnOff": {
+    "description": "Turn off auto-switcher button"
+  },
+  "autoSwitcherInstructionPress": "Stiskněte",
+  "@autoSwitcherInstructionPress": {
+    "description": "Instruction text before hotkey"
+  },
+  "autoSwitcherInstructionManual": "pro ruční aktualizaci na zaměřený proces",
+  "@autoSwitcherInstructionManual": {
+    "description": "Instruction for manual update"
+  },
+  "autoSwitcherHeadingEnable": "Povolit automatické přepínání",
+  "@autoSwitcherHeadingEnable": {
+    "description": "Heading for enable section"
+  },
+  "autoSwitcherDescriptionInactive": "Kategorie se budou automaticky měnit při přepínání mezi aplikacemi.",
+  "@autoSwitcherDescriptionInactive": {
+    "description": "Description when auto-switcher is inactive"
+  },
+  "autoSwitcherButtonTurnOn": "Zapnout",
+  "@autoSwitcherButtonTurnOn": {
+    "description": "Turn on auto-switcher button"
+  },
+  "autoSwitcherInstructionOr": "Nebo stiskněte",
+  "@autoSwitcherInstructionOr": {
+    "description": "Alternative instruction text"
+  },
+  "settingsTabMappings": "Mapování",
+  "@settingsTabMappings": {
+    "description": "Mappings settings tab"
+  },
+  "settingsTabTheme": "Motiv",
+  "@settingsTabTheme": {
+    "description": "Theme settings tab"
+  },
+  "settingsAutoSyncOnStart": "Automaticky synchronizovat mapování při spuštění aplikace",
+  "@settingsAutoSyncOnStart": {
+    "description": "Auto-sync on start setting label"
+  },
+  "settingsAutoSyncOnStartDesc": "Automaticky synchronizovat seznamy mapování při startu aplikace",
+  "@settingsAutoSyncOnStartDesc": {
+    "description": "Auto-sync on start setting description"
+  },
+  "settingsAutoSyncInterval": "Interval automatické synchronizace",
+  "@settingsAutoSyncInterval": {
+    "description": "Auto-sync interval setting label"
+  },
+  "settingsAutoSyncIntervalDesc": "Jak často automaticky synchronizovat seznamy mapování (0 = nikdy)",
+  "@settingsAutoSyncIntervalDesc": {
+    "description": "Auto-sync interval setting description"
+  },
+  "settingsAutoSyncNever": "Nikdy",
+  "@settingsAutoSyncNever": {
+    "description": "Never sync option"
+  },
+  "settingsTimingTitle": "JAK TATO NASTAVENÍ SPOLUPRACUJÍ",
+  "@settingsTimingTitle": {
+    "description": "Timing explanation section title"
+  },
+  "settingsTimingStep1": "Aplikace kontroluje zaměřené okno každých {scanInterval}s",
+  "@settingsTimingStep1": {
+    "description": "Timing explanation step 1",
+    "placeholders": {
+      "scanInterval": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTimingStep2Instant": "Kategorie se přepne okamžitě po detekci nové aplikace",
+  "@settingsTimingStep2Instant": {
+    "description": "Timing explanation step 2 (instant)"
+  },
+  "settingsTimingStep2Debounce": "Čeká {debounce}s po detekci nové aplikace (prodleva)",
+  "@settingsTimingStep2Debounce": {
+    "description": "Timing explanation step 2 (with debounce)",
+    "placeholders": {
+      "debounce": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTimingStep3Instant": "Celkový čas přepnutí: {scanInterval}s (okamžitě po detekci)",
+  "@settingsTimingStep3Instant": {
+    "description": "Timing explanation step 3 (instant)",
+    "placeholders": {
+      "scanInterval": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTimingStep3Debounce": "Celkový čas přepnutí: {scanInterval}s až {scanDebounce}s",
+  "@settingsTimingStep3Debounce": {
+    "description": "Timing explanation step 3 (with debounce)",
+    "placeholders": {
+      "scanInterval": {
+        "type": "int"
+      },
+      "scanDebounce": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsFramelessWindow": "Použít okno bez rámečku",
+  "@settingsFramelessWindow": {
+    "description": "Frameless window setting label"
+  },
+  "settingsFramelessWindowDesc": "Odstranit záhlaví okna Windows pro moderní vzhled bez okrajů se zaoblenými rohy",
+  "@settingsFramelessWindowDesc": {
+    "description": "Frameless window setting description"
+  },
+  "settingsInvertLayout": "Invertovat zápatí/záhlaví",
+  "@settingsInvertLayout": {
+    "description": "Invert layout setting label"
+  },
+  "settingsInvertLayoutDesc": "Prohodit pozice záhlaví a zápatí",
+  "@settingsInvertLayoutDesc": {
+    "description": "Invert layout setting description"
+  },
+  "settingsTokenExpired": "Vypršel",
+  "@settingsTokenExpired": {
+    "description": "Token expired status"
+  },
+  "settingsTokenExpiresDays": "Vyprší za {days}d {hours}h",
+  "@settingsTokenExpiresDays": {
+    "description": "Token expires in days and hours",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTokenExpiresHours": "Vyprší za {hours}h {minutes}m",
+  "@settingsTokenExpiresHours": {
+    "description": "Token expires in hours and minutes",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTokenExpiresMinutes": "Vyprší za {minutes}m",
+  "@settingsTokenExpiresMinutes": {
+    "description": "Token expires in minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsResetDesc": "Obnovit všechna nastavení a data na tovární výchozí hodnoty",
+  "@settingsResetDesc": {
+    "description": "Reset settings description"
+  },
+  "settingsButtonReset": "Obnovit",
+  "@settingsButtonReset": {
+    "description": "Reset button"
+  },
+  "mappingEditorSummary": "{count} mapování proces{plural} z {lists} aktivního seznam{pluralLists}",
+  "@mappingEditorSummary": {
+    "description": "Mapping editor summary text",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      },
+      "lists": {
+        "type": "int"
+      },
+      "pluralLists": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingEditorBreakdown": "{custom} vlastních, {community} z komunitních seznamů",
+  "@mappingEditorBreakdown": {
+    "description": "Mapping breakdown text",
+    "placeholders": {
+      "custom": {
+        "type": "int"
+      },
+      "community": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingEditorButtonLists": "Seznamy",
+  "@mappingEditorButtonLists": {
+    "description": "Lists button"
+  },
+  "mappingEditorButtonAdd": "Přidat",
+  "@mappingEditorButtonAdd": {
+    "description": "Add mapping button"
+  },
+  "mappingEditorDeleteTitle": "Smazat více mapování",
+  "@mappingEditorDeleteTitle": {
+    "description": "Delete confirmation dialog title"
+  },
+  "mappingEditorDeleteMessage": "Opravdu chcete smazat {count} mapování{plural}? Tuto akci nelze vrátit zpět.",
+  "@mappingEditorDeleteMessage": {
+    "description": "Delete confirmation message",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingEditorExportTitle": "Exportovat mapování",
+  "@mappingEditorExportTitle": {
+    "description": "Export dialog title"
+  },
+  "mappingEditorExportFilename": "moje-mapovani.json",
+  "@mappingEditorExportFilename": {
+    "description": "Default export filename"
+  },
+  "mappingEditorExportSuccess": "Exportováno {count} mapování{plural} do",
+  "@mappingEditorExportSuccess": {
+    "description": "Export success message",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      }
+    }
+  },
+  "mappingEditorExportFailed": "Export selhal",
+  "@mappingEditorExportFailed": {
+    "description": "Export failed error title"
+  },
+  "addMappingPrivacySafe": "Cesta bezpečná pro soukromí",
+  "@addMappingPrivacySafe": {
+    "description": "Privacy-safe path label"
+  },
+  "addMappingCustomLocation": "Vlastní umístění",
+  "@addMappingCustomLocation": {
+    "description": "Custom location label"
+  },
+  "addMappingOnlyFolder": "Uloženy pouze názvy herních složek",
+  "@addMappingOnlyFolder": {
+    "description": "Privacy info: only folder names"
+  },
+  "addMappingNotStored": "Cesta není uložena kvůli soukromí",
+  "@addMappingNotStored": {
+    "description": "Privacy info: path not stored"
+  },
+  "colorPickerTitle": "Vybrat barvu",
+  "@colorPickerTitle": {
+    "description": "Color picker dialog title"
+  },
+  "colorPickerHue": "Odstín",
+  "@colorPickerHue": {
+    "description": "Hue slider label"
+  },
+  "colorPickerSaturation": "Sytost",
+  "@colorPickerSaturation": {
+    "description": "Saturation slider label"
+  },
+  "colorPickerValue": "Hodnota",
+  "@colorPickerValue": {
+    "description": "Value slider label"
+  },
+  "colorPickerButtonCancel": "Zrušit",
+  "@colorPickerButtonCancel": {
+    "description": "Color picker cancel button"
+  },
+  "colorPickerButtonSelect": "Vybrat",
+  "@colorPickerButtonSelect": {
+    "description": "Color picker select button"
+  },
+  "dropdownPlaceholder": "Vyberte možnost",
+  "@dropdownPlaceholder": {
+    "description": "Dropdown placeholder text"
+  },
+  "dropdownSearchHint": "Hledat...",
+  "@dropdownSearchHint": {
+    "description": "Dropdown search hint"
+  },
+  "dropdownNoResults": "Nebyly nalezeny žádné výsledky",
+  "@dropdownNoResults": {
+    "description": "Dropdown no results message"
+  },
+  "paginationPageInfo": "Stránka {current} z {total}",
+  "@paginationPageInfo": {
+    "description": "Pagination page information",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "paginationGoTo": "Přejít na:",
+  "@paginationGoTo": {
+    "description": "Jump to page label"
+  },
+  "datePickerPlaceholder": "Vybrat datum",
+  "@datePickerPlaceholder": {
+    "description": "Date picker placeholder"
+  },
+  "timePickerAM": "AM",
+  "@timePickerAM": {
+    "description": "AM time period"
+  },
+  "timePickerPM": "PM",
+  "@timePickerPM": {
+    "description": "PM time period"
+  },
+  "timePickerPlaceholder": "Vybrat čas",
+  "@timePickerPlaceholder": {
+    "description": "Time picker placeholder"
+  },
+  "fileUploadInstruction": "Klikněte pro nahrání souboru",
+  "@fileUploadInstruction": {
+    "description": "File upload instruction"
+  },
+  "fileUploadAllowed": "Povoleno: {extensions}",
+  "@fileUploadAllowed": {
+    "description": "Allowed file extensions",
+    "placeholders": {
+      "extensions": {
+        "type": "String"
+      }
+    }
+  },
+  "menuButtonTooltip": "Více možností",
+  "@menuButtonTooltip": {
+    "description": "Default menu button tooltip"
+  },
+  "breadcrumbEllipsis": "...",
+  "@breadcrumbEllipsis": {
+    "description": "Breadcrumb ellipsis"
+  },
+  "breadcrumbTooltipShowPath": "Zobrazit cestu",
+  "@breadcrumbTooltipShowPath": {
+    "description": "Breadcrumb show path tooltip"
+  },
+  "hotkeyModCtrl": "Ctrl",
+  "@hotkeyModCtrl": {
+    "description": "Ctrl modifier key"
+  },
+  "hotkeyModAlt": "Alt",
+  "@hotkeyModAlt": {
+    "description": "Alt modifier key"
+  },
+  "hotkeyModShift": "Shift",
+  "@hotkeyModShift": {
+    "description": "Shift modifier key"
+  },
+  "hotkeyModWin": "Win",
+  "@hotkeyModWin": {
+    "description": "Windows modifier key"
+  },
+  "hotkeySpace": "Mezerník",
+  "@hotkeySpace": {
+    "description": "Space key"
+  },
+  "hotkeyEnter": "Enter",
+  "@hotkeyEnter": {
+    "description": "Enter key"
+  },
+  "hotkeyTab": "Tab",
+  "@hotkeyTab": {
+    "description": "Tab key"
+  },
+  "hotkeyBackspace": "Backspace",
+  "@hotkeyBackspace": {
+    "description": "Backspace key"
+  },
+  "hotkeyDelete": "Del",
+  "@hotkeyDelete": {
+    "description": "Delete key"
+  },
+  "hotkeyEscape": "Esc",
+  "@hotkeyEscape": {
+    "description": "Escape key"
+  },
+  "hotkeyHome": "Home",
+  "@hotkeyHome": {
+    "description": "Home key"
+  },
+  "hotkeyEnd": "End",
+  "@hotkeyEnd": {
+    "description": "End key"
+  },
+  "hotkeyPageUp": "PgUp",
+  "@hotkeyPageUp": {
+    "description": "Page Up key"
+  },
+  "hotkeyPageDown": "PgDn",
+  "@hotkeyPageDown": {
+    "description": "Page Down key"
+  },
+  "statusDashboardCurrentActivity": "Aktuální aktivita",
+  "@statusDashboardCurrentActivity": {
+    "description": "Current activity label"
+  },
+  "statusDashboardNotStarted": "Nezahájeno",
+  "@statusDashboardNotStarted": {
+    "description": "Not started status"
+  },
+  "statusDashboardReady": "Připraven",
+  "@statusDashboardReady": {
+    "description": "Ready status"
+  },
+  "statusDashboardCheckingApp": "Kontrola aktivní aplikace",
+  "@statusDashboardCheckingApp": {
+    "description": "Checking app status"
+  },
+  "statusDashboardFindingCategory": "Hledání kategorie",
+  "@statusDashboardFindingCategory": {
+    "description": "Finding category status"
+  },
+  "statusDashboardUpdating": "Aktualizace kategorie",
+  "@statusDashboardUpdating": {
+    "description": "Updating status"
+  },
+  "statusDashboardWaiting": "Čekání na potvrzení",
+  "@statusDashboardWaiting": {
+    "description": "Waiting status"
+  },
+  "statusDashboardError": "Došlo k chybě",
+  "@statusDashboardError": {
+    "description": "Error status"
+  },
+  "mappingListOfCount": "{count} z {total}",
+  "@mappingListOfCount": {
+    "description": "Count display for filtered mappings",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "mappingListActionDelete": "Smazat",
+  "@mappingListActionDelete": {
+    "description": "Action label for delete"
+  },
+  "mappingListActionEnable": "Povolit",
+  "@mappingListActionEnable": {
+    "description": "Action label for enable"
+  },
+  "mappingListActionDisable": "Zakázat",
+  "@mappingListActionDisable": {
+    "description": "Action label for disable"
+  },
+  "autoSwitcherTimeSecondsAgo": "před {seconds}s",
+  "@autoSwitcherTimeSecondsAgo": {
+    "description": "Time format for seconds ago",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "autoSwitcherTimeMinutesAgo": "před {minutes}m",
+  "@autoSwitcherTimeMinutesAgo": {
+    "description": "Time format for minutes ago",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "autoSwitcherTimeHoursAgo": "před {hours}h",
+  "@autoSwitcherTimeHoursAgo": {
+    "description": "Time format for hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "settingsDebounceTimeDescription": "Čekací doba před přepnutím kategorie po změně aplikace (zabraňuje rychlému přepínání)",
   "@settingsDebounceTimeDescription": {
     "description": "Debounce time setting description"

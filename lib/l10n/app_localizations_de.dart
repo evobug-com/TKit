@@ -387,7 +387,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get updateDialogRemindLater => 'Später erinnern';
 
   @override
-  String get updateDialogIgnore => 'Ignore This Version';
+  String get updateDialogIgnore => 'Diese Version ignorieren';
 
   @override
   String get settingsDebounceTimeDescription =>
@@ -1142,4 +1142,641 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get versionStatusPlatformNotSupported =>
       'Updates auf dieser Plattform nicht unterstützt';
+
+  @override
+  String get notificationMissingCategoryTitle =>
+      'Kategoriezuordnung nicht gefunden';
+
+  @override
+  String notificationMissingCategoryBody(String processName) {
+    return 'Keine Twitch-Kategorie gefunden für: $processName';
+  }
+
+  @override
+  String get notificationActionAssignCategory => 'Kategorie zuweisen';
+
+  @override
+  String get notificationCategoryUpdatedTitle => 'Kategorie aktualisiert';
+
+  @override
+  String notificationCategoryUpdatedBody(
+    String categoryName,
+    String processName,
+  ) {
+    return 'Gewechselt zu \"$categoryName\" für $processName';
+  }
+
+  @override
+  String get mappingListColumnSource => 'Quelle';
+
+  @override
+  String get mappingListColumnEnabled => 'Aktiviert';
+
+  @override
+  String get mappingListTooltipIgnored => 'Diese Kategorie wird ignoriert';
+
+  @override
+  String mappingListTooltipTwitchId(String twitchCategoryId) {
+    return 'Twitch-ID: $twitchCategoryId';
+  }
+
+  @override
+  String get mappingListCategoryIgnored => 'Ignoriert';
+
+  @override
+  String get mappingListSourceUnknown => 'Unbekannt';
+
+  @override
+  String mappingListSelected(int count) {
+    return '$count ausgewählt';
+  }
+
+  @override
+  String mappingListSelectedVisible(int count, int visible) {
+    return '$count ausgewählt ($visible sichtbar)';
+  }
+
+  @override
+  String get mappingListButtonInvert => 'Umkehren';
+
+  @override
+  String get mappingListButtonClear => 'Löschen';
+
+  @override
+  String mappingListButtonUndo(String action) {
+    return '$action rückgängig machen';
+  }
+
+  @override
+  String get mappingListButtonExport => 'Exportieren';
+
+  @override
+  String get mappingListButtonEnable => 'Aktivieren';
+
+  @override
+  String get mappingListButtonDisable => 'Deaktivieren';
+
+  @override
+  String get mappingListButtonDelete => 'Löschen';
+
+  @override
+  String get mappingListTooltipCannotDelete =>
+      'Zuordnungen aus schreibgeschützten Listen können nicht gelöscht werden';
+
+  @override
+  String get mappingListTooltipDelete => 'Ausgewählte Zuordnungen löschen';
+
+  @override
+  String get mappingListSearchHint =>
+      'Nach Prozessname oder Kategorie suchen...';
+
+  @override
+  String get mappingListTooltipClearSearch => 'Suche löschen';
+
+  @override
+  String get listManagementEmptyState => 'Keine Listen gefunden';
+
+  @override
+  String get listManagementTitle => 'Listen verwalten';
+
+  @override
+  String get listManagementSyncNow => 'Jetzt synchronisieren';
+
+  @override
+  String get listManagementBadgeLocal => 'LOKAL';
+
+  @override
+  String get listManagementBadgeOfficial => 'OFFIZIELL';
+
+  @override
+  String get listManagementBadgeRemote => 'REMOTE';
+
+  @override
+  String get listManagementBadgeReadOnly => 'NUR LESEN';
+
+  @override
+  String get listManagementButtonImport => 'Liste importieren';
+
+  @override
+  String get listManagementButtonSyncAll => 'Alle synchronisieren';
+
+  @override
+  String get listManagementButtonClose => 'Schließen';
+
+  @override
+  String get listManagementImportTitle => 'Liste importieren';
+
+  @override
+  String get listManagementImportUrl => 'Listen-URL';
+
+  @override
+  String get listManagementImportUrlPlaceholder =>
+      'https://example.com/mappings.json';
+
+  @override
+  String get listManagementImportName => 'Listenname (optional)';
+
+  @override
+  String get listManagementImportNameHelper =>
+      'Falls nicht angegeben, wird der Name aus der JSON-Datei verwendet';
+
+  @override
+  String get listManagementImportNamePlaceholder =>
+      'Meine benutzerdefinierte Liste';
+
+  @override
+  String get listManagementImportDescription => 'Beschreibung (optional)';
+
+  @override
+  String get listManagementImportDescriptionHelper =>
+      'Falls nicht angegeben, wird die Beschreibung aus der JSON-Datei verwendet';
+
+  @override
+  String get listManagementImportDescriptionPlaceholder =>
+      'Eine Sammlung von Spielzuordnungen';
+
+  @override
+  String get listManagementButtonCancel => 'Abbrechen';
+
+  @override
+  String get listManagementButtonImportConfirm => 'Importieren';
+
+  @override
+  String get listManagementDefaultName => 'Importierte Liste';
+
+  @override
+  String get listManagementImportSuccess => 'Liste erfolgreich importiert';
+
+  @override
+  String get listManagementSyncNever => 'nie';
+
+  @override
+  String get listManagementSyncJustNow => 'gerade eben';
+
+  @override
+  String listManagementSyncMinutesAgo(int minutes) {
+    return 'vor ${minutes}m';
+  }
+
+  @override
+  String listManagementSyncHoursAgo(int hours) {
+    return 'vor ${hours}h';
+  }
+
+  @override
+  String listManagementSyncDaysAgo(int days) {
+    return 'vor ${days}T';
+  }
+
+  @override
+  String listManagementSyncDaysHoursAgo(int days, int hours) {
+    return 'vor ${days}T ${hours}h';
+  }
+
+  @override
+  String listManagementMappingsCount(int count) {
+    return '$count Zuordnungen';
+  }
+
+  @override
+  String get listManagementSyncFailed => 'Synchronisierung fehlgeschlagen:';
+
+  @override
+  String get listManagementLastSynced => 'Zuletzt synchronisiert:';
+
+  @override
+  String get unknownGameIgnoreProcess => 'Prozess ignorieren';
+
+  @override
+  String unknownGameCategoryId(String id) {
+    return 'ID: $id';
+  }
+
+  @override
+  String get unknownGameSubmissionTitle => 'Einreichung erforderlich';
+
+  @override
+  String get unknownGameSubmissionInfo =>
+      'Diese Zuordnung wird lokal gespeichert und zur Genehmigung an den Listenbesitzer gesendet. Nach Genehmigung und Synchronisierung wird Ihre lokale Kopie automatisch ersetzt.';
+
+  @override
+  String get unknownGameSectionLists => 'LISTEN';
+
+  @override
+  String unknownGameListMappingCount(int count) {
+    return '$count Zuordnungen';
+  }
+
+  @override
+  String get unknownGameBadgeStaged => 'BEREITGESTELLT';
+
+  @override
+  String get unknownGameIgnoredProcess => 'IGNORIERTER PROZESS';
+
+  @override
+  String unknownGameSelectedCategoryId(String id) {
+    return 'ID: $id';
+  }
+
+  @override
+  String get unknownGameWorkflowTitle => 'Einreichungs-Workflow';
+
+  @override
+  String get unknownGameWorkflowTitleAlt => 'Was passiert als Nächstes';
+
+  @override
+  String get unknownGameWorkflowStepLocal =>
+      'Lokal gespeichert in Meine benutzerdefinierten Zuordnungen';
+
+  @override
+  String get unknownGameWorkflowStepLocalDesc =>
+      'Zuerst auf Ihrem Gerät gespeichert, damit die Zuordnung sofort funktioniert';
+
+  @override
+  String unknownGameWorkflowStepSubmit(String listName) {
+    return 'An $listName gesendet';
+  }
+
+  @override
+  String get unknownGameWorkflowStepSubmitDesc =>
+      'Automatisch zur Überprüfung und Genehmigung an den Listenbesitzer gesendet';
+
+  @override
+  String get unknownGameWorkflowStepReplace =>
+      'Lokale Kopie ersetzt nach Genehmigung';
+
+  @override
+  String unknownGameWorkflowStepReplaceDesc(String listName) {
+    return 'Nach Annahme und Synchronisierung wird Ihre lokale Kopie entfernt und durch die offizielle Version von $listName ersetzt';
+  }
+
+  @override
+  String unknownGameSavedTo(String listName) {
+    return 'Gespeichert in $listName';
+  }
+
+  @override
+  String get unknownGameIgnoredInfo =>
+      'Dieser Prozess wird ignoriert und löst keine Benachrichtigungen aus';
+
+  @override
+  String get unknownGameLocalSaveInfo =>
+      'Ihre Zuordnung ist lokal gespeichert und funktioniert sofort';
+
+  @override
+  String get unknownGamePrivacyInfo =>
+      'Diese Zuordnung ist privat und wird nur auf Ihrem Gerät gespeichert';
+
+  @override
+  String autoSwitcherError(String error) {
+    return 'Fehler: $error';
+  }
+
+  @override
+  String get autoSwitcherStatusActive => 'Automatisches Umschalten aktiv';
+
+  @override
+  String get autoSwitcherStatusInactive => 'Keine Überwachung';
+
+  @override
+  String get autoSwitcherLabelActiveApp => 'Aktive App';
+
+  @override
+  String get autoSwitcherLabelCategory => 'Kategorie';
+
+  @override
+  String get autoSwitcherValueNone => 'Keine';
+
+  @override
+  String get autoSwitcherDescriptionActive =>
+      'Ihre Kategorie wechselt automatisch, wenn Sie Apps wechseln.';
+
+  @override
+  String get autoSwitcherButtonTurnOff => 'Ausschalten';
+
+  @override
+  String get autoSwitcherInstructionPress => 'Drücken Sie';
+
+  @override
+  String get autoSwitcherInstructionManual =>
+      'um manuell auf den fokussierten Prozess zu aktualisieren';
+
+  @override
+  String get autoSwitcherHeadingEnable => 'Automatisches Umschalten aktivieren';
+
+  @override
+  String get autoSwitcherDescriptionInactive =>
+      'Kategorien wechseln automatisch, wenn Sie zwischen Apps wechseln.';
+
+  @override
+  String get autoSwitcherButtonTurnOn => 'Einschalten';
+
+  @override
+  String get autoSwitcherInstructionOr => 'Oder drücken Sie';
+
+  @override
+  String get settingsTabMappings => 'Zuordnungen';
+
+  @override
+  String get settingsTabTheme => 'Design';
+
+  @override
+  String get settingsAutoSyncOnStart =>
+      'Zuordnungen beim App-Start automatisch synchronisieren';
+
+  @override
+  String get settingsAutoSyncOnStartDesc =>
+      'Zuordnungslisten automatisch synchronisieren, wenn die Anwendung startet';
+
+  @override
+  String get settingsAutoSyncInterval =>
+      'Intervall für automatische Synchronisierung';
+
+  @override
+  String get settingsAutoSyncIntervalDesc =>
+      'Wie oft Zuordnungslisten automatisch synchronisiert werden (0 = nie)';
+
+  @override
+  String get settingsAutoSyncNever => 'Nie';
+
+  @override
+  String get settingsTimingTitle => 'WIE DIESE EINSTELLUNGEN ZUSAMMENWIRKEN';
+
+  @override
+  String settingsTimingStep1(int scanInterval) {
+    return 'App überprüft fokussiertes Fenster alle ${scanInterval}s';
+  }
+
+  @override
+  String get settingsTimingStep2Instant =>
+      'Kategorie wechselt sofort, wenn neue App erkannt wird';
+
+  @override
+  String settingsTimingStep2Debounce(int debounce) {
+    return 'Wartet ${debounce}s nach Erkennung neuer App (Entprellen)';
+  }
+
+  @override
+  String settingsTimingStep3Instant(int scanInterval) {
+    return 'Gesamtwechselzeit: ${scanInterval}s (sofort nach Erkennung)';
+  }
+
+  @override
+  String settingsTimingStep3Debounce(int scanInterval, int scanDebounce) {
+    return 'Gesamtwechselzeit: ${scanInterval}s bis ${scanDebounce}s';
+  }
+
+  @override
+  String get settingsFramelessWindow => 'Rahmenloses Fenster verwenden';
+
+  @override
+  String get settingsFramelessWindowDesc =>
+      'Windows-Titelleiste für ein modernes, randloses Erscheinungsbild mit abgerundeten Ecken entfernen';
+
+  @override
+  String get settingsInvertLayout => 'Fußzeile/Kopfzeile umkehren';
+
+  @override
+  String get settingsInvertLayoutDesc =>
+      'Positionen der Kopf- und Fußzeilenbereiche tauschen';
+
+  @override
+  String get settingsTokenExpired => 'Abgelaufen';
+
+  @override
+  String settingsTokenExpiresDays(int days, int hours) {
+    return 'Läuft ab in ${days}T ${hours}h';
+  }
+
+  @override
+  String settingsTokenExpiresHours(int hours, int minutes) {
+    return 'Läuft ab in ${hours}h ${minutes}m';
+  }
+
+  @override
+  String settingsTokenExpiresMinutes(int minutes) {
+    return 'Läuft ab in ${minutes}m';
+  }
+
+  @override
+  String get settingsResetDesc =>
+      'Alle Einstellungen und Daten auf Werkseinstellungen zurücksetzen';
+
+  @override
+  String get settingsButtonReset => 'Zurücksetzen';
+
+  @override
+  String mappingEditorSummary(
+    int count,
+    String plural,
+    int lists,
+    String pluralLists,
+  ) {
+    return '$count Prozesszuordnung$plural aus $lists aktiver Liste$pluralLists';
+  }
+
+  @override
+  String mappingEditorBreakdown(int custom, int community) {
+    return '$custom benutzerdefiniert, $community aus Community-Listen';
+  }
+
+  @override
+  String get mappingEditorButtonLists => 'Listen';
+
+  @override
+  String get mappingEditorButtonAdd => 'Hinzufügen';
+
+  @override
+  String get mappingEditorDeleteTitle => 'Mehrere Zuordnungen löschen';
+
+  @override
+  String mappingEditorDeleteMessage(int count, String plural) {
+    return 'Möchten Sie wirklich $count Zuordnung$plural löschen? Diese Aktion kann nicht rückgängig gemacht werden.';
+  }
+
+  @override
+  String get mappingEditorExportTitle => 'Zuordnungen exportieren';
+
+  @override
+  String get mappingEditorExportFilename => 'meine-zuordnungen.json';
+
+  @override
+  String mappingEditorExportSuccess(int count, String plural) {
+    return '$count Zuordnung$plural exportiert nach';
+  }
+
+  @override
+  String get mappingEditorExportFailed => 'Export fehlgeschlagen';
+
+  @override
+  String get addMappingPrivacySafe => 'Datenschutzkonformer Pfad';
+
+  @override
+  String get addMappingCustomLocation => 'Benutzerdefinierter Speicherort';
+
+  @override
+  String get addMappingOnlyFolder => 'Nur Spielordnernamen gespeichert';
+
+  @override
+  String get addMappingNotStored =>
+      'Pfad nicht gespeichert aus Datenschutzgründen';
+
+  @override
+  String get colorPickerTitle => 'Farbe auswählen';
+
+  @override
+  String get colorPickerHue => 'Farbton';
+
+  @override
+  String get colorPickerSaturation => 'Sättigung';
+
+  @override
+  String get colorPickerValue => 'Helligkeit';
+
+  @override
+  String get colorPickerButtonCancel => 'Abbrechen';
+
+  @override
+  String get colorPickerButtonSelect => 'Auswählen';
+
+  @override
+  String get dropdownPlaceholder => 'Wählen Sie eine Option';
+
+  @override
+  String get dropdownSearchHint => 'Suchen...';
+
+  @override
+  String get dropdownNoResults => 'Keine Ergebnisse gefunden';
+
+  @override
+  String paginationPageInfo(int current, int total) {
+    return 'Seite $current von $total';
+  }
+
+  @override
+  String get paginationGoTo => 'Gehe zu:';
+
+  @override
+  String get datePickerPlaceholder => 'Datum auswählen';
+
+  @override
+  String get timePickerAM => 'AM';
+
+  @override
+  String get timePickerPM => 'PM';
+
+  @override
+  String get timePickerPlaceholder => 'Zeit auswählen';
+
+  @override
+  String get fileUploadInstruction => 'Klicken Sie, um Datei hochzuladen';
+
+  @override
+  String fileUploadAllowed(String extensions) {
+    return 'Erlaubt: $extensions';
+  }
+
+  @override
+  String get menuButtonTooltip => 'Weitere Optionen';
+
+  @override
+  String get breadcrumbEllipsis => '...';
+
+  @override
+  String get breadcrumbTooltipShowPath => 'Pfad anzeigen';
+
+  @override
+  String get hotkeyModCtrl => 'Strg';
+
+  @override
+  String get hotkeyModAlt => 'Alt';
+
+  @override
+  String get hotkeyModShift => 'Umschalt';
+
+  @override
+  String get hotkeyModWin => 'Win';
+
+  @override
+  String get hotkeySpace => 'Leertaste';
+
+  @override
+  String get hotkeyEnter => 'Eingabe';
+
+  @override
+  String get hotkeyTab => 'Tab';
+
+  @override
+  String get hotkeyBackspace => 'Rücktaste';
+
+  @override
+  String get hotkeyDelete => 'Entf';
+
+  @override
+  String get hotkeyEscape => 'Esc';
+
+  @override
+  String get hotkeyHome => 'Pos1';
+
+  @override
+  String get hotkeyEnd => 'Ende';
+
+  @override
+  String get hotkeyPageUp => 'Bild↑';
+
+  @override
+  String get hotkeyPageDown => 'Bild↓';
+
+  @override
+  String get statusDashboardCurrentActivity => 'Aktuelle Aktivität';
+
+  @override
+  String get statusDashboardNotStarted => 'Nicht gestartet';
+
+  @override
+  String get statusDashboardReady => 'Bereit';
+
+  @override
+  String get statusDashboardCheckingApp => 'Aktive App wird überprüft';
+
+  @override
+  String get statusDashboardFindingCategory => 'Kategorie wird gesucht';
+
+  @override
+  String get statusDashboardUpdating => 'Kategorie wird aktualisiert';
+
+  @override
+  String get statusDashboardWaiting => 'Warte auf Bestätigung';
+
+  @override
+  String get statusDashboardError => 'Fehler aufgetreten';
+
+  @override
+  String mappingListOfCount(int count, int total) {
+    return '$count von $total';
+  }
+
+  @override
+  String get mappingListActionDelete => 'Löschen';
+
+  @override
+  String get mappingListActionEnable => 'Aktivieren';
+
+  @override
+  String get mappingListActionDisable => 'Deaktivieren';
+
+  @override
+  String autoSwitcherTimeSecondsAgo(int seconds) {
+    return 'vor ${seconds}s';
+  }
+
+  @override
+  String autoSwitcherTimeMinutesAgo(int minutes) {
+    return 'vor ${minutes}m';
+  }
+
+  @override
+  String autoSwitcherTimeHoursAgo(int hours) {
+    return 'vor ${hours}h';
+  }
 }

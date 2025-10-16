@@ -47,7 +47,7 @@ final class UnsavedChangesProvider
   }
 }
 
-String _$unsavedChangesHash() => r'fed65ce3a2f4f2ef36be77873940fcfd71c50db2';
+String _$unsavedChangesHash() => r'f80ff2a8a02cd60b981b2c693f0378134705f9ca';
 
 /// Riverpod notifier for tracking unsaved changes in settings
 /// Used to prevent navigation away from settings when there are unsaved changes

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
@@ -55,6 +56,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final settingsState = ref.watch(settingsProvider);
     final autoSwitcherAsync = ref.watch(autoSwitcherProvider);
 
@@ -103,12 +105,13 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             // Status card - what's happening right now
-                            _buildStatusCard(context, status, isMonitoring),
+                            _buildStatusCard(context, l10n, status, isMonitoring),
                             const VSpace.sm(),
 
                             // Main control card
                             _buildControlCard(
                               context,
+                              l10n,
                               isMonitoring: isMonitoring,
                               isLoading: isLoading,
                               hotkey: manualUpdateHotkey,
@@ -155,6 +158,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
   /// Status card - shows current state in ChatGPT inline card style
   Widget _buildStatusCard(
     BuildContext context,
+    AppLocalizations l10n,
     OrchestrationStatus? status,
     bool isMonitoring,
   ) {
@@ -178,7 +182,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
               ),
               const HSpace.sm(),
               Text(
-                isMonitoring ? 'Auto-switching active' : 'Not monitoring',
+                isMonitoring ? l10n.autoSwitcherStatusActive : l10n.autoSwitcherStatusInactive,
                 style: TKitTextStyles.bodySmall.copyWith(
                   color: TKitColors.textSecondary,
                 ),
@@ -186,7 +190,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
               const Spacer(),
               if (status?.lastUpdateTime != null)
                 Text(
-                  _formatTimestamp(status!.lastUpdateTime!),
+                  _formatTimestamp(context, l10n, status!.lastUpdateTime!),
                   style: TKitTextStyles.caption.copyWith(
                     color: TKitColors.textMuted,
                   ),
@@ -197,14 +201,14 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
 
           // Current app and category - clean, scannable
           _buildInfoRow(
-            'Active app',
-            hasProcess ? status!.currentProcess! : 'None',
+            l10n.autoSwitcherLabelActiveApp,
+            hasProcess ? status!.currentProcess! : l10n.autoSwitcherValueNone,
             hasProcess,
           ),
           const VSpace.sm(),
           _buildInfoRow(
-            'Category',
-            hasCategory ? status!.matchedCategory! : 'None',
+            l10n.autoSwitcherLabelCategory,
+            hasCategory ? status!.matchedCategory! : l10n.autoSwitcherValueNone,
             hasCategory,
           ),
         ],
@@ -243,7 +247,8 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
 
   /// Main control card - follows ChatGPT's "max 2 actions" rule
   Widget _buildControlCard(
-    BuildContext context, {
+    BuildContext context,
+    AppLocalizations l10n, {
     required bool isMonitoring,
     required bool isLoading,
     required String? hotkey,
@@ -258,7 +263,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
           if (isMonitoring) ...[
             // When active - simple description
             Text(
-              'Your category automatically changes when you switch apps.',
+              l10n.autoSwitcherDescriptionActive,
               style: TKitTextStyles.bodyMedium.copyWith(
                 color: TKitColors.textSecondary,
               ),
@@ -268,7 +273,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
             // Single action: Turn off
             AccentButton(
               onPressed: isLoading ? null : onStop,
-              text: 'Turn Off',
+              text: l10n.autoSwitcherButtonTurnOff,
               icon: Icons.pause,
               isLoading: isLoading,
               width: double.infinity,
@@ -280,7 +285,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Press ',
+                      '${l10n.autoSwitcherInstructionPress} ',
                       style: TKitTextStyles.caption.copyWith(
                         color: TKitColors.textMuted,
                       ),
@@ -291,7 +296,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                       fontSize: 9,
                     ),
                     Text(
-                      ' to update manually to focused process',
+                      ' ${l10n.autoSwitcherInstructionManual}',
                       style: TKitTextStyles.caption.copyWith(
                         color: TKitColors.textMuted,
                       ),
@@ -306,14 +311,14 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Enable automatic switching',
+                  l10n.autoSwitcherHeadingEnable,
                   style: TKitTextStyles.bodyLarge.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const VSpace.sm(),
                 Text(
-                  'Categories will change automatically when you switch between apps.',
+                  l10n.autoSwitcherDescriptionInactive,
                   style: TKitTextStyles.bodyMedium.copyWith(
                     color: TKitColors.textSecondary,
                   ),
@@ -325,7 +330,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
             // Single primary action when inactive
             PrimaryButton(
               onPressed: isLoading ? null : onStart,
-              text: 'Turn On',
+              text: l10n.autoSwitcherButtonTurnOn,
               icon: Icons.play_arrow,
               isLoading: isLoading,
               width: double.infinity,
@@ -339,7 +344,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Or press ',
+                      '${l10n.autoSwitcherInstructionOr} ',
                       style: TKitTextStyles.caption.copyWith(
                         color: TKitColors.textMuted,
                       ),
@@ -350,7 +355,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                       fontSize: 9,
                     ),
                     Text(
-                      ' to update manually to focused process',
+                      ' ${l10n.autoSwitcherInstructionManual}',
                       style: TKitTextStyles.caption.copyWith(
                         color: TKitColors.textMuted,
                       ),
@@ -365,16 +370,16 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
     );
   }
 
-  String _formatTimestamp(DateTime timestamp) {
+  String _formatTimestamp(BuildContext context, AppLocalizations l10n, DateTime timestamp) {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
 
     if (difference.inSeconds < 60) {
-      return '${difference.inSeconds}s ago';
+      return l10n.autoSwitcherTimeSecondsAgo(difference.inSeconds);
     } else if (difference.inMinutes < 60) {
-      return '${difference.inMinutes}m ago';
+      return l10n.autoSwitcherTimeMinutesAgo(difference.inMinutes);
     } else if (difference.inHours < 24) {
-      return '${difference.inHours}h ago';
+      return l10n.autoSwitcherTimeHoursAgo(difference.inHours);
     } else {
       final format = DateFormat('MMM d, HH:mm');
       return format.format(timestamp);

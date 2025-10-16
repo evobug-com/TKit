@@ -369,7 +369,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get updateDialogRemindLater => '後で通知する';
 
   @override
-  String get updateDialogIgnore => 'Ignore This Version';
+  String get updateDialogIgnore => 'このバージョンを無視';
 
   @override
   String get settingsDebounceTimeDescription =>
@@ -1061,4 +1061,618 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get versionStatusPlatformNotSupported => 'このプラットフォームでは更新がサポートされていません';
+
+  @override
+  String get notificationMissingCategoryTitle => 'カテゴリマッピングが見つかりません';
+
+  @override
+  String notificationMissingCategoryBody(String processName) {
+    return '$processNameのTwitchカテゴリが見つかりません';
+  }
+
+  @override
+  String get notificationActionAssignCategory => 'カテゴリを割り当て';
+
+  @override
+  String get notificationCategoryUpdatedTitle => 'カテゴリを更新しました';
+
+  @override
+  String notificationCategoryUpdatedBody(
+    String categoryName,
+    String processName,
+  ) {
+    return '$processNameのカテゴリを「$categoryName」に切り替えました';
+  }
+
+  @override
+  String get mappingListColumnSource => 'ソース';
+
+  @override
+  String get mappingListColumnEnabled => '有効';
+
+  @override
+  String get mappingListTooltipIgnored => 'このカテゴリは無視されています';
+
+  @override
+  String mappingListTooltipTwitchId(String twitchCategoryId) {
+    return 'Twitch ID: $twitchCategoryId';
+  }
+
+  @override
+  String get mappingListCategoryIgnored => '無視';
+
+  @override
+  String get mappingListSourceUnknown => '不明';
+
+  @override
+  String mappingListSelected(int count) {
+    return '$count件選択中';
+  }
+
+  @override
+  String mappingListSelectedVisible(int count, int visible) {
+    return '$count件選択中（$visible件表示）';
+  }
+
+  @override
+  String get mappingListButtonInvert => '反転';
+
+  @override
+  String get mappingListButtonClear => 'クリア';
+
+  @override
+  String mappingListButtonUndo(String action) {
+    return '$actionを元に戻す';
+  }
+
+  @override
+  String get mappingListButtonExport => 'エクスポート';
+
+  @override
+  String get mappingListButtonEnable => '有効化';
+
+  @override
+  String get mappingListButtonDisable => '無効化';
+
+  @override
+  String get mappingListButtonDelete => '削除';
+
+  @override
+  String get mappingListTooltipCannotDelete => '読み取り専用リストからマッピングを削除できません';
+
+  @override
+  String get mappingListTooltipDelete => '選択したマッピングを削除';
+
+  @override
+  String get mappingListSearchHint => 'プロセス名またはカテゴリで検索...';
+
+  @override
+  String get mappingListTooltipClearSearch => '検索をクリア';
+
+  @override
+  String get listManagementEmptyState => 'リストが見つかりません';
+
+  @override
+  String get listManagementTitle => 'リストを管理';
+
+  @override
+  String get listManagementSyncNow => '今すぐ同期';
+
+  @override
+  String get listManagementBadgeLocal => 'ローカル';
+
+  @override
+  String get listManagementBadgeOfficial => '公式';
+
+  @override
+  String get listManagementBadgeRemote => 'リモート';
+
+  @override
+  String get listManagementBadgeReadOnly => '読み取り専用';
+
+  @override
+  String get listManagementButtonImport => 'リストをインポート';
+
+  @override
+  String get listManagementButtonSyncAll => 'すべて同期';
+
+  @override
+  String get listManagementButtonClose => '閉じる';
+
+  @override
+  String get listManagementImportTitle => 'リストをインポート';
+
+  @override
+  String get listManagementImportUrl => 'リストURL';
+
+  @override
+  String get listManagementImportUrlPlaceholder =>
+      'https://example.com/mappings.json';
+
+  @override
+  String get listManagementImportName => 'リスト名（オプション）';
+
+  @override
+  String get listManagementImportNameHelper => '指定しない場合、JSONファイルから名前を使用します';
+
+  @override
+  String get listManagementImportNamePlaceholder => 'マイカスタムリスト';
+
+  @override
+  String get listManagementImportDescription => '説明（オプション）';
+
+  @override
+  String get listManagementImportDescriptionHelper =>
+      '指定しない場合、JSONファイルから説明を使用します';
+
+  @override
+  String get listManagementImportDescriptionPlaceholder => 'ゲームマッピングのコレクション';
+
+  @override
+  String get listManagementButtonCancel => 'キャンセル';
+
+  @override
+  String get listManagementButtonImportConfirm => 'インポート';
+
+  @override
+  String get listManagementDefaultName => 'インポートされたリスト';
+
+  @override
+  String get listManagementImportSuccess => 'リストが正常にインポートされました';
+
+  @override
+  String get listManagementSyncNever => 'なし';
+
+  @override
+  String get listManagementSyncJustNow => 'たった今';
+
+  @override
+  String listManagementSyncMinutesAgo(int minutes) {
+    return '$minutes分前';
+  }
+
+  @override
+  String listManagementSyncHoursAgo(int hours) {
+    return '$hours時間前';
+  }
+
+  @override
+  String listManagementSyncDaysAgo(int days) {
+    return '$days日前';
+  }
+
+  @override
+  String listManagementSyncDaysHoursAgo(int days, int hours) {
+    return '$days日$hours時間前';
+  }
+
+  @override
+  String listManagementMappingsCount(int count) {
+    return '$count個のマッピング';
+  }
+
+  @override
+  String get listManagementSyncFailed => '同期に失敗しました:';
+
+  @override
+  String get listManagementLastSynced => '最終同期:';
+
+  @override
+  String get unknownGameIgnoreProcess => 'プロセスを無視';
+
+  @override
+  String unknownGameCategoryId(String id) {
+    return 'ID: $id';
+  }
+
+  @override
+  String get unknownGameSubmissionTitle => '投稿が必要';
+
+  @override
+  String get unknownGameSubmissionInfo =>
+      'このマッピングはローカルに保存され、承認のためにリスト所有者に投稿されます。承認されて同期されると、ローカルコピーは自動的に置き換えられます。';
+
+  @override
+  String get unknownGameSectionLists => 'リスト';
+
+  @override
+  String unknownGameListMappingCount(int count) {
+    return '$count件のマッピング';
+  }
+
+  @override
+  String get unknownGameBadgeStaged => 'ステージング';
+
+  @override
+  String get unknownGameIgnoredProcess => '無視されたプロセス';
+
+  @override
+  String unknownGameSelectedCategoryId(String id) {
+    return 'ID: $id';
+  }
+
+  @override
+  String get unknownGameWorkflowTitle => '投稿ワークフロー';
+
+  @override
+  String get unknownGameWorkflowTitleAlt => '次に起こること';
+
+  @override
+  String get unknownGameWorkflowStepLocal => 'マイカスタムマッピングにローカル保存';
+
+  @override
+  String get unknownGameWorkflowStepLocalDesc =>
+      'まずデバイスに保存されるため、マッピングはすぐに機能します';
+
+  @override
+  String unknownGameWorkflowStepSubmit(String listName) {
+    return '$listNameに投稿';
+  }
+
+  @override
+  String get unknownGameWorkflowStepSubmitDesc => 'レビューと承認のためにリスト所有者に自動送信されます';
+
+  @override
+  String get unknownGameWorkflowStepReplace => '承認されるとローカルコピーを置換';
+
+  @override
+  String unknownGameWorkflowStepReplaceDesc(String listName) {
+    return '承認されて同期されると、ローカルコピーは削除され、$listNameの公式バージョンに置き換えられます';
+  }
+
+  @override
+  String unknownGameSavedTo(String listName) {
+    return '$listNameに保存されました';
+  }
+
+  @override
+  String get unknownGameIgnoredInfo => 'このプロセスは無視され、通知をトリガーしません';
+
+  @override
+  String get unknownGameLocalSaveInfo => 'マッピングはローカルに保存されており、すぐに機能します';
+
+  @override
+  String get unknownGamePrivacyInfo => 'このマッピングはプライベートで、デバイスにのみ保存されます';
+
+  @override
+  String autoSwitcherError(String error) {
+    return 'エラー：$error';
+  }
+
+  @override
+  String get autoSwitcherStatusActive => '自動切替が有効です';
+
+  @override
+  String get autoSwitcherStatusInactive => '監視していません';
+
+  @override
+  String get autoSwitcherLabelActiveApp => 'アクティブなアプリ';
+
+  @override
+  String get autoSwitcherLabelCategory => 'カテゴリ';
+
+  @override
+  String get autoSwitcherValueNone => 'なし';
+
+  @override
+  String get autoSwitcherDescriptionActive => 'アプリを切り替えると、カテゴリが自動的に変更されます。';
+
+  @override
+  String get autoSwitcherButtonTurnOff => 'オフにする';
+
+  @override
+  String get autoSwitcherInstructionPress => '次を押してください';
+
+  @override
+  String get autoSwitcherInstructionManual => 'フォーカスされたプロセスに手動で更新';
+
+  @override
+  String get autoSwitcherHeadingEnable => '自動切替を有効にする';
+
+  @override
+  String get autoSwitcherDescriptionInactive => 'アプリを切り替えると、カテゴリが自動的に変更されます。';
+
+  @override
+  String get autoSwitcherButtonTurnOn => 'オンにする';
+
+  @override
+  String get autoSwitcherInstructionOr => 'または次を押してください';
+
+  @override
+  String get settingsTabMappings => 'マッピング';
+
+  @override
+  String get settingsTabTheme => 'テーマ';
+
+  @override
+  String get settingsAutoSyncOnStart => 'アプリ起動時にマッピングを自動同期';
+
+  @override
+  String get settingsAutoSyncOnStartDesc => 'アプリケーション起動時にマッピングリストを自動的に同期します';
+
+  @override
+  String get settingsAutoSyncInterval => '自動同期間隔';
+
+  @override
+  String get settingsAutoSyncIntervalDesc => 'マッピングリストを自動的に同期する頻度（0 = なし）';
+
+  @override
+  String get settingsAutoSyncNever => 'なし';
+
+  @override
+  String get settingsTimingTitle => 'これらの設定の連携動作';
+
+  @override
+  String settingsTimingStep1(int scanInterval) {
+    return 'アプリは$scanInterval秒ごとにフォーカスされたウィンドウを確認します';
+  }
+
+  @override
+  String get settingsTimingStep2Instant => '新しいアプリが検出されると即座にカテゴリを切り替えます';
+
+  @override
+  String settingsTimingStep2Debounce(int debounce) {
+    return '新しいアプリを検出後$debounce秒待機します（デバウンス）';
+  }
+
+  @override
+  String settingsTimingStep3Instant(int scanInterval) {
+    return '合計切替時間：$scanInterval秒（検出後即座）';
+  }
+
+  @override
+  String settingsTimingStep3Debounce(int scanInterval, int scanDebounce) {
+    return '合計切替時間：$scanInterval秒から$scanDebounce秒';
+  }
+
+  @override
+  String get settingsFramelessWindow => 'フレームレスウィンドウを使用';
+
+  @override
+  String get settingsFramelessWindowDesc =>
+      'Windowsタイトルバーを削除して、角丸のモダンなボーダーレス外観にします';
+
+  @override
+  String get settingsInvertLayout => 'フッター/ヘッダーを反転';
+
+  @override
+  String get settingsInvertLayoutDesc => 'ヘッダーとフッターセクションの位置を入れ替えます';
+
+  @override
+  String get settingsTokenExpired => '期限切れ';
+
+  @override
+  String settingsTokenExpiresDays(int days, int hours) {
+    return '$days日$hours時間後に期限切れ';
+  }
+
+  @override
+  String settingsTokenExpiresHours(int hours, int minutes) {
+    return '$hours時間$minutes分後に期限切れ';
+  }
+
+  @override
+  String settingsTokenExpiresMinutes(int minutes) {
+    return '$minutes分後に期限切れ';
+  }
+
+  @override
+  String get settingsResetDesc => 'すべての設定とデータを工場出荷時の状態にリセットします';
+
+  @override
+  String get settingsButtonReset => 'リセット';
+
+  @override
+  String mappingEditorSummary(
+    int count,
+    String plural,
+    int lists,
+    String pluralLists,
+  ) {
+    return '$lists個のアクティブなリストから$count件のプロセスマッピング$plural';
+  }
+
+  @override
+  String mappingEditorBreakdown(int custom, int community) {
+    return '$custom件のカスタム、$community件のコミュニティリスト';
+  }
+
+  @override
+  String get mappingEditorButtonLists => 'リスト';
+
+  @override
+  String get mappingEditorButtonAdd => '追加';
+
+  @override
+  String get mappingEditorDeleteTitle => '複数のマッピングを削除';
+
+  @override
+  String mappingEditorDeleteMessage(int count, String plural) {
+    return '$count件のマッピング$pluralを削除してもよろしいですか？この操作は元に戻せません。';
+  }
+
+  @override
+  String get mappingEditorExportTitle => 'マッピングをエクスポート';
+
+  @override
+  String get mappingEditorExportFilename => 'my-mappings.json';
+
+  @override
+  String mappingEditorExportSuccess(int count, String plural) {
+    return '$count件のマッピング$pluralをエクスポートしました';
+  }
+
+  @override
+  String get mappingEditorExportFailed => 'エクスポートに失敗しました';
+
+  @override
+  String get addMappingPrivacySafe => 'プライバシーセーフなパス';
+
+  @override
+  String get addMappingCustomLocation => 'カスタムの場所';
+
+  @override
+  String get addMappingOnlyFolder => 'ゲームフォルダ名のみ保存';
+
+  @override
+  String get addMappingNotStored => 'プライバシーのためパスは保存されません';
+
+  @override
+  String get colorPickerTitle => '色を選択';
+
+  @override
+  String get colorPickerHue => '色相';
+
+  @override
+  String get colorPickerSaturation => '彩度';
+
+  @override
+  String get colorPickerValue => '明度';
+
+  @override
+  String get colorPickerButtonCancel => 'キャンセル';
+
+  @override
+  String get colorPickerButtonSelect => '選択';
+
+  @override
+  String get dropdownPlaceholder => 'オプションを選択';
+
+  @override
+  String get dropdownSearchHint => '検索...';
+
+  @override
+  String get dropdownNoResults => '結果が見つかりません';
+
+  @override
+  String paginationPageInfo(int current, int total) {
+    return 'ページ $current / $total';
+  }
+
+  @override
+  String get paginationGoTo => '移動：';
+
+  @override
+  String get datePickerPlaceholder => '日付を選択';
+
+  @override
+  String get timePickerAM => '午前';
+
+  @override
+  String get timePickerPM => '午後';
+
+  @override
+  String get timePickerPlaceholder => '時刻を選択';
+
+  @override
+  String get fileUploadInstruction => 'クリックしてファイルをアップロード';
+
+  @override
+  String fileUploadAllowed(String extensions) {
+    return '許可されている拡張子：$extensions';
+  }
+
+  @override
+  String get menuButtonTooltip => 'その他のオプション';
+
+  @override
+  String get breadcrumbEllipsis => '...';
+
+  @override
+  String get breadcrumbTooltipShowPath => 'パスを表示';
+
+  @override
+  String get hotkeyModCtrl => 'Ctrl';
+
+  @override
+  String get hotkeyModAlt => 'Alt';
+
+  @override
+  String get hotkeyModShift => 'Shift';
+
+  @override
+  String get hotkeyModWin => 'Win';
+
+  @override
+  String get hotkeySpace => 'スペース';
+
+  @override
+  String get hotkeyEnter => 'Enter';
+
+  @override
+  String get hotkeyTab => 'Tab';
+
+  @override
+  String get hotkeyBackspace => 'Backspace';
+
+  @override
+  String get hotkeyDelete => 'Delete';
+
+  @override
+  String get hotkeyEscape => 'Esc';
+
+  @override
+  String get hotkeyHome => 'Home';
+
+  @override
+  String get hotkeyEnd => 'End';
+
+  @override
+  String get hotkeyPageUp => 'PageUp';
+
+  @override
+  String get hotkeyPageDown => 'PageDown';
+
+  @override
+  String get statusDashboardCurrentActivity => '現在のアクティビティ';
+
+  @override
+  String get statusDashboardNotStarted => '未開始';
+
+  @override
+  String get statusDashboardReady => '準備完了';
+
+  @override
+  String get statusDashboardCheckingApp => 'アクティブなアプリを確認中';
+
+  @override
+  String get statusDashboardFindingCategory => 'カテゴリを検索中';
+
+  @override
+  String get statusDashboardUpdating => 'カテゴリを更新中';
+
+  @override
+  String get statusDashboardWaiting => '確認を待っています';
+
+  @override
+  String get statusDashboardError => 'エラーが発生しました';
+
+  @override
+  String mappingListOfCount(int count, int total) {
+    return '$count/$total';
+  }
+
+  @override
+  String get mappingListActionDelete => '削除';
+
+  @override
+  String get mappingListActionEnable => '有効化';
+
+  @override
+  String get mappingListActionDisable => '無効化';
+
+  @override
+  String autoSwitcherTimeSecondsAgo(int seconds) {
+    return '$seconds秒前';
+  }
+
+  @override
+  String autoSwitcherTimeMinutesAgo(int minutes) {
+    return '$minutes分前';
+  }
+
+  @override
+  String autoSwitcherTimeHoursAgo(int hours) {
+    return '$hours時間前';
+  }
 }

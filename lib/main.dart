@@ -192,9 +192,12 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
 
     final logger = ref.read(appLoggerProvider);
 
-    // For now, skip language setup check - just set a default locale
-    logger.info('Setting default locale');
-    ref.read(localeProvider.notifier).setLocale(const Locale('en'));
+    // Load saved language or detect system language
+    logger.info('Loading saved language');
+    final languageService = await ref.read(languageServiceProvider.future);
+    final locale = languageService.getCurrentLocale();
+    logger.info('Setting locale to: ${locale.languageCode}');
+    ref.read(localeProvider.notifier).setLocale(locale);
 
     // Check auth status
     await ref.read(authProvider.notifier).checkAuthStatus();

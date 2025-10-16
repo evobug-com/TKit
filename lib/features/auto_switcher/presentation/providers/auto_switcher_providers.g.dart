@@ -286,7 +286,7 @@ final class AutoSwitcherProvider
   AutoSwitcher create() => AutoSwitcher();
 }
 
-String _$autoSwitcherHash() => r'21d98f1e667e479ce7bf942d9a4581e8510b0cc7';
+String _$autoSwitcherHash() => r'dc28ead920ba062df8b2e61beb2d8d1c64b4cb6b';
 
 abstract class _$AutoSwitcher extends $AsyncNotifier<AutoSwitcherState> {
   FutureOr<AutoSwitcherState> build();

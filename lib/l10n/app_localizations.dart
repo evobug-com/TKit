@@ -2117,6 +2117,1076 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Updates not supported on this platform'**
   String get versionStatusPlatformNotSupported;
+
+  /// Notification title for missing category mapping
+  ///
+  /// In en, this message translates to:
+  /// **'Category Mapping Not Found'**
+  String get notificationMissingCategoryTitle;
+
+  /// Notification body for missing category mapping
+  ///
+  /// In en, this message translates to:
+  /// **'No Twitch category found for: {processName}'**
+  String notificationMissingCategoryBody(String processName);
+
+  /// Notification action button to assign category
+  ///
+  /// In en, this message translates to:
+  /// **'Assign Category'**
+  String get notificationActionAssignCategory;
+
+  /// Notification title for successful category update
+  ///
+  /// In en, this message translates to:
+  /// **'Category Updated'**
+  String get notificationCategoryUpdatedTitle;
+
+  /// Notification body for successful category update
+  ///
+  /// In en, this message translates to:
+  /// **'Switched to \"{categoryName}\" for {processName}'**
+  String notificationCategoryUpdatedBody(
+    String categoryName,
+    String processName,
+  );
+
+  /// Source column header in mapping list
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get mappingListColumnSource;
+
+  /// Enabled column header in mapping list
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get mappingListColumnEnabled;
+
+  /// Tooltip for ignored category
+  ///
+  /// In en, this message translates to:
+  /// **'This category is ignored'**
+  String get mappingListTooltipIgnored;
+
+  /// Tooltip showing Twitch category ID
+  ///
+  /// In en, this message translates to:
+  /// **'Twitch ID: {twitchCategoryId}'**
+  String mappingListTooltipTwitchId(String twitchCategoryId);
+
+  /// Text for ignored category
+  ///
+  /// In en, this message translates to:
+  /// **'Ignored'**
+  String get mappingListCategoryIgnored;
+
+  /// Unknown source fallback text
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get mappingListSourceUnknown;
+
+  /// Selection count status
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String mappingListSelected(int count);
+
+  /// Selection count with visible count
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected ({visible} visible)'**
+  String mappingListSelectedVisible(int count, int visible);
+
+  /// Invert selection button
+  ///
+  /// In en, this message translates to:
+  /// **'Invert'**
+  String get mappingListButtonInvert;
+
+  /// Clear selection button
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get mappingListButtonClear;
+
+  /// Undo action button
+  ///
+  /// In en, this message translates to:
+  /// **'Undo {action}'**
+  String mappingListButtonUndo(String action);
+
+  /// Export mappings button
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get mappingListButtonExport;
+
+  /// Enable selected mappings button
+  ///
+  /// In en, this message translates to:
+  /// **'Enable'**
+  String get mappingListButtonEnable;
+
+  /// Disable selected mappings button
+  ///
+  /// In en, this message translates to:
+  /// **'Disable'**
+  String get mappingListButtonDisable;
+
+  /// Delete selected mappings button
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get mappingListButtonDelete;
+
+  /// Tooltip when delete is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot delete mappings from read-only lists'**
+  String get mappingListTooltipCannotDelete;
+
+  /// Tooltip for delete button
+  ///
+  /// In en, this message translates to:
+  /// **'Delete selected mappings'**
+  String get mappingListTooltipDelete;
+
+  /// Search input placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Search by process name or category...'**
+  String get mappingListSearchHint;
+
+  /// Tooltip for clear search button
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get mappingListTooltipClearSearch;
+
+  /// Empty state message for list management
+  ///
+  /// In en, this message translates to:
+  /// **'No lists found'**
+  String get listManagementEmptyState;
+
+  /// List management dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Lists'**
+  String get listManagementTitle;
+
+  /// Sync now tooltip
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get listManagementSyncNow;
+
+  /// Badge for local lists
+  ///
+  /// In en, this message translates to:
+  /// **'LOCAL'**
+  String get listManagementBadgeLocal;
+
+  /// Badge for official lists
+  ///
+  /// In en, this message translates to:
+  /// **'OFFICIAL'**
+  String get listManagementBadgeOfficial;
+
+  /// Badge for remote lists
+  ///
+  /// In en, this message translates to:
+  /// **'REMOTE'**
+  String get listManagementBadgeRemote;
+
+  /// Badge for read-only lists
+  ///
+  /// In en, this message translates to:
+  /// **'READ-ONLY'**
+  String get listManagementBadgeReadOnly;
+
+  /// Import list button
+  ///
+  /// In en, this message translates to:
+  /// **'Import List'**
+  String get listManagementButtonImport;
+
+  /// Sync all lists button
+  ///
+  /// In en, this message translates to:
+  /// **'Sync All'**
+  String get listManagementButtonSyncAll;
+
+  /// Close dialog button
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get listManagementButtonClose;
+
+  /// Import list dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Import List'**
+  String get listManagementImportTitle;
+
+  /// URL field label
+  ///
+  /// In en, this message translates to:
+  /// **'List URL'**
+  String get listManagementImportUrl;
+
+  /// URL field placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'https://example.com/mappings.json'**
+  String get listManagementImportUrlPlaceholder;
+
+  /// Name field label
+  ///
+  /// In en, this message translates to:
+  /// **'List Name (optional)'**
+  String get listManagementImportName;
+
+  /// Name field helper text
+  ///
+  /// In en, this message translates to:
+  /// **'If not provided, will use name from JSON file'**
+  String get listManagementImportNameHelper;
+
+  /// Name field placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'My Custom List'**
+  String get listManagementImportNamePlaceholder;
+
+  /// Description field label
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get listManagementImportDescription;
+
+  /// Description field helper text
+  ///
+  /// In en, this message translates to:
+  /// **'If not provided, will use description from JSON file'**
+  String get listManagementImportDescriptionHelper;
+
+  /// Description field placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'A collection of game mappings'**
+  String get listManagementImportDescriptionPlaceholder;
+
+  /// Cancel import button
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get listManagementButtonCancel;
+
+  /// Confirm import button
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get listManagementButtonImportConfirm;
+
+  /// Default name for imported lists
+  ///
+  /// In en, this message translates to:
+  /// **'Imported List'**
+  String get listManagementDefaultName;
+
+  /// Success message after import
+  ///
+  /// In en, this message translates to:
+  /// **'List imported successfully'**
+  String get listManagementImportSuccess;
+
+  /// Sync time: never synced
+  ///
+  /// In en, this message translates to:
+  /// **'never'**
+  String get listManagementSyncNever;
+
+  /// Sync time: just now
+  ///
+  /// In en, this message translates to:
+  /// **'just now'**
+  String get listManagementSyncJustNow;
+
+  /// Sync time: minutes ago
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m ago'**
+  String listManagementSyncMinutesAgo(int minutes);
+
+  /// Sync time: hours ago
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h ago'**
+  String listManagementSyncHoursAgo(int hours);
+
+  /// Sync time: days ago
+  ///
+  /// In en, this message translates to:
+  /// **'{days}d ago'**
+  String listManagementSyncDaysAgo(int days);
+
+  /// Sync time: days and hours ago
+  ///
+  /// In en, this message translates to:
+  /// **'{days}d {hours}h ago'**
+  String listManagementSyncDaysHoursAgo(int days, int hours);
+
+  /// Mapping count display
+  ///
+  /// In en, this message translates to:
+  /// **'{count} mappings'**
+  String listManagementMappingsCount(int count);
+
+  /// Sync failed error prefix
+  ///
+  /// In en, this message translates to:
+  /// **'Sync failed:'**
+  String get listManagementSyncFailed;
+
+  /// Last synced label
+  ///
+  /// In en, this message translates to:
+  /// **'Last synced:'**
+  String get listManagementLastSynced;
+
+  /// Option to ignore a process
+  ///
+  /// In en, this message translates to:
+  /// **'Ignore Process'**
+  String get unknownGameIgnoreProcess;
+
+  /// Category ID display
+  ///
+  /// In en, this message translates to:
+  /// **'ID: {id}'**
+  String unknownGameCategoryId(String id);
+
+  /// Submission section title
+  ///
+  /// In en, this message translates to:
+  /// **'Submission Required'**
+  String get unknownGameSubmissionTitle;
+
+  /// Submission workflow information
+  ///
+  /// In en, this message translates to:
+  /// **'This mapping will be saved locally and submitted to the list owner for approval. Once approved and synced, your local copy will be automatically replaced.'**
+  String get unknownGameSubmissionInfo;
+
+  /// Lists section header
+  ///
+  /// In en, this message translates to:
+  /// **'LISTS'**
+  String get unknownGameSectionLists;
+
+  /// Mapping count for a list
+  ///
+  /// In en, this message translates to:
+  /// **'{count} mappings'**
+  String unknownGameListMappingCount(int count);
+
+  /// Badge for staged mappings
+  ///
+  /// In en, this message translates to:
+  /// **'STAGED'**
+  String get unknownGameBadgeStaged;
+
+  /// Label for ignored process
+  ///
+  /// In en, this message translates to:
+  /// **'IGNORED PROCESS'**
+  String get unknownGameIgnoredProcess;
+
+  /// Selected category ID display
+  ///
+  /// In en, this message translates to:
+  /// **'ID: {id}'**
+  String unknownGameSelectedCategoryId(String id);
+
+  /// Workflow explanation title
+  ///
+  /// In en, this message translates to:
+  /// **'Submission Workflow'**
+  String get unknownGameWorkflowTitle;
+
+  /// Alternative workflow title
+  ///
+  /// In en, this message translates to:
+  /// **'What Happens Next'**
+  String get unknownGameWorkflowTitleAlt;
+
+  /// Local save workflow step
+  ///
+  /// In en, this message translates to:
+  /// **'Saved locally to My Custom Mappings'**
+  String get unknownGameWorkflowStepLocal;
+
+  /// Local save workflow step description
+  ///
+  /// In en, this message translates to:
+  /// **'Stored on your device first, so the mapping works immediately'**
+  String get unknownGameWorkflowStepLocalDesc;
+
+  /// Submission workflow step
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted to {listName}'**
+  String unknownGameWorkflowStepSubmit(String listName);
+
+  /// Submission workflow step description
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically sent to the list owner for review and approval'**
+  String get unknownGameWorkflowStepSubmitDesc;
+
+  /// Replacement workflow step
+  ///
+  /// In en, this message translates to:
+  /// **'Local copy replaced when approved'**
+  String get unknownGameWorkflowStepReplace;
+
+  /// Replacement workflow step description
+  ///
+  /// In en, this message translates to:
+  /// **'Once accepted and synced, your local copy is removed and replaced with the official version from {listName}'**
+  String unknownGameWorkflowStepReplaceDesc(String listName);
+
+  /// Confirmation of save destination
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to {listName}'**
+  String unknownGameSavedTo(String listName);
+
+  /// Information about ignoring a process
+  ///
+  /// In en, this message translates to:
+  /// **'This process will be ignored and won\'t trigger notifications'**
+  String get unknownGameIgnoredInfo;
+
+  /// Information about local save
+  ///
+  /// In en, this message translates to:
+  /// **'Your mapping is saved locally and will work immediately'**
+  String get unknownGameLocalSaveInfo;
+
+  /// Privacy information for local mappings
+  ///
+  /// In en, this message translates to:
+  /// **'This mapping is private and only stored on your device'**
+  String get unknownGamePrivacyInfo;
+
+  /// Error message display
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {error}'**
+  String autoSwitcherError(String error);
+
+  /// Auto-switcher active status
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-switching active'**
+  String get autoSwitcherStatusActive;
+
+  /// Auto-switcher inactive status
+  ///
+  /// In en, this message translates to:
+  /// **'Not monitoring'**
+  String get autoSwitcherStatusInactive;
+
+  /// Label for active app display
+  ///
+  /// In en, this message translates to:
+  /// **'Active app'**
+  String get autoSwitcherLabelActiveApp;
+
+  /// Label for category display
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get autoSwitcherLabelCategory;
+
+  /// None value
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get autoSwitcherValueNone;
+
+  /// Description when auto-switcher is active
+  ///
+  /// In en, this message translates to:
+  /// **'Your category automatically changes when you switch apps.'**
+  String get autoSwitcherDescriptionActive;
+
+  /// Turn off auto-switcher button
+  ///
+  /// In en, this message translates to:
+  /// **'Turn Off'**
+  String get autoSwitcherButtonTurnOff;
+
+  /// Instruction text before hotkey
+  ///
+  /// In en, this message translates to:
+  /// **'Press'**
+  String get autoSwitcherInstructionPress;
+
+  /// Instruction for manual update
+  ///
+  /// In en, this message translates to:
+  /// **'to update manually to focused process'**
+  String get autoSwitcherInstructionManual;
+
+  /// Heading for enable section
+  ///
+  /// In en, this message translates to:
+  /// **'Enable automatic switching'**
+  String get autoSwitcherHeadingEnable;
+
+  /// Description when auto-switcher is inactive
+  ///
+  /// In en, this message translates to:
+  /// **'Categories will change automatically when you switch between apps.'**
+  String get autoSwitcherDescriptionInactive;
+
+  /// Turn on auto-switcher button
+  ///
+  /// In en, this message translates to:
+  /// **'Turn On'**
+  String get autoSwitcherButtonTurnOn;
+
+  /// Alternative instruction text
+  ///
+  /// In en, this message translates to:
+  /// **'Or press'**
+  String get autoSwitcherInstructionOr;
+
+  /// Mappings settings tab
+  ///
+  /// In en, this message translates to:
+  /// **'Mappings'**
+  String get settingsTabMappings;
+
+  /// Theme settings tab
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsTabTheme;
+
+  /// Auto-sync on start setting label
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-sync mappings on app start'**
+  String get settingsAutoSyncOnStart;
+
+  /// Auto-sync on start setting description
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically sync mapping lists when the application starts'**
+  String get settingsAutoSyncOnStartDesc;
+
+  /// Auto-sync interval setting label
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-sync interval'**
+  String get settingsAutoSyncInterval;
+
+  /// Auto-sync interval setting description
+  ///
+  /// In en, this message translates to:
+  /// **'How often to automatically sync mapping lists (0 = never)'**
+  String get settingsAutoSyncIntervalDesc;
+
+  /// Never sync option
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get settingsAutoSyncNever;
+
+  /// Timing explanation section title
+  ///
+  /// In en, this message translates to:
+  /// **'HOW THESE SETTINGS WORK TOGETHER'**
+  String get settingsTimingTitle;
+
+  /// Timing explanation step 1
+  ///
+  /// In en, this message translates to:
+  /// **'App checks for focused window every {scanInterval}s'**
+  String settingsTimingStep1(int scanInterval);
+
+  /// Timing explanation step 2 (instant)
+  ///
+  /// In en, this message translates to:
+  /// **'Category switches immediately when new app detected'**
+  String get settingsTimingStep2Instant;
+
+  /// Timing explanation step 2 (with debounce)
+  ///
+  /// In en, this message translates to:
+  /// **'Waits {debounce}s after detecting new app (debounce)'**
+  String settingsTimingStep2Debounce(int debounce);
+
+  /// Timing explanation step 3 (instant)
+  ///
+  /// In en, this message translates to:
+  /// **'Total switch time: {scanInterval}s (instant after detection)'**
+  String settingsTimingStep3Instant(int scanInterval);
+
+  /// Timing explanation step 3 (with debounce)
+  ///
+  /// In en, this message translates to:
+  /// **'Total switch time: {scanInterval}s to {scanDebounce}s'**
+  String settingsTimingStep3Debounce(int scanInterval, int scanDebounce);
+
+  /// Frameless window setting label
+  ///
+  /// In en, this message translates to:
+  /// **'Use Frameless Window'**
+  String get settingsFramelessWindow;
+
+  /// Frameless window setting description
+  ///
+  /// In en, this message translates to:
+  /// **'Remove the Windows title bar for a modern, borderless look with rounded corners'**
+  String get settingsFramelessWindowDesc;
+
+  /// Invert layout setting label
+  ///
+  /// In en, this message translates to:
+  /// **'Invert Footer/Header'**
+  String get settingsInvertLayout;
+
+  /// Invert layout setting description
+  ///
+  /// In en, this message translates to:
+  /// **'Swap the positions of the header and footer sections'**
+  String get settingsInvertLayoutDesc;
+
+  /// Token expired status
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get settingsTokenExpired;
+
+  /// Token expires in days and hours
+  ///
+  /// In en, this message translates to:
+  /// **'Expires in {days}d {hours}h'**
+  String settingsTokenExpiresDays(int days, int hours);
+
+  /// Token expires in hours and minutes
+  ///
+  /// In en, this message translates to:
+  /// **'Expires in {hours}h {minutes}m'**
+  String settingsTokenExpiresHours(int hours, int minutes);
+
+  /// Token expires in minutes
+  ///
+  /// In en, this message translates to:
+  /// **'Expires in {minutes}m'**
+  String settingsTokenExpiresMinutes(int minutes);
+
+  /// Reset settings description
+  ///
+  /// In en, this message translates to:
+  /// **'Reset all settings and data to factory defaults'**
+  String get settingsResetDesc;
+
+  /// Reset button
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get settingsButtonReset;
+
+  /// Mapping editor summary text
+  ///
+  /// In en, this message translates to:
+  /// **'{count} process mapping{plural} from {lists} active list{pluralLists}'**
+  String mappingEditorSummary(
+    int count,
+    String plural,
+    int lists,
+    String pluralLists,
+  );
+
+  /// Mapping breakdown text
+  ///
+  /// In en, this message translates to:
+  /// **'{custom} custom, {community} from community lists'**
+  String mappingEditorBreakdown(int custom, int community);
+
+  /// Lists button
+  ///
+  /// In en, this message translates to:
+  /// **'Lists'**
+  String get mappingEditorButtonLists;
+
+  /// Add mapping button
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get mappingEditorButtonAdd;
+
+  /// Delete confirmation dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Multiple Mappings'**
+  String get mappingEditorDeleteTitle;
+
+  /// Delete confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete {count} mapping{plural}? This action cannot be undone.'**
+  String mappingEditorDeleteMessage(int count, String plural);
+
+  /// Export dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Export Mappings'**
+  String get mappingEditorExportTitle;
+
+  /// Default export filename
+  ///
+  /// In en, this message translates to:
+  /// **'my-mappings.json'**
+  String get mappingEditorExportFilename;
+
+  /// Export success message
+  ///
+  /// In en, this message translates to:
+  /// **'Exported {count} mapping{plural} to'**
+  String mappingEditorExportSuccess(int count, String plural);
+
+  /// Export failed error title
+  ///
+  /// In en, this message translates to:
+  /// **'Export Failed'**
+  String get mappingEditorExportFailed;
+
+  /// Privacy-safe path label
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy-Safe Path'**
+  String get addMappingPrivacySafe;
+
+  /// Custom location label
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Location'**
+  String get addMappingCustomLocation;
+
+  /// Privacy info: only folder names
+  ///
+  /// In en, this message translates to:
+  /// **'Only game folder names stored'**
+  String get addMappingOnlyFolder;
+
+  /// Privacy info: path not stored
+  ///
+  /// In en, this message translates to:
+  /// **'Path not stored for privacy'**
+  String get addMappingNotStored;
+
+  /// Color picker dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Pick Color'**
+  String get colorPickerTitle;
+
+  /// Hue slider label
+  ///
+  /// In en, this message translates to:
+  /// **'Hue'**
+  String get colorPickerHue;
+
+  /// Saturation slider label
+  ///
+  /// In en, this message translates to:
+  /// **'Saturation'**
+  String get colorPickerSaturation;
+
+  /// Value slider label
+  ///
+  /// In en, this message translates to:
+  /// **'Value'**
+  String get colorPickerValue;
+
+  /// Color picker cancel button
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get colorPickerButtonCancel;
+
+  /// Color picker select button
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get colorPickerButtonSelect;
+
+  /// Dropdown placeholder text
+  ///
+  /// In en, this message translates to:
+  /// **'Select an option'**
+  String get dropdownPlaceholder;
+
+  /// Dropdown search hint
+  ///
+  /// In en, this message translates to:
+  /// **'Search...'**
+  String get dropdownSearchHint;
+
+  /// Dropdown no results message
+  ///
+  /// In en, this message translates to:
+  /// **'No results found'**
+  String get dropdownNoResults;
+
+  /// Pagination page information
+  ///
+  /// In en, this message translates to:
+  /// **'Page {current} of {total}'**
+  String paginationPageInfo(int current, int total);
+
+  /// Jump to page label
+  ///
+  /// In en, this message translates to:
+  /// **'Go to:'**
+  String get paginationGoTo;
+
+  /// Date picker placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Select date'**
+  String get datePickerPlaceholder;
+
+  /// AM time period
+  ///
+  /// In en, this message translates to:
+  /// **'AM'**
+  String get timePickerAM;
+
+  /// PM time period
+  ///
+  /// In en, this message translates to:
+  /// **'PM'**
+  String get timePickerPM;
+
+  /// Time picker placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Select time'**
+  String get timePickerPlaceholder;
+
+  /// File upload instruction
+  ///
+  /// In en, this message translates to:
+  /// **'Click to upload file'**
+  String get fileUploadInstruction;
+
+  /// Allowed file extensions
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed: {extensions}'**
+  String fileUploadAllowed(String extensions);
+
+  /// Default menu button tooltip
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get menuButtonTooltip;
+
+  /// Breadcrumb ellipsis
+  ///
+  /// In en, this message translates to:
+  /// **'...'**
+  String get breadcrumbEllipsis;
+
+  /// Breadcrumb show path tooltip
+  ///
+  /// In en, this message translates to:
+  /// **'Show path'**
+  String get breadcrumbTooltipShowPath;
+
+  /// Ctrl modifier key
+  ///
+  /// In en, this message translates to:
+  /// **'Ctrl'**
+  String get hotkeyModCtrl;
+
+  /// Alt modifier key
+  ///
+  /// In en, this message translates to:
+  /// **'Alt'**
+  String get hotkeyModAlt;
+
+  /// Shift modifier key
+  ///
+  /// In en, this message translates to:
+  /// **'Shift'**
+  String get hotkeyModShift;
+
+  /// Windows modifier key
+  ///
+  /// In en, this message translates to:
+  /// **'Win'**
+  String get hotkeyModWin;
+
+  /// Space key
+  ///
+  /// In en, this message translates to:
+  /// **'Space'**
+  String get hotkeySpace;
+
+  /// Enter key
+  ///
+  /// In en, this message translates to:
+  /// **'Enter'**
+  String get hotkeyEnter;
+
+  /// Tab key
+  ///
+  /// In en, this message translates to:
+  /// **'Tab'**
+  String get hotkeyTab;
+
+  /// Backspace key
+  ///
+  /// In en, this message translates to:
+  /// **'Bksp'**
+  String get hotkeyBackspace;
+
+  /// Delete key
+  ///
+  /// In en, this message translates to:
+  /// **'Del'**
+  String get hotkeyDelete;
+
+  /// Escape key
+  ///
+  /// In en, this message translates to:
+  /// **'Esc'**
+  String get hotkeyEscape;
+
+  /// Home key
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get hotkeyHome;
+
+  /// End key
+  ///
+  /// In en, this message translates to:
+  /// **'End'**
+  String get hotkeyEnd;
+
+  /// Page Up key
+  ///
+  /// In en, this message translates to:
+  /// **'PgUp'**
+  String get hotkeyPageUp;
+
+  /// Page Down key
+  ///
+  /// In en, this message translates to:
+  /// **'PgDn'**
+  String get hotkeyPageDown;
+
+  /// Current activity label
+  ///
+  /// In en, this message translates to:
+  /// **'Current Activity'**
+  String get statusDashboardCurrentActivity;
+
+  /// Not started status
+  ///
+  /// In en, this message translates to:
+  /// **'Not started'**
+  String get statusDashboardNotStarted;
+
+  /// Ready status
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get statusDashboardReady;
+
+  /// Checking app status
+  ///
+  /// In en, this message translates to:
+  /// **'Checking active app'**
+  String get statusDashboardCheckingApp;
+
+  /// Finding category status
+  ///
+  /// In en, this message translates to:
+  /// **'Finding category'**
+  String get statusDashboardFindingCategory;
+
+  /// Updating status
+  ///
+  /// In en, this message translates to:
+  /// **'Updating category'**
+  String get statusDashboardUpdating;
+
+  /// Waiting status
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for confirmation'**
+  String get statusDashboardWaiting;
+
+  /// Error status
+  ///
+  /// In en, this message translates to:
+  /// **'Error occurred'**
+  String get statusDashboardError;
+
+  /// Count display for filtered mappings
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {total}'**
+  String mappingListOfCount(int count, int total);
+
+  /// Action label for delete
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get mappingListActionDelete;
+
+  /// Action label for enable
+  ///
+  /// In en, this message translates to:
+  /// **'Enable'**
+  String get mappingListActionEnable;
+
+  /// Action label for disable
+  ///
+  /// In en, this message translates to:
+  /// **'Disable'**
+  String get mappingListActionDisable;
+
+  /// Time format for seconds ago
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds}s ago'**
+  String autoSwitcherTimeSecondsAgo(int seconds);
+
+  /// Time format for minutes ago
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m ago'**
+  String autoSwitcherTimeMinutesAgo(int minutes);
+
+  /// Time format for hours ago
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h ago'**
+  String autoSwitcherTimeHoursAgo(int hours);
 }
 
 class _AppLocalizationsDelegate

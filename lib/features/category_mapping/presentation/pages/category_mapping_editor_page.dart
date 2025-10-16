@@ -116,14 +116,22 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${mappings.length} process mapping${mappings.length != 1 ? 's' : ''} from $enabledLists active list${enabledLists != 1 ? 's' : ''}',
+                    l10n.mappingEditorSummary(
+                      mappings.length,
+                      mappings.length != 1 ? 's' : '',
+                      enabledLists,
+                      enabledLists != 1 ? 's' : '',
+                    ),
                     style: TKitTextStyles.bodyLarge.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   const VSpace.xs(),
                   Text(
-                    '${mappings.where((m) => m.manualOverride).length} custom, ${mappings.where((m) => !m.manualOverride).length} from community lists',
+                    l10n.mappingEditorBreakdown(
+                      mappings.where((m) => m.manualOverride).length,
+                      mappings.where((m) => !m.manualOverride).length,
+                    ),
                     style: TKitTextStyles.bodySmall.copyWith(
                       color: TKitColors.textMuted,
                     ),
@@ -133,13 +141,13 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
             ),
             const HSpace.xl(),
             AccentButton(
-              text: 'Lists',
+              text: l10n.mappingEditorButtonLists,
               icon: Icons.list_alt,
               onPressed: () => ListManagementDialog.show(context),
             ),
             const HSpace.md(),
             PrimaryButton(
-              text: 'Add',
+              text: l10n.mappingEditorButtonAdd,
               icon: Icons.add,
               onPressed: () => _showAddMappingDialog(context),
             ),
@@ -230,9 +238,11 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => ConfirmDialog(
-        title: 'Delete Multiple Mappings',
-        message:
-            'Are you sure you want to delete ${ids.length} mapping${ids.length > 1 ? 's' : ''}? This action cannot be undone.',
+        title: l10n.mappingEditorDeleteTitle,
+        message: l10n.mappingEditorDeleteMessage(
+          ids.length,
+          ids.length > 1 ? 's' : '',
+        ),
         confirmText: l10n.categoryMappingDeleteDialogConfirm,
         cancelText: l10n.categoryMappingDeleteDialogCancel,
       ),
@@ -247,11 +257,12 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
     BuildContext context,
     List<CategoryMapping> mappings,
   ) async {
+    final l10n = AppLocalizations.of(context)!;
     try {
       // Let user choose where to save the file
       final result = await FilePicker.platform.saveFile(
-        dialogTitle: 'Export Mappings',
-        fileName: 'my-mappings.json',
+        dialogTitle: l10n.mappingEditorExportTitle,
+        fileName: l10n.mappingEditorExportFilename,
         type: FileType.custom,
         allowedExtensions: ['json'],
       );
@@ -285,6 +296,7 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
       );
 
       if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
         Toast.successWithWidget(
           context,
           duration: const Duration(seconds: 6),
@@ -292,7 +304,7 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Text(
-                'Exported ${mappings.length} mapping${mappings.length > 1 ? 's' : ''} to ',
+                '${l10n.mappingEditorExportSuccess(mappings.length, mappings.length > 1 ? 's' : '')} ',
                 style: TKitTextStyles.bodyMedium.copyWith(
                   color: TKitColors.textPrimary,
                 ),
@@ -321,11 +333,12 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
       }
     } catch (e) {
       if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
         unawaited(
           showDialog<void>(
             context: context,
             builder: (dialogContext) => ErrorDialog(
-              title: 'Export Failed',
+              title: l10n.mappingEditorExportFailed,
               message: e.toString(),
             ),
           ),

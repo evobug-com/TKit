@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tkit/features/mapping_lists/presentation/providers/mapping_list_providers.dart';
 import 'package:tkit/features/mapping_lists/domain/entities/mapping_list.dart';
+import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/theme/spacing.dart';
@@ -37,6 +38,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(mappingListsProvider);
 
     return Dialog(
@@ -47,7 +49,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildHeader(),
+            _buildHeader(l10n),
             Expanded(
               child: () {
                 if (state.isLoading && state.lists.isEmpty) {
@@ -55,22 +57,22 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                 }
 
                 if (state.lists.isEmpty) {
-                  return const Center(
-                    child: Text('No lists found'),
+                  return Center(
+                    child: Text(l10n.listManagementEmptyState),
                   );
                 }
 
-                return _buildListsView(state);
+                return _buildListsView(l10n, state);
               }(),
             ),
-            _buildFooter(),
+            _buildFooter(l10n, state),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(TKitSpacing.pagePadding),
       decoration: const BoxDecoration(
@@ -86,7 +88,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
         children: [
           const Icon(Icons.list_alt, size: 20, color: TKitColors.accent),
           const HSpace.sm(),
-          const Text('Manage Lists', style: TKitTextStyles.heading2),
+          Text(l10n.listManagementTitle, style: TKitTextStyles.heading2),
           const Spacer(),
           IconButton(
             icon: const Icon(Icons.close, size: 20),
@@ -99,7 +101,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
     );
   }
 
-  Widget _buildListsView(MappingListState state) {
+  Widget _buildListsView(AppLocalizations l10n, MappingListState state) {
     return ListView.builder(
       padding: const EdgeInsets.all(TKitSpacing.pagePadding),
       itemCount: state.lists.length,
@@ -107,13 +109,13 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
         final list = state.lists[index];
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
-          child: _buildListTile(list, state),
+          child: _buildListTile(l10n, list, state),
         );
       },
     );
   }
 
-  Widget _buildListTile(MappingList list, MappingListState state) {
+  Widget _buildListTile(AppLocalizations l10n, MappingList list, MappingListState state) {
     final isSyncing = state.syncingListIds.contains(list.id);
 
     return IslandVariant.standard(
@@ -149,10 +151,10 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                         style: TKitTextStyles.labelMedium,
                       ),
                       const HSpace.sm(),
-                      _buildSourceBadge(list.sourceType),
+                      _buildSourceBadge(l10n, list.sourceType),
                       if (list.isReadOnly) ...[
                         const HSpace.sm(),
-                        _buildReadOnlyBadge(),
+                        _buildReadOnlyBadge(l10n),
                       ],
                     ],
                   ),
@@ -169,7 +171,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                   Row(
                     children: [
                       Text(
-                        '${list.mappingCount} mappings',
+                        l10n.listManagementMappingsCount(list.mappingCount),
                         style: TKitTextStyles.bodySmall.copyWith(
                           color: TKitColors.textSecondary,
                         ),
@@ -189,7 +191,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                               ),
                               const HSpace.xs(),
                               Text(
-                                'Sync failed: ${_formatSyncTime(list.lastSyncedAt)}',
+                                '${l10n.listManagementSyncFailed} ${_formatSyncTime(l10n, list.lastSyncedAt)}',
                                 style: TKitTextStyles.bodySmall.copyWith(
                                   color: TKitColors.error,
                                 ),
@@ -199,7 +201,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                         )
                       else
                         Text(
-                          'Last synced: ${_formatSyncTime(list.lastSyncedAt)}',
+                          '${l10n.listManagementLastSynced} ${_formatSyncTime(l10n, list.lastSyncedAt)}',
                           style: TKitTextStyles.bodySmall.copyWith(
                             color: TKitColors.textMuted,
                           ),
@@ -225,7 +227,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                       : IconButton(
                           icon: const Icon(Icons.sync, size: 18),
                           onPressed: () => ref.read(mappingListsProvider.notifier).syncList(list.id),
-                          tooltip: 'Sync now',
+                          tooltip: l10n.listManagementSyncNow,
                           color: TKitColors.accent,
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
@@ -239,20 +241,20 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
     );
   }
 
-  Widget _buildSourceBadge(MappingListSourceType type) {
+  Widget _buildSourceBadge(AppLocalizations l10n, MappingListSourceType type) {
     Color color;
     String label;
 
     switch (type) {
       case MappingListSourceType.local:
         color = const Color(0xFF6B6B6B);
-        label = 'LOCAL';
+        label = l10n.listManagementBadgeLocal;
       case MappingListSourceType.official:
         color = TKitColors.info;
-        label = 'OFFICIAL';
+        label = l10n.listManagementBadgeOfficial;
       case MappingListSourceType.remote:
         color = TKitColors.warning;
-        label = 'REMOTE';
+        label = l10n.listManagementBadgeRemote;
     }
 
     return Container(
@@ -272,7 +274,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
     );
   }
 
-  Widget _buildReadOnlyBadge() {
+  Widget _buildReadOnlyBadge(AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
@@ -280,7 +282,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
         border: Border.all(color: TKitColors.textMuted.withValues(alpha: 0.3)),
       ),
       child: Text(
-        'READ-ONLY',
+        l10n.listManagementBadgeReadOnly,
         style: TKitTextStyles.caption.copyWith(
           color: TKitColors.textMuted,
           fontSize: 10,
@@ -290,9 +292,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
     );
   }
 
-  Widget _buildFooter() {
-    final state = ref.watch(mappingListsProvider);
-
+  Widget _buildFooter(AppLocalizations l10n, MappingListState state) {
     return Container(
       padding: const EdgeInsets.all(TKitSpacing.pagePadding),
       decoration: const BoxDecoration(
@@ -306,21 +306,21 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
       child: Row(
         children: [
           PrimaryButton(
-            text: 'Import List',
+            text: l10n.listManagementButtonImport,
             icon: Icons.add,
-            onPressed: () => _showImportDialog(context),
+            onPressed: () => _showImportDialog(context, l10n),
             width: 140,
           ),
           const HSpace.md(),
           AccentButton(
-            text: 'Sync All',
+            text: l10n.listManagementButtonSyncAll,
             icon: Icons.sync,
             onPressed: state.isLoading ? null : () => ref.read(mappingListsProvider.notifier).syncAllLists(),
             width: 120,
           ),
           const Spacer(),
           AccentButton(
-            text: 'Close',
+            text: l10n.listManagementButtonClose,
             onPressed: () => Navigator.of(context).pop(),
             width: 100,
           ),
@@ -329,7 +329,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
     );
   }
 
-  void _showImportDialog(BuildContext context) {
+  void _showImportDialog(BuildContext context, AppLocalizations l10n) {
     final nameController = TextEditingController();
     final urlController = TextEditingController();
     final descriptionController = TextEditingController();
@@ -338,28 +338,28 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
       context: context,
       builder: (dialogContext) => AlertDialog(
         backgroundColor: TKitColors.surface,
-        title: const Text('Import List', style: TKitTextStyles.heading3),
+        title: Text(l10n.listManagementImportTitle, style: TKitTextStyles.heading3),
         content: SizedBox(
           width: 500,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('List URL', style: TKitTextStyles.labelSmall),
+              Text(l10n.listManagementImportUrl, style: TKitTextStyles.labelSmall),
               const VSpace.sm(),
               TextFormField(
                 controller: urlController,
-                decoration: const InputDecoration(
-                  hintText: 'https://example.com/mappings.json',
+                decoration: InputDecoration(
+                  hintText: l10n.listManagementImportUrlPlaceholder,
                   filled: true,
                   fillColor: TKitColors.background,
                 ),
               ),
               const VSpace.md(),
-              const Text('List Name (optional)', style: TKitTextStyles.labelSmall),
+              Text(l10n.listManagementImportName, style: TKitTextStyles.labelSmall),
               const VSpace.xs(),
               Text(
-                'If not provided, will use name from JSON file',
+                l10n.listManagementImportNameHelper,
                 style: TKitTextStyles.caption.copyWith(
                   color: TKitColors.textMuted,
                 ),
@@ -367,17 +367,17 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
               const VSpace.sm(),
               TextFormField(
                 controller: nameController,
-                decoration: const InputDecoration(
-                  hintText: 'My Custom List',
+                decoration: InputDecoration(
+                  hintText: l10n.listManagementImportNamePlaceholder,
                   filled: true,
                   fillColor: TKitColors.background,
                 ),
               ),
               const VSpace.md(),
-              const Text('Description (optional)', style: TKitTextStyles.labelSmall),
+              Text(l10n.listManagementImportDescription, style: TKitTextStyles.labelSmall),
               const VSpace.xs(),
               Text(
-                'If not provided, will use description from JSON file',
+                l10n.listManagementImportDescriptionHelper,
                 style: TKitTextStyles.caption.copyWith(
                   color: TKitColors.textMuted,
                 ),
@@ -385,8 +385,8 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
               const VSpace.sm(),
               TextFormField(
                 controller: descriptionController,
-                decoration: const InputDecoration(
-                  hintText: 'A collection of game mappings',
+                decoration: InputDecoration(
+                  hintText: l10n.listManagementImportDescriptionPlaceholder,
                   filled: true,
                   fillColor: TKitColors.background,
                 ),
@@ -397,12 +397,12 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
         ),
         actions: [
           AccentButton(
-            text: 'Cancel',
+            text: l10n.listManagementButtonCancel,
             onPressed: () => Navigator.of(dialogContext).pop(),
           ),
           const HSpace.sm(),
           PrimaryButton(
-            text: 'Import',
+            text: l10n.listManagementButtonImportConfirm,
             onPressed: () async {
               final url = urlController.text.trim();
               final name = nameController.text.trim();
@@ -416,13 +416,13 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
 
               final success = await ref.read(mappingListsProvider.notifier).importListFromUrl(
                     url: url,
-                    name: name.isEmpty ? 'Imported List' : name,
+                    name: name.isEmpty ? l10n.listManagementDefaultName : name,
                     description: description.isEmpty ? null : description,
                   );
 
               if (success && context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('List imported successfully')),
+                  SnackBar(content: Text(l10n.listManagementImportSuccess)),
                 );
               }
             },
@@ -432,29 +432,29 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
     );
   }
 
-  String _formatSyncTime(DateTime? time) {
+  String _formatSyncTime(AppLocalizations l10n, DateTime? time) {
     if (time == null) {
-      return 'never';
+      return l10n.listManagementSyncNever;
     }
 
     final now = DateTime.now();
     final difference = now.difference(time);
 
     if (difference.inMinutes < 1) {
-      return 'just now';
+      return l10n.listManagementSyncJustNow;
     } else if (difference.inHours < 1) {
-      return '${difference.inMinutes}m ago';
+      return l10n.listManagementSyncMinutesAgo(difference.inMinutes);
     } else if (difference.inHours < 24) {
-      return '${difference.inHours}h ago';
+      return l10n.listManagementSyncHoursAgo(difference.inHours);
     } else {
       // Show days + hours for >= 24 hours
       final days = difference.inDays;
       final hours = difference.inHours % 24;
 
       if (hours == 0) {
-        return '${days}d ago';
+        return l10n.listManagementSyncDaysAgo(days);
       } else {
-        return '${days}d ${hours}h ago';
+        return l10n.listManagementSyncDaysHoursAgo(days, hours);
       }
     }
   }

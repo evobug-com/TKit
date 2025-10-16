@@ -365,7 +365,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get updateDialogRemindLater => '稍后提醒';
 
   @override
-  String get updateDialogIgnore => 'Ignore This Version';
+  String get updateDialogIgnore => '忽略此版本';
 
   @override
   String get settingsDebounceTimeDescription => '应用更改后切换分类前的等待时间（防止快速切换）';
@@ -1039,4 +1039,615 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get versionStatusPlatformNotSupported => '此平台不支持更新';
+
+  @override
+  String get notificationMissingCategoryTitle => '未找到类别映射';
+
+  @override
+  String notificationMissingCategoryBody(String processName) {
+    return '未找到 $processName 的 Twitch 类别';
+  }
+
+  @override
+  String get notificationActionAssignCategory => '分配类别';
+
+  @override
+  String get notificationCategoryUpdatedTitle => '类别已更新';
+
+  @override
+  String notificationCategoryUpdatedBody(
+    String categoryName,
+    String processName,
+  ) {
+    return '已为 $processName 切换到\"$categoryName\"';
+  }
+
+  @override
+  String get mappingListColumnSource => '来源';
+
+  @override
+  String get mappingListColumnEnabled => '已启用';
+
+  @override
+  String get mappingListTooltipIgnored => '此类别已被忽略';
+
+  @override
+  String mappingListTooltipTwitchId(String twitchCategoryId) {
+    return 'Twitch ID：$twitchCategoryId';
+  }
+
+  @override
+  String get mappingListCategoryIgnored => '已忽略';
+
+  @override
+  String get mappingListSourceUnknown => '未知';
+
+  @override
+  String mappingListSelected(int count) {
+    return '已选择 $count 项';
+  }
+
+  @override
+  String mappingListSelectedVisible(int count, int visible) {
+    return '已选择 $count 项（$visible 项可见）';
+  }
+
+  @override
+  String get mappingListButtonInvert => '反选';
+
+  @override
+  String get mappingListButtonClear => '清除';
+
+  @override
+  String mappingListButtonUndo(String action) {
+    return '撤销$action';
+  }
+
+  @override
+  String get mappingListButtonExport => '导出';
+
+  @override
+  String get mappingListButtonEnable => '启用';
+
+  @override
+  String get mappingListButtonDisable => '禁用';
+
+  @override
+  String get mappingListButtonDelete => '删除';
+
+  @override
+  String get mappingListTooltipCannotDelete => '无法删除只读列表中的映射';
+
+  @override
+  String get mappingListTooltipDelete => '删除选定的映射';
+
+  @override
+  String get mappingListSearchHint => '按进程名称或类别搜索...';
+
+  @override
+  String get mappingListTooltipClearSearch => '清除搜索';
+
+  @override
+  String get listManagementEmptyState => '未找到列表';
+
+  @override
+  String get listManagementTitle => '管理列表';
+
+  @override
+  String get listManagementSyncNow => '立即同步';
+
+  @override
+  String get listManagementBadgeLocal => '本地';
+
+  @override
+  String get listManagementBadgeOfficial => '官方';
+
+  @override
+  String get listManagementBadgeRemote => '远程';
+
+  @override
+  String get listManagementBadgeReadOnly => '只读';
+
+  @override
+  String get listManagementButtonImport => '导入列表';
+
+  @override
+  String get listManagementButtonSyncAll => '全部同步';
+
+  @override
+  String get listManagementButtonClose => '关闭';
+
+  @override
+  String get listManagementImportTitle => '导入列表';
+
+  @override
+  String get listManagementImportUrl => '列表 URL';
+
+  @override
+  String get listManagementImportUrlPlaceholder =>
+      'https://example.com/mappings.json';
+
+  @override
+  String get listManagementImportName => '列表名称（可选）';
+
+  @override
+  String get listManagementImportNameHelper => '如果未提供，将使用 JSON 文件中的名称';
+
+  @override
+  String get listManagementImportNamePlaceholder => '我的自定义列表';
+
+  @override
+  String get listManagementImportDescription => '描述（可选）';
+
+  @override
+  String get listManagementImportDescriptionHelper => '如果未提供，将使用 JSON 文件中的描述';
+
+  @override
+  String get listManagementImportDescriptionPlaceholder => '游戏映射集合';
+
+  @override
+  String get listManagementButtonCancel => '取消';
+
+  @override
+  String get listManagementButtonImportConfirm => '导入';
+
+  @override
+  String get listManagementDefaultName => '已导入的列表';
+
+  @override
+  String get listManagementImportSuccess => '列表导入成功';
+
+  @override
+  String get listManagementSyncNever => '从未';
+
+  @override
+  String get listManagementSyncJustNow => '刚刚';
+
+  @override
+  String listManagementSyncMinutesAgo(int minutes) {
+    return '$minutes分钟前';
+  }
+
+  @override
+  String listManagementSyncHoursAgo(int hours) {
+    return '$hours小时前';
+  }
+
+  @override
+  String listManagementSyncDaysAgo(int days) {
+    return '$days天前';
+  }
+
+  @override
+  String listManagementSyncDaysHoursAgo(int days, int hours) {
+    return '$days天$hours小时前';
+  }
+
+  @override
+  String listManagementMappingsCount(int count) {
+    return '$count 个映射';
+  }
+
+  @override
+  String get listManagementSyncFailed => '同步失败：';
+
+  @override
+  String get listManagementLastSynced => '上次同步：';
+
+  @override
+  String get unknownGameIgnoreProcess => '忽略进程';
+
+  @override
+  String unknownGameCategoryId(String id) {
+    return 'ID：$id';
+  }
+
+  @override
+  String get unknownGameSubmissionTitle => '需要提交';
+
+  @override
+  String get unknownGameSubmissionInfo =>
+      '此映射将保存在本地并提交给列表所有者进行审批。一旦获得批准并同步，您的本地副本将被自动替换。';
+
+  @override
+  String get unknownGameSectionLists => '列表';
+
+  @override
+  String unknownGameListMappingCount(int count) {
+    return '$count 个映射';
+  }
+
+  @override
+  String get unknownGameBadgeStaged => '已暂存';
+
+  @override
+  String get unknownGameIgnoredProcess => '已忽略的进程';
+
+  @override
+  String unknownGameSelectedCategoryId(String id) {
+    return 'ID：$id';
+  }
+
+  @override
+  String get unknownGameWorkflowTitle => '提交工作流程';
+
+  @override
+  String get unknownGameWorkflowTitleAlt => '接下来会发生什么';
+
+  @override
+  String get unknownGameWorkflowStepLocal => '保存到我的自定义映射';
+
+  @override
+  String get unknownGameWorkflowStepLocalDesc => '首先存储在您的设备上，因此映射立即生效';
+
+  @override
+  String unknownGameWorkflowStepSubmit(String listName) {
+    return '提交到 $listName';
+  }
+
+  @override
+  String get unknownGameWorkflowStepSubmitDesc => '自动发送给列表所有者进行审核和批准';
+
+  @override
+  String get unknownGameWorkflowStepReplace => '批准后替换本地副本';
+
+  @override
+  String unknownGameWorkflowStepReplaceDesc(String listName) {
+    return '一旦接受并同步，您的本地副本将被删除并替换为 $listName 中的官方版本';
+  }
+
+  @override
+  String unknownGameSavedTo(String listName) {
+    return '已保存到 $listName';
+  }
+
+  @override
+  String get unknownGameIgnoredInfo => '此进程将被忽略，不会触发通知';
+
+  @override
+  String get unknownGameLocalSaveInfo => '您的映射已保存在本地，将立即生效';
+
+  @override
+  String get unknownGamePrivacyInfo => '此映射是私有的，仅存储在您的设备上';
+
+  @override
+  String autoSwitcherError(String error) {
+    return '错误：$error';
+  }
+
+  @override
+  String get autoSwitcherStatusActive => '自动切换已激活';
+
+  @override
+  String get autoSwitcherStatusInactive => '未监控';
+
+  @override
+  String get autoSwitcherLabelActiveApp => '活动应用';
+
+  @override
+  String get autoSwitcherLabelCategory => '类别';
+
+  @override
+  String get autoSwitcherValueNone => '无';
+
+  @override
+  String get autoSwitcherDescriptionActive => '当您切换应用时，类别会自动更改。';
+
+  @override
+  String get autoSwitcherButtonTurnOff => '关闭';
+
+  @override
+  String get autoSwitcherInstructionPress => '按';
+
+  @override
+  String get autoSwitcherInstructionManual => '手动更新到焦点进程';
+
+  @override
+  String get autoSwitcherHeadingEnable => '启用自动切换';
+
+  @override
+  String get autoSwitcherDescriptionInactive => '当您在应用之间切换时，类别将自动更改。';
+
+  @override
+  String get autoSwitcherButtonTurnOn => '开启';
+
+  @override
+  String get autoSwitcherInstructionOr => '或按';
+
+  @override
+  String get settingsTabMappings => '映射';
+
+  @override
+  String get settingsTabTheme => '主题';
+
+  @override
+  String get settingsAutoSyncOnStart => '启动时自动同步映射';
+
+  @override
+  String get settingsAutoSyncOnStartDesc => '应用程序启动时自动同步映射列表';
+
+  @override
+  String get settingsAutoSyncInterval => '自动同步间隔';
+
+  @override
+  String get settingsAutoSyncIntervalDesc => '自动同步映射列表的频率（0 = 从不）';
+
+  @override
+  String get settingsAutoSyncNever => '从不';
+
+  @override
+  String get settingsTimingTitle => '这些设置如何协同工作';
+
+  @override
+  String settingsTimingStep1(int scanInterval) {
+    return '应用每 $scanInterval 秒检查焦点窗口';
+  }
+
+  @override
+  String get settingsTimingStep2Instant => '检测到新应用后立即切换类别';
+
+  @override
+  String settingsTimingStep2Debounce(int debounce) {
+    return '检测到新应用后等待 $debounce 秒（防抖）';
+  }
+
+  @override
+  String settingsTimingStep3Instant(int scanInterval) {
+    return '总切换时间：$scanInterval 秒（检测后立即切换）';
+  }
+
+  @override
+  String settingsTimingStep3Debounce(int scanInterval, int scanDebounce) {
+    return '总切换时间：$scanInterval 秒到 $scanDebounce 秒';
+  }
+
+  @override
+  String get settingsFramelessWindow => '使用无边框窗口';
+
+  @override
+  String get settingsFramelessWindowDesc => '移除 Windows 标题栏，呈现带圆角的现代无边框外观';
+
+  @override
+  String get settingsInvertLayout => '反转页脚/页眉';
+
+  @override
+  String get settingsInvertLayoutDesc => '交换页眉和页脚部分的位置';
+
+  @override
+  String get settingsTokenExpired => '已过期';
+
+  @override
+  String settingsTokenExpiresDays(int days, int hours) {
+    return '$days天$hours小时后过期';
+  }
+
+  @override
+  String settingsTokenExpiresHours(int hours, int minutes) {
+    return '$hours小时$minutes分钟后过期';
+  }
+
+  @override
+  String settingsTokenExpiresMinutes(int minutes) {
+    return '$minutes分钟后过期';
+  }
+
+  @override
+  String get settingsResetDesc => '将所有设置和数据重置为出厂默认值';
+
+  @override
+  String get settingsButtonReset => '重置';
+
+  @override
+  String mappingEditorSummary(
+    int count,
+    String plural,
+    int lists,
+    String pluralLists,
+  ) {
+    return '来自 $lists 个活动列表的 $count 个进程映射$plural';
+  }
+
+  @override
+  String mappingEditorBreakdown(int custom, int community) {
+    return '$custom 个自定义，$community 个来自社区列表';
+  }
+
+  @override
+  String get mappingEditorButtonLists => '列表';
+
+  @override
+  String get mappingEditorButtonAdd => '添加';
+
+  @override
+  String get mappingEditorDeleteTitle => '删除多个映射';
+
+  @override
+  String mappingEditorDeleteMessage(int count, String plural) {
+    return '确定要删除 $count 个映射$plural吗？此操作无法撤销。';
+  }
+
+  @override
+  String get mappingEditorExportTitle => '导出映射';
+
+  @override
+  String get mappingEditorExportFilename => 'my-mappings.json';
+
+  @override
+  String mappingEditorExportSuccess(int count, String plural) {
+    return '已将 $count 个映射$plural导出到';
+  }
+
+  @override
+  String get mappingEditorExportFailed => '导出失败';
+
+  @override
+  String get addMappingPrivacySafe => '隐私安全路径';
+
+  @override
+  String get addMappingCustomLocation => '自定义位置';
+
+  @override
+  String get addMappingOnlyFolder => '仅存储游戏文件夹名称';
+
+  @override
+  String get addMappingNotStored => '为保护隐私不存储路径';
+
+  @override
+  String get colorPickerTitle => '选择颜色';
+
+  @override
+  String get colorPickerHue => '色调';
+
+  @override
+  String get colorPickerSaturation => '饱和度';
+
+  @override
+  String get colorPickerValue => '亮度';
+
+  @override
+  String get colorPickerButtonCancel => '取消';
+
+  @override
+  String get colorPickerButtonSelect => '选择';
+
+  @override
+  String get dropdownPlaceholder => '选择一个选项';
+
+  @override
+  String get dropdownSearchHint => '搜索...';
+
+  @override
+  String get dropdownNoResults => '未找到结果';
+
+  @override
+  String paginationPageInfo(int current, int total) {
+    return '第 $current 页，共 $total 页';
+  }
+
+  @override
+  String get paginationGoTo => '跳转到：';
+
+  @override
+  String get datePickerPlaceholder => '选择日期';
+
+  @override
+  String get timePickerAM => '上午';
+
+  @override
+  String get timePickerPM => '下午';
+
+  @override
+  String get timePickerPlaceholder => '选择时间';
+
+  @override
+  String get fileUploadInstruction => '点击上传文件';
+
+  @override
+  String fileUploadAllowed(String extensions) {
+    return '允许：$extensions';
+  }
+
+  @override
+  String get menuButtonTooltip => '更多选项';
+
+  @override
+  String get breadcrumbEllipsis => '...';
+
+  @override
+  String get breadcrumbTooltipShowPath => '显示路径';
+
+  @override
+  String get hotkeyModCtrl => 'Ctrl';
+
+  @override
+  String get hotkeyModAlt => 'Alt';
+
+  @override
+  String get hotkeyModShift => 'Shift';
+
+  @override
+  String get hotkeyModWin => 'Win';
+
+  @override
+  String get hotkeySpace => '空格';
+
+  @override
+  String get hotkeyEnter => '回车';
+
+  @override
+  String get hotkeyTab => 'Tab';
+
+  @override
+  String get hotkeyBackspace => '退格';
+
+  @override
+  String get hotkeyDelete => '删除';
+
+  @override
+  String get hotkeyEscape => 'Esc';
+
+  @override
+  String get hotkeyHome => 'Home';
+
+  @override
+  String get hotkeyEnd => 'End';
+
+  @override
+  String get hotkeyPageUp => 'PgUp';
+
+  @override
+  String get hotkeyPageDown => 'PgDn';
+
+  @override
+  String get statusDashboardCurrentActivity => '当前活动';
+
+  @override
+  String get statusDashboardNotStarted => '未开始';
+
+  @override
+  String get statusDashboardReady => '就绪';
+
+  @override
+  String get statusDashboardCheckingApp => '检查活动应用';
+
+  @override
+  String get statusDashboardFindingCategory => '查找类别';
+
+  @override
+  String get statusDashboardUpdating => '更新类别';
+
+  @override
+  String get statusDashboardWaiting => '等待确认';
+
+  @override
+  String get statusDashboardError => '发生错误';
+
+  @override
+  String mappingListOfCount(int count, int total) {
+    return '$count / $total';
+  }
+
+  @override
+  String get mappingListActionDelete => '删除';
+
+  @override
+  String get mappingListActionEnable => '启用';
+
+  @override
+  String get mappingListActionDisable => '禁用';
+
+  @override
+  String autoSwitcherTimeSecondsAgo(int seconds) {
+    return '$seconds秒前';
+  }
+
+  @override
+  String autoSwitcherTimeMinutesAgo(int minutes) {
+    return '$minutes分钟前';
+  }
+
+  @override
+  String autoSwitcherTimeHoursAgo(int hours) {
+    return '$hours小时前';
+  }
 }
