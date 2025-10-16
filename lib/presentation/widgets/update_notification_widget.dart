@@ -14,6 +14,189 @@ import 'package:tkit/shared/widgets/buttons/primary_button.dart';
 import 'package:tkit/shared/widgets/buttons/accent_button.dart';
 import 'package:tkit/shared/widgets/layout/island.dart';
 import 'package:tkit/shared/widgets/layout/spacer.dart';
+import 'package:tkit/shared/widgets/badges/tag.dart';
+import 'package:tkit/shared/widgets/badges/badge.dart';
+import 'package:tkit/shared/widgets/cards/panel_card.dart';
+
+/// Creates a custom GptMarkdown theme using TKit design tokens with modern visual hierarchy
+GptMarkdownThemeData _createMarkdownTheme() {
+  return GptMarkdownThemeData(
+    brightness: Brightness.dark,
+
+    // Heading styles with modern typography and gradients
+    h1: TKitTextStyles.heading1.copyWith(
+      color: TKitColors.accentBright,
+      fontSize: 22,
+      fontWeight: FontWeight.w700,
+      letterSpacing: -0.5,
+      height: 1.3,
+    ),
+    h2: TKitTextStyles.heading2.copyWith(
+      color: TKitColors.accentBright,
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+      letterSpacing: -0.3,
+      height: 1.3,
+    ),
+    h3: TKitTextStyles.heading3.copyWith(
+      color: TKitColors.textPrimary,
+      fontSize: 16,
+      fontWeight: FontWeight.w600,
+      letterSpacing: -0.2,
+      height: 1.3,
+    ),
+    h4: TKitTextStyles.heading4.copyWith(
+      color: TKitColors.accent,
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0.5,
+      height: 1.4,
+    ),
+    h5: TKitTextStyles.labelMedium.copyWith(
+      color: TKitColors.textSecondary,
+      letterSpacing: 0.3,
+    ),
+    h6: TKitTextStyles.labelSmall.copyWith(
+      color: TKitColors.textMuted,
+      letterSpacing: 0.3,
+    ),
+
+    // Link colors - make them stand out with underline
+    linkColor: TKitColors.accentBright,
+    linkHoverColor: TKitColors.accentHover,
+
+    // Horizontal rule styling - more prominent
+    hrLineColor: TKitColors.accent,
+    hrLineThickness: 2.0,
+
+    // Highlight/selection color with shadow effect
+    highlightColor: TKitColors.surface,
+  );
+}
+
+/// Custom code block builder with modern styling using TKit components
+Widget _buildCodeBlock(BuildContext context, String name, String code, bool closed) {
+  return Container(
+    margin: const EdgeInsets.symmetric(vertical: TKitSpacing.md),
+    decoration: BoxDecoration(
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.2),
+          blurRadius: 8,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: PanelCard(
+      padding: const EdgeInsets.all(TKitSpacing.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (name.isNotEmpty) ...[
+            TKitTag(
+              label: name.toUpperCase(),
+              variant: TKitTagVariant.info,
+              icon: Icons.code,
+            ),
+            const VSpace.sm(),
+          ],
+          SelectableText(
+            code,
+            style: TKitTextStyles.code.copyWith(
+              fontSize: 12,
+              height: 1.7,
+              letterSpacing: 0.2,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+/// Custom unordered list builder using fancy card layout
+Widget _buildUnorderedList(BuildContext context, Widget child, dynamic config) {
+  return Container(
+    margin: const EdgeInsets.only(
+      left: TKitSpacing.sm,
+      bottom: TKitSpacing.sm,
+    ),
+    child: PanelCard(
+      padding: const EdgeInsets.symmetric(
+        horizontal: TKitSpacing.md,
+        vertical: TKitSpacing.sm,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 6, right: TKitSpacing.md),
+            child: Icon(
+              Icons.check_circle,
+              size: 14,
+              color: TKitColors.accentBright,
+            ),
+          ),
+          Expanded(
+            child: DefaultTextStyle(
+              style: TKitTextStyles.bodyMedium.copyWith(
+                height: 1.6,
+                letterSpacing: 0.1,
+              ),
+              child: child,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+/// Custom ordered list builder using fancy card layout with badge numbers
+Widget _buildOrderedList(BuildContext context, String no, Widget child, dynamic config) {
+  return Container(
+    margin: const EdgeInsets.only(
+      left: TKitSpacing.sm,
+      bottom: TKitSpacing.sm,
+    ),
+    child: PanelCard(
+      padding: const EdgeInsets.symmetric(
+        horizontal: TKitSpacing.md,
+        vertical: TKitSpacing.sm,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 4, right: TKitSpacing.md),
+            child: TKitBadge(
+              text: no,
+              variant: TKitBadgeVariant.info,
+            ),
+          ),
+          Expanded(
+            child: DefaultTextStyle(
+              style: TKitTextStyles.bodyMedium.copyWith(
+                height: 1.6,
+                letterSpacing: 0.1,
+              ),
+              child: child,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+/// Custom inline code/highlight builder using tag-style design
+Widget _buildHighlight(BuildContext context, String text, TextStyle style) {
+  return TKitTag(
+    label: text,
+    variant: TKitTagVariant.info,
+    icon: Icons.code_rounded,
+  );
+}
 
 /// Widget that displays update notifications and handles the update process
 class UpdateNotificationWidget extends ConsumerStatefulWidget {
@@ -510,59 +693,78 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
 
                     // Release Notes Content
                     Expanded(
-                      child: widget.updateInfo.versionChangelogs.isEmpty
-                          ? SingleChildScrollView(
-                              child: GptMarkdown(
-                                widget.updateInfo.releaseNotes,
-                              ),
-                            )
-                          : ListView.separated(
-                              itemCount: widget.updateInfo.versionChangelogs.length,
-                              separatorBuilder: (context, index) => const Padding(
-                                padding: EdgeInsets.symmetric(vertical: TKitSpacing.md),
-                                child: Divider(
-                                  color: TKitColors.border,
-                                  height: 1,
+                      child: GptMarkdownTheme(
+                        gptThemeData: _createMarkdownTheme(),
+                        child: widget.updateInfo.versionChangelogs.isEmpty
+                            ? SingleChildScrollView(
+                                child: GptMarkdown(
+                                  widget.updateInfo.releaseNotes,
+                                  style: TKitTextStyles.bodyMedium.copyWith(
+                                    height: 1.6,
+                                    letterSpacing: 0.1,
+                                  ),
+                                  codeBuilder: _buildCodeBlock,
+                                  unOrderedListBuilder: _buildUnorderedList,
+                                  orderedListBuilder: _buildOrderedList,
+                                  highlightBuilder: _buildHighlight,
                                 ),
-                              ),
-                              itemBuilder: (context, index) {
-                                final changelog = widget.updateInfo.versionChangelogs[index];
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 6,
-                                            vertical: 2,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: TKitColors.surfaceVariant,
-                                            border: Border.all(color: TKitColors.border),
-                                          ),
-                                          child: Text(
-                                            changelog.version,
-                                            style: TKitTextStyles.labelSmall.copyWith(
-                                              color: TKitColors.accent,
+                              )
+                            : ListView.separated(
+                                itemCount: widget.updateInfo.versionChangelogs.length,
+                                separatorBuilder: (context, index) => const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: TKitSpacing.md),
+                                  child: Divider(
+                                    color: TKitColors.border,
+                                    height: 1,
+                                  ),
+                                ),
+                                itemBuilder: (context, index) {
+                                  final changelog = widget.updateInfo.versionChangelogs[index];
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 6,
+                                              vertical: 2,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: TKitColors.surfaceVariant,
+                                              border: Border.all(color: TKitColors.border),
+                                            ),
+                                            child: Text(
+                                              changelog.version,
+                                              style: TKitTextStyles.labelSmall.copyWith(
+                                                color: TKitColors.accent,
+                                              ),
                                             ),
                                           ),
+                                          const HSpace.sm(),
+                                          Text(
+                                            _formatDate(changelog.publishedAt, l10n),
+                                            style: TKitTextStyles.bodySmall,
+                                          ),
+                                        ],
+                                      ),
+                                      const VSpace.sm(),
+                                      GptMarkdown(
+                                        changelog.notes,
+                                        style: TKitTextStyles.bodyMedium.copyWith(
+                                          height: 1.6,
+                                          letterSpacing: 0.1,
                                         ),
-                                        const HSpace.sm(),
-                                        Text(
-                                          _formatDate(changelog.publishedAt, l10n),
-                                          style: TKitTextStyles.bodySmall,
-                                        ),
-                                      ],
-                                    ),
-                                    const VSpace.sm(),
-                                    GptMarkdown(
-                                      changelog.notes,
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
+                                        codeBuilder: _buildCodeBlock,
+                                        unOrderedListBuilder: _buildUnorderedList,
+                                        orderedListBuilder: _buildOrderedList,
+                                        highlightBuilder: _buildHighlight,
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                      ),
                     ),
                   ],
                 ),
