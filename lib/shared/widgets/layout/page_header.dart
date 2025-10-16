@@ -27,17 +27,14 @@ class PageHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                title.toUpperCase(),
-                style: TKitTextStyles.labelMedium.copyWith(
-                  letterSpacing: 1.2,
-                  fontWeight: FontWeight.bold,
-                ),
+                title,
+                style: TKitTextStyles.heading4,
               ),
               if (subtitle != null) ...[
-                const SizedBox(height: TKitSpacing.headerGap),
+                const SizedBox(height: TKitSpacing.xs),
                 Text(
                   subtitle!,
-                  style: TKitTextStyles.bodySmall.copyWith(
+                  style: TKitTextStyles.bodyMedium.copyWith(
                     color: TKitColors.textMuted,
                   ),
                 ),
@@ -46,7 +43,7 @@ class PageHeader extends StatelessWidget {
           ),
         ),
         if (trailing != null) ...[
-          const SizedBox(width: TKitSpacing.md),
+          const SizedBox(width: TKitSpacing.lg),
           trailing!,
         ],
       ],

@@ -254,16 +254,6 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                       _handleNavigation(context, const SettingsRoute());
                     },
                   ),
-                // Design System Showcase (dev only)
-                if (!isWelcomeScreen && DevUtils.isDevelopment)
-                  _buildTab(
-                    context: context,
-                    label: '🎨 Showcase',
-                    isSelected: currentRouteName == ShowcaseRoute.name,
-                    onTap: () {
-                      _handleNavigation(context, const ShowcaseRoute());
-                    },
-                  ),
 
                 // App name on the right
                 GestureDetector(
@@ -350,16 +340,6 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                     isSelected: currentRouteName == SettingsRoute.name,
                     onTap: () {
                       _handleNavigation(context, const SettingsRoute());
-                    },
-                  ),
-                // Design System Showcase (dev only)
-                if (!isWelcomeScreen && DevUtils.isDevelopment)
-                  _buildTab(
-                    context: context,
-                    label: '🎨 Showcase',
-                    isSelected: currentRouteName == ShowcaseRoute.name,
-                    onTap: () {
-                      _handleNavigation(context, const ShowcaseRoute());
                     },
                   ),
 

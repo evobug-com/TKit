@@ -32,107 +32,146 @@ class ControlPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Island.comfortable(
+    return Island.standard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Header
-          Text(l10n.autoSwitcherControlsHeader, style: TKitTextStyles.heading3),
-          const VSpace.xxl(),
-
-          // Monitoring control
-          if (isMonitoring)
-            PrimaryButton(
+          // Primary action - prominent
+          if (isMonitoring) ...[
+            // When monitoring is active
+            IslandVariant.standard(
+              child: Row(
+                children: [
+                  Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: TKitColors.success,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  const HSpace.md(),
+                  Expanded(
+                    child: Text(
+                      l10n.autoSwitcherControlsActive,
+                      style: TKitTextStyles.labelLarge.copyWith(
+                        color: TKitColors.success,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const VSpace.md(),
+            AccentButton(
               onPressed: isLoading ? null : onStopMonitoring,
               text: l10n.autoSwitcherControlsStopMonitoring,
+              icon: Icons.stop_circle_outlined,
               isLoading: isLoading,
-            )
-          else
+              width: double.infinity,
+            ),
+          ] else ...[
+            // When monitoring is NOT active - make it clear what to do
+            IslandVariant.standard(
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.play_circle_outlined,
+                    size: 32,
+                    color: TKitColors.textMuted,
+                  ),
+                  const VSpace.md(),
+                  Text(
+                    'Start monitoring to automatically switch categories',
+                    style: TKitTextStyles.bodyMedium.copyWith(
+                      color: TKitColors.textSecondary,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            const VSpace.md(),
             PrimaryButton(
               onPressed: isLoading ? null : onStartMonitoring,
               text: l10n.autoSwitcherControlsStartMonitoring,
+              icon: Icons.play_circle_outlined,
               isLoading: isLoading,
+              width: double.infinity,
             ),
+          ],
 
           const VSpace.lg(),
 
-          // Manual update button with hotkey display
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              AccentButton(
-                onPressed: isLoading ? null : onManualUpdate,
-                text: l10n.autoSwitcherControlsManualUpdate,
-              ),
-              if (manualUpdateHotkey != null && manualUpdateHotkey!.isNotEmpty) ...[
-                const VSpace.sm(),
-                Center(
-                  child: HotkeyDisplay(
-                    hotkeyString: manualUpdateHotkey!,
-                    keySize: 24,
-                    fontSize: 11,
-                  ),
-                ),
-              ],
-            ],
+          // Divider
+          Container(
+            height: 1,
+            color: TKitColors.border,
           ),
 
-          const VSpace.xxl(),
+          const VSpace.lg(),
 
-          // Status info
-          _buildStatusInfo(context),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatusInfo(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Island(
-      padding: const EdgeInsets.all(TKitSpacing.lg),
-      backgroundColor: TKitColors.background,
-      borderColor: TKitColors.border,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l10n.autoSwitcherControlsMonitoringStatus,
-            style: TKitTextStyles.caption.copyWith(
-              color: TKitColors.textSecondary,
-              letterSpacing: 0.5,
-            ),
-          ),
-          const VSpace.sm(),
+          // Quick action with clear purpose
           Row(
             children: [
-              Container(
-                width: 8,
-                height: 8,
-                decoration: BoxDecoration(
-                  color: isMonitoring ? TKitColors.success : TKitColors.textMuted,
-                ),
+              Icon(
+                Icons.bolt_outlined,
+                size: 16,
+                color: TKitColors.textMuted,
               ),
               const HSpace.sm(),
               Text(
-                isMonitoring ? l10n.autoSwitcherControlsActive : l10n.autoSwitcherControlsInactive,
-                style: TKitTextStyles.bodyMedium.copyWith(
-                  color: isMonitoring
-                      ? TKitColors.success
-                      : TKitColors.textSecondary,
-                  fontWeight: FontWeight.w600,
+                'Quick Action',
+                style: TKitTextStyles.caption.copyWith(
+                  color: TKitColors.textMuted,
+                  letterSpacing: 0.5,
                 ),
               ),
             ],
           ),
           const VSpace.md(),
+
+          AccentButton(
+            onPressed: isLoading ? null : onManualUpdate,
+            text: 'Check & Update Now',
+            icon: Icons.refresh,
+            width: double.infinity,
+          ),
+
+          if (manualUpdateHotkey != null && manualUpdateHotkey!.isNotEmpty) ...[
+            const VSpace.sm(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Shortcut: ',
+                  style: TKitTextStyles.caption.copyWith(
+                    color: TKitColors.textMuted,
+                  ),
+                ),
+                const HSpace.xs(),
+                HotkeyDisplay(
+                  hotkeyString: manualUpdateHotkey!,
+                  keySize: 20,
+                  fontSize: 10,
+                ),
+              ],
+            ),
+          ],
+
+          const VSpace.sm(),
+
           Text(
-            isMonitoring
-                ? l10n.autoSwitcherControlsActiveDescription
-                : l10n.autoSwitcherControlsInactiveDescription,
-            style: TKitTextStyles.caption.copyWith(color: TKitColors.textMuted),
+            'Checks active app and updates category immediately',
+            style: TKitTextStyles.caption.copyWith(
+              color: TKitColors.textMuted,
+            ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
     );
   }
+
 }

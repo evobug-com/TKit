@@ -237,53 +237,54 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 _shakeController.forward(from: 0.0);
               }
             },
-            child: Column(
-              children: [
-                // Page Header
-                Island.comfortable(
-                  child: Column(
+            child: Padding(
+              padding: const EdgeInsets.all(TKitSpacing.pagePadding),
+              child: Column(
+                children: [
+                  // Page Header
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       PageHeader(
                         title: l10n.settingsPageTitle,
                         subtitle: l10n.settingsPageDescription,
                       ),
-                      const VSpace.lg(),
+                      const VSpace.sm(),
                       // Tabs
                       _buildTabs(l10n),
                     ],
                   ),
-                ),
 
-                // Tab Content
-                Expanded(
-                  child: Stack(
-                    children: [
-                      TabBarView(
-                        controller: _tabController,
-                        children: [
-                          _buildGeneralTab(settings, l10n),
-                          _buildAutoSwitcherTab(settings, l10n),
-                          _buildMappingsTab(settings, l10n),
-                          _buildKeyboardTab(settings, l10n),
-                          _buildThemeTab(settings, l10n),
-                          _buildTwitchTab(l10n),
-                          _buildAdvancedTab(l10n),
-                        ],
-                      ),
-
-                      // Save/Discard bar
-                      if (_hasChanges)
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: _buildSaveBar(l10n),
+                  // Tab Content
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        TabBarView(
+                          controller: _tabController,
+                          children: [
+                            _buildGeneralTab(settings, l10n),
+                            _buildAutoSwitcherTab(settings, l10n),
+                            _buildMappingsTab(settings, l10n),
+                            _buildKeyboardTab(settings, l10n),
+                            _buildThemeTab(settings, l10n),
+                            _buildTwitchTab(l10n),
+                            _buildAdvancedTab(l10n),
+                          ],
                         ),
-                    ],
+
+                        // Save/Discard bar
+                        if (_hasChanges)
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: _buildSaveBar(l10n),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

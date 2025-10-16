@@ -19,59 +19,67 @@ class StatusDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Island.comfortable(
+    return Island.standard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Header - minimal
-          Text(l10n.autoSwitcherStatusHeader, style: TKitTextStyles.labelSmall.copyWith(
-            letterSpacing: 1.2,
-          )),
-          const VSpace.sm(),
-
-          // Current Process
-          _buildStatusItem(
-            context,
-            label: l10n.autoSwitcherStatusCurrentProcess,
-            value: status?.currentProcess ?? l10n.autoSwitcherStatusNone,
-            valueColor: status?.currentProcess != null
-                ? TKitColors.textPrimary
-                : TKitColors.textMuted,
-          ),
-
-          const VSpace.sm(),
-
-          // Matched Category
-          _buildStatusItem(
-            context,
-            label: l10n.autoSwitcherStatusMatchedCategory,
-            value: status?.matchedCategory ?? l10n.autoSwitcherStatusNone,
-            valueColor: status?.matchedCategory != null
-                ? TKitColors.textPrimary
-                : TKitColors.textMuted,
-          ),
-
-          const VSpace.sm(),
-
-          // Last Update Time
-          _buildStatusItem(
-            context,
-            label: l10n.autoSwitcherStatusLastUpdate,
-            value: status?.lastUpdateTime != null
-                ? _formatTimestamp(status!.lastUpdateTime!)
-                : l10n.autoSwitcherStatusNever,
-            valueColor: TKitColors.textSecondary,
-          ),
-
-          const VSpace.sm(),
-
-          // Update Status
-          _buildUpdateStatus(context),
-
-          const VSpace.sm(),
-
-          // Orchestration State
+          // System State - Most prominent
           _buildOrchestrationState(context),
+
+          const VSpace.lg(),
+
+          // Status grid - 2x2 layout for compact display
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _buildStatusItem(
+                  context,
+                  label: l10n.autoSwitcherStatusCurrentProcess,
+                  value: status?.currentProcess ?? l10n.autoSwitcherStatusNone,
+                  valueColor: status?.currentProcess != null
+                      ? TKitColors.textPrimary
+                      : TKitColors.textMuted,
+                  icon: Icons.play_circle_outline,
+                ),
+              ),
+              const HSpace.lg(),
+              Expanded(
+                child: _buildStatusItem(
+                  context,
+                  label: l10n.autoSwitcherStatusMatchedCategory,
+                  value: status?.matchedCategory ?? l10n.autoSwitcherStatusNone,
+                  valueColor: status?.matchedCategory != null
+                      ? TKitColors.textPrimary
+                      : TKitColors.textMuted,
+                  icon: Icons.category_outlined,
+                ),
+              ),
+            ],
+          ),
+
+          const VSpace.md(),
+
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _buildStatusItem(
+                  context,
+                  label: l10n.autoSwitcherStatusLastUpdate,
+                  value: status?.lastUpdateTime != null
+                      ? _formatTimestamp(status!.lastUpdateTime!)
+                      : l10n.autoSwitcherStatusNever,
+                  valueColor: TKitColors.textSecondary,
+                  icon: Icons.schedule,
+                ),
+              ),
+              const HSpace.lg(),
+              Expanded(
+                child: _buildUpdateStatusCompact(context),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -82,31 +90,48 @@ class StatusDashboard extends StatelessWidget {
     required String label,
     required String value,
     Color? valueColor,
+    IconData? icon,
   }) {
-    return Column(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TKitTextStyles.caption.copyWith(
+        if (icon != null) ...[
+          Icon(
+            icon,
+            size: 16,
             color: TKitColors.textMuted,
-            letterSpacing: 0.8,
           ),
-        ),
-        const SizedBox(height: TKitSpacing.headerGap),
-        Text(
-          value,
-          style: TKitTextStyles.bodySmall.copyWith(
-            color: valueColor ?? TKitColors.textPrimary,
-            fontWeight: FontWeight.w500,
-            fontSize: 12,
+          const HSpace.sm(),
+        ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: TKitTextStyles.caption.copyWith(
+                  color: TKitColors.textMuted,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              const SizedBox(height: TKitSpacing.headerGap),
+              Text(
+                value,
+                style: TKitTextStyles.bodyMedium.copyWith(
+                  color: valueColor ?? TKitColors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
+            ],
           ),
         ),
       ],
     );
   }
 
-  Widget _buildUpdateStatus(BuildContext context) {
+  Widget _buildUpdateStatusCompact(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final bool? lastSuccess = status?.lastUpdateSuccess;
     if (lastSuccess == null) {
@@ -115,6 +140,7 @@ class StatusDashboard extends StatelessWidget {
         label: l10n.autoSwitcherStatusUpdateStatus,
         value: l10n.autoSwitcherStatusNoUpdatesYet,
         valueColor: TKitColors.textMuted,
+        icon: Icons.update,
       );
     }
 
@@ -124,37 +150,55 @@ class StatusDashboard extends StatelessWidget {
     final statusText = lastSuccess ? l10n.autoSwitcherStatusSuccess : l10n.autoSwitcherStatusFailed;
     final statusColor = lastSuccess ? TKitColors.success : TKitColors.error;
 
-    return Column(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          l10n.autoSwitcherStatusUpdateStatus,
-          style: TKitTextStyles.caption.copyWith(
-            color: TKitColors.textSecondary,
-            letterSpacing: 0.5,
-          ),
+        Icon(
+          Icons.update,
+          size: 16,
+          color: TKitColors.textMuted,
         ),
-        const VSpace.xs(),
-        Row(
-          children: [
-            UpdateStatusIndicator(status: indicator),
-            const HSpace.sm(),
-            Text(
-              statusText,
-              style: TKitTextStyles.body.copyWith(
-                color: statusColor,
-                fontWeight: FontWeight.w600,
+        const HSpace.sm(),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.autoSwitcherStatusUpdateStatus,
+                style: TKitTextStyles.caption.copyWith(
+                  color: TKitColors.textMuted,
+                  letterSpacing: 0.5,
+                ),
               ),
-            ),
-          ],
-        ),
-        if (!lastSuccess && status?.errorMessage != null) ...[
-          const VSpace.xs(),
-          Text(
-            status!.errorMessage!,
-            style: TKitTextStyles.caption.copyWith(color: TKitColors.error),
+              const SizedBox(height: TKitSpacing.headerGap),
+              Row(
+                children: [
+                  UpdateStatusIndicator(status: indicator),
+                  const HSpace.xs(),
+                  Expanded(
+                    child: Text(
+                      statusText,
+                      style: TKitTextStyles.bodyMedium.copyWith(
+                        color: statusColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              if (!lastSuccess && status?.errorMessage != null) ...[
+                const VSpace.xs(),
+                Text(
+                  status!.errorMessage!,
+                  style: TKitTextStyles.caption.copyWith(color: TKitColors.error),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ],
           ),
-        ],
+        ),
       ],
     );
   }
@@ -162,30 +206,40 @@ class StatusDashboard extends StatelessWidget {
   Widget _buildOrchestrationState(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return IslandVariant.standard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Text(
-            l10n.autoSwitcherStatusSystemState,
-            style: TKitTextStyles.caption.copyWith(
-              color: TKitColors.textMuted,
-              letterSpacing: 0.8,
+          Container(
+            padding: const EdgeInsets.all(TKitSpacing.sm),
+            decoration: BoxDecoration(
+              color: _getOrchestrationStateColor().withOpacity(0.1),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: UpdateStatusIndicator(
+              status: _getOrchestrationStatusIndicator(),
             ),
           ),
-          const VSpace.sm(),
-          Row(
-            children: [
-              UpdateStatusIndicator(status: _getOrchestrationStatusIndicator()),
-              const HSpace.sm(),
-              Text(
-                _getOrchestrationStateText(context),
-                style: TKitTextStyles.bodySmall.copyWith(
-                  color: _getOrchestrationStateColor(),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12,
+          const HSpace.md(),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Current Activity',
+                  style: TKitTextStyles.caption.copyWith(
+                    color: TKitColors.textMuted,
+                    letterSpacing: 0.5,
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: TKitSpacing.headerGap),
+                Text(
+                  _getOrchestrationStateText(context),
+                  style: TKitTextStyles.labelLarge.copyWith(
+                    color: _getOrchestrationStateColor(),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -208,20 +262,20 @@ class StatusDashboard extends StatelessWidget {
 
   String _getOrchestrationStateText(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (status == null) return l10n.autoSwitcherStatusNotInitialized;
+    if (status == null) return 'Not started';
     switch (status!.state) {
       case OrchestrationState.idle:
-        return l10n.autoSwitcherStatusIdle;
+        return 'Ready';
       case OrchestrationState.detectingProcess:
-        return l10n.autoSwitcherStatusDetectingProcess;
+        return 'Checking active app';
       case OrchestrationState.searchingMapping:
-        return l10n.autoSwitcherStatusSearchingMapping;
+        return 'Finding category';
       case OrchestrationState.updatingCategory:
-        return l10n.autoSwitcherStatusUpdatingCategory;
+        return 'Updating category';
       case OrchestrationState.waitingDebounce:
-        return l10n.autoSwitcherStatusWaitingDebounce;
+        return 'Waiting for confirmation';
       case OrchestrationState.error:
-        return l10n.autoSwitcherStatusError;
+        return 'Error occurred';
     }
   }
 
