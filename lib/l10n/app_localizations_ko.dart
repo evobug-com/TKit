@@ -1709,4 +1709,51 @@ class AppLocalizationsKo extends AppLocalizations {
   String autoSwitcherTimeHoursAgo(int hours) {
     return '$hours시간 전';
   }
+
+  @override
+  String get settingsSentry => '오류 및 성능 추적';
+
+  @override
+  String get settingsSentryDescription =>
+      '익명의 충돌 보고서 및 성능 데이터를 전송하여 TKit 개선에 도움을 주세요';
+
+  @override
+  String get settingsEnableErrorTrackingLabel => '오류 추적 활성화';
+
+  @override
+  String get settingsEnableErrorTrackingSubtitle =>
+      '버그를 더 빠르게 수정하기 위해 충돌 보고서를 전송합니다 (앱 재시작 필요)';
+
+  @override
+  String get settingsEnablePerformanceMonitoringLabel => '성능 모니터링 활성화';
+
+  @override
+  String get settingsEnablePerformanceMonitoringSubtitle =>
+      '속도 저하를 식별하기 위해 앱 성능을 추적합니다 (앱 재시작 필요)';
+
+  @override
+  String get settingsEnableSessionReplayLabel => '세션 재생 활성화';
+
+  @override
+  String get settingsEnableSessionReplaySubtitle =>
+      '복잡한 문제를 진단하기 위해 앱 상호작용을 기록합니다 (앱 재시작 필요)';
+
+  @override
+  String get settingsSentryRestartRequired => '변경 사항을 적용하려면 앱을 재시작해야 합니다';
+
+  @override
+  String get welcomeSentryTitle => '개인정보 보호 및 진단';
+
+  @override
+  String get welcomeSentryDescription =>
+      '익명의 충돌 보고서 및 성능 데이터를 전송하여 TKit 개선에 도움을 주세요. 설정에서 언제든지 변경할 수 있습니다.';
+
+  @override
+  String get welcomeSentryEnableErrorTracking => '오류 보고서 전송';
+
+  @override
+  String get welcomeSentryEnablePerformanceMonitoring => '성능 데이터 전송';
+
+  @override
+  String get welcomeSentryEnableSessionReplay => '세션 재생 활성화 (선택사항)';
 }

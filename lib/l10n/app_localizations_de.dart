@@ -1814,4 +1814,56 @@ class AppLocalizationsDe extends AppLocalizations {
   String autoSwitcherTimeHoursAgo(int hours) {
     return 'vor ${hours}h';
   }
+
+  @override
+  String get settingsSentry => 'Fehler- & Leistungsverfolgung';
+
+  @override
+  String get settingsSentryDescription =>
+      'Helfen Sie mit, TKit zu verbessern, indem Sie anonyme Absturzberichte und Leistungsdaten senden';
+
+  @override
+  String get settingsEnableErrorTrackingLabel => 'Fehlerverfolgung aktivieren';
+
+  @override
+  String get settingsEnableErrorTrackingSubtitle =>
+      'Absturzberichte senden, um uns zu helfen, Fehler schneller zu beheben (erfordert Neustart der App)';
+
+  @override
+  String get settingsEnablePerformanceMonitoringLabel =>
+      'Leistungsüberwachung aktivieren';
+
+  @override
+  String get settingsEnablePerformanceMonitoringSubtitle =>
+      'App-Leistung verfolgen, um Verlangsamungen zu identifizieren (erfordert Neustart der App)';
+
+  @override
+  String get settingsEnableSessionReplayLabel =>
+      'Sitzungsaufzeichnung aktivieren';
+
+  @override
+  String get settingsEnableSessionReplaySubtitle =>
+      'App-Interaktionen aufzeichnen, um komplexe Probleme zu diagnostizieren (erfordert Neustart der App)';
+
+  @override
+  String get settingsSentryRestartRequired =>
+      'Änderungen erfordern einen Neustart der App, um wirksam zu werden';
+
+  @override
+  String get welcomeSentryTitle => 'Datenschutz & Diagnose';
+
+  @override
+  String get welcomeSentryDescription =>
+      'Helfen Sie uns, TKit zu verbessern, indem Sie anonyme Absturzberichte und Leistungsdaten senden. Sie können dies jederzeit in den Einstellungen ändern.';
+
+  @override
+  String get welcomeSentryEnableErrorTracking => 'Fehlerberichte senden';
+
+  @override
+  String get welcomeSentryEnablePerformanceMonitoring =>
+      'Leistungsdaten senden';
+
+  @override
+  String get welcomeSentryEnableSessionReplay =>
+      'Sitzungsaufzeichnung aktivieren (optional)';
 }

@@ -1683,4 +1683,48 @@ class AppLocalizationsZh extends AppLocalizations {
   String autoSwitcherTimeHoursAgo(int hours) {
     return '$hours小时前';
   }
+
+  @override
+  String get settingsSentry => '错误与性能追踪';
+
+  @override
+  String get settingsSentryDescription => '通过发送匿名崩溃报告和性能数据帮助改进 TKit';
+
+  @override
+  String get settingsEnableErrorTrackingLabel => '启用错误追踪';
+
+  @override
+  String get settingsEnableErrorTrackingSubtitle => '发送崩溃报告以帮助我们更快修复错误（需要重启应用）';
+
+  @override
+  String get settingsEnablePerformanceMonitoringLabel => '启用性能监控';
+
+  @override
+  String get settingsEnablePerformanceMonitoringSubtitle =>
+      '追踪应用性能以识别速度下降问题（需要重启应用）';
+
+  @override
+  String get settingsEnableSessionReplayLabel => '启用会话回放';
+
+  @override
+  String get settingsEnableSessionReplaySubtitle => '记录应用交互以帮助诊断复杂问题（需要重启应用）';
+
+  @override
+  String get settingsSentryRestartRequired => '更改需要重启应用才能生效';
+
+  @override
+  String get welcomeSentryTitle => '隐私与诊断';
+
+  @override
+  String get welcomeSentryDescription =>
+      '通过发送匿名崩溃报告和性能数据帮助我们改进 TKit。您可以随时在设置中更改此选项。';
+
+  @override
+  String get welcomeSentryEnableErrorTracking => '发送错误报告';
+
+  @override
+  String get welcomeSentryEnablePerformanceMonitoring => '发送性能数据';
+
+  @override
+  String get welcomeSentryEnableSessionReplay => '启用会话回放（可选）';
 }

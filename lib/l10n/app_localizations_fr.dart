@@ -1817,4 +1817,57 @@ class AppLocalizationsFr extends AppLocalizations {
   String autoSwitcherTimeHoursAgo(int hours) {
     return 'il y a ${hours}h';
   }
+
+  @override
+  String get settingsSentry => 'Suivi des erreurs et des performances';
+
+  @override
+  String get settingsSentryDescription =>
+      'Aidez à améliorer TKit en envoyant des rapports de plantage et des données de performance anonymes';
+
+  @override
+  String get settingsEnableErrorTrackingLabel => 'Activer le suivi des erreurs';
+
+  @override
+  String get settingsEnableErrorTrackingSubtitle =>
+      'Envoyer des rapports de plantage pour nous aider à corriger les bugs plus rapidement (nécessite un redémarrage de l\'application)';
+
+  @override
+  String get settingsEnablePerformanceMonitoringLabel =>
+      'Activer la surveillance des performances';
+
+  @override
+  String get settingsEnablePerformanceMonitoringSubtitle =>
+      'Suivre les performances de l\'application pour identifier les ralentissements (nécessite un redémarrage de l\'application)';
+
+  @override
+  String get settingsEnableSessionReplayLabel =>
+      'Activer la relecture de session';
+
+  @override
+  String get settingsEnableSessionReplaySubtitle =>
+      'Enregistrer les interactions avec l\'application pour aider à diagnostiquer les problèmes complexes (nécessite un redémarrage de l\'application)';
+
+  @override
+  String get settingsSentryRestartRequired =>
+      'Les modifications nécessitent un redémarrage de l\'application pour prendre effet';
+
+  @override
+  String get welcomeSentryTitle => 'Confidentialité et diagnostics';
+
+  @override
+  String get welcomeSentryDescription =>
+      'Aidez-nous à améliorer TKit en envoyant des rapports de plantage et des données de performance anonymes. Vous pouvez modifier cela à tout moment dans les paramètres.';
+
+  @override
+  String get welcomeSentryEnableErrorTracking =>
+      'Envoyer les rapports d\'erreurs';
+
+  @override
+  String get welcomeSentryEnablePerformanceMonitoring =>
+      'Envoyer les données de performance';
+
+  @override
+  String get welcomeSentryEnableSessionReplay =>
+      'Activer la relecture de session (facultatif)';
 }

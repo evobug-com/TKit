@@ -3253,6 +3253,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{hours}h ago'**
   String autoSwitcherTimeHoursAgo(int hours);
+
+  /// Sentry settings section header
+  ///
+  /// In en, this message translates to:
+  /// **'Error & Performance Tracking'**
+  String get settingsSentry;
+
+  /// Sentry settings section description
+  ///
+  /// In en, this message translates to:
+  /// **'Help improve TKit by sending anonymous crash reports and performance data'**
+  String get settingsSentryDescription;
+
+  /// Enable error tracking setting label
+  ///
+  /// In en, this message translates to:
+  /// **'Enable error tracking'**
+  String get settingsEnableErrorTrackingLabel;
+
+  /// Enable error tracking setting subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Send crash reports to help us fix bugs faster (requires app restart)'**
+  String get settingsEnableErrorTrackingSubtitle;
+
+  /// Enable performance monitoring setting label
+  ///
+  /// In en, this message translates to:
+  /// **'Enable performance monitoring'**
+  String get settingsEnablePerformanceMonitoringLabel;
+
+  /// Enable performance monitoring setting subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Track app performance to identify slowdowns (requires app restart)'**
+  String get settingsEnablePerformanceMonitoringSubtitle;
+
+  /// Enable session replay setting label
+  ///
+  /// In en, this message translates to:
+  /// **'Enable session replay'**
+  String get settingsEnableSessionReplayLabel;
+
+  /// Enable session replay setting subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Record app interactions to help diagnose complex issues (requires app restart)'**
+  String get settingsEnableSessionReplaySubtitle;
+
+  /// Notice that Sentry settings changes require app restart
+  ///
+  /// In en, this message translates to:
+  /// **'Changes require app restart to take effect'**
+  String get settingsSentryRestartRequired;
+
+  /// Welcome screen Sentry section title
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy & Diagnostics'**
+  String get welcomeSentryTitle;
+
+  /// Welcome screen Sentry section description
+  ///
+  /// In en, this message translates to:
+  /// **'Help us improve TKit by sending anonymous crash reports and performance data. You can change this anytime in Settings.'**
+  String get welcomeSentryDescription;
+
+  /// Welcome screen enable error tracking label
+  ///
+  /// In en, this message translates to:
+  /// **'Send error reports'**
+  String get welcomeSentryEnableErrorTracking;
+
+  /// Welcome screen enable performance monitoring label
+  ///
+  /// In en, this message translates to:
+  /// **'Send performance data'**
+  String get welcomeSentryEnablePerformanceMonitoring;
+
+  /// Welcome screen enable session replay label
+  ///
+  /// In en, this message translates to:
+  /// **'Enable session replay (optional)'**
+  String get welcomeSentryEnableSessionReplay;
 }
 
 class _AppLocalizationsDelegate

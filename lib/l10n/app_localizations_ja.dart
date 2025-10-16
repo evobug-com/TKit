@@ -1708,4 +1708,51 @@ class AppLocalizationsJa extends AppLocalizations {
   String autoSwitcherTimeHoursAgo(int hours) {
     return '$hours時間前';
   }
+
+  @override
+  String get settingsSentry => 'エラーとパフォーマンスの追跡';
+
+  @override
+  String get settingsSentryDescription =>
+      '匿名のクラッシュレポートとパフォーマンスデータを送信してTKitの改善にご協力ください';
+
+  @override
+  String get settingsEnableErrorTrackingLabel => 'エラー追跡を有効にする';
+
+  @override
+  String get settingsEnableErrorTrackingSubtitle =>
+      'クラッシュレポートを送信してバグ修正を迅速化します（アプリの再起動が必要です）';
+
+  @override
+  String get settingsEnablePerformanceMonitoringLabel => 'パフォーマンス監視を有効にする';
+
+  @override
+  String get settingsEnablePerformanceMonitoringSubtitle =>
+      'アプリのパフォーマンスを追跡して速度低下を特定します（アプリの再起動が必要です）';
+
+  @override
+  String get settingsEnableSessionReplayLabel => 'セッションリプレイを有効にする';
+
+  @override
+  String get settingsEnableSessionReplaySubtitle =>
+      'アプリの操作を記録して複雑な問題の診断に役立てます（アプリの再起動が必要です）';
+
+  @override
+  String get settingsSentryRestartRequired => '変更を有効にするにはアプリの再起動が必要です';
+
+  @override
+  String get welcomeSentryTitle => 'プライバシーと診断情報';
+
+  @override
+  String get welcomeSentryDescription =>
+      '匿名のクラッシュレポートとパフォーマンスデータを送信してTKitの改善にご協力ください。この設定はいつでも設定画面から変更できます。';
+
+  @override
+  String get welcomeSentryEnableErrorTracking => 'エラーレポートを送信';
+
+  @override
+  String get welcomeSentryEnablePerformanceMonitoring => 'パフォーマンスデータを送信';
+
+  @override
+  String get welcomeSentryEnableSessionReplay => 'セッションリプレイを有効にする（オプション）';
 }

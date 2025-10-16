@@ -1796,4 +1796,55 @@ class AppLocalizationsCs extends AppLocalizations {
   String autoSwitcherTimeHoursAgo(int hours) {
     return 'před ${hours}h';
   }
+
+  @override
+  String get settingsSentry => 'Sledování chyb a výkonu';
+
+  @override
+  String get settingsSentryDescription =>
+      'Pomozte vylepšit TKit odesíláním anonymních hlášení o pádech a údajů o výkonu';
+
+  @override
+  String get settingsEnableErrorTrackingLabel => 'Povolit sledování chyb';
+
+  @override
+  String get settingsEnableErrorTrackingSubtitle =>
+      'Odesílejte hlášení o pádech, abychom mohli rychleji opravovat chyby (vyžaduje restart aplikace)';
+
+  @override
+  String get settingsEnablePerformanceMonitoringLabel =>
+      'Povolit sledování výkonu';
+
+  @override
+  String get settingsEnablePerformanceMonitoringSubtitle =>
+      'Sledujte výkon aplikace pro identifikaci zpomalení (vyžaduje restart aplikace)';
+
+  @override
+  String get settingsEnableSessionReplayLabel => 'Povolit záznam relace';
+
+  @override
+  String get settingsEnableSessionReplaySubtitle =>
+      'Zaznamenávejte interakce s aplikací pro pomoc při diagnostice složitých problémů (vyžaduje restart aplikace)';
+
+  @override
+  String get settingsSentryRestartRequired =>
+      'Změny vyžadují restart aplikace, aby se projevily';
+
+  @override
+  String get welcomeSentryTitle => 'Soukromí a diagnostika';
+
+  @override
+  String get welcomeSentryDescription =>
+      'Pomozte nám vylepšit TKit odesíláním anonymních hlášení o pádech a údajů o výkonu. Toto nastavení můžete kdykoli změnit v Nastavení.';
+
+  @override
+  String get welcomeSentryEnableErrorTracking => 'Odesílat hlášení o chybách';
+
+  @override
+  String get welcomeSentryEnablePerformanceMonitoring =>
+      'Odesílat údaje o výkonu';
+
+  @override
+  String get welcomeSentryEnableSessionReplay =>
+      'Povolit záznam relace (volitelné)';
 }

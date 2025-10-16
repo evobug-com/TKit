@@ -1381,6 +1381,62 @@
       }
     }
   },
+  "settingsSentry": "エラーとパフォーマンスの追跡",
+  "@settingsSentry": {
+    "description": "Sentry settings section header"
+  },
+  "settingsSentryDescription": "匿名のクラッシュレポートとパフォーマンスデータを送信してTKitの改善にご協力ください",
+  "@settingsSentryDescription": {
+    "description": "Sentry settings section description"
+  },
+  "settingsEnableErrorTrackingLabel": "エラー追跡を有効にする",
+  "@settingsEnableErrorTrackingLabel": {
+    "description": "Enable error tracking setting label"
+  },
+  "settingsEnableErrorTrackingSubtitle": "クラッシュレポートを送信してバグ修正を迅速化します（アプリの再起動が必要です）",
+  "@settingsEnableErrorTrackingSubtitle": {
+    "description": "Enable error tracking setting subtitle"
+  },
+  "settingsEnablePerformanceMonitoringLabel": "パフォーマンス監視を有効にする",
+  "@settingsEnablePerformanceMonitoringLabel": {
+    "description": "Enable performance monitoring setting label"
+  },
+  "settingsEnablePerformanceMonitoringSubtitle": "アプリのパフォーマンスを追跡して速度低下を特定します（アプリの再起動が必要です）",
+  "@settingsEnablePerformanceMonitoringSubtitle": {
+    "description": "Enable performance monitoring setting subtitle"
+  },
+  "settingsEnableSessionReplayLabel": "セッションリプレイを有効にする",
+  "@settingsEnableSessionReplayLabel": {
+    "description": "Enable session replay setting label"
+  },
+  "settingsEnableSessionReplaySubtitle": "アプリの操作を記録して複雑な問題の診断に役立てます（アプリの再起動が必要です）",
+  "@settingsEnableSessionReplaySubtitle": {
+    "description": "Enable session replay setting subtitle"
+  },
+  "settingsSentryRestartRequired": "変更を有効にするにはアプリの再起動が必要です",
+  "@settingsSentryRestartRequired": {
+    "description": "Notice that Sentry settings changes require app restart"
+  },
+  "welcomeSentryTitle": "プライバシーと診断情報",
+  "@welcomeSentryTitle": {
+    "description": "Welcome screen Sentry section title"
+  },
+  "welcomeSentryDescription": "匿名のクラッシュレポートとパフォーマンスデータを送信してTKitの改善にご協力ください。この設定はいつでも設定画面から変更できます。",
+  "@welcomeSentryDescription": {
+    "description": "Welcome screen Sentry section description"
+  },
+  "welcomeSentryEnableErrorTracking": "エラーレポートを送信",
+  "@welcomeSentryEnableErrorTracking": {
+    "description": "Welcome screen enable error tracking label"
+  },
+  "welcomeSentryEnablePerformanceMonitoring": "パフォーマンスデータを送信",
+  "@welcomeSentryEnablePerformanceMonitoring": {
+    "description": "Welcome screen enable performance monitoring label"
+  },
+  "welcomeSentryEnableSessionReplay": "セッションリプレイを有効にする（オプション）",
+  "@welcomeSentryEnableSessionReplay": {
+    "description": "Welcome screen enable session replay label"
+  },
   "settingsDebounceTimeDescription": "アプリ変更後にカテゴリを切り替えるまでの待機時間（高速な切り替えを防止）",
   "@settingsDebounceTimeDescription": {
     "description": "Debounce time setting description"

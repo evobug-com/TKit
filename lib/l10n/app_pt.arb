@@ -1381,6 +1381,62 @@
       }
     }
   },
+  "settingsSentry": "Rastreamento de Erros e Desempenho",
+  "@settingsSentry": {
+    "description": "Sentry settings section header"
+  },
+  "settingsSentryDescription": "Ajude a melhorar o TKit enviando relatórios de falhas anônimos e dados de desempenho",
+  "@settingsSentryDescription": {
+    "description": "Sentry settings section description"
+  },
+  "settingsEnableErrorTrackingLabel": "Ativar rastreamento de erros",
+  "@settingsEnableErrorTrackingLabel": {
+    "description": "Enable error tracking setting label"
+  },
+  "settingsEnableErrorTrackingSubtitle": "Enviar relatórios de falhas para nos ajudar a corrigir bugs mais rápido (requer reinicialização do app)",
+  "@settingsEnableErrorTrackingSubtitle": {
+    "description": "Enable error tracking setting subtitle"
+  },
+  "settingsEnablePerformanceMonitoringLabel": "Ativar monitoramento de desempenho",
+  "@settingsEnablePerformanceMonitoringLabel": {
+    "description": "Enable performance monitoring setting label"
+  },
+  "settingsEnablePerformanceMonitoringSubtitle": "Rastrear desempenho do app para identificar lentidões (requer reinicialização do app)",
+  "@settingsEnablePerformanceMonitoringSubtitle": {
+    "description": "Enable performance monitoring setting subtitle"
+  },
+  "settingsEnableSessionReplayLabel": "Ativar repetição de sessão",
+  "@settingsEnableSessionReplayLabel": {
+    "description": "Enable session replay setting label"
+  },
+  "settingsEnableSessionReplaySubtitle": "Gravar interações do app para ajudar a diagnosticar problemas complexos (requer reinicialização do app)",
+  "@settingsEnableSessionReplaySubtitle": {
+    "description": "Enable session replay setting subtitle"
+  },
+  "settingsSentryRestartRequired": "As alterações requerem reinicialização do app para entrar em vigor",
+  "@settingsSentryRestartRequired": {
+    "description": "Notice that Sentry settings changes require app restart"
+  },
+  "welcomeSentryTitle": "Privacidade e Diagnósticos",
+  "@welcomeSentryTitle": {
+    "description": "Welcome screen Sentry section title"
+  },
+  "welcomeSentryDescription": "Ajude-nos a melhorar o TKit enviando relatórios de falhas anônimos e dados de desempenho. Você pode alterar isso a qualquer momento nas Configurações.",
+  "@welcomeSentryDescription": {
+    "description": "Welcome screen Sentry section description"
+  },
+  "welcomeSentryEnableErrorTracking": "Enviar relatórios de erros",
+  "@welcomeSentryEnableErrorTracking": {
+    "description": "Welcome screen enable error tracking label"
+  },
+  "welcomeSentryEnablePerformanceMonitoring": "Enviar dados de desempenho",
+  "@welcomeSentryEnablePerformanceMonitoring": {
+    "description": "Welcome screen enable performance monitoring label"
+  },
+  "welcomeSentryEnableSessionReplay": "Ativar repetição de sessão (opcional)",
+  "@welcomeSentryEnableSessionReplay": {
+    "description": "Welcome screen enable session replay label"
+  },
   "settingsDebounceTimeDescription": "Tempo de espera antes de alternar a categoria após mudança de aplicativo (evita alternâncias rápidas)",
   "@settingsDebounceTimeDescription": {
     "description": "Debounce time setting description"

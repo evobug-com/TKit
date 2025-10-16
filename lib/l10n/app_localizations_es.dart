@@ -1806,4 +1806,57 @@ class AppLocalizationsEs extends AppLocalizations {
   String autoSwitcherTimeHoursAgo(int hours) {
     return 'hace ${hours}h';
   }
+
+  @override
+  String get settingsSentry => 'Seguimiento de Errores y Rendimiento';
+
+  @override
+  String get settingsSentryDescription =>
+      'Ayuda a mejorar TKit enviando informes de fallos anónimos y datos de rendimiento';
+
+  @override
+  String get settingsEnableErrorTrackingLabel =>
+      'Habilitar seguimiento de errores';
+
+  @override
+  String get settingsEnableErrorTrackingSubtitle =>
+      'Enviar informes de fallos para ayudarnos a corregir errores más rápido (requiere reiniciar la aplicación)';
+
+  @override
+  String get settingsEnablePerformanceMonitoringLabel =>
+      'Habilitar monitoreo de rendimiento';
+
+  @override
+  String get settingsEnablePerformanceMonitoringSubtitle =>
+      'Rastrear el rendimiento de la aplicación para identificar ralentizaciones (requiere reiniciar la aplicación)';
+
+  @override
+  String get settingsEnableSessionReplayLabel =>
+      'Habilitar reproducción de sesión';
+
+  @override
+  String get settingsEnableSessionReplaySubtitle =>
+      'Grabar interacciones de la aplicación para ayudar a diagnosticar problemas complejos (requiere reiniciar la aplicación)';
+
+  @override
+  String get settingsSentryRestartRequired =>
+      'Los cambios requieren reiniciar la aplicación para surtir efecto';
+
+  @override
+  String get welcomeSentryTitle => 'Privacidad y Diagnósticos';
+
+  @override
+  String get welcomeSentryDescription =>
+      'Ayúdanos a mejorar TKit enviando informes de fallos anónimos y datos de rendimiento. Puedes cambiar esto en cualquier momento en Configuración.';
+
+  @override
+  String get welcomeSentryEnableErrorTracking => 'Enviar informes de errores';
+
+  @override
+  String get welcomeSentryEnablePerformanceMonitoring =>
+      'Enviar datos de rendimiento';
+
+  @override
+  String get welcomeSentryEnableSessionReplay =>
+      'Habilitar reproducción de sesión (opcional)';
 }

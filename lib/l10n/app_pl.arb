@@ -1381,6 +1381,62 @@
       }
     }
   },
+  "settingsSentry": "Śledzenie błędów i wydajności",
+  "@settingsSentry": {
+    "description": "Sentry settings section header"
+  },
+  "settingsSentryDescription": "Pomóż ulepszyć TKit, wysyłając anonimowe raporty o awariach i dane dotyczące wydajności",
+  "@settingsSentryDescription": {
+    "description": "Sentry settings section description"
+  },
+  "settingsEnableErrorTrackingLabel": "Włącz śledzenie błędów",
+  "@settingsEnableErrorTrackingLabel": {
+    "description": "Enable error tracking setting label"
+  },
+  "settingsEnableErrorTrackingSubtitle": "Wysyłaj raporty o awariach, aby pomóc nam szybciej naprawiać błędy (wymaga ponownego uruchomienia aplikacji)",
+  "@settingsEnableErrorTrackingSubtitle": {
+    "description": "Enable error tracking setting subtitle"
+  },
+  "settingsEnablePerformanceMonitoringLabel": "Włącz monitorowanie wydajności",
+  "@settingsEnablePerformanceMonitoringLabel": {
+    "description": "Enable performance monitoring setting label"
+  },
+  "settingsEnablePerformanceMonitoringSubtitle": "Śledź wydajność aplikacji, aby zidentyfikować spowolnienia (wymaga ponownego uruchomienia aplikacji)",
+  "@settingsEnablePerformanceMonitoringSubtitle": {
+    "description": "Enable performance monitoring setting subtitle"
+  },
+  "settingsEnableSessionReplayLabel": "Włącz nagrywanie sesji",
+  "@settingsEnableSessionReplayLabel": {
+    "description": "Enable session replay setting label"
+  },
+  "settingsEnableSessionReplaySubtitle": "Nagrywaj interakcje z aplikacją, aby pomóc diagnozować złożone problemy (wymaga ponownego uruchomienia aplikacji)",
+  "@settingsEnableSessionReplaySubtitle": {
+    "description": "Enable session replay setting subtitle"
+  },
+  "settingsSentryRestartRequired": "Zmiany wymagają ponownego uruchomienia aplikacji, aby zaczęły obowiązywać",
+  "@settingsSentryRestartRequired": {
+    "description": "Notice that Sentry settings changes require app restart"
+  },
+  "welcomeSentryTitle": "Prywatność i diagnostyka",
+  "@welcomeSentryTitle": {
+    "description": "Welcome screen Sentry section title"
+  },
+  "welcomeSentryDescription": "Pomóż nam ulepszyć TKit, wysyłając anonimowe raporty o awariach i dane dotyczące wydajności. Możesz to zmienić w każdej chwili w Ustawieniach.",
+  "@welcomeSentryDescription": {
+    "description": "Welcome screen Sentry section description"
+  },
+  "welcomeSentryEnableErrorTracking": "Wysyłaj raporty o błędach",
+  "@welcomeSentryEnableErrorTracking": {
+    "description": "Welcome screen enable error tracking label"
+  },
+  "welcomeSentryEnablePerformanceMonitoring": "Wysyłaj dane o wydajności",
+  "@welcomeSentryEnablePerformanceMonitoring": {
+    "description": "Welcome screen enable performance monitoring label"
+  },
+  "welcomeSentryEnableSessionReplay": "Włącz nagrywanie sesji (opcjonalne)",
+  "@welcomeSentryEnableSessionReplay": {
+    "description": "Welcome screen enable session replay label"
+  },
   "settingsDebounceTimeDescription": "Czas oczekiwania przed przełączeniem kategorii po zmianie aplikacji (zapobiega szybkiemu przełączaniu)",
   "@settingsDebounceTimeDescription": {
     "description": "Debounce time setting description"

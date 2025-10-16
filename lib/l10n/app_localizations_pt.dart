@@ -1806,4 +1806,55 @@ class AppLocalizationsPt extends AppLocalizations {
   String autoSwitcherTimeHoursAgo(int hours) {
     return '${hours}h atrás';
   }
+
+  @override
+  String get settingsSentry => 'Rastreamento de Erros e Desempenho';
+
+  @override
+  String get settingsSentryDescription =>
+      'Ajude a melhorar o TKit enviando relatórios de falhas anônimos e dados de desempenho';
+
+  @override
+  String get settingsEnableErrorTrackingLabel => 'Ativar rastreamento de erros';
+
+  @override
+  String get settingsEnableErrorTrackingSubtitle =>
+      'Enviar relatórios de falhas para nos ajudar a corrigir bugs mais rápido (requer reinicialização do app)';
+
+  @override
+  String get settingsEnablePerformanceMonitoringLabel =>
+      'Ativar monitoramento de desempenho';
+
+  @override
+  String get settingsEnablePerformanceMonitoringSubtitle =>
+      'Rastrear desempenho do app para identificar lentidões (requer reinicialização do app)';
+
+  @override
+  String get settingsEnableSessionReplayLabel => 'Ativar repetição de sessão';
+
+  @override
+  String get settingsEnableSessionReplaySubtitle =>
+      'Gravar interações do app para ajudar a diagnosticar problemas complexos (requer reinicialização do app)';
+
+  @override
+  String get settingsSentryRestartRequired =>
+      'As alterações requerem reinicialização do app para entrar em vigor';
+
+  @override
+  String get welcomeSentryTitle => 'Privacidade e Diagnósticos';
+
+  @override
+  String get welcomeSentryDescription =>
+      'Ajude-nos a melhorar o TKit enviando relatórios de falhas anônimos e dados de desempenho. Você pode alterar isso a qualquer momento nas Configurações.';
+
+  @override
+  String get welcomeSentryEnableErrorTracking => 'Enviar relatórios de erros';
+
+  @override
+  String get welcomeSentryEnablePerformanceMonitoring =>
+      'Enviar dados de desempenho';
+
+  @override
+  String get welcomeSentryEnableSessionReplay =>
+      'Ativar repetição de sessão (opcional)';
 }

@@ -1521,6 +1521,62 @@
       }
     }
   },
+  "settingsSentry": "Sledování chyb a výkonu",
+  "@settingsSentry": {
+    "description": "Sentry settings section header"
+  },
+  "settingsSentryDescription": "Pomozte vylepšit TKit odesíláním anonymních hlášení o pádech a údajů o výkonu",
+  "@settingsSentryDescription": {
+    "description": "Sentry settings section description"
+  },
+  "settingsEnableErrorTrackingLabel": "Povolit sledování chyb",
+  "@settingsEnableErrorTrackingLabel": {
+    "description": "Enable error tracking setting label"
+  },
+  "settingsEnableErrorTrackingSubtitle": "Odesílejte hlášení o pádech, abychom mohli rychleji opravovat chyby (vyžaduje restart aplikace)",
+  "@settingsEnableErrorTrackingSubtitle": {
+    "description": "Enable error tracking setting subtitle"
+  },
+  "settingsEnablePerformanceMonitoringLabel": "Povolit sledování výkonu",
+  "@settingsEnablePerformanceMonitoringLabel": {
+    "description": "Enable performance monitoring setting label"
+  },
+  "settingsEnablePerformanceMonitoringSubtitle": "Sledujte výkon aplikace pro identifikaci zpomalení (vyžaduje restart aplikace)",
+  "@settingsEnablePerformanceMonitoringSubtitle": {
+    "description": "Enable performance monitoring setting subtitle"
+  },
+  "settingsEnableSessionReplayLabel": "Povolit záznam relace",
+  "@settingsEnableSessionReplayLabel": {
+    "description": "Enable session replay setting label"
+  },
+  "settingsEnableSessionReplaySubtitle": "Zaznamenávejte interakce s aplikací pro pomoc při diagnostice složitých problémů (vyžaduje restart aplikace)",
+  "@settingsEnableSessionReplaySubtitle": {
+    "description": "Enable session replay setting subtitle"
+  },
+  "settingsSentryRestartRequired": "Změny vyžadují restart aplikace, aby se projevily",
+  "@settingsSentryRestartRequired": {
+    "description": "Notice that Sentry settings changes require app restart"
+  },
+  "welcomeSentryTitle": "Soukromí a diagnostika",
+  "@welcomeSentryTitle": {
+    "description": "Welcome screen Sentry section title"
+  },
+  "welcomeSentryDescription": "Pomozte nám vylepšit TKit odesíláním anonymních hlášení o pádech a údajů o výkonu. Toto nastavení můžete kdykoli změnit v Nastavení.",
+  "@welcomeSentryDescription": {
+    "description": "Welcome screen Sentry section description"
+  },
+  "welcomeSentryEnableErrorTracking": "Odesílat hlášení o chybách",
+  "@welcomeSentryEnableErrorTracking": {
+    "description": "Welcome screen enable error tracking label"
+  },
+  "welcomeSentryEnablePerformanceMonitoring": "Odesílat údaje o výkonu",
+  "@welcomeSentryEnablePerformanceMonitoring": {
+    "description": "Welcome screen enable performance monitoring label"
+  },
+  "welcomeSentryEnableSessionReplay": "Povolit záznam relace (volitelné)",
+  "@welcomeSentryEnableSessionReplay": {
+    "description": "Welcome screen enable session replay label"
+  },
   "settingsDebounceTimeDescription": "Čekací doba před přepnutím kategorie po změně aplikace (zabraňuje rychlému přepínání)",
   "@settingsDebounceTimeDescription": {
     "description": "Debounce time setting description"

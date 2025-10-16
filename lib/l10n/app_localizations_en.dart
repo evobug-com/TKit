@@ -1783,4 +1783,55 @@ class AppLocalizationsEn extends AppLocalizations {
   String autoSwitcherTimeHoursAgo(int hours) {
     return '${hours}h ago';
   }
+
+  @override
+  String get settingsSentry => 'Error & Performance Tracking';
+
+  @override
+  String get settingsSentryDescription =>
+      'Help improve TKit by sending anonymous crash reports and performance data';
+
+  @override
+  String get settingsEnableErrorTrackingLabel => 'Enable error tracking';
+
+  @override
+  String get settingsEnableErrorTrackingSubtitle =>
+      'Send crash reports to help us fix bugs faster (requires app restart)';
+
+  @override
+  String get settingsEnablePerformanceMonitoringLabel =>
+      'Enable performance monitoring';
+
+  @override
+  String get settingsEnablePerformanceMonitoringSubtitle =>
+      'Track app performance to identify slowdowns (requires app restart)';
+
+  @override
+  String get settingsEnableSessionReplayLabel => 'Enable session replay';
+
+  @override
+  String get settingsEnableSessionReplaySubtitle =>
+      'Record app interactions to help diagnose complex issues (requires app restart)';
+
+  @override
+  String get settingsSentryRestartRequired =>
+      'Changes require app restart to take effect';
+
+  @override
+  String get welcomeSentryTitle => 'Privacy & Diagnostics';
+
+  @override
+  String get welcomeSentryDescription =>
+      'Help us improve TKit by sending anonymous crash reports and performance data. You can change this anytime in Settings.';
+
+  @override
+  String get welcomeSentryEnableErrorTracking => 'Send error reports';
+
+  @override
+  String get welcomeSentryEnablePerformanceMonitoring =>
+      'Send performance data';
+
+  @override
+  String get welcomeSentryEnableSessionReplay =>
+      'Enable session replay (optional)';
 }
