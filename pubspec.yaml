@@ -7,6 +7,7 @@ environment:
   sdk: ^3.9.2
 
 dependencies:
+  sentry_flutter: ^9.7.0
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -63,6 +64,7 @@ dependencies:
   flutter_riverpod: ^3.0.3
 
 dev_dependencies:
+  sentry_dart_plugin: ^3.1.1
   flutter_test:
     sdk: flutter
 
@@ -131,3 +133,9 @@ msix_config:
 
   # Protocol handlers (for twitch:// URLs in future)
   # protocol_activation: twitch
+
+sentry:
+  upload_debug_symbols: true
+  upload_source_maps: true
+  project: tkit
+  org: evobug

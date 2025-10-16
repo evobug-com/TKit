@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   hotkey_manager_linux
   local_notifier
   screen_retriever_linux
+  sentry_flutter
   sqlite3_flutter_libs
   tray_manager
   url_launcher_linux
@@ -14,6 +15,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
+  jni
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

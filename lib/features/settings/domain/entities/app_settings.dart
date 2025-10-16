@@ -70,6 +70,15 @@ class AppSettings extends Equatable {
   /// Valid range: 1-168 hours (1 week)
   final int mappingsSyncIntervalHours;
 
+  /// Enable error tracking with Sentry
+  final bool enableErrorTracking;
+
+  /// Enable performance monitoring with Sentry
+  final bool enablePerformanceMonitoring;
+
+  /// Enable session replay with Sentry
+  final bool enableSessionReplay;
+
   const AppSettings({
     required this.scanIntervalSeconds,
     required this.debounceSeconds,
@@ -89,6 +98,9 @@ class AppSettings extends Equatable {
     required this.invertFooterHeader,
     required this.autoSyncMappingsOnStart,
     required this.mappingsSyncIntervalHours,
+    required this.enableErrorTracking,
+    required this.enablePerformanceMonitoring,
+    required this.enableSessionReplay,
   });
 
   /// Default settings for first-time users
@@ -113,6 +125,9 @@ class AppSettings extends Equatable {
       invertFooterHeader: false,
       autoSyncMappingsOnStart: true,
       mappingsSyncIntervalHours: 6,
+      enableErrorTracking: true,
+      enablePerformanceMonitoring: true,
+      enableSessionReplay: false, // Disabled by default due to privacy concerns
     );
   }
 
@@ -161,6 +176,9 @@ class AppSettings extends Equatable {
     bool? invertFooterHeader,
     bool? autoSyncMappingsOnStart,
     int? mappingsSyncIntervalHours,
+    bool? enableErrorTracking,
+    bool? enablePerformanceMonitoring,
+    bool? enableSessionReplay,
   }) {
     return AppSettings(
       scanIntervalSeconds: scanIntervalSeconds ?? this.scanIntervalSeconds,
@@ -187,6 +205,9 @@ class AppSettings extends Equatable {
       invertFooterHeader: invertFooterHeader ?? this.invertFooterHeader,
       autoSyncMappingsOnStart: autoSyncMappingsOnStart ?? this.autoSyncMappingsOnStart,
       mappingsSyncIntervalHours: mappingsSyncIntervalHours ?? this.mappingsSyncIntervalHours,
+      enableErrorTracking: enableErrorTracking ?? this.enableErrorTracking,
+      enablePerformanceMonitoring: enablePerformanceMonitoring ?? this.enablePerformanceMonitoring,
+      enableSessionReplay: enableSessionReplay ?? this.enableSessionReplay,
     );
   }
 
@@ -233,5 +254,8 @@ class AppSettings extends Equatable {
     invertFooterHeader,
     autoSyncMappingsOnStart,
     mappingsSyncIntervalHours,
+    enableErrorTracking,
+    enablePerformanceMonitoring,
+    enableSessionReplay,
   ];
 }

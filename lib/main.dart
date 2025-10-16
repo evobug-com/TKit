@@ -15,6 +15,8 @@ import 'package:tkit/presentation/main_window.dart';
 import 'package:tkit/presentation/widgets/update_notification_widget.dart';
 import 'package:tkit/shared/theme/app_theme.dart';
 import 'package:tkit/l10n/app_localizations.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+
 
 void main() async {
   // Ensure Flutter is initialized
@@ -139,13 +141,86 @@ void main() async {
 
     logger.info('Initialization complete, launching app...');
 
-    // Run app with Riverpod
-    runApp(
-      UncontrolledProviderScope(
-        container: container,
-        child: const TKitApp(),
+    // Check if Sentry should be initialized based on settings
+    final shouldInitializeSentry = await getSettingsUseCase().then(
+      (result) => result.fold(
+        (_) => true, // Default to enabled if settings can't be loaded
+        (settings) => settings.enableErrorTracking,
       ),
     );
+
+    // Run app with Riverpod and conditionally initialize Sentry
+    if (shouldInitializeSentry) {
+      logger.info('Initializing Sentry error tracking...');
+      try {
+        // Get Sentry configuration from settings
+        final sentryConfig = await getSettingsUseCase().then(
+          (result) => result.fold(
+            (_) => (
+              errorTracking: true,
+              performanceMonitoring: true,
+              sessionReplay: false,
+            ),
+            (settings) => (
+              errorTracking: settings.enableErrorTracking,
+              performanceMonitoring: settings.enablePerformanceMonitoring,
+              sessionReplay: settings.enableSessionReplay,
+            ),
+          ),
+        );
+
+        await SentryFlutter.init(
+          (options) {
+            options.dsn = 'https://ac1a85025dfec5f5ff4e6852bcd19157@o4508065365950464.ingest.de.sentry.io/4510201319325776';
+
+            // Release and environment tracking
+            options.release = 'tkit@${AppConfig.appVersion}';
+            options.environment = AppConfig.appVersion.contains('dev') ? 'development' : 'production';
+
+            // Sample rates based on settings (10% for production, 0 to disable)
+            options.tracesSampleRate = sentryConfig.performanceMonitoring ? 0.1 : 0.0;
+            options.profilesSampleRate = sentryConfig.performanceMonitoring ? 0.1 : 0.0;
+
+            // Note: Session replay configuration will be added when available in Sentry Flutter SDK
+            // The setting is available in UI but not yet functional until SDK support is added
+            // Track: https://github.com/getsentry/sentry-dart/issues
+
+            // Filter sensitive data before sending
+            options.beforeSend = (event, hint) {
+              // You can filter or modify events here
+              // For example, remove sensitive user data
+              return event;
+            };
+          },
+          appRunner: () => runApp(
+            UncontrolledProviderScope(
+              container: container,
+              child: SentryWidget(
+                child: const TKitApp(),
+              ),
+            ),
+          ),
+        );
+      } catch (e, stackTrace) {
+        // If Sentry fails to initialize, continue without it
+        logger.error('Sentry initialization failed, continuing without error tracking', e, stackTrace);
+        runApp(
+          UncontrolledProviderScope(
+            container: container,
+            child: const TKitApp(),
+          ),
+        );
+      }
+    } else {
+      logger.info('Sentry disabled in settings, skipping initialization');
+      runApp(
+        UncontrolledProviderScope(
+          container: container,
+          child: const TKitApp(),
+        ),
+      );
+    }
+
   } catch (e, stackTrace) {
     final logger = container.read(appLoggerProvider);
     logger.fatal('Failed to initialize app', e, stackTrace);

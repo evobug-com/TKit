@@ -33,6 +33,10 @@ AppSettingsModel _$AppSettingsModelFromJson(Map<String, dynamic> json) =>
       autoSyncMappingsOnStart: json['autoSyncMappingsOnStart'] as bool? ?? true,
       mappingsSyncIntervalHours:
           (json['mappingsSyncIntervalHours'] as num?)?.toInt() ?? 6,
+      enableErrorTracking: json['enableErrorTracking'] as bool? ?? true,
+      enablePerformanceMonitoring:
+          json['enablePerformanceMonitoring'] as bool? ?? true,
+      enableSessionReplay: json['enableSessionReplay'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$AppSettingsModelToJson(AppSettingsModel instance) =>
@@ -56,6 +60,9 @@ Map<String, dynamic> _$AppSettingsModelToJson(AppSettingsModel instance) =>
       'invertFooterHeader': instance.invertFooterHeader,
       'autoSyncMappingsOnStart': instance.autoSyncMappingsOnStart,
       'mappingsSyncIntervalHours': instance.mappingsSyncIntervalHours,
+      'enableErrorTracking': instance.enableErrorTracking,
+      'enablePerformanceMonitoring': instance.enablePerformanceMonitoring,
+      'enableSessionReplay': instance.enableSessionReplay,
     };
 
 const _$FallbackBehaviorEnumMap = {

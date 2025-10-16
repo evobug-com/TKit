@@ -865,7 +865,93 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
             ),
           ),
           const VSpace.lg(),
+          _buildSentrySection(_currentSettings ?? AppSettings.defaults(appVersion: AppConfig.appVersion), l10n),
+          const VSpace.lg(),
           _buildFactoryResetSection(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSentrySection(AppSettings settings, AppLocalizations l10n) {
+    return Island.standard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.settingsSentry,
+            style: TKitTextStyles.labelLarge,
+          ),
+          const VSpace.xs(),
+          Text(
+            l10n.settingsSentryDescription,
+            style: TKitTextStyles.caption.copyWith(
+              color: TKitColors.textSecondary,
+            ),
+          ),
+          const VSpace.md(),
+          SettingsCheckbox(
+            label: l10n.settingsEnableErrorTrackingLabel,
+            subtitle: l10n.settingsEnableErrorTrackingSubtitle,
+            value: settings.enableErrorTracking,
+            onChanged: (value) {
+              _updateSettings(
+                settings.copyWith(enableErrorTracking: value ?? true),
+              );
+            },
+          ),
+          const VSpace.sm(),
+          SettingsCheckbox(
+            label: l10n.settingsEnablePerformanceMonitoringLabel,
+            subtitle: l10n.settingsEnablePerformanceMonitoringSubtitle,
+            value: settings.enablePerformanceMonitoring,
+            onChanged: (value) {
+              _updateSettings(
+                settings.copyWith(enablePerformanceMonitoring: value ?? true),
+              );
+            },
+          ),
+          const VSpace.sm(),
+          SettingsCheckbox(
+            label: l10n.settingsEnableSessionReplayLabel,
+            subtitle: l10n.settingsEnableSessionReplaySubtitle,
+            value: settings.enableSessionReplay,
+            onChanged: (value) {
+              _updateSettings(
+                settings.copyWith(enableSessionReplay: value ?? false),
+              );
+            },
+          ),
+          const VSpace.md(),
+          Container(
+            padding: const EdgeInsets.all(TKitSpacing.md),
+            decoration: BoxDecoration(
+              color: TKitColors.warning.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: TKitColors.warning.withValues(alpha: 0.3),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.info_outline,
+                  size: 16,
+                  color: TKitColors.warning,
+                ),
+                const HSpace.sm(),
+                Expanded(
+                  child: Text(
+                    l10n.settingsSentryRestartRequired,
+                    style: TKitTextStyles.caption.copyWith(
+                      color: TKitColors.textPrimary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

@@ -455,6 +455,56 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
             ),
             const VSpace.xl(),
 
+            // Privacy & Diagnostics section
+            Text(
+              l10n.welcomeSentryTitle,
+              style: TKitTextStyles.labelLarge,
+            ),
+            const VSpace.xs(),
+            Text(
+              l10n.welcomeSentryDescription,
+              style: TKitTextStyles.caption.copyWith(
+                color: TKitColors.textSecondary,
+              ),
+            ),
+            const VSpace.md(),
+
+            SettingsCheckbox(
+              label: l10n.settingsEnableErrorTrackingLabel,
+              subtitle: l10n.settingsEnableErrorTrackingSubtitle,
+              value: settings.enableErrorTracking,
+              onChanged: (value) {
+                ref.read(settingsProvider.notifier).updateSettings(
+                  settings.copyWith(enableErrorTracking: value ?? true),
+                );
+              },
+            ),
+            const VSpace.sm(),
+
+            SettingsCheckbox(
+              label: l10n.settingsEnablePerformanceMonitoringLabel,
+              subtitle: l10n.settingsEnablePerformanceMonitoringSubtitle,
+              value: settings.enablePerformanceMonitoring,
+              onChanged: (value) {
+                ref.read(settingsProvider.notifier).updateSettings(
+                  settings.copyWith(enablePerformanceMonitoring: value ?? true),
+                );
+              },
+            ),
+            const VSpace.sm(),
+
+            SettingsCheckbox(
+              label: l10n.settingsEnableSessionReplayLabel,
+              subtitle: l10n.settingsEnableSessionReplaySubtitle,
+              value: settings.enableSessionReplay,
+              onChanged: (value) {
+                ref.read(settingsProvider.notifier).updateSettings(
+                  settings.copyWith(enableSessionReplay: value ?? false),
+                );
+              },
+            ),
+            const VSpace.xl(),
+
             Text(
               l10n.welcomeBehaviorOptionalInfo,
               style: TKitTextStyles.caption,

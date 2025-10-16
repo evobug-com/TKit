@@ -7,13 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
+### TKit
+
+#### Added
+- Sentry error tracking and performance monitoring
+
+#### Changed
 - Redesigned autoupdate screen
 - Redesigned autoswitch screen
 - Improved design on Mappings screen
 - Removed headings from all screens
+- Markdown styles improvements in changelog
 
-### Fixed
+#### Fixed
 - Fixed autoupdate (it was running in subprocess and on app exit it closed the updater too)
 - Missing translations
 - Previously ignored processes were not working with new list management system

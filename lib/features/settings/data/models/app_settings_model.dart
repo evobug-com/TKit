@@ -25,6 +25,21 @@ class AppSettingsModel extends AppSettings {
   // ignore: overridden_fields
   final int mappingsSyncIntervalHours;
 
+  @JsonKey(defaultValue: true)
+  @override
+  // ignore: overridden_fields
+  final bool enableErrorTracking;
+
+  @JsonKey(defaultValue: true)
+  @override
+  // ignore: overridden_fields
+  final bool enablePerformanceMonitoring;
+
+  @JsonKey(defaultValue: false)
+  @override
+  // ignore: overridden_fields
+  final bool enableSessionReplay;
+
   const AppSettingsModel({
     required super.scanIntervalSeconds,
     required super.debounceSeconds,
@@ -44,10 +59,16 @@ class AppSettingsModel extends AppSettings {
     required this.invertFooterHeader,
     required this.autoSyncMappingsOnStart,
     required this.mappingsSyncIntervalHours,
+    required this.enableErrorTracking,
+    required this.enablePerformanceMonitoring,
+    required this.enableSessionReplay,
   }) : super(
     invertFooterHeader: invertFooterHeader,
     autoSyncMappingsOnStart: autoSyncMappingsOnStart,
     mappingsSyncIntervalHours: mappingsSyncIntervalHours,
+    enableErrorTracking: enableErrorTracking,
+    enablePerformanceMonitoring: enablePerformanceMonitoring,
+    enableSessionReplay: enableSessionReplay,
   );
 
   /// Create from domain entity
@@ -71,6 +92,9 @@ class AppSettingsModel extends AppSettings {
       invertFooterHeader: settings.invertFooterHeader,
       autoSyncMappingsOnStart: settings.autoSyncMappingsOnStart,
       mappingsSyncIntervalHours: settings.mappingsSyncIntervalHours,
+      enableErrorTracking: settings.enableErrorTracking,
+      enablePerformanceMonitoring: settings.enablePerformanceMonitoring,
+      enableSessionReplay: settings.enableSessionReplay,
     );
   }
 
@@ -102,6 +126,9 @@ class AppSettingsModel extends AppSettings {
       invertFooterHeader: invertFooterHeader,
       autoSyncMappingsOnStart: autoSyncMappingsOnStart,
       mappingsSyncIntervalHours: mappingsSyncIntervalHours,
+      enableErrorTracking: enableErrorTracking,
+      enablePerformanceMonitoring: enablePerformanceMonitoring,
+      enableSessionReplay: enableSessionReplay,
     );
   }
 

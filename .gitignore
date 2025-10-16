@@ -57,3 +57,7 @@ app.*.map.json
 *.update.exe
 *.update.msi
 **/temp_update/
+
+# Sentry
+sentry.properties
+.sentry-native/
