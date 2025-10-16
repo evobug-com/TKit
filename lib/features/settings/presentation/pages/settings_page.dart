@@ -5,7 +5,6 @@ import 'package:window_manager/window_manager.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/theme/spacing.dart';
-import 'package:tkit/shared/widgets/layout/page_header.dart';
 import 'package:tkit/shared/widgets/layout/spacer.dart';
 import 'package:tkit/shared/widgets/layout/island.dart';
 import 'package:tkit/shared/widgets/feedback/toast.dart';
@@ -241,19 +240,8 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
               padding: const EdgeInsets.all(TKitSpacing.pagePadding),
               child: Column(
                 children: [
-                  // Page Header
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      PageHeader(
-                        title: l10n.settingsPageTitle,
-                        subtitle: l10n.settingsPageDescription,
-                      ),
-                      const VSpace.sm(),
-                      // Tabs
-                      _buildTabs(l10n),
-                    ],
-                  ),
+                  // Tabs
+                  _buildTabs(l10n),
 
                   // Tab Content
                   Expanded(
@@ -322,7 +310,10 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSection(l10n.settingsApplication, [
+          Island.standard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             // Language selection
             Consumer(
               builder: (context, ref, child) {
@@ -466,7 +457,9 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 }
               },
             ),
-          ]),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -478,7 +471,10 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSection(l10n.settingsMonitoring, [
+          Island.standard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             SettingsSlider(
               label: l10n.settingsScanIntervalLabel,
               description: l10n.settingsScanIntervalDescription,
@@ -522,9 +518,14 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 );
               },
             ),
-          ]),
+              ],
+            ),
+          ),
           const VSpace.lg(),
-          _buildSection(l10n.settingsFallbackBehavior, [
+          Island.standard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             SettingsDropdown<FallbackBehavior>(
               label: l10n.settingsFallbackBehaviorLabel,
               description: l10n.settingsFallbackBehaviorDescription,
@@ -559,7 +560,9 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 ),
               ),
             ],
-          ]),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -571,7 +574,10 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSection('AUTOMATIC SYNCHRONIZATION', [
+          Island.standard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             SettingsCheckbox(
               label: 'Auto-sync mappings on app start',
               subtitle: 'Automatically sync mapping lists when the application starts',
@@ -597,7 +603,9 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 );
               },
             ),
-          ]),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -720,7 +728,10 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSection(l10n.settingsKeyboardShortcuts, [
+          Island.standard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             HotkeyInput(
               key: ValueKey('hotkey_${settings.manualUpdateHotkey}_$_resetKey'),
               label: l10n.settingsManualUpdateHotkeyLabel,
@@ -730,7 +741,9 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 _updateSettings(settings.copyWith(manualUpdateHotkey: hotkey));
               },
             ),
-          ]),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -742,7 +755,10 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSection('WINDOW APPEARANCE', [
+          Island.standard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             SettingsCheckbox(
               label: 'Use Frameless Window',
               subtitle: 'Remove the Windows title bar for a modern, borderless look with rounded corners',
@@ -770,7 +786,9 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 );
               },
             ),
-          ]),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -792,7 +810,10 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSection(l10n.settingsUpdates, [
+          Island.standard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             CustomDropdown<UpdateChannel>(
               label: l10n.settingsUpdateChannelLabel,
               description: l10n.settingsUpdateChannelDescription,
@@ -835,7 +856,9 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 }
               },
             ),
-          ]),
+              ],
+            ),
+          ),
           const VSpace.lg(),
           _buildFactoryResetSection(context),
         ],
@@ -890,28 +913,6 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
     );
   }
 
-  Widget _buildSection(String title, List<Widget> children) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title.toUpperCase(),
-          style: TKitTextStyles.labelSmall.copyWith(
-            letterSpacing: 1.0,
-            color: TKitColors.textSecondary,
-          ),
-        ),
-        const VSpace.md(),
-        Island.standard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: children,
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildTwitchAuthSection(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Consumer(
@@ -920,18 +921,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
         final isAuthenticated = authState is Authenticated;
         final isLoading = authState is AuthLoading;
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              l10n.settingsTwitchConnection.toUpperCase(),
-              style: TKitTextStyles.labelSmall.copyWith(
-                letterSpacing: 1.0,
-                color: TKitColors.textSecondary,
-              ),
-            ),
-            const VSpace.md(),
-            Island.standard(
+        return Island.standard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -1087,27 +1077,14 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                   ],
                 ],
               ),
-            ),
-          ],
-        );
+            );
       },
     );
   }
 
   Widget _buildFactoryResetSection(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'DANGER ZONE',
-          style: TKitTextStyles.labelSmall.copyWith(
-            letterSpacing: 1.0,
-            color: TKitColors.error,
-          ),
-        ),
-        const VSpace.md(),
-        Container(
+    return Container(
           decoration: BoxDecoration(
             color: TKitColors.surface,
             border: Border.all(color: TKitColors.error, width: 1),
@@ -1150,9 +1127,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
               ),
             ],
           ),
-        ),
-      ],
-    );
+        );
   }
 
   void _showFactoryResetDialog(BuildContext context) {
