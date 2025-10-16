@@ -334,7 +334,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
     final urlController = TextEditingController();
     final descriptionController = TextEditingController();
 
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (dialogContext) => AlertDialog(
         backgroundColor: TKitColors.surface,

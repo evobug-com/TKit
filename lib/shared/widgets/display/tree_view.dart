@@ -6,7 +6,7 @@ import 'package:tkit/shared/theme/text_styles.dart';
 /// TreeView - Hierarchical data display with expansion/collapse
 class TreeView<T> extends StatelessWidget {
   final List<TreeNodeData<T>> nodes;
-  final Function(T)? onNodeTap;
+  final void Function(T)? onNodeTap;
   final double indentSize;
 
   const TreeView({
@@ -53,7 +53,7 @@ class TreeNodeData<T> {
 /// TreeNode - Individual tree node with expansion/collapse
 class TreeNode<T> extends StatefulWidget {
   final TreeNodeData<T> data;
-  final Function(T)? onTap;
+  final void Function(T)? onTap;
   final int depth;
   final double indentSize;
 

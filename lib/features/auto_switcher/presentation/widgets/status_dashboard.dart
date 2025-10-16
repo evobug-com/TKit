@@ -153,7 +153,7 @@ class StatusDashboard extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
+        const Icon(
           Icons.update,
           size: 16,
           color: TKitColors.textMuted,
@@ -210,7 +210,7 @@ class StatusDashboard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(TKitSpacing.sm),
             decoration: BoxDecoration(
-              color: _getOrchestrationStateColor().withOpacity(0.1),
+              color: _getOrchestrationStateColor().withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(4),
             ),
             child: UpdateStatusIndicator(
@@ -246,7 +246,9 @@ class StatusDashboard extends StatelessWidget {
   }
 
   UpdateStatusType _getOrchestrationStatusIndicator() {
-    if (status == null) return UpdateStatusType.idle;
+    if (status == null) {
+      return UpdateStatusType.idle;
+    }
     switch (status!.state) {
       case OrchestrationState.idle:
         return UpdateStatusType.idle;
@@ -260,7 +262,9 @@ class StatusDashboard extends StatelessWidget {
   }
 
   String _getOrchestrationStateText(BuildContext context) {
-    if (status == null) return 'Not started';
+    if (status == null) {
+      return 'Not started';
+    }
     switch (status!.state) {
       case OrchestrationState.idle:
         return 'Ready';
@@ -278,7 +282,9 @@ class StatusDashboard extends StatelessWidget {
   }
 
   Color _getOrchestrationStateColor() {
-    if (status == null) return TKitColors.textMuted;
+    if (status == null) {
+      return TKitColors.textMuted;
+    }
     switch (status!.state) {
       case OrchestrationState.idle:
         return TKitColors.textMuted;

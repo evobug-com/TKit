@@ -42,10 +42,11 @@ class ImportMappingsUseCase {
 
       for (final item in jsonData) {
         try {
+          final itemMap = item as Map<String, dynamic>;
           // Extract fields
-          final processName = item['processName'] as String?;
-          final twitchCategoryId = item['twitchCategoryId'] as String?;
-          final twitchCategoryName = item['twitchCategoryName'] as String?;
+          final processName = itemMap['processName'] as String?;
+          final twitchCategoryId = itemMap['twitchCategoryId'] as String?;
+          final twitchCategoryName = itemMap['twitchCategoryName'] as String?;
 
           if (processName == null ||
               twitchCategoryId == null ||
@@ -57,7 +58,7 @@ class ImportMappingsUseCase {
           if (skipExisting) {
             final existingResult = await repository.findMapping(
               processName,
-              item['executablePath'] as String?,
+              itemMap['executablePath'] as String?,
             );
 
             await existingResult.fold(
@@ -75,22 +76,22 @@ class ImportMappingsUseCase {
           // Create mapping
           final mapping = CategoryMapping(
             processName: processName,
-            executablePath: item['executablePath'] as String?,
+            executablePath: itemMap['executablePath'] as String?,
             twitchCategoryId: twitchCategoryId,
             twitchCategoryName: twitchCategoryName,
-            createdAt: item['createdAt'] != null
-                ? DateTime.parse(item['createdAt'] as String)
+            createdAt: itemMap['createdAt'] != null
+                ? DateTime.parse(itemMap['createdAt'] as String)
                 : now,
-            lastUsedAt: item['lastUsedAt'] != null
-                ? DateTime.parse(item['lastUsedAt'] as String)
+            lastUsedAt: itemMap['lastUsedAt'] != null
+                ? DateTime.parse(itemMap['lastUsedAt'] as String)
                 : null,
-            lastApiFetch: item['lastApiFetch'] != null
-                ? DateTime.parse(item['lastApiFetch'] as String)
+            lastApiFetch: itemMap['lastApiFetch'] != null
+                ? DateTime.parse(itemMap['lastApiFetch'] as String)
                 : now,
-            cacheExpiresAt: item['cacheExpiresAt'] != null
-                ? DateTime.parse(item['cacheExpiresAt'] as String)
+            cacheExpiresAt: itemMap['cacheExpiresAt'] != null
+                ? DateTime.parse(itemMap['cacheExpiresAt'] as String)
                 : now.add(const Duration(hours: 24)),
-            manualOverride: item['manualOverride'] as bool? ?? false,
+            manualOverride: itemMap['manualOverride'] as bool? ?? false,
           );
 
           // Save mapping

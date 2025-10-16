@@ -107,9 +107,9 @@ class MappingListRepositoryImpl implements IMappingListRepository {
   }
 
   @override
-  Future<Either<Failure, void>> toggleListEnabled(String id, bool isEnabled) async {
+  Future<Either<Failure, void>> toggleListEnabled(String id, {required bool isEnabled}) async {
     try {
-      final success = await _localDataSource.toggleListEnabled(id, isEnabled);
+      final success = await _localDataSource.toggleListEnabled(id, isEnabled: isEnabled);
       if (!success) {
         return const Left(CacheFailure(message: 'Failed to toggle list: not found'));
       }

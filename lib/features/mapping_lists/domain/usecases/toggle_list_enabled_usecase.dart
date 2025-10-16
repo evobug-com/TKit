@@ -8,7 +8,7 @@ class ToggleListEnabledUseCase {
 
   ToggleListEnabledUseCase(this.repository);
 
-  Future<Either<Failure, void>> call(String listId, bool isEnabled) async {
-    return await repository.toggleListEnabled(listId, isEnabled);
+  Future<Either<Failure, void>> call(String listId, {required bool isEnabled}) async {
+    return await repository.toggleListEnabled(listId, isEnabled: isEnabled);
   }
 }

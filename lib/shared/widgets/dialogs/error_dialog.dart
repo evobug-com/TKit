@@ -109,7 +109,7 @@ class ErrorDialog extends StatelessWidget {
     String? buttonText,
     VoidCallback? onDismiss,
   }) async {
-    await showDialog(
+    await showDialog<void>(
       context: context,
       builder: (context) => ErrorDialog(
         title: title,

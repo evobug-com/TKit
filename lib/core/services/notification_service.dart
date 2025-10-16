@@ -18,7 +18,9 @@ class NotificationService {
 
   /// Initialize the notification service
   Future<void> initialize() async {
-    if (_isInitialized) return;
+    if (_isInitialized) {
+      return;
+    }
 
     try {
       await localNotifier.setup(
@@ -103,7 +105,9 @@ class NotificationService {
     required String processName,
     required String categoryName,
   }) async {
-    if (!_isInitialized) return;
+    if (!_isInitialized) {
+      return;
+    }
 
     try {
       final notification = LocalNotification(
@@ -123,7 +127,9 @@ class NotificationService {
     required String title,
     required String message,
   }) async {
-    if (!_isInitialized) return;
+    if (!_isInitialized) {
+      return;
+    }
 
     try {
       final notification = LocalNotification(title: title, body: message);

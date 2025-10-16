@@ -70,7 +70,9 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
   }
 
   Future<void> _poll() async {
-    if (!_isPolling || !mounted) return;
+    if (!_isPolling || !mounted) {
+      return;
+    }
 
     try {
       // Use Riverpod ref to access the auth notifier

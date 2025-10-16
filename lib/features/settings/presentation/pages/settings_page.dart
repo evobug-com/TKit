@@ -115,7 +115,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
       _hasChanges = hasChanges;
     });
     // Update the unsaved changes notifier
-    ref.read(unsavedChangesProvider.notifier).setHasChanges(hasChanges);
+    ref.read(unsavedChangesProvider.notifier).setHasChanges(value: hasChanges);
   }
 
   void _saveSettings() {
@@ -144,7 +144,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
       }
     });
     // Clear unsaved changes flag
-    ref.read(unsavedChangesProvider.notifier).setHasChanges(false);
+    ref.read(unsavedChangesProvider.notifier).setHasChanges(value: false);
     // Load settings after the current frame to avoid setState during build
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(settingsProvider.notifier).loadSettings();
@@ -165,7 +165,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
           _isInitialized = false;
         });
         // Clear unsaved changes flag
-        ref.read(unsavedChangesProvider.notifier).setHasChanges(false);
+        ref.read(unsavedChangesProvider.notifier).setHasChanges(value: false);
       } else if (next is SettingsError) {
         Toast.error(context, next.message);
       }
@@ -842,7 +842,9 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                     updatedSettings,
                   );
 
-                  if (!mounted) return;
+                  if (!mounted) {
+                    return;
+                  }
 
                   final updateService = ref.read(githubUpdateServiceProvider);
                   await updateService.checkForUpdates(
@@ -850,7 +852,9 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                     channel: value,
                   );
 
-                  if (!mounted) return;
+                  if (!mounted) {
+                    return;
+                  }
 
                   Toast.success(context, successMessage);
                 }
@@ -1055,7 +1059,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
 
                               if (deviceCodeResponse != null &&
                                   context.mounted) {
-                                showDialog(
+                                await showDialog<void>(
                                   context: context,
                                   barrierDismissible: false,
                                   builder: (dialogContext) =>
@@ -1132,7 +1136,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
 
   void _showFactoryResetDialog(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: Row(
@@ -1165,7 +1169,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
 
     // Show loading indicator
     if (context.mounted) {
-      showDialog(
+      await showDialog<void>(
         context: context,
         barrierDismissible: false,
         builder: (context) => const Center(child: CircularProgressIndicator()),

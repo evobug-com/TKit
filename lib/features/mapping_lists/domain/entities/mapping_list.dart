@@ -38,8 +38,12 @@ class MappingList extends Equatable {
 
   /// Returns true if sync is needed (6 hours passed since last sync)
   bool get needsSync {
-    if (!shouldSync) return false;
-    if (lastSyncedAt == null) return true;
+    if (!shouldSync) {
+      return false;
+    }
+    if (lastSyncedAt == null) {
+      return true;
+    }
 
     final now = DateTime.now();
     final hoursSinceSync = now.difference(lastSyncedAt!).inHours;

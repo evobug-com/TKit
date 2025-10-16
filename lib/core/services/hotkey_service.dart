@@ -16,7 +16,7 @@ class HotkeyService {
   final Ref _ref;
   final AppLogger _logger;
 
-  StreamSubscription? _settingsSubscription;
+  StreamSubscription<dynamic>? _settingsSubscription;
   HotKey? _currentManualUpdateHotkey;
 
   HotkeyService(
@@ -64,7 +64,7 @@ class HotkeyService {
             _unregisterManualUpdateHotkey();
           }
         },
-        onError: (error) {
+        onError: (Object error) {
           _logger.error('Failed to watch settings for hotkeys', error);
         },
       );
@@ -134,14 +134,17 @@ class HotkeyService {
   HotKey? _parseHotKeyString(String hotkeyString) {
     try {
       final parts = hotkeyString.toLowerCase().split('+');
-      if (parts.isEmpty) return null;
+      if (parts.isEmpty) {
+        return null;
+      }
 
       PhysicalKeyboardKey? physicalKey;
       final modifiers = <HotKeyModifier>[];
 
       for (final part in parts) {
         final trimmed = part.trim();
-        switch (trimmed) {
+        switch (trimmed)
+        {
           case 'ctrl':
           case 'control':
             modifiers.add(HotKeyModifier.control);
@@ -159,7 +162,9 @@ class HotkeyService {
         }
       }
 
-      if (physicalKey == null) return null;
+      if (physicalKey == null) {
+        return null;
+      }
 
       return HotKey(
         key: physicalKey,

@@ -64,20 +64,20 @@ class AppRouter extends RootStackRouter {
         // Welcome screen (for first-time setup)
         AutoRoute(page: WelcomeRoute.page),
         // Auto Switcher (initial route)
-        CustomRoute(
+        CustomRoute<void>(
           page: AutoSwitcherRoute.page,
           initial: true,
           transitionsBuilder: _buildDirectionalSlideTransition,
           duration: const Duration(milliseconds: 250),
         ),
         // Category Mapping Editor
-        CustomRoute(
+        CustomRoute<void>(
           page: CategoryMappingEditorRoute.page,
           transitionsBuilder: _buildDirectionalSlideTransition,
           duration: const Duration(milliseconds: 250),
         ),
         // Settings
-        CustomRoute(
+        CustomRoute<void>(
           page: SettingsRoute.page,
           transitionsBuilder: _buildDirectionalSlideTransition,
           duration: const Duration(milliseconds: 250),

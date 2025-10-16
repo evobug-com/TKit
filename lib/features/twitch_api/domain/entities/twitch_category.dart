@@ -23,7 +23,9 @@ class TwitchCategory extends Equatable {
 
   /// Get formatted box art URL with specific dimensions
   String? getBoxArtUrl({int width = 285, int height = 380}) {
-    if (boxArtUrl == null) return null;
+    if (boxArtUrl == null) {
+      return null;
+    }
 
     // Handle both template format and hardcoded dimensions
     final String url = boxArtUrl!;

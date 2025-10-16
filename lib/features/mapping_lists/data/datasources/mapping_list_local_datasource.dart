@@ -39,7 +39,9 @@ class MappingListLocalDataSource {
   /// Get mapping list by ID
   Future<MappingListModel?> getListById(String id) async {
     final entity = await _database.getMappingListById(id);
-    if (entity == null) return null;
+    if (entity == null) {
+      return null;
+    }
 
     final count = await _database.getMappingCountForList(id);
     return MappingListModel.fromDbEntity(entity, mappingCount: count);
@@ -61,7 +63,7 @@ class MappingListLocalDataSource {
   }
 
   /// Toggle list enabled state
-  Future<bool> toggleListEnabled(String id, bool isEnabled) async {
+  Future<bool> toggleListEnabled(String id, {required bool isEnabled}) async {
     return await _database.updateMappingList(
       id,
       MappingListsCompanion(isEnabled: Value(isEnabled)),

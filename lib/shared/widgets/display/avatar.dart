@@ -86,7 +86,9 @@ class Avatar extends StatelessWidget {
   }) : size = AvatarSize.xlarge;
 
   String _getInitials() {
-    if (name == null || name!.isEmpty) return '?';
+    if (name == null || name!.isEmpty) {
+      return '?';
+    }
 
     final parts = name!.trim().split(' ');
     if (parts.length >= 2) {

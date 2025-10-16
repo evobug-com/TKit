@@ -91,7 +91,9 @@ class MemoryCache {
 
   /// Evict least recently used entry
   void _evictLeastRecentlyUsed() {
-    if (_accessTimes.isEmpty) return;
+    if (_accessTimes.isEmpty) {
+      return;
+    }
 
     // Find entry with oldest access time
     String? oldestKey;
@@ -116,7 +118,9 @@ class MemoryCache {
   /// Get cache hit rate (0.0 to 1.0)
   double get hitRate {
     final total = _hitCount + _missCount;
-    if (total == 0) return 0.0;
+    if (total == 0) {
+      return 0.0;
+    }
     return _hitCount / total;
   }
 

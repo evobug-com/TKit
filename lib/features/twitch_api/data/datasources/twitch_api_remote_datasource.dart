@@ -82,11 +82,11 @@ class TwitchApiRemoteDataSource {
 
             // Wait and retry if retry time is reasonable
             if (retryAfter > 0 && retryAfter <= NetworkConfig.maxRateLimitWaitSeconds) {
-              await Future.delayed(Duration(seconds: retryAfter));
+              await Future<void>.delayed(Duration(seconds: retryAfter));
 
               // Retry the request
               try {
-                final response = await _dio.fetch(error.requestOptions);
+                final response = await _dio.fetch<dynamic>(error.requestOptions);
                 return handler.resolve(response);
               } catch (e, stackTrace) {
                 _logger.error('Retry after rate limit failed', e, stackTrace);
@@ -117,7 +117,7 @@ class TwitchApiRemoteDataSource {
 
                   // Retry the request
                   try {
-                    final response = await _dio.fetch(error.requestOptions);
+                    final response = await _dio.fetch<dynamic>(error.requestOptions);
                     return handler.resolve(response);
                   } catch (e, stackTrace) {
                     _logger.error('Retry after token refresh failed', e, stackTrace);
@@ -150,8 +150,10 @@ class TwitchApiRemoteDataSource {
   }
 
   /// Extract retry-after duration from rate limit response
-  int _getRetryAfter(Response? response) {
-    if (response == null) return 0;
+  int _getRetryAfter(Response<dynamic>? response) {
+    if (response == null) {
+      return 0;
+    }
 
     // Try Ratelimit-Reset header (Unix timestamp)
     final resetHeader = response.headers.value('Ratelimit-Reset');
@@ -188,13 +190,13 @@ class TwitchApiRemoteDataSource {
     int first = 20,
   }) async {
     try {
-      final response = await _dio.get(
+      final response = await _dio.get<Map<String, dynamic>>(
         '/search/categories',
         queryParameters: {'query': query, 'first': first},
       );
 
       if (response.statusCode == 200) {
-        final data = response.data['data'] as List;
+        final data = response.data?['data'] as List? ?? [];
         return data
             .map(
               (json) =>
@@ -223,7 +225,7 @@ class TwitchApiRemoteDataSource {
     String categoryId,
   ) async {
     try {
-      final response = await _dio.patch(
+      final response = await _dio.patch<Map<String, dynamic>>(
         '/channels',
         queryParameters: {'broadcaster_id': broadcasterId},
         data: {'game_id': categoryId},
@@ -248,10 +250,10 @@ class TwitchApiRemoteDataSource {
   /// Returns authenticated user's data
   Future<TwitchUserModel> getCurrentUser() async {
     try {
-      final response = await _dio.get('/users');
+      final response = await _dio.get<Map<String, dynamic>>('/users');
 
       if (response.statusCode == 200) {
-        final data = response.data['data'] as List;
+        final data = response.data?['data'] as List? ?? [];
         if (data.isEmpty) {
           throw const ServerException(
             message: 'Unable to retrieve your account information. Please try logging in again.',
@@ -279,13 +281,13 @@ class TwitchApiRemoteDataSource {
   /// Returns category details
   Future<TwitchCategoryModel> getCategoryById(String categoryId) async {
     try {
-      final response = await _dio.get(
+      final response = await _dio.get<Map<String, dynamic>>(
         '/games',
         queryParameters: {'id': categoryId},
       );
 
       if (response.statusCode == 200) {
-        final data = response.data['data'] as List;
+        final data = response.data?['data'] as List? ?? [];
         if (data.isEmpty) {
           throw ServerException(
             message: 'Category not found. It may have been removed or renamed.',
@@ -327,7 +329,7 @@ class TwitchApiRemoteDataSource {
     }
 
     try {
-      final response = await _dio.get(
+      final response = await _dio.get<Map<String, dynamic>>(
         '/games',
         queryParameters: {
           'id': categoryIds,
@@ -335,7 +337,7 @@ class TwitchApiRemoteDataSource {
       );
 
       if (response.statusCode == 200) {
-        final data = response.data['data'] as List;
+        final data = response.data?['data'] as List? ?? [];
         return data
             .map(
               (json) =>
@@ -377,7 +379,7 @@ class TwitchApiRemoteDataSource {
     }
 
     try {
-      final response = await _dio.get(
+      final response = await _dio.get<Map<String, dynamic>>(
         '/games',
         queryParameters: {
           'name': gameNames,
@@ -385,7 +387,7 @@ class TwitchApiRemoteDataSource {
       );
 
       if (response.statusCode == 200) {
-        final data = response.data['data'] as List;
+        final data = response.data?['data'] as List? ?? [];
         return data
             .map(
               (json) =>
@@ -427,13 +429,13 @@ class TwitchApiRemoteDataSource {
         queryParams['after'] = after;
       }
 
-      final response = await _dio.get(
+      final response = await _dio.get<Map<String, dynamic>>(
         '/games/top',
         queryParameters: queryParams,
       );
 
       if (response.statusCode == 200) {
-        final data = response.data['data'] as List;
+        final data = response.data?['data'] as List? ?? [];
         return data
             .map(
               (json) =>

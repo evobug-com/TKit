@@ -68,9 +68,11 @@ class _ColorPickerFieldState extends State<ColorPickerField> {
   }
 
   void _showColorPicker() {
-    if (!widget.enabled) return;
+    if (!widget.enabled) {
+      return;
+    }
 
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (context) => _ColorPickerDialog(
         initialColor: _selectedColor,

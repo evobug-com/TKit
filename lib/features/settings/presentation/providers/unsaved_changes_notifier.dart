@@ -34,7 +34,7 @@ class UnsavedChanges extends _$UnsavedChanges {
     return const UnsavedChangesState();
   }
 
-  void setHasChanges(bool value) {
+  void setHasChanges({required bool value}) {
     state = state.copyWith(hasUnsavedChanges: value);
   }
 

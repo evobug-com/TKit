@@ -292,19 +292,24 @@ class AppDatabase extends _$AppDatabase {
       final expiresAt = now.add(const Duration(hours: 24));
 
       // List of default ignored processes
-      final defaultIgnored = [];
+      final defaultIgnored = <Map<String, dynamic>>[];
 
       // Insert default ignored processes
       for (final mapping in defaultIgnored) {
+        final dynamic processNameValue = mapping['processName'];
+        final dynamic twitchCategoryIdValue = mapping['twitchCategoryId'];
+        final dynamic twitchCategoryNameValue = mapping['twitchCategoryName'];
+        final dynamic isEnabledValue = mapping['isEnabled'];
+
         await into(categoryMappings).insert(
           CategoryMappingsCompanion.insert(
-            processName: mapping['processName']! as String,
-            twitchCategoryId: mapping['twitchCategoryId']! as String,
-            twitchCategoryName: mapping['twitchCategoryName']! as String,
+            processName: processNameValue as String,
+            twitchCategoryId: twitchCategoryIdValue as String,
+            twitchCategoryName: twitchCategoryNameValue as String,
             lastApiFetch: Value(now),
             cacheExpiresAt: expiresAt,
             manualOverride: const Value(true), // User can modify these
-            isEnabled: Value(mapping['isEnabled'] as bool),
+            isEnabled: Value(isEnabledValue as bool),
           ),
           mode: InsertMode.insertOrIgnore, // Avoid duplicates
         );

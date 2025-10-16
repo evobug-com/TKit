@@ -17,7 +17,7 @@ class ConnectivityChecker {
   Future<bool> hasConnectivity() async {
     try {
       // Try to reach a reliable endpoint with minimal data transfer
-      final response = await _dio.head(
+      final response = await _dio.head<void>(
         'https://www.google.com',
         options: Options(
           receiveTimeout: const Duration(seconds: 3),

@@ -203,7 +203,9 @@ class CategoryMappings extends _$CategoryMappings {
 
   /// Bulk delete mappings
   Future<void> bulkDelete(List<int> ids) async {
-    if (ids.isEmpty) return;
+    if (ids.isEmpty) {
+      return;
+    }
 
     state = state.copyWith(isLoading: true);
 
@@ -232,8 +234,10 @@ class CategoryMappings extends _$CategoryMappings {
   }
 
   /// Bulk toggle enabled/disabled state
-  Future<void> bulkToggleEnabled(List<int> ids, bool enabled) async {
-    if (ids.isEmpty) return;
+  Future<void> bulkToggleEnabled(List<int> ids, {required bool enabled}) async {
+    if (ids.isEmpty) {
+      return;
+    }
 
     state = state.copyWith(isLoading: true);
 
@@ -266,7 +270,9 @@ class CategoryMappings extends _$CategoryMappings {
 
   /// Bulk restore deleted mappings
   Future<void> bulkRestore(List<entity.CategoryMapping> mappingsToRestore) async {
-    if (mappingsToRestore.isEmpty) return;
+    if (mappingsToRestore.isEmpty) {
+      return;
+    }
 
     state = state.copyWith(isLoading: true);
 

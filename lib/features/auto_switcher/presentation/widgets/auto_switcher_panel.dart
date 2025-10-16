@@ -45,10 +45,10 @@ class AutoSwitcherPanel extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(TKitSpacing.sm),
                 decoration: BoxDecoration(
-                  color: TKitColors.accent.withOpacity(0.1),
+                  color: TKitColors.accent.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.auto_awesome,
                   size: 20,
                   color: TKitColors.accent,
@@ -97,7 +97,7 @@ class AutoSwitcherPanel extends StatelessWidget {
                       Container(
                         width: 10,
                         height: 10,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: TKitColors.success,
                           shape: BoxShape.circle,
                         ),
@@ -142,7 +142,7 @@ class AutoSwitcherPanel extends StatelessWidget {
             IslandVariant.standard(
               child: Column(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.touch_app_outlined,
                     size: 40,
                     color: TKitColors.accent,
@@ -199,10 +199,10 @@ class AutoSwitcherPanel extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: TKitColors.accent.withOpacity(0.1),
+                  color: TKitColors.accent.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.bolt,
                   size: 16,
                   color: TKitColors.accent,
@@ -268,7 +268,7 @@ class AutoSwitcherPanel extends StatelessWidget {
           width: 24,
           height: 24,
           decoration: BoxDecoration(
-            color: TKitColors.accent.withOpacity(0.2),
+            color: TKitColors.accent.withValues(alpha: 0.2),
             shape: BoxShape.circle,
           ),
           child: Center(
@@ -314,7 +314,7 @@ class AutoSwitcherPanel extends StatelessWidget {
           const VSpace.md(),
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.apps,
                 size: 18,
                 color: TKitColors.textMuted,
@@ -347,7 +347,7 @@ class AutoSwitcherPanel extends StatelessWidget {
           const VSpace.md(),
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.label_outline,
                 size: 18,
                 color: TKitColors.textMuted,
@@ -402,7 +402,9 @@ class AutoSwitcherPanel extends StatelessWidget {
   }
 
   String _getActivityText(BuildContext context) {
-    if (status == null) return 'Ready';
+    if (status == null) {
+      return 'Ready';
+    }
     switch (status!.state) {
       case OrchestrationState.idle:
         return 'Ready';

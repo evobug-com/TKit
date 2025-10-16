@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:auto_route/auto_route.dart';
@@ -157,8 +158,8 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
             },
             onBulkDelete: (ids) => _handleBulkDelete(context, ids),
             onBulkExport: (mappings) => _handleBulkExport(context, mappings),
-            onBulkToggleEnabled: (ids, enabled) =>
-                _handleBulkToggleEnabled(context, ids, enabled),
+            onBulkToggleEnabled: (ids, {required enabled}) =>
+                _handleBulkToggleEnabled(context, ids, enabled: enabled),
             onBulkRestore: (mappings) => _handleBulkRestore(context, mappings),
             onSourceTap: (listId) => _handleSourceTap(context, listId),
           ),
@@ -189,7 +190,7 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
     );
 
     if (result != null && context.mounted) {
-      ref.read(categoryMappingsProvider.notifier).addMapping(result);
+      unawaited(ref.read(categoryMappingsProvider.notifier).addMapping(result));
     }
   }
 
@@ -203,7 +204,7 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
     );
 
     if (result != null && context.mounted) {
-      ref.read(categoryMappingsProvider.notifier).updateMapping(result);
+      unawaited(ref.read(categoryMappingsProvider.notifier).updateMapping(result));
     }
   }
 
@@ -220,7 +221,7 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
     );
 
     if (confirmed == true && context.mounted) {
-      ref.read(categoryMappingsProvider.notifier).deleteMapping(id);
+      unawaited(ref.read(categoryMappingsProvider.notifier).deleteMapping(id));
     }
   }
 
@@ -238,7 +239,7 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
     );
 
     if (confirmed == true && context.mounted) {
-      ref.read(categoryMappingsProvider.notifier).bulkDelete(ids);
+      unawaited(ref.read(categoryMappingsProvider.notifier).bulkDelete(ids));
     }
   }
 
@@ -320,11 +321,13 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
       }
     } catch (e) {
       if (context.mounted) {
-        showDialog<void>(
-          context: context,
-          builder: (dialogContext) => ErrorDialog(
-            title: 'Export Failed',
-            message: e.toString(),
+        unawaited(
+          showDialog<void>(
+            context: context,
+            builder: (dialogContext) => ErrorDialog(
+              title: 'Export Failed',
+              message: e.toString(),
+            ),
           ),
         );
       }
@@ -333,17 +336,21 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
 
   Future<void> _handleBulkToggleEnabled(
     BuildContext context,
-    List<int> ids,
-    bool enabled,
-  ) async {
-    ref.read(categoryMappingsProvider.notifier).bulkToggleEnabled(ids, enabled);
+    List<int> ids, {
+    required bool enabled,
+  }) async {
+    unawaited(
+      ref.read(categoryMappingsProvider.notifier).bulkToggleEnabled(ids, enabled: enabled),
+    );
   }
 
   Future<void> _handleBulkRestore(
     BuildContext context,
     List<CategoryMapping> mappings,
   ) async {
-    ref.read(categoryMappingsProvider.notifier).bulkRestore(mappings);
+    unawaited(
+      ref.read(categoryMappingsProvider.notifier).bulkRestore(mappings),
+    );
   }
 
   void _handleSourceTap(BuildContext context, String? listId) {

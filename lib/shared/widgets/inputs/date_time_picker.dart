@@ -41,7 +41,9 @@ class _DatePickerFieldState extends State<DatePickerField> {
   }
 
   Future<void> _showDatePicker() async {
-    if (!widget.enabled) return;
+    if (!widget.enabled) {
+      return;
+    }
 
     final now = DateTime.now();
     final picked = await showDatePicker(
@@ -78,7 +80,9 @@ class _DatePickerFieldState extends State<DatePickerField> {
   }
 
   void _clearDate() {
-    if (!widget.enabled) return;
+    if (!widget.enabled) {
+      return;
+    }
 
     setState(() {
       _selectedDate = null;
@@ -189,7 +193,9 @@ class _TimePickerFieldState extends State<TimePickerField> {
   }
 
   Future<void> _showTimePicker() async {
-    if (!widget.enabled) return;
+    if (!widget.enabled) {
+      return;
+    }
 
     final picked = await showTimePicker(
       context: context,
@@ -228,7 +234,9 @@ class _TimePickerFieldState extends State<TimePickerField> {
   }
 
   void _clearTime() {
-    if (!widget.enabled) return;
+    if (!widget.enabled) {
+      return;
+    }
 
     setState(() {
       _selectedTime = null;

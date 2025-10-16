@@ -10,14 +10,14 @@ import 'package:tkit/features/category_mapping/domain/entities/category_mapping.
 /// Widget to display the list of category mappings in a DataTable with bulk selection
 class MappingListWidget extends StatefulWidget {
   final List<CategoryMapping> mappings;
-  final Function(int id) onDelete;
-  final Function(CategoryMapping mapping) onEdit;
-  final Function(CategoryMapping mapping)? onToggleEnabled;
-  final Function(List<int> ids)? onBulkDelete;
-  final Function(List<CategoryMapping> mappings)? onBulkExport;
-  final Function(List<int> ids, bool enabled)? onBulkToggleEnabled;
-  final Function(List<CategoryMapping> mappings)? onBulkRestore;
-  final Function(String? listId)? onSourceTap;
+  final void Function(int id) onDelete;
+  final void Function(CategoryMapping mapping) onEdit;
+  final void Function(CategoryMapping mapping)? onToggleEnabled;
+  final void Function(List<int> ids)? onBulkDelete;
+  final void Function(List<CategoryMapping> mappings)? onBulkExport;
+  final void Function(List<int> ids, {required bool enabled})? onBulkToggleEnabled;
+  final void Function(List<CategoryMapping> mappings)? onBulkRestore;
+  final void Function(String? listId)? onSourceTap;
 
   const MappingListWidget({
     super.key,
@@ -115,7 +115,9 @@ class _MappingListWidgetState extends State<MappingListWidget> {
   }
 
   void _handleUndo() {
-    if (_lastAction == null) return;
+    if (_lastAction == null) {
+      return;
+    }
 
     if (_lastAction == 'Delete' && _deletedMappings != null && widget.onBulkRestore != null) {
       // Restore deleted mappings
@@ -125,7 +127,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
         widget.onBulkToggleEnabled != null) {
       // Restore previous enabled states
       for (final entry in _previousEnabledStates!.entries) {
-        widget.onBulkToggleEnabled!([entry.key], entry.value);
+        widget.onBulkToggleEnabled!([entry.key], enabled: entry.value);
       }
     }
 
@@ -458,7 +460,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                   _lastAction = 'Enable';
                   _deletedMappings = null;
                 });
-                widget.onBulkToggleEnabled!(_selectedIds.toList(), true);
+                widget.onBulkToggleEnabled!(_selectedIds.toList(), enabled: true);
               },
               icon: const Icon(Icons.check_circle, size: 14),
               label: const Text(
@@ -488,7 +490,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                   _lastAction = 'Disable';
                   _deletedMappings = null;
                 });
-                widget.onBulkToggleEnabled!(_selectedIds.toList(), false);
+                widget.onBulkToggleEnabled!(_selectedIds.toList(), enabled: false);
               },
               icon: const Icon(Icons.cancel, size: 14),
               label: const Text(

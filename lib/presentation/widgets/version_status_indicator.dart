@@ -96,7 +96,7 @@ class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator>
           }
         });
       }
-    }, onError: (error) {
+    }, onError: (Object error) {
       if (mounted) {
         setState(() {
           _status = UpdateCheckStatus.unknown;

@@ -79,13 +79,13 @@ class GitHubUpdateService {
       _logger.info('GitHub update service initialized successfully');
 
       // Check for updates on startup (brief delay to let app finish initializing)
-      Future.delayed(const Duration(seconds: 2), () async {
+      unawaited(Future.delayed(const Duration(seconds: 2), () async {
         // Get channel from provider if available, otherwise use stable
         final channel = _channelProvider != null
             ? await _channelProvider!()
             : UpdateChannel.stable;
-        checkForUpdates(channel: channel);
-      });
+        await checkForUpdates(channel: channel);
+      }));
     } catch (e, stackTrace) {
       _logger.error('Failed to initialize GitHub update service', e, stackTrace);
     }
@@ -129,7 +129,7 @@ class GitHubUpdateService {
       // Fetch all releases to support multi-version changelogs
       final url = 'https://api.github.com/repos/${AppConfig.githubOwner}/${AppConfig.githubRepo}/releases';
 
-      Response? response;
+      Response<dynamic>? response;
       try {
         response = await _dio.get(
           url,

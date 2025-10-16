@@ -57,10 +57,18 @@ class HotkeyDisplay extends StatelessWidget {
     final lower = key.toLowerCase();
 
     // Format modifier keys
-    if (lower == 'ctrl' || lower == 'control') return 'Ctrl';
-    if (lower == 'alt') return 'Alt';
-    if (lower == 'shift') return 'Shift';
-    if (lower == 'meta' || lower == 'win' || lower == 'cmd') return 'Win';
+    if (lower == 'ctrl' || lower == 'control') {
+      return 'Ctrl';
+    }
+    if (lower == 'alt') {
+      return 'Alt';
+    }
+    if (lower == 'shift') {
+      return 'Shift';
+    }
+    if (lower == 'meta' || lower == 'win' || lower == 'cmd') {
+      return 'Win';
+    }
 
     // Format function keys
     if (lower.startsWith('f') && lower.length > 1) {
@@ -68,20 +76,48 @@ class HotkeyDisplay extends StatelessWidget {
     }
 
     // Format special keys
-    if (lower == 'space') return 'Space';
-    if (lower == 'enter') return 'Enter';
-    if (lower == 'tab') return 'Tab';
-    if (lower == 'backspace') return 'Bksp';
-    if (lower == 'delete') return 'Del';
-    if (lower == 'escape') return 'Esc';
-    if (lower == 'home') return 'Home';
-    if (lower == 'end') return 'End';
-    if (lower == 'pageup') return 'PgUp';
-    if (lower == 'pagedown') return 'PgDn';
-    if (lower == 'up') return '↑';
-    if (lower == 'down') return '↓';
-    if (lower == 'left') return '←';
-    if (lower == 'right') return '→';
+    if (lower == 'space') {
+      return 'Space';
+    }
+    if (lower == 'enter') {
+      return 'Enter';
+    }
+    if (lower == 'tab') {
+      return 'Tab';
+    }
+    if (lower == 'backspace') {
+      return 'Bksp';
+    }
+    if (lower == 'delete') {
+      return 'Del';
+    }
+    if (lower == 'escape') {
+      return 'Esc';
+    }
+    if (lower == 'home') {
+      return 'Home';
+    }
+    if (lower == 'end') {
+      return 'End';
+    }
+    if (lower == 'pageup') {
+      return 'PgUp';
+    }
+    if (lower == 'pagedown') {
+      return 'PgDn';
+    }
+    if (lower == 'up') {
+      return '↑';
+    }
+    if (lower == 'down') {
+      return '↓';
+    }
+    if (lower == 'left') {
+      return '←';
+    }
+    if (lower == 'right') {
+      return '→';
+    }
 
     // Capitalize single letters
     return key.toUpperCase();

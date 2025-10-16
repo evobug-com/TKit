@@ -94,7 +94,7 @@ class CustomDropdown<T> extends StatelessWidget {
   }
 
   void _showDropdownDialog(BuildContext context) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return Dialog(

@@ -40,21 +40,22 @@ class MappingImporter {
     try {
       logger.info('Importing mappings from Gr3gorywolf GitHub Gist');
 
-      final response = await dio.get(url);
+      final response = await dio.get<String>(url);
       if (response.statusCode != 200) {
         throw Exception('Failed to fetch data: ${response.statusCode}');
       }
 
-      final List<dynamic> data = json.decode(response.data.toString()) as List<dynamic>;
+      final data = json.decode(response.data.toString()) as List<dynamic>;
       var importedCount = 0;
       final now = DateTime.now();
       final expiresAt = now.add(const Duration(hours: 24));
 
       for (final item in data) {
         try {
-          final exe = item['exe'] as String?;
-          final gameName = item['game_name'] as String?;
-          final twitchId = item['twitch_id'] as String?;
+          final itemMap = item as Map<String, dynamic>;
+          final exe = itemMap['exe'] as String?;
+          final gameName = itemMap['game_name'] as String?;
+          final twitchId = itemMap['twitch_id'] as String?;
 
           if (exe == null || gameName == null || twitchId == null) {
             continue; // Skip invalid entries
@@ -116,12 +117,12 @@ class MappingImporter {
     try {
       logger.info('Importing game list from Nerothos/TwitchGameList');
 
-      final response = await dio.get(url);
+      final response = await dio.get<String>(url);
       if (response.statusCode != 200) {
         throw Exception('Failed to fetch data: ${response.statusCode}');
       }
 
-      final List<dynamic> data = json.decode(response.data.toString()) as List<dynamic>;
+      final data = json.decode(response.data.toString()) as List<dynamic>;
       var importedCount = 0;
       final now = DateTime.now();
       final expiresAt = now.add(const Duration(hours: 24));
@@ -136,8 +137,9 @@ class MappingImporter {
 
       for (final item in data) {
         try {
-          final gameName = item['name'] as String?;
-          final twitchId = item['id'] as String?;
+          final itemMap = item as Map<String, dynamic>;
+          final gameName = itemMap['name'] as String?;
+          final twitchId = itemMap['id'] as String?;
 
           if (gameName == null || twitchId == null) {
             continue;
@@ -193,16 +195,17 @@ class MappingImporter {
     try {
       logger.info('Importing mappings from JSON');
 
-      final List<dynamic> data = json.decode(jsonString) as List<dynamic>;
+      final data = json.decode(jsonString) as List<dynamic>;
       var importedCount = 0;
       final now = DateTime.now();
       final expiresAt = now.add(const Duration(hours: 24));
 
       for (final item in data) {
         try {
-          final processName = item['processName'] as String?;
-          final twitchCategoryId = item['twitchCategoryId'] as String?;
-          final twitchCategoryName = item['twitchCategoryName'] as String?;
+          final itemMap = item as Map<String, dynamic>;
+          final processName = itemMap['processName'] as String?;
+          final twitchCategoryId = itemMap['twitchCategoryId'] as String?;
+          final twitchCategoryName = itemMap['twitchCategoryName'] as String?;
 
           if (processName == null ||
               twitchCategoryId == null ||

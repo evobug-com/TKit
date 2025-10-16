@@ -143,7 +143,9 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
           return mappingResult.fold(
             (failure) => null,
             (mapping) {
-              if (mapping == null) return null;
+              if (mapping == null) {
+                return null;
+              }
 
               // Check if mapping is disabled - treat as unknown game
               if (!mapping.isEnabled) {
@@ -156,13 +158,7 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
           );
         })
         .listen(
-          (data) async {
-            // Handle no process detected - apply fallback
-            if (data != null && data['noProcess'] == true) {
-              await _handleNoProcess();
-              return;
-            }
-
+          (Object? data) async {
             if (data == null) {
               // No mapping found (or disabled mapping) - handle via callback or fallback
               final processName = _currentStatus.currentProcess;
@@ -176,15 +172,24 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
               return;
             }
 
-            // Cast the data to proper types
-            final mapping = data['mapping'];
-            final process = data['process'];
-
-            // Type check and cast
-            if (mapping is! Map<String, dynamic> && mapping == null) {
+            // Cast data to Map
+            if (data is! Map<String, dynamic>) {
               return;
             }
-            if (process is! Map<String, dynamic> && process == null) {
+
+            final dataMap = data;
+
+            // Handle no process detected - apply fallback
+            if (dataMap['noProcess'] == true) {
+              await _handleNoProcess();
+              return;
+            }
+
+            // Extract mapping and process
+            final mapping = dataMap['mapping'];
+            final process = dataMap['process'];
+
+            if (mapping == null || process == null) {
               return;
             }
 
@@ -206,7 +211,7 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
               );
             }
           },
-          onError: (error) {
+          onError: (Object error) {
             _currentStatus = OrchestrationStatus.error(
               'Monitoring error: $error',
             );

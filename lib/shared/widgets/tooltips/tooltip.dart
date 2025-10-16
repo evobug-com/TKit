@@ -108,7 +108,7 @@ class InfoTooltip extends StatelessWidget {
     return TKitTooltip(
       message: message,
       triggerMode: triggerMode ?? TooltipTriggerMode.tap,
-      waitDuration: const Duration(milliseconds: 0),
+      waitDuration: Duration.zero,
       child: tooltipChild,
     );
   }

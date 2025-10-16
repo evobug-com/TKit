@@ -46,7 +46,7 @@ class ProcessDetectionRepositoryImpl implements IProcessDetectionRepository {
     );
 
     // Create a periodic stream that polls for process changes
-    return Stream.periodic(scanInterval)
+    return Stream<dynamic>.periodic(scanInterval)
         .asyncMap((_) async {
           final result = await getFocusedProcess();
           return result.fold((failure) {
@@ -57,8 +57,12 @@ class ProcessDetectionRepositoryImpl implements IProcessDetectionRepository {
         // Deduplicate: only emit when process changes
         .distinct((previous, next) {
           // Compare by process name and window title
-          if (previous == null && next == null) return true;
-          if (previous == null || next == null) return false;
+          if (previous == null && next == null) {
+            return true;
+          }
+          if (previous == null || next == null) {
+            return false;
+          }
           return previous.processName == next.processName &&
               previous.windowTitle == next.windowTitle;
         })

@@ -145,7 +145,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
 
     if (mounted) {
       // Navigate to the main app
-      context.router.replace(const AutoSwitcherRoute());
+      await context.router.replace(const AutoSwitcherRoute());
     }
   }
 
@@ -332,7 +332,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                             .initiateDeviceCodeAuth();
 
                         if (deviceCodeResponse != null && context.mounted) {
-                          showDialog(
+                          await showDialog<void>(
                             context: context,
                             barrierDismissible: false,
                             builder: (dialogContext) => DeviceCodeAuthPage(

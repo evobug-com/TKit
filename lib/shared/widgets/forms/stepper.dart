@@ -77,19 +77,25 @@ class _TKitNumberStepperState extends State<TKitNumberStepper> {
   }
 
   void _increment() {
-    if (!widget.enabled || widget.onChanged == null) return;
+    if (!widget.enabled || widget.onChanged == null) {
+      return;
+    }
     final newValue = (widget.value + widget.step).clamp(widget.min, widget.max);
     widget.onChanged?.call(newValue);
   }
 
   void _decrement() {
-    if (!widget.enabled || widget.onChanged == null) return;
+    if (!widget.enabled || widget.onChanged == null) {
+      return;
+    }
     final newValue = (widget.value - widget.step).clamp(widget.min, widget.max);
     widget.onChanged?.call(newValue);
   }
 
   void _onTextChanged(String text) {
-    if (!widget.enabled || widget.onChanged == null) return;
+    if (!widget.enabled || widget.onChanged == null) {
+      return;
+    }
     final value = double.tryParse(text);
     if (value != null) {
       final clampedValue = value.clamp(widget.min, widget.max);

@@ -95,7 +95,9 @@ class _UpdateNotificationWidgetState extends ConsumerState<UpdateNotificationWid
   }
 
   Future<void> _handleDownload() async {
-    if (_currentUpdate == null) return;
+    if (_currentUpdate == null) {
+      return;
+    }
     _logger.info('[UpdateWidget] Download button clicked');
     await _updateService.downloadUpdate(_currentUpdate!);
   }
@@ -135,7 +137,7 @@ class UpdateDialog extends ConsumerStatefulWidget {
   final VoidCallback? onDownload;
   final void Function(BuildContext)? onDismiss;
   final void Function(BuildContext)? onIgnore;
-  final Function(String)? onInstall;
+  final void Function(String)? onInstall;
 
   const UpdateDialog({
     super.key,
@@ -157,7 +159,7 @@ class _UpdateDialog extends UpdateDialog {
     required VoidCallback super.onDownload,
     required void Function(BuildContext) super.onDismiss,
     required void Function(BuildContext) super.onIgnore,
-    required Function(String) super.onInstall,
+    required void Function(String) super.onInstall,
   });
 }
 
@@ -326,15 +328,15 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                             if (progress != null && progress.isCompleted) ...[
                               const Divider(color: TKitColors.border, height: 1),
                               const VSpace.md(),
-                              Row(
+                              const Row(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.check_circle_rounded,
                                     color: TKitColors.success,
                                     size: 18,
                                   ),
-                                  const HSpace.sm(),
-                                  const Expanded(
+                                  HSpace.sm(),
+                                  Expanded(
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -516,7 +518,7 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                             )
                           : ListView.separated(
                               itemCount: widget.updateInfo.versionChangelogs.length,
-                              separatorBuilder: (_, __) => const Padding(
+                              separatorBuilder: (context, index) => const Padding(
                                 padding: EdgeInsets.symmetric(vertical: TKitSpacing.md),
                                 child: Divider(
                                   color: TKitColors.border,
@@ -605,9 +607,15 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
   }
 
   String _formatBytes(int bytes) {
-    if (bytes < 1024) return '$bytes B';
-    if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
-    if (bytes < 1024 * 1024 * 1024) return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+    if (bytes < 1024) {
+      return '$bytes B';
+    }
+    if (bytes < 1024 * 1024) {
+      return '${(bytes / 1024).toStringAsFixed(1)} KB';
+    }
+    if (bytes < 1024 * 1024 * 1024) {
+      return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+    }
     return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
   }
 }

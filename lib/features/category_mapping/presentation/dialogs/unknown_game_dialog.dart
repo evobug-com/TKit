@@ -1718,7 +1718,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
   Map<String, dynamic>? _pendingResult;
 
   Future<void> _handleSave() async {
-    if (_selectedCategory == null || _selectedList == null) return;
+    if (_selectedCategory == null || _selectedList == null) {
+      return;
+    }
 
     final hasSubmissionHook = _selectedList!.submissionHookUrl != null;
 
@@ -1751,7 +1753,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
       });
 
       // Wait for animation to play (5 seconds total) or until user clicks to skip
-      await Future.delayed(const Duration(milliseconds: 5000));
+      await Future<void>.delayed(const Duration(milliseconds: 5000));
 
       // If still showing thank you (not skipped), close now
       if (mounted && _showThankYou) {

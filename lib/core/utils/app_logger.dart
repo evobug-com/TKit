@@ -23,7 +23,9 @@ class AppLogger {
   void debug(String message, [dynamic error, StackTrace? stackTrace]) {
     if (error != null || stackTrace != null) {
       _talker.debug(message);
-      if (error != null) _talker.error(error, stackTrace);
+      if (error != null) {
+        _talker.error(error, stackTrace);
+      }
     } else {
       _talker.debug(message);
     }
@@ -33,7 +35,9 @@ class AppLogger {
   void info(String message, [dynamic error, StackTrace? stackTrace]) {
     if (error != null || stackTrace != null) {
       _talker.info(message);
-      if (error != null) _talker.error(error, stackTrace);
+      if (error != null) {
+        _talker.error(error, stackTrace);
+      }
     } else {
       _talker.info(message);
     }
@@ -43,7 +47,9 @@ class AppLogger {
   void warning(String message, [dynamic error, StackTrace? stackTrace]) {
     if (error != null || stackTrace != null) {
       _talker.warning(message);
-      if (error != null) _talker.error(error, stackTrace);
+      if (error != null) {
+        _talker.error(error, stackTrace);
+      }
     } else {
       _talker.warning(message);
     }
@@ -63,7 +69,9 @@ class AppLogger {
   void trace(String message, [dynamic error, StackTrace? stackTrace]) {
     if (error != null || stackTrace != null) {
       _talker.verbose(message);
-      if (error != null) _talker.error(error, stackTrace);
+      if (error != null) {
+        _talker.error(error, stackTrace);
+      }
     } else {
       _talker.verbose(message);
     }

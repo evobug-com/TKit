@@ -135,7 +135,7 @@ void main() async {
         (settings) => settings.updateChannel,
       ),
     );
-    updateService.checkForUpdates(silent: true, channel: updateChannel);
+    unawaited(updateService.checkForUpdates(silent: true, channel: updateChannel));
 
     logger.info('Initialization complete, launching app...');
 
@@ -162,7 +162,7 @@ class TKitApp extends ConsumerStatefulWidget {
 
 class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
   late final AppRouter _appRouter;
-  StreamSubscription? _authSubscription;
+  StreamSubscription<dynamic>? _authSubscription;
   var _initialized = false;
 
   @override
@@ -185,7 +185,9 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
   }
 
   Future<void> _initializeApp() async {
-    if (_initialized) return;
+    if (_initialized) {
+      return;
+    }
     _initialized = true;
 
     final logger = ref.read(appLoggerProvider);
@@ -243,9 +245,9 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
 
     logger.info('Window close requested - starting fast shutdown');
 
-    _cleanupResources().catchError((e, stackTrace) {
-      logger.error('Cleanup error', e, stackTrace as StackTrace?);
-    });
+    unawaited(_cleanupResources().catchError((Object e, StackTrace stackTrace) {
+      logger.error('Cleanup error', e, stackTrace);
+    }));
 
     try {
       await windowManager.destroy().timeout(
@@ -293,7 +295,7 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
 
   void _handleAuthStateChange(AuthState state) {
     if (state is Authenticated) {
-      // TODO: Re-add initialization logic later
+      // TODO(auth): Re-add initialization logic later
       // This includes:
       // - Updating cached access token for Twitch API
       // - Initializing periodic sync scheduler

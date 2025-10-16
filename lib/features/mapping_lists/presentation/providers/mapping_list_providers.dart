@@ -134,7 +134,7 @@ class MappingLists extends _$MappingLists {
     final newEnabledState = !currentList.isEnabled;
 
     final useCase = ref.read(toggleListEnabledUseCaseProvider);
-    final result = await useCase(listId, newEnabledState);
+    final result = await useCase(listId, isEnabled: newEnabledState);
 
     result.fold(
       (failure) {

@@ -11,7 +11,6 @@ import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/core/routing/app_router.dart';
 import 'package:tkit/core/config/app_config.dart';
-import 'package:tkit/core/utils/dev_utils.dart';
 import 'package:tkit/core/providers/providers.dart';
 import 'package:tkit/features/auth/presentation/providers/auth_providers.dart';
 import 'package:tkit/features/auth/presentation/states/auth_state.dart';
@@ -86,26 +85,34 @@ class _MainWindowState extends ConsumerState<MainWindow> {
   /// Toggle the Talker logs screen (press F2)
   void _toggleLogsScreen(BuildContext context) {
     final navigatorContext = widget.router.navigatorKey.currentContext;
-    if (navigatorContext == null) return;
+    if (navigatorContext == null) {
+      return;
+    }
 
     if (_isLogScreenOpen) {
       // Close the log screen
       Navigator.of(navigatorContext).pop();
-      setState(() => _isLogScreenOpen = false);
+      setState(() {
+        _isLogScreenOpen = false;
+      });
     } else {
       // Open the log screen
       final logger = ref.read(appLoggerProvider);
       Navigator.of(navigatorContext)
-          .push(
-        MaterialPageRoute(
+          .push<void>(
+        MaterialPageRoute<void>(
           builder: (context) => TalkerScreen(talker: logger.talker),
         ),
       )
           .then((_) {
         // Reset flag when screen is closed by other means (back button, etc)
-        setState(() => _isLogScreenOpen = false);
+        setState(() {
+          _isLogScreenOpen = false;
+        });
       });
-      setState(() => _isLogScreenOpen = true);
+      setState(() {
+        _isLogScreenOpen = true;
+      });
     }
   }
 
@@ -193,7 +200,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
     // Preview position takes precedence over saved position
     final windowControlsPosition = previewPosition ?? savedPosition;
 
-    return Container(
+    return SizedBox(
       height: 36,
       child: Row(
         children: [

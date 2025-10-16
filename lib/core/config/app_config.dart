@@ -12,7 +12,9 @@ class AppConfig {
 
   /// Get app version from pubspec.yaml (single source of truth)
   static Future<String> getVersion() async {
-    if (_cachedVersion != null) return _cachedVersion!;
+    if (_cachedVersion != null) {
+      return _cachedVersion!;
+    }
 
     final packageInfo = await PackageInfo.fromPlatform();
     _cachedVersion = packageInfo.version;

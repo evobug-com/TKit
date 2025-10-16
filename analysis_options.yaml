@@ -69,6 +69,7 @@ linter:
 
 custom_lint:
   rules:
+    # Riverpod lint rules
     - missing_provider_scope
     - provider_dependencies
     - scoped_providers_should_specify_dependencies

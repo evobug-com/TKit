@@ -33,7 +33,7 @@ class MappingListSyncDataSource {
   Future<RemoteListData> fetchListFromUrl(String url) async {
     try {
       _logger.info('Fetching list from: $url');
-      final response = await _dio.get(
+      final response = await _dio.get<dynamic>(
         url,
         options: Options(
           responseType: ResponseType.json,
@@ -117,7 +117,9 @@ class MappingListSyncDataSource {
 
   /// Parse installation paths from various formats
   List<String> _parseInstallPaths(dynamic paths) {
-    if (paths == null) return [];
+    if (paths == null) {
+      return [];
+    }
 
     if (paths is List) {
       return paths.map((e) => e.toString()).toList();
@@ -134,7 +136,7 @@ class MappingListSyncDataSource {
   /// Validate that a URL returns valid list data without fully parsing it
   Future<bool> validateListUrl(String url) async {
     try {
-      final response = await _dio.head(url);
+      final response = await _dio.head<dynamic>(url);
       return response.statusCode == 200;
     } catch (e, stackTrace) {
       _logger.error('Failed to validate list URL', e, stackTrace);

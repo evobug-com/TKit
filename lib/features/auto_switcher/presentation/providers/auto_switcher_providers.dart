@@ -104,7 +104,7 @@ class AutoSwitcher extends _$AutoSwitcher {
     // Initialize and subscribe to status stream
     final getStatus = await ref.read(getOrchestrationStatusUseCaseProvider.future);
 
-    _statusSubscription?.cancel();
+    await _statusSubscription?.cancel();
     _statusSubscription = getStatus.watchStatus().listen((status) {
       _handleStatusUpdate(status);
     });

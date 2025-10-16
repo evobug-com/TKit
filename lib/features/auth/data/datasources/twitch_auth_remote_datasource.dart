@@ -19,7 +19,7 @@ class TwitchAuthRemoteDataSource {
   /// Returns device code and user code for authorization
   Future<DeviceCodeResponse> initiateDeviceCode() async {
     try {
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         'https://id.twitch.tv/oauth2/device',
         data: {
           'client_id': AppConfig.twitchClientId,
@@ -36,7 +36,7 @@ class TwitchAuthRemoteDataSource {
         );
       }
 
-      final deviceCodeResponse = DeviceCodeResponse.fromJson(response.data as Map<String, dynamic>);
+      final deviceCodeResponse = DeviceCodeResponse.fromJson(response.data!);
       _logger.info('Device code generated: ${deviceCodeResponse.userCode}');
       return deviceCodeResponse;
     } on DioException catch (e, stackTrace) {
@@ -48,7 +48,9 @@ class TwitchAuthRemoteDataSource {
         technicalDetails: 'Network error: ${e.message}',
       );
     } catch (e, stackTrace) {
-      if (e is AuthException) rethrow;
+      if (e is AuthException) {
+        rethrow;
+      }
       _logger.error('Unexpected error during device code request', e, stackTrace);
       throw AuthException(
         message: 'Authentication failed. Please try again.',
@@ -64,7 +66,7 @@ class TwitchAuthRemoteDataSource {
   /// Throws AuthException if authorization is denied or times out
   Future<TwitchTokenModel> pollDeviceCode(String deviceCode) async {
     try {
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         AppConfig.twitchTokenUrl,
         data: {
           'client_id': AppConfig.twitchClientId,
@@ -86,7 +88,7 @@ class TwitchAuthRemoteDataSource {
       if (response.statusCode == 200) {
         _logger.debug('Attempting to parse token from 200 response');
         _logger.debug('Response data before parsing: ${response.data}');
-        final token = TwitchTokenModel.fromTokenResponse(response.data as Map<String, dynamic>);
+        final token = TwitchTokenModel.fromTokenResponse(response.data!);
         _logger.info('Device code authorization successful');
         return token;
       } else if (response.statusCode == 400) {
@@ -100,7 +102,7 @@ class TwitchAuthRemoteDataSource {
 
         _logger.debug('errorData is Map: ${errorData is Map}');
 
-        if (errorData is Map) {
+        if (errorData is Map<String, dynamic>) {
           // Check for 'message' field first (Twitch uses this for device code)
           final messageField = errorData['message'];
           _logger.debug('messageField value: $messageField');
@@ -167,7 +169,9 @@ class TwitchAuthRemoteDataSource {
         technicalDetails: 'Network error: ${e.message}',
       );
     } catch (e, stackTrace) {
-      if (e is AuthException) rethrow;
+      if (e is AuthException) {
+        rethrow;
+      }
       _logger.error('Unexpected error during device code polling', e, stackTrace);
       throw AuthException(
         message: 'Authentication failed. Please try again.',
@@ -182,7 +186,7 @@ class TwitchAuthRemoteDataSource {
   /// For public clients (no client secret required)
   Future<TwitchTokenModel> refreshAccessToken(String refreshToken) async {
     try {
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         AppConfig.twitchTokenUrl,
         data: {
           'client_id': AppConfig.twitchClientId,
@@ -200,7 +204,7 @@ class TwitchAuthRemoteDataSource {
         );
       }
 
-      final token = TwitchTokenModel.fromTokenResponse(response.data as Map<String, dynamic>);
+      final token = TwitchTokenModel.fromTokenResponse(response.data!);
       _logger.info('Access token refreshed successfully');
       return token;
     } on DioException catch (e, stackTrace) {
@@ -212,7 +216,9 @@ class TwitchAuthRemoteDataSource {
         technicalDetails: 'Network error: ${e.message}',
       );
     } catch (e, stackTrace) {
-      if (e is AuthException) rethrow;
+      if (e is AuthException) {
+        rethrow;
+      }
       _logger.error('Unexpected error during token refresh', e, stackTrace);
       throw AuthException(
         message: 'Your session has expired. Please log in again.',
@@ -226,7 +232,7 @@ class TwitchAuthRemoteDataSource {
   /// Revoke the access token
   Future<void> revokeToken(String token) async {
     try {
-      await _dio.post(
+      await _dio.post<void>(
         'https://id.twitch.tv/oauth2/revoke',
         data: {'client_id': AppConfig.twitchClientId, 'token': token},
         options: Options(contentType: Headers.formUrlEncodedContentType),
@@ -242,7 +248,9 @@ class TwitchAuthRemoteDataSource {
         technicalDetails: 'Network error: ${e.message}',
       );
     } catch (e, stackTrace) {
-      if (e is AuthException) rethrow;
+      if (e is AuthException) {
+        rethrow;
+      }
       _logger.error('Unexpected error during token revocation', e, stackTrace);
       throw AuthException(
         message: 'Unable to complete logout. Please try again.',
@@ -256,7 +264,7 @@ class TwitchAuthRemoteDataSource {
   /// Get current user info from Twitch API
   Future<TwitchUserModel> getCurrentUser(String accessToken) async {
     try {
-      final response = await _dio.get(
+      final response = await _dio.get<Map<String, dynamic>>(
         '${AppConfig.twitchApiBaseUrl}/users',
         options: Options(
           headers: {
@@ -274,7 +282,7 @@ class TwitchAuthRemoteDataSource {
         );
       }
 
-      final data = response.data as Map<String, dynamic>;
+      final data = response.data!;
       final users = data['data'] as List<dynamic>;
 
       if (users.isEmpty) {
@@ -299,7 +307,9 @@ class TwitchAuthRemoteDataSource {
         technicalDetails: 'Network error: ${e.message}',
       );
     } catch (e, stackTrace) {
-      if (e is AuthException) rethrow;
+      if (e is AuthException) {
+        rethrow;
+      }
       _logger.error('Unexpected error getting user info', e, stackTrace);
       throw AuthException(
         message: 'Unable to retrieve your account information. Please try again.',

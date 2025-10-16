@@ -82,7 +82,9 @@ class SystemTrayService with TrayListener {
 
   /// Update tray icon tooltip
   Future<void> updateTooltip(String tooltip) async {
-    if (!_isInitialized) return;
+    if (!_isInitialized) {
+      return;
+    }
 
     try {
       await trayManager.setToolTip(tooltip);
@@ -93,7 +95,9 @@ class SystemTrayService with TrayListener {
 
   /// Dispose system tray resources
   Future<void> dispose() async {
-    if (!_isInitialized) return;
+    if (!_isInitialized) {
+      return;
+    }
 
     try {
       trayManager.removeListener(this);

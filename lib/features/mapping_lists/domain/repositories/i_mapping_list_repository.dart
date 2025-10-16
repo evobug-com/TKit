@@ -23,7 +23,7 @@ abstract class IMappingListRepository {
   Future<Either<Failure, void>> deleteList(String id, {bool deleteMappings});
 
   /// Toggle list enabled state
-  Future<Either<Failure, void>> toggleListEnabled(String id, bool isEnabled);
+  Future<Either<Failure, void>> toggleListEnabled(String id, {required bool isEnabled});
 
   /// Sync a list from its remote URL
   Future<Either<Failure, void>> syncList(String listId);

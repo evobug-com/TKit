@@ -104,7 +104,9 @@ class ProcessNormalizer {
     final distance = _levenshteinDistance(norm1, norm2);
     final maxLength = norm1.length > norm2.length ? norm1.length : norm2.length;
 
-    if (maxLength == 0) return 0.0;
+    if (maxLength == 0) {
+      return 0.0;
+    }
 
     final similarity = 1.0 - (distance / maxLength);
     return similarity.clamp(0.0, 0.6); // Cap at 0.6 for partial matches
@@ -112,9 +114,15 @@ class ProcessNormalizer {
 
   /// Calculate Levenshtein distance between two strings
   static int _levenshteinDistance(String s1, String s2) {
-    if (s1 == s2) return 0;
-    if (s1.isEmpty) return s2.length;
-    if (s2.isEmpty) return s1.length;
+    if (s1 == s2) {
+      return 0;
+    }
+    if (s1.isEmpty) {
+      return s2.length;
+    }
+    if (s2.isEmpty) {
+      return s1.length;
+    }
 
     final matrix = List.generate(
       s1.length + 1,

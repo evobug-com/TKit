@@ -46,7 +46,9 @@ class TKitContextMenu extends StatelessWidget {
   });
 
   void _showContextMenu(BuildContext context, TapDownDetails details) {
-    if (!enabled) return;
+    if (!enabled) {
+      return;
+    }
 
     final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
     final position = RelativeRect.fromRect(

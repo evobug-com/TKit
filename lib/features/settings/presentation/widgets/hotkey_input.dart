@@ -58,7 +58,9 @@ class _HotkeyInputState extends State<HotkeyInput> {
   }
 
   bool _isModifierKey(KeyboardKey key) {
-    if (key is! PhysicalKeyboardKey) return false;
+    if (key is! PhysicalKeyboardKey) {
+      return false;
+    }
 
     // Check if the key is a modifier key
     return key == PhysicalKeyboardKey.controlLeft ||
@@ -98,62 +100,166 @@ class _HotkeyInputState extends State<HotkeyInput> {
     // Try to get PhysicalKeyboardKey
     if (key is PhysicalKeyboardKey) {
       // Function keys
-      if (key == PhysicalKeyboardKey.f1) return 'f1';
-      if (key == PhysicalKeyboardKey.f2) return 'f2';
-      if (key == PhysicalKeyboardKey.f3) return 'f3';
-      if (key == PhysicalKeyboardKey.f4) return 'f4';
-      if (key == PhysicalKeyboardKey.f5) return 'f5';
-      if (key == PhysicalKeyboardKey.f6) return 'f6';
-      if (key == PhysicalKeyboardKey.f7) return 'f7';
-      if (key == PhysicalKeyboardKey.f8) return 'f8';
-      if (key == PhysicalKeyboardKey.f9) return 'f9';
-      if (key == PhysicalKeyboardKey.f10) return 'f10';
-      if (key == PhysicalKeyboardKey.f11) return 'f11';
-      if (key == PhysicalKeyboardKey.f12) return 'f12';
+      if (key == PhysicalKeyboardKey.f1) {
+        return 'f1';
+      }
+      if (key == PhysicalKeyboardKey.f2) {
+        return 'f2';
+      }
+      if (key == PhysicalKeyboardKey.f3) {
+        return 'f3';
+      }
+      if (key == PhysicalKeyboardKey.f4) {
+        return 'f4';
+      }
+      if (key == PhysicalKeyboardKey.f5) {
+        return 'f5';
+      }
+      if (key == PhysicalKeyboardKey.f6) {
+        return 'f6';
+      }
+      if (key == PhysicalKeyboardKey.f7) {
+        return 'f7';
+      }
+      if (key == PhysicalKeyboardKey.f8) {
+        return 'f8';
+      }
+      if (key == PhysicalKeyboardKey.f9) {
+        return 'f9';
+      }
+      if (key == PhysicalKeyboardKey.f10) {
+        return 'f10';
+      }
+      if (key == PhysicalKeyboardKey.f11) {
+        return 'f11';
+      }
+      if (key == PhysicalKeyboardKey.f12) {
+        return 'f12';
+      }
 
       // Letter keys
-      if (key == PhysicalKeyboardKey.keyA) return 'a';
-      if (key == PhysicalKeyboardKey.keyB) return 'b';
-      if (key == PhysicalKeyboardKey.keyC) return 'c';
-      if (key == PhysicalKeyboardKey.keyD) return 'd';
-      if (key == PhysicalKeyboardKey.keyE) return 'e';
-      if (key == PhysicalKeyboardKey.keyF) return 'f';
-      if (key == PhysicalKeyboardKey.keyG) return 'g';
-      if (key == PhysicalKeyboardKey.keyH) return 'h';
-      if (key == PhysicalKeyboardKey.keyI) return 'i';
-      if (key == PhysicalKeyboardKey.keyJ) return 'j';
-      if (key == PhysicalKeyboardKey.keyK) return 'k';
-      if (key == PhysicalKeyboardKey.keyL) return 'l';
-      if (key == PhysicalKeyboardKey.keyM) return 'm';
-      if (key == PhysicalKeyboardKey.keyN) return 'n';
-      if (key == PhysicalKeyboardKey.keyO) return 'o';
-      if (key == PhysicalKeyboardKey.keyP) return 'p';
-      if (key == PhysicalKeyboardKey.keyQ) return 'q';
-      if (key == PhysicalKeyboardKey.keyR) return 'r';
-      if (key == PhysicalKeyboardKey.keyS) return 's';
-      if (key == PhysicalKeyboardKey.keyT) return 't';
-      if (key == PhysicalKeyboardKey.keyU) return 'u';
-      if (key == PhysicalKeyboardKey.keyV) return 'v';
-      if (key == PhysicalKeyboardKey.keyW) return 'w';
-      if (key == PhysicalKeyboardKey.keyX) return 'x';
-      if (key == PhysicalKeyboardKey.keyY) return 'y';
-      if (key == PhysicalKeyboardKey.keyZ) return 'z';
+      if (key == PhysicalKeyboardKey.keyA) {
+        return 'a';
+      }
+      if (key == PhysicalKeyboardKey.keyB) {
+        return 'b';
+      }
+      if (key == PhysicalKeyboardKey.keyC) {
+        return 'c';
+      }
+      if (key == PhysicalKeyboardKey.keyD) {
+        return 'd';
+      }
+      if (key == PhysicalKeyboardKey.keyE) {
+        return 'e';
+      }
+      if (key == PhysicalKeyboardKey.keyF) {
+        return 'f';
+      }
+      if (key == PhysicalKeyboardKey.keyG) {
+        return 'g';
+      }
+      if (key == PhysicalKeyboardKey.keyH) {
+        return 'h';
+      }
+      if (key == PhysicalKeyboardKey.keyI) {
+        return 'i';
+      }
+      if (key == PhysicalKeyboardKey.keyJ) {
+        return 'j';
+      }
+      if (key == PhysicalKeyboardKey.keyK) {
+        return 'k';
+      }
+      if (key == PhysicalKeyboardKey.keyL) {
+        return 'l';
+      }
+      if (key == PhysicalKeyboardKey.keyM) {
+        return 'm';
+      }
+      if (key == PhysicalKeyboardKey.keyN) {
+        return 'n';
+      }
+      if (key == PhysicalKeyboardKey.keyO) {
+        return 'o';
+      }
+      if (key == PhysicalKeyboardKey.keyP) {
+        return 'p';
+      }
+      if (key == PhysicalKeyboardKey.keyQ) {
+        return 'q';
+      }
+      if (key == PhysicalKeyboardKey.keyR) {
+        return 'r';
+      }
+      if (key == PhysicalKeyboardKey.keyS) {
+        return 's';
+      }
+      if (key == PhysicalKeyboardKey.keyT) {
+        return 't';
+      }
+      if (key == PhysicalKeyboardKey.keyU) {
+        return 'u';
+      }
+      if (key == PhysicalKeyboardKey.keyV) {
+        return 'v';
+      }
+      if (key == PhysicalKeyboardKey.keyW) {
+        return 'w';
+      }
+      if (key == PhysicalKeyboardKey.keyX) {
+        return 'x';
+      }
+      if (key == PhysicalKeyboardKey.keyY) {
+        return 'y';
+      }
+      if (key == PhysicalKeyboardKey.keyZ) {
+        return 'z';
+      }
 
       // Special keys
-      if (key == PhysicalKeyboardKey.space) return 'space';
-      if (key == PhysicalKeyboardKey.enter) return 'enter';
-      if (key == PhysicalKeyboardKey.tab) return 'tab';
-      if (key == PhysicalKeyboardKey.backspace) return 'backspace';
-      if (key == PhysicalKeyboardKey.delete) return 'delete';
-      if (key == PhysicalKeyboardKey.escape) return 'escape';
-      if (key == PhysicalKeyboardKey.home) return 'home';
-      if (key == PhysicalKeyboardKey.end) return 'end';
-      if (key == PhysicalKeyboardKey.pageUp) return 'pageup';
-      if (key == PhysicalKeyboardKey.pageDown) return 'pagedown';
-      if (key == PhysicalKeyboardKey.arrowUp) return 'up';
-      if (key == PhysicalKeyboardKey.arrowDown) return 'down';
-      if (key == PhysicalKeyboardKey.arrowLeft) return 'left';
-      if (key == PhysicalKeyboardKey.arrowRight) return 'right';
+      if (key == PhysicalKeyboardKey.space) {
+        return 'space';
+      }
+      if (key == PhysicalKeyboardKey.enter) {
+        return 'enter';
+      }
+      if (key == PhysicalKeyboardKey.tab) {
+        return 'tab';
+      }
+      if (key == PhysicalKeyboardKey.backspace) {
+        return 'backspace';
+      }
+      if (key == PhysicalKeyboardKey.delete) {
+        return 'delete';
+      }
+      if (key == PhysicalKeyboardKey.escape) {
+        return 'escape';
+      }
+      if (key == PhysicalKeyboardKey.home) {
+        return 'home';
+      }
+      if (key == PhysicalKeyboardKey.end) {
+        return 'end';
+      }
+      if (key == PhysicalKeyboardKey.pageUp) {
+        return 'pageup';
+      }
+      if (key == PhysicalKeyboardKey.pageDown) {
+        return 'pagedown';
+      }
+      if (key == PhysicalKeyboardKey.arrowUp) {
+        return 'up';
+      }
+      if (key == PhysicalKeyboardKey.arrowDown) {
+        return 'down';
+      }
+      if (key == PhysicalKeyboardKey.arrowLeft) {
+        return 'left';
+      }
+      if (key == PhysicalKeyboardKey.arrowRight) {
+        return 'right';
+      }
 
       // Default: return the debug label
       return key.debugName?.toLowerCase() ?? 'unknown';

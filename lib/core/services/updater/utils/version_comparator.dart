@@ -10,17 +10,27 @@ class VersionComparator {
     final v2 = _parseVersion(version2);
 
     // Compare major
-    if (v1.major != v2.major) return v1.major.compareTo(v2.major);
+    if (v1.major != v2.major) {
+      return v1.major.compareTo(v2.major);
+    }
 
     // Compare minor
-    if (v1.minor != v2.minor) return v1.minor.compareTo(v2.minor);
+    if (v1.minor != v2.minor) {
+      return v1.minor.compareTo(v2.minor);
+    }
 
     // Compare patch
-    if (v1.patch != v2.patch) return v1.patch.compareTo(v2.patch);
+    if (v1.patch != v2.patch) {
+      return v1.patch.compareTo(v2.patch);
+    }
 
     // Compare pre-release
-    if (v1.preRelease != null && v2.preRelease == null) return -1;
-    if (v1.preRelease == null && v2.preRelease != null) return 1;
+    if (v1.preRelease != null && v2.preRelease == null) {
+      return -1;
+    }
+    if (v1.preRelease == null && v2.preRelease != null) {
+      return 1;
+    }
     if (v1.preRelease != null && v2.preRelease != null) {
       return v1.preRelease!.compareTo(v2.preRelease!);
     }

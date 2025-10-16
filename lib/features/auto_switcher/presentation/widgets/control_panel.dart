@@ -44,7 +44,7 @@ class ControlPanel extends StatelessWidget {
                   Container(
                     width: 10,
                     height: 10,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: TKitColors.success,
                       shape: BoxShape.circle,
                     ),
@@ -75,7 +75,7 @@ class ControlPanel extends StatelessWidget {
             IslandVariant.standard(
               child: Column(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.play_circle_outlined,
                     size: 32,
                     color: TKitColors.textMuted,
@@ -114,7 +114,7 @@ class ControlPanel extends StatelessWidget {
           // Quick action with clear purpose
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.bolt_outlined,
                 size: 16,
                 color: TKitColors.textMuted,

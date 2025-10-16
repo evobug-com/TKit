@@ -92,7 +92,7 @@ class UpdateInfo {
   }
 
   static Map<String, dynamic> _findWindowsAsset(
-    List assets,
+    List<dynamic> assets,
     InstallationType? installationType,
   ) {
     // Determine preferred extension based on installation type
@@ -103,9 +103,10 @@ class UpdateInfo {
     // First try to find asset matching the installation type
     if (preferredExtension != null) {
       for (final asset in assets) {
-        final name = (asset['name'] as String).toLowerCase();
+        final assetMap = asset as Map<String, dynamic>;
+        final name = (assetMap['name'] as String).toLowerCase();
         if (name.endsWith(preferredExtension)) {
-          return asset as Map<String, dynamic>;
+          return assetMap;
         }
       }
     }
@@ -114,29 +115,32 @@ class UpdateInfo {
     if (installationType == InstallationType.unknown) {
       // Try EXE first
       for (final asset in assets) {
-        final name = (asset['name'] as String).toLowerCase();
+        final assetMap = asset as Map<String, dynamic>;
+        final name = (assetMap['name'] as String).toLowerCase();
         if (name.endsWith('.exe')) {
-          return asset as Map<String, dynamic>;
+          return assetMap;
         }
       }
 
       // Then try MSIX
       for (final asset in assets) {
-        final name = (asset['name'] as String).toLowerCase();
+        final assetMap = asset as Map<String, dynamic>;
+        final name = (assetMap['name'] as String).toLowerCase();
         if (name.endsWith('.msix')) {
-          return asset as Map<String, dynamic>;
+          return assetMap;
         }
       }
     }
 
     // Final fallback: find any Windows asset
     for (final asset in assets) {
-      final name = (asset['name'] as String).toLowerCase();
+      final assetMap = asset as Map<String, dynamic>;
+      final name = (assetMap['name'] as String).toLowerCase();
       if (name.endsWith('.exe') ||
           name.endsWith('.msi') ||
           name.endsWith('.msix') ||
           name.contains('windows')) {
-        return asset as Map<String, dynamic>;
+        return assetMap;
       }
     }
 

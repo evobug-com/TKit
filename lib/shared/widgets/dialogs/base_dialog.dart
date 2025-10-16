@@ -151,7 +151,7 @@ class QuickActionDialog {
     String buttonText = 'OK',
     IconData? icon,
   }) async {
-    await showDialog(
+    await showDialog<void>(
       context: context,
       builder: (context) => BaseDialog(
         title: title,
@@ -178,7 +178,7 @@ class QuickActionDialog {
     required String message,
     String buttonText = 'OK',
   }) async {
-    await showDialog(
+    await showDialog<void>(
       context: context,
       builder: (context) => BaseDialog(
         title: title,

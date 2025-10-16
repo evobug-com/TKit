@@ -119,14 +119,18 @@ class _TKitDataTableState<T> extends State<TKitDataTable<T>> {
   }
 
   void _sortItems() {
-    if (_sortColumnId == null) return;
+    if (_sortColumnId == null) {
+      return;
+    }
 
     final column = widget.columns.firstWhere(
       (col) => col.id == _sortColumnId,
       orElse: () => widget.columns.first,
     );
 
-    if (!column.sortable || column.comparator == null) return;
+    if (!column.sortable || column.comparator == null) {
+      return;
+    }
 
     _sortedItems.sort((a, b) {
       final result = column.comparator!(a, b);
@@ -149,7 +153,9 @@ class _TKitDataTableState<T> extends State<TKitDataTable<T>> {
   }
 
   void _handleRowSelection(T item, bool? selected) {
-    if (!widget.selectable || widget.onSelectionChanged == null) return;
+    if (!widget.selectable || widget.onSelectionChanged == null) {
+      return;
+    }
 
     final newSelection = Set<T>.from(widget.selectedItems ?? {});
     if (selected == true) {
@@ -161,7 +167,9 @@ class _TKitDataTableState<T> extends State<TKitDataTable<T>> {
   }
 
   void _handleSelectAll(bool? selected) {
-    if (!widget.selectable || widget.onSelectionChanged == null) return;
+    if (!widget.selectable || widget.onSelectionChanged == null) {
+      return;
+    }
 
     final newSelection = selected == true ? Set<T>.from(_sortedItems) : <T>{};
     widget.onSelectionChanged!(newSelection);
@@ -193,7 +201,7 @@ class _TKitDataTableState<T> extends State<TKitDataTable<T>> {
             selectable: widget.selectable,
             allSelected: widget.selectedItems?.length == _sortedItems.length &&
                 _sortedItems.isNotEmpty,
-            onSelectAll: _handleSelectAll,
+            onSelectAll: ({bool? selected}) => _handleSelectAll(selected),
             verticalPadding: verticalPadding,
             horizontalPadding: horizontalPadding,
             backgroundColor: widget.headerColor,
@@ -207,7 +215,7 @@ class _TKitDataTableState<T> extends State<TKitDataTable<T>> {
               onTap: widget.onRowTap != null ? () => widget.onRowTap!(item) : null,
               selected: isSelected,
               selectable: widget.selectable,
-              onSelectionChanged: (selected) =>
+              onSelectionChanged: ({bool? selected}) =>
                   _handleRowSelection(item, selected),
               verticalPadding: verticalPadding,
               horizontalPadding: horizontalPadding,
@@ -227,7 +235,7 @@ class TKitTableHeader<T> extends StatelessWidget {
   final void Function(String columnId) onSort;
   final bool selectable;
   final bool allSelected;
-  final void Function(bool? selected)? onSelectAll;
+  final void Function({bool? selected})? onSelectAll;
   final double verticalPadding;
   final double horizontalPadding;
   final Color? backgroundColor;
@@ -263,7 +271,9 @@ class TKitTableHeader<T> extends StatelessWidget {
               width: 40,
               child: Checkbox(
                 value: allSelected,
-                onChanged: onSelectAll,
+                onChanged: onSelectAll != null
+                    ? (value) => onSelectAll!(selected: value)
+                    : null,
                 fillColor: WidgetStateProperty.resolveWith((states) {
                   if (states.contains(WidgetState.selected)) {
                     return TKitColors.accent;
@@ -338,7 +348,7 @@ class TKitTableRow<T> extends StatefulWidget {
   final VoidCallback? onTap;
   final bool selected;
   final bool selectable;
-  final void Function(bool? selected)? onSelectionChanged;
+  final void Function({bool? selected})? onSelectionChanged;
   final double verticalPadding;
   final double horizontalPadding;
 
@@ -386,7 +396,9 @@ class _TKitTableRowState<T> extends State<TKitTableRow<T>> {
                     width: 40,
                     child: Checkbox(
                       value: widget.selected,
-                      onChanged: widget.onSelectionChanged,
+                      onChanged: widget.onSelectionChanged != null
+                          ? (value) => widget.onSelectionChanged!(selected: value)
+                          : null,
                       fillColor: WidgetStateProperty.resolveWith((states) {
                         if (states.contains(WidgetState.selected)) {
                           return TKitColors.accent;

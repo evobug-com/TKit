@@ -103,7 +103,9 @@ class _SearchFieldState extends State<SearchField> {
         suffixIcon: ValueListenableBuilder<TextEditingValue>(
           valueListenable: _controller,
           builder: (context, value, child) {
-            if (value.text.isEmpty) return const SizedBox.shrink();
+            if (value.text.isEmpty) {
+              return const SizedBox.shrink();
+            }
             return IconButton(
               icon: const Icon(
                 Icons.clear,

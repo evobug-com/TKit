@@ -166,14 +166,18 @@ class PathNormalizer {
     // Try to find a recognized anchor
     for (final anchor in _gamePathAnchors) {
       final idx = normalized.indexOf(anchor);
-      if (idx == -1) continue;
+      if (idx == -1) {
+        continue;
+      }
 
       // Special case: 'games' should only match near root
       if (anchor == 'games') {
         final beforeAnchor = normalized.substring(0, idx);
         final segments =
             beforeAnchor.split('/').where((s) => s.isNotEmpty).length;
-        if (segments > 2) continue; // Too deep, skip this anchor
+        if (segments > 2) {
+          continue; // Too deep, skip this anchor
+        }
       }
 
       // Extract from anchor to end, removing filename
@@ -186,7 +190,9 @@ class PathNormalizer {
       }
 
       // Must have at least one directory after anchor
-      if (pathSegments.isEmpty) return null;
+      if (pathSegments.isEmpty) {
+        return null;
+      }
 
       return pathSegments.join('/');
     }

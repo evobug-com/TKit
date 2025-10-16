@@ -76,7 +76,7 @@ class MappingSubmissionDataSource {
       _logger.debug('Payload type: ${payload.runtimeType}');
       _logger.debug('Submission URL: $submissionUrl');
 
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         submissionUrl,
         data: payload,
         options: Options(
@@ -94,7 +94,7 @@ class MappingSubmissionDataSource {
         _logger.info('Mapping submitted successfully');
 
         // Parse response
-        final responseData = response.data as Map<String, dynamic>? ?? {};
+        final responseData = response.data ?? {};
 
         // The worker returns 'prUrl' not 'issueUrl'
         final prUrl = responseData['prUrl'] as String?;
