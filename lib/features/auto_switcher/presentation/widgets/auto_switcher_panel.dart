@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/theme/spacing.dart';
@@ -36,7 +35,6 @@ class AutoSwitcherPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     return Island.standard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -298,7 +296,6 @@ class AutoSwitcherPanel extends StatelessWidget {
   }
 
   Widget _buildCurrentStatus(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     final hasProcess = status?.currentProcess != null;
     final hasCategory = status?.matchedCategory != null;
 

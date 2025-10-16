@@ -204,7 +204,6 @@ class StatusDashboard extends StatelessWidget {
   }
 
   Widget _buildOrchestrationState(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     return IslandVariant.standard(
       child: Row(
         children: [
@@ -261,7 +260,6 @@ class StatusDashboard extends StatelessWidget {
   }
 
   String _getOrchestrationStateText(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     if (status == null) return 'Not started';
     switch (status!.state) {
       case OrchestrationState.idle:
