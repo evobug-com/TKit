@@ -40,7 +40,8 @@ class UnknownGameDialog extends ConsumerStatefulWidget {
   ConsumerState<UnknownGameDialog> createState() => _UnknownGameDialogState();
 }
 
-class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with TickerProviderStateMixin {
+class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
+    with TickerProviderStateMixin {
   final _searchController = TextEditingController();
   var _currentStep = 0;
   TwitchCategory? _selectedCategory;
@@ -73,7 +74,8 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
 
   Future<void> _loadViewPreference() async {
     final prefs = await SharedPreferences.getInstance();
-    final savedIsGridView = prefs.getBool('unknown_game_dialog_grid_view') ?? true;
+    final savedIsGridView =
+        prefs.getBool('unknown_game_dialog_grid_view') ?? true;
     if (mounted) {
       setState(() {
         _isGridView = savedIsGridView;
@@ -115,10 +117,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       _buildVerticalStepper(context),
-                      Container(
-                        width: 1,
-                        color: TKitColors.border,
-                      ),
+                      Container(width: 1, color: TKitColors.border),
                       Expanded(child: _buildStepContent(context)),
                     ],
                   ),
@@ -158,11 +157,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                 border: Border.all(color: TKitColors.error, width: 2),
                 color: TKitColors.error.withValues(alpha: 0.1),
               ),
-              child: const Icon(
-                Icons.block,
-                color: TKitColors.error,
-                size: 32,
-              ),
+              child: const Icon(Icons.block, color: TKitColors.error, size: 32),
             )
           else if (hasSelectedCategory && _selectedCategory!.boxArtUrl != null)
             Container(
@@ -189,7 +184,8 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                   ),
                   // High-res overlay
                   Image.network(
-                    _selectedCategory!.getBoxArtUrl(width: 156, height: 210) ?? '',
+                    _selectedCategory!.getBoxArtUrl(width: 156, height: 210) ??
+                        '',
                     fit: BoxFit.cover,
                     filterQuality: FilterQuality.high,
                     errorBuilder: (context, error, stackTrace) {
@@ -228,7 +224,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  hasSelectedCategory ? _selectedCategory!.name : l10n.unknownGameDialogTitle,
+                  hasSelectedCategory
+                      ? _selectedCategory!.name
+                      : l10n.unknownGameDialogTitle,
                   style: TKitTextStyles.heading2,
                 ),
                 const VSpace.xs(),
@@ -342,20 +340,22 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                     border: Border.all(
                       color: color,
                       width: 2,
-                      strokeAlign: isDisabled ? BorderSide.strokeAlignCenter : BorderSide.strokeAlignInside,
+                      strokeAlign: isDisabled
+                          ? BorderSide.strokeAlignCenter
+                          : BorderSide.strokeAlignInside,
                     ),
                   ),
                   child: isDisabled
                       ? Icon(Icons.remove, color: color, size: 18)
                       : isCompleted
-                          ? Icon(Icons.check, color: color, size: 18)
-                          : Text(
-                              stepNumber.toString(),
-                              style: TKitTextStyles.bodyMedium.copyWith(
-                                color: color,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                      ? Icon(Icons.check, color: color, size: 18)
+                      : Text(
+                          stepNumber.toString(),
+                          style: TKitTextStyles.bodyMedium.copyWith(
+                            color: color,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
                 if (showConnector)
                   Container(
@@ -377,7 +377,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                       color: color,
                       fontWeight: isActive ? FontWeight.bold : FontWeight.w600,
                       letterSpacing: 0.5,
-                      decoration: isDisabled ? TextDecoration.lineThrough : null,
+                      decoration: isDisabled
+                          ? TextDecoration.lineThrough
+                          : null,
                       decorationColor: color,
                     ),
                   ),
@@ -387,7 +389,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                     style: TKitTextStyles.caption.copyWith(
                       color: isDisabled ? color : TKitColors.textSecondary,
                       fontSize: 11,
-                      decoration: isDisabled ? TextDecoration.lineThrough : null,
+                      decoration: isDisabled
+                          ? TextDecoration.lineThrough
+                          : null,
                       decorationColor: color,
                     ),
                     maxLines: 2,
@@ -443,7 +447,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                     if (value.trim().isNotEmpty) {
                       final authState = ref.read(authProvider);
                       if (authState is Authenticated) {
-                        ref.read(twitchApiProvider.notifier).searchCategories(value);
+                        ref
+                            .read(twitchApiProvider.notifier)
+                            .searchCategories(value);
                       }
                     }
                   },
@@ -466,7 +472,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                       child: Container(
                         padding: const EdgeInsets.all(TKitSpacing.sm),
                         decoration: BoxDecoration(
-                          color: _isGridView ? TKitColors.accent.withValues(alpha: 0.1) : Colors.transparent,
+                          color: _isGridView
+                              ? TKitColors.accent.withValues(alpha: 0.1)
+                              : Colors.transparent,
                           border: const Border(
                             right: BorderSide(color: TKitColors.border),
                           ),
@@ -474,7 +482,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                         child: Icon(
                           Icons.grid_view,
                           size: 20,
-                          color: _isGridView ? TKitColors.accent : TKitColors.textMuted,
+                          color: _isGridView
+                              ? TKitColors.accent
+                              : TKitColors.textMuted,
                         ),
                       ),
                     ),
@@ -486,12 +496,16 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                       child: Container(
                         padding: const EdgeInsets.all(TKitSpacing.sm),
                         decoration: BoxDecoration(
-                          color: !_isGridView ? TKitColors.accent.withValues(alpha: 0.1) : Colors.transparent,
+                          color: !_isGridView
+                              ? TKitColors.accent.withValues(alpha: 0.1)
+                              : Colors.transparent,
                         ),
                         child: Icon(
                           Icons.view_list,
                           size: 20,
-                          color: !_isGridView ? TKitColors.accent : TKitColors.textMuted,
+                          color: !_isGridView
+                              ? TKitColors.accent
+                              : TKitColors.textMuted,
                         ),
                       ),
                     ),
@@ -522,7 +536,11 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error_outline, size: 48, color: TKitColors.error),
+                const Icon(
+                  Icons.error_outline,
+                  size: 48,
+                  color: TKitColors.error,
+                ),
                 const VSpace.md(),
                 Text(
                   l10n.unknownGameDialogSearchError,
@@ -531,7 +549,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                 const VSpace.xs(),
                 Text(
                   twitchApiState.errorMessage!,
-                  style: TKitTextStyles.caption.copyWith(color: TKitColors.textSecondary),
+                  style: TKitTextStyles.caption.copyWith(
+                    color: TKitColors.textSecondary,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -543,16 +563,23 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
           return Center(
             child: Text(
               l10n.unknownGameDialogSearchPrompt,
-              style: TKitTextStyles.bodyMedium.copyWith(color: TKitColors.textMuted),
+              style: TKitTextStyles.bodyMedium.copyWith(
+                color: TKitColors.textMuted,
+              ),
             ),
           );
         }
 
         // Add "Ignore" option as first item
         const ignoreCategory = TwitchCategory(id: '-1', name: 'Ignore Process');
-        final categoriesWithIgnore = [ignoreCategory, ...twitchApiState.categories];
+        final categoriesWithIgnore = [
+          ignoreCategory,
+          ...twitchApiState.categories,
+        ];
 
-        return _isGridView ? _buildGridView(categoriesWithIgnore) : _buildListView(categoriesWithIgnore);
+        return _isGridView
+            ? _buildGridView(categoriesWithIgnore)
+            : _buildListView(categoriesWithIgnore);
       },
     );
   }
@@ -576,167 +603,174 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
         final isIgnoreOption = category.id == '-1';
 
         return InkWell(
-              onTap: () => setState(() => _selectedCategory = category),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: TKitColors.background,
-                  border: Border.all(
-                    color: isSelected
-                        ? (isIgnoreOption ? TKitColors.error : TKitColors.accent)
-                        : (isIgnoreOption ? TKitColors.error.withValues(alpha: 0.3) : TKitColors.border),
-                    width: isSelected ? 2 : 1,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Box art image
-                    Expanded(
-                      child: Stack(
-                        children: [
-                          // Image or placeholder
-                          if (isIgnoreOption)
-                            Container(
-                              color: TKitColors.error.withValues(alpha: 0.1),
-                              child: const Center(
-                                child: Icon(
-                                  Icons.block,
-                                  color: TKitColors.error,
-                                  size: 64,
-                                ),
-                              ),
-                            )
-                          else if (category.boxArtUrl != null)
-                            Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                // Low-res thumbnail (loads instantly)
-                                Image.network(
-                                  category.boxArtUrl!,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Container(
-                                      color: TKitColors.surfaceVariant,
-                                      child: const Center(
-                                        child: Icon(
-                                          Icons.videogame_asset,
-                                          color: TKitColors.textMuted,
-                                          size: 48,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                // High-res image (fades in when loaded)
-                                Image.network(
-                                  category.getBoxArtUrl(width: 600, height: 800) ?? '',
-                                  fit: BoxFit.cover,
-                                  filterQuality: FilterQuality.high,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return const SizedBox.shrink();
-                                  },
-                                  loadingBuilder: (context, child, loadingProgress) {
-                                    if (loadingProgress == null) {
-                                      // High-res loaded, fade it in
-                                      return AnimatedOpacity(
-                                        opacity: 1.0,
-                                        duration: const Duration(milliseconds: 300),
-                                        child: child,
-                                      );
-                                    }
-                                    // Still loading high-res, show nothing (low-res visible underneath)
-                                    return const SizedBox.shrink();
-                                  },
-                                ),
-                              ],
-                            )
-                          else
-                            Container(
-                              color: TKitColors.surfaceVariant,
-                              child: const Center(
-                                child: Icon(
-                                  Icons.videogame_asset,
-                                  color: TKitColors.textMuted,
-                                  size: 48,
-                                ),
-                              ),
+          onTap: () => setState(() => _selectedCategory = category),
+          child: Container(
+            decoration: BoxDecoration(
+              color: TKitColors.background,
+              border: Border.all(
+                color: isSelected
+                    ? (isIgnoreOption ? TKitColors.error : TKitColors.accent)
+                    : (isIgnoreOption
+                          ? TKitColors.error.withValues(alpha: 0.3)
+                          : TKitColors.border),
+                width: isSelected ? 2 : 1,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Box art image
+                Expanded(
+                  child: Stack(
+                    children: [
+                      // Image or placeholder
+                      if (isIgnoreOption)
+                        Container(
+                          color: TKitColors.error.withValues(alpha: 0.1),
+                          child: const Center(
+                            child: Icon(
+                              Icons.block,
+                              color: TKitColors.error,
+                              size: 64,
                             ),
-                          // Selection indicator overlay
-                          if (isSelected)
-                            Positioned(
-                              top: TKitSpacing.xs,
-                              right: TKitSpacing.xs,
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: TKitColors.accent,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withValues(alpha: 0.3),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: const Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: 16,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    // Game info
-                    Container(
-                      padding: const EdgeInsets.all(TKitSpacing.sm),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? (isIgnoreOption ? TKitColors.error.withValues(alpha: 0.1) : TKitColors.accent.withValues(alpha: 0.1))
-                            : TKitColors.surfaceVariant,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            category.name,
-                            style: TKitTextStyles.bodySmall.copyWith(
-                              color: isSelected
-                                  ? (isIgnoreOption ? TKitColors.error : TKitColors.accent)
-                                  : (isIgnoreOption ? TKitColors.error : TKitColors.textPrimary),
-                              fontWeight: FontWeight.w600,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
                           ),
-                          if (!isIgnoreOption) ...[
-                            const VSpace.xs(),
-                            Text(
-                              'ID: ${category.id}',
-                              style: TKitTextStyles.caption.copyWith(
-                                color: TKitColors.textMuted,
-                                fontSize: 10,
-                              ),
+                        )
+                      else if (category.boxArtUrl != null)
+                        Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            // Low-res thumbnail (loads instantly)
+                            Image.network(
+                              category.boxArtUrl!,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: TKitColors.surfaceVariant,
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.videogame_asset,
+                                      color: TKitColors.textMuted,
+                                      size: 48,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            // High-res image (fades in when loaded)
+                            Image.network(
+                              category.getBoxArtUrl(width: 600, height: 800) ??
+                                  '',
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.high,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const SizedBox.shrink();
+                              },
+                              loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) {
+                                  // High-res loaded, fade it in
+                                  return AnimatedOpacity(
+                                    opacity: 1.0,
+                                    duration: const Duration(milliseconds: 300),
+                                    child: child,
+                                  );
+                                }
+                                // Still loading high-res, show nothing (low-res visible underneath)
+                                return const SizedBox.shrink();
+                              },
                             ),
                           ],
-                        ],
-                      ),
-                    ),
-                  ],
+                        )
+                      else
+                        Container(
+                          color: TKitColors.surfaceVariant,
+                          child: const Center(
+                            child: Icon(
+                              Icons.videogame_asset,
+                              color: TKitColors.textMuted,
+                              size: 48,
+                            ),
+                          ),
+                        ),
+                      // Selection indicator overlay
+                      if (isSelected)
+                        Positioned(
+                          top: TKitSpacing.xs,
+                          right: TKitSpacing.xs,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: TKitColors.accent,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.3),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: const Icon(
+                              Icons.check,
+                              color: Colors.white,
+                              size: 16,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-            );
+                // Game info
+                Container(
+                  padding: const EdgeInsets.all(TKitSpacing.sm),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? (isIgnoreOption
+                              ? TKitColors.error.withValues(alpha: 0.1)
+                              : TKitColors.accent.withValues(alpha: 0.1))
+                        : TKitColors.surfaceVariant,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        category.name,
+                        style: TKitTextStyles.bodySmall.copyWith(
+                          color: isSelected
+                              ? (isIgnoreOption
+                                    ? TKitColors.error
+                                    : TKitColors.accent)
+                              : (isIgnoreOption
+                                    ? TKitColors.error
+                                    : TKitColors.textPrimary),
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      if (!isIgnoreOption) ...[
+                        const VSpace.xs(),
+                        Text(
+                          'ID: ${category.id}',
+                          style: TKitTextStyles.caption.copyWith(
+                            color: TKitColors.textMuted,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
       },
     );
   }
 
   Widget _buildListView(List<TwitchCategory> categories) {
     return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: TKitColors.border),
-      ),
+      decoration: BoxDecoration(border: Border.all(color: TKitColors.border)),
       child: ListView.builder(
         addAutomaticKeepAlives: false,
         addRepaintBoundaries: true,
@@ -753,18 +787,26 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
               padding: const EdgeInsets.all(TKitSpacing.md),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? (isIgnoreOption ? TKitColors.error.withValues(alpha: 0.1) : TKitColors.accent.withValues(alpha: 0.1))
+                    ? (isIgnoreOption
+                          ? TKitColors.error.withValues(alpha: 0.1)
+                          : TKitColors.accent.withValues(alpha: 0.1))
                     : Colors.transparent,
                 border: Border(
-                  bottom: BorderSide(color: TKitColors.border.withValues(alpha: 0.3)),
+                  bottom: BorderSide(
+                    color: TKitColors.border.withValues(alpha: 0.3),
+                  ),
                 ),
               ),
               child: Row(
                 children: [
                   Icon(
-                    isSelected ? Icons.check_circle : Icons.radio_button_unchecked,
+                    isSelected
+                        ? Icons.check_circle
+                        : Icons.radio_button_unchecked,
                     color: isSelected
-                        ? (isIgnoreOption ? TKitColors.error : TKitColors.accent)
+                        ? (isIgnoreOption
+                              ? TKitColors.error
+                              : TKitColors.accent)
                         : TKitColors.textMuted,
                     size: 24,
                   ),
@@ -776,7 +818,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                       height: 53,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: isSelected ? TKitColors.error : TKitColors.error.withValues(alpha: 0.3),
+                          color: isSelected
+                              ? TKitColors.error
+                              : TKitColors.error.withValues(alpha: 0.3),
                           width: isSelected ? 2 : 1,
                         ),
                         color: TKitColors.error.withValues(alpha: 0.1),
@@ -793,7 +837,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                       height: 53,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: isSelected ? TKitColors.accent : TKitColors.border,
+                          color: isSelected
+                              ? TKitColors.accent
+                              : TKitColors.border,
                           width: isSelected ? 2 : 1,
                         ),
                         color: TKitColors.surfaceVariant,
@@ -815,7 +861,8 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                           ),
                           // High-res overlay
                           Image.network(
-                            category.getBoxArtUrl(width: 120, height: 160) ?? '',
+                            category.getBoxArtUrl(width: 120, height: 160) ??
+                                '',
                             fit: BoxFit.cover,
                             filterQuality: FilterQuality.high,
                             errorBuilder: (context, error, stackTrace) {
@@ -858,16 +905,24 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                           category.name,
                           style: TKitTextStyles.bodyMedium.copyWith(
                             color: isSelected
-                                ? (isIgnoreOption ? TKitColors.error : TKitColors.accent)
-                                : (isIgnoreOption ? TKitColors.error : TKitColors.textPrimary),
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                ? (isIgnoreOption
+                                      ? TKitColors.error
+                                      : TKitColors.accent)
+                                : (isIgnoreOption
+                                      ? TKitColors.error
+                                      : TKitColors.textPrimary),
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                           ),
                         ),
                         if (!isIgnoreOption) ...[
                           const VSpace.xs(),
                           Text(
                             'ID: ${category.id}',
-                            style: TKitTextStyles.caption.copyWith(color: TKitColors.textMuted),
+                            style: TKitTextStyles.caption.copyWith(
+                              color: TKitColors.textMuted,
+                            ),
                           ),
                         ],
                       ],
@@ -960,13 +1015,22 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error_outline, size: 48, color: TKitColors.error),
+                const Icon(
+                  Icons.error_outline,
+                  size: 48,
+                  color: TKitColors.error,
+                ),
                 const VSpace.md(),
-                const Text('Error loading lists', style: TKitTextStyles.bodyMedium),
+                const Text(
+                  'Error loading lists',
+                  style: TKitTextStyles.bodyMedium,
+                ),
                 const VSpace.xs(),
                 Text(
                   mappingListState.errorMessage!,
-                  style: TKitTextStyles.caption.copyWith(color: TKitColors.textSecondary),
+                  style: TKitTextStyles.caption.copyWith(
+                    color: TKitColors.textSecondary,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -975,17 +1039,21 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
         }
 
         final localLists = mappingListState.lists
-            .where((list) =>
-                !list.isReadOnly &&
-                list.isEnabled &&
-                list.sourceType == MappingListSourceType.local)
+            .where(
+              (list) =>
+                  !list.isReadOnly &&
+                  list.isEnabled &&
+                  list.sourceType == MappingListSourceType.local,
+            )
             .toList();
 
         final submissionLists = mappingListState.lists
-            .where((list) =>
-                list.isEnabled &&
-                list.submissionHookUrl != null &&
-                list.sourceType != MappingListSourceType.local)
+            .where(
+              (list) =>
+                  list.isEnabled &&
+                  list.submissionHookUrl != null &&
+                  list.sourceType != MappingListSourceType.local,
+            )
             .toList();
 
         if (localLists.isEmpty && submissionLists.isEmpty) {
@@ -993,17 +1061,25 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.folder_off_outlined, size: 48, color: TKitColors.textMuted),
+                const Icon(
+                  Icons.folder_off_outlined,
+                  size: 48,
+                  color: TKitColors.textMuted,
+                ),
                 const VSpace.md(),
                 Text(
                   l10n.unknownGameDialogNoWritableLists,
-                  style: TKitTextStyles.bodyMedium.copyWith(color: TKitColors.textPrimary),
+                  style: TKitTextStyles.bodyMedium.copyWith(
+                    color: TKitColors.textPrimary,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 const VSpace.xs(),
                 Text(
                   l10n.unknownGameDialogNoWritableListsHint,
-                  style: TKitTextStyles.caption.copyWith(color: TKitColors.textSecondary),
+                  style: TKitTextStyles.caption.copyWith(
+                    color: TKitColors.textSecondary,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -1018,7 +1094,11 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                 padding: const EdgeInsets.symmetric(vertical: TKitSpacing.xs),
                 child: Row(
                   children: [
-                    const Icon(Icons.cloud_upload_outlined, size: 16, color: TKitColors.textSecondary),
+                    const Icon(
+                      Icons.cloud_upload_outlined,
+                      size: 16,
+                      color: TKitColors.textSecondary,
+                    ),
                     const HSpace.xs(),
                     Text(
                       'LISTS',
@@ -1039,7 +1119,11 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                 padding: const EdgeInsets.symmetric(vertical: TKitSpacing.xs),
                 child: Row(
                   children: [
-                    const Icon(Icons.laptop_outlined, size: 16, color: TKitColors.textSecondary),
+                    const Icon(
+                      Icons.laptop_outlined,
+                      size: 16,
+                      color: TKitColors.textSecondary,
+                    ),
                     const HSpace.xs(),
                     Text(
                       l10n.unknownGameDialogLocalListsHeader,
@@ -1096,8 +1180,12 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                         child: Text(
                           list.name,
                           style: TKitTextStyles.bodyMedium.copyWith(
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                            color: isSelected ? TKitColors.accent : TKitColors.textPrimary,
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.w600,
+                            color: isSelected
+                                ? TKitColors.accent
+                                : TKitColors.textPrimary,
                           ),
                         ),
                       ),
@@ -1109,7 +1197,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                     const VSpace.xs(),
                     Text(
                       list.description,
-                      style: TKitTextStyles.caption.copyWith(color: TKitColors.textSecondary),
+                      style: TKitTextStyles.caption.copyWith(
+                        color: TKitColors.textSecondary,
+                      ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -1119,7 +1209,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                     children: [
                       Text(
                         '${list.mappingCount} mappings',
-                        style: TKitTextStyles.caption.copyWith(color: TKitColors.textMuted),
+                        style: TKitTextStyles.caption.copyWith(
+                          color: TKitColors.textMuted,
+                        ),
                       ),
                       if (hasSubmission) ...[
                         const HSpace.sm(),
@@ -1135,11 +1227,23 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(Icons.laptop, size: 9, color: TKitColors.accent),
+                              const Icon(
+                                Icons.laptop,
+                                size: 9,
+                                color: TKitColors.accent,
+                              ),
                               const SizedBox(width: 2),
-                              const Icon(Icons.arrow_forward, size: 8, color: TKitColors.accent),
+                              const Icon(
+                                Icons.arrow_forward,
+                                size: 8,
+                                color: TKitColors.accent,
+                              ),
                               const SizedBox(width: 2),
-                              const Icon(Icons.check_circle, size: 9, color: TKitColors.accent),
+                              const Icon(
+                                Icons.check_circle,
+                                size: 9,
+                                color: TKitColors.accent,
+                              ),
                               const HSpace.xs(),
                               Text(
                                 'STAGED',
@@ -1166,10 +1270,15 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
   }
 
   Widget _buildSourceBadge(MappingList list) {
-    final color = Color(int.parse(list.sourceTypeBadgeColor.replaceFirst('#', '0xFF')));
+    final color = Color(
+      int.parse(list.sourceTypeBadgeColor.replaceFirst('#', '0xFF')),
+    );
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xs, vertical: 2),
+      padding: const EdgeInsets.symmetric(
+        horizontal: TKitSpacing.xs,
+        vertical: 2,
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         border: Border.all(color: color),
@@ -1199,13 +1308,17 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
           children: [
             Text(
               l10n.unknownGameDialogConfirmDescription,
-              style: TKitTextStyles.bodySmall.copyWith(color: TKitColors.textSecondary),
+              style: TKitTextStyles.bodySmall.copyWith(
+                color: TKitColors.textSecondary,
+              ),
             ),
             const VSpace.lg(),
 
             // Selected Game/Category
             _buildConfirmSection(
-              title: isIgnored ? 'IGNORED PROCESS' : l10n.unknownGameDialogConfirmCategory,
+              title: isIgnored
+                  ? 'IGNORED PROCESS'
+                  : l10n.unknownGameDialogConfirmCategory,
               icon: isIgnored ? Icons.block : Icons.videogame_asset,
               iconColor: isIgnored ? TKitColors.error : TKitColors.accent,
               child: Row(
@@ -1219,7 +1332,11 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                         border: Border.all(color: TKitColors.error, width: 2),
                         color: TKitColors.error.withValues(alpha: 0.1),
                       ),
-                      child: const Icon(Icons.block, color: TKitColors.error, size: 32),
+                      child: const Icon(
+                        Icons.block,
+                        color: TKitColors.error,
+                        size: 32,
+                      ),
                     )
                   else if (_selectedCategory!.boxArtUrl != null)
                     Container(
@@ -1235,10 +1352,15 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                           Image.network(
                             _selectedCategory!.boxArtUrl!,
                             fit: BoxFit.cover,
-                            errorBuilder: (_, _, _) => const Icon(Icons.videogame_asset),
+                            errorBuilder: (_, _, _) =>
+                                const Icon(Icons.videogame_asset),
                           ),
                           Image.network(
-                            _selectedCategory!.getBoxArtUrl(width: 180, height: 240) ?? '',
+                            _selectedCategory!.getBoxArtUrl(
+                                  width: 180,
+                                  height: 240,
+                                ) ??
+                                '',
                             fit: BoxFit.cover,
                             errorBuilder: (_, _, _) => const SizedBox.shrink(),
                             loadingBuilder: (_, child, progress) {
@@ -1263,7 +1385,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                         Text(
                           _selectedCategory!.name,
                           style: TKitTextStyles.heading3.copyWith(
-                            color: isIgnored ? TKitColors.error : TKitColors.textPrimary,
+                            color: isIgnored
+                                ? TKitColors.error
+                                : TKitColors.textPrimary,
                           ),
                         ),
                         const VSpace.xs(),
@@ -1278,7 +1402,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                           const VSpace.xs(),
                           Text(
                             'ID: ${_selectedCategory!.id}',
-                            style: TKitTextStyles.caption.copyWith(color: TKitColors.textMuted),
+                            style: TKitTextStyles.caption.copyWith(
+                              color: TKitColors.textMuted,
+                            ),
                           ),
                         ],
                       ],
@@ -1291,7 +1417,11 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
             const VSpace.lg(),
 
             // What Happens Next
-            _buildWorkflowCard(context, hasSubmission: hasSubmission, isIgnored: isIgnored),
+            _buildWorkflowCard(
+              context,
+              hasSubmission: hasSubmission,
+              isIgnored: isIgnored,
+            ),
           ],
         ),
       ),
@@ -1333,14 +1463,21 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
     );
   }
 
-
-  Widget _buildWorkflowCard(BuildContext context, {required bool hasSubmission, required bool isIgnored}) {
+  Widget _buildWorkflowCard(
+    BuildContext context, {
+    required bool hasSubmission,
+    required bool isIgnored,
+  }) {
     final l10n = AppLocalizations.of(context)!;
 
     return Container(
       decoration: BoxDecoration(
-        color: hasSubmission ? TKitColors.accent.withValues(alpha: 0.05) : TKitColors.surfaceVariant,
-        border: Border.all(color: hasSubmission ? TKitColors.accent : TKitColors.border),
+        color: hasSubmission
+            ? TKitColors.accent.withValues(alpha: 0.05)
+            : TKitColors.surfaceVariant,
+        border: Border.all(
+          color: hasSubmission ? TKitColors.accent : TKitColors.border,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1349,22 +1486,34 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
           Container(
             padding: const EdgeInsets.all(TKitSpacing.md),
             decoration: BoxDecoration(
-              color: hasSubmission ? TKitColors.accent.withValues(alpha: 0.1) : TKitColors.background,
-              border: Border(bottom: BorderSide(color: hasSubmission ? TKitColors.accent : TKitColors.border)),
+              color: hasSubmission
+                  ? TKitColors.accent.withValues(alpha: 0.1)
+                  : TKitColors.background,
+              border: Border(
+                bottom: BorderSide(
+                  color: hasSubmission ? TKitColors.accent : TKitColors.border,
+                ),
+              ),
             ),
             child: Row(
               children: [
                 Icon(
-                  hasSubmission ? Icons.cloud_upload_outlined : Icons.save_outlined,
+                  hasSubmission
+                      ? Icons.cloud_upload_outlined
+                      : Icons.save_outlined,
                   size: 20,
-                  color: hasSubmission ? TKitColors.accent : TKitColors.textSecondary,
+                  color: hasSubmission
+                      ? TKitColors.accent
+                      : TKitColors.textSecondary,
                 ),
                 const HSpace.sm(),
                 Text(
                   hasSubmission ? 'Submission Workflow' : 'What Happens Next',
                   style: TKitTextStyles.bodyMedium.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: hasSubmission ? TKitColors.accent : TKitColors.textPrimary,
+                    color: hasSubmission
+                        ? TKitColors.accent
+                        : TKitColors.textPrimary,
                   ),
                 ),
               ],
@@ -1391,7 +1540,8 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
           number: '1',
           icon: Icons.save,
           title: 'Saved locally to My Custom Mappings',
-          description: 'Stored on your device first, so the mapping works immediately',
+          description:
+              'Stored on your device first, so the mapping works immediately',
           color: TKitColors.accent,
         ),
         const VSpace.sm(),
@@ -1401,7 +1551,8 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
           number: '2',
           icon: Icons.cloud_upload,
           title: 'Submitted to ${_selectedList!.name}',
-          description: 'Automatically sent to the list owner for review and approval',
+          description:
+              'Automatically sent to the list owner for review and approval',
           color: TKitColors.warning,
         ),
         const VSpace.sm(),
@@ -1411,7 +1562,8 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
           number: '3',
           icon: Icons.swap_horiz,
           title: 'Local copy replaced when approved',
-          description: 'Once accepted and synced, your local copy is removed and replaced with the official version from ${_selectedList!.name}',
+          description:
+              'Once accepted and synced, your local copy is removed and replaced with the official version from ${_selectedList!.name}',
           color: TKitColors.success,
         ),
       ],
@@ -1431,7 +1583,11 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
                 color: TKitColors.success.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.check, color: TKitColors.success, size: 16),
+              child: const Icon(
+                Icons.check,
+                color: TKitColors.success,
+                size: 16,
+              ),
             ),
             const HSpace.md(),
             Expanded(
@@ -1468,7 +1624,11 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
           ),
           child: Row(
             children: [
-              const Icon(Icons.info_outline, size: 14, color: TKitColors.textMuted),
+              const Icon(
+                Icons.info_outline,
+                size: 14,
+                color: TKitColors.textMuted,
+              ),
               const HSpace.sm(),
               Expanded(
                 child: Text(
@@ -1561,8 +1721,8 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
     final canProceed = _currentStep == 0
         ? _selectedCategory != null
         : _currentStep == 1
-            ? _selectedList != null
-            : true;
+        ? _selectedList != null
+        : true;
 
     final hasSubmissionHook = _selectedList?.submissionHookUrl != null;
     final shouldShowConfirmStep = hasSubmissionHook;
@@ -1626,69 +1786,69 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
         curve: Curves.easeOut,
         builder: (context, value, child) {
           return Container(
-          width: 850,
-          height: 700,
-          color: TKitColors.surface.withValues(alpha: 0.95 * value),
-          child: Stack(
-            children: [
-              // Floating hearts
-              ...List.generate(12, (index) {
-                final offset = index * 30.0;
-                final xPosition = 100.0 + (index * 60.0);
-                return _buildFloatingHeart(
-                  xPosition: xPosition,
-                  delay: offset,
-                  value: value,
-                );
-              }),
-              // Center content
-              Center(
-                child: Transform.scale(
-                  scale: value,
-                  child: Opacity(
-                    opacity: value,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Big heart icon
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.pink.withValues(alpha: 0.1),
+            width: 850,
+            height: 700,
+            color: TKitColors.surface.withValues(alpha: 0.95 * value),
+            child: Stack(
+              children: [
+                // Floating hearts
+                ...List.generate(12, (index) {
+                  final offset = index * 30.0;
+                  final xPosition = 100.0 + (index * 60.0);
+                  return _buildFloatingHeart(
+                    xPosition: xPosition,
+                    delay: offset,
+                    value: value,
+                  );
+                }),
+                // Center content
+                Center(
+                  child: Transform.scale(
+                    scale: value,
+                    child: Opacity(
+                      opacity: value,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Big heart icon
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.pink.withValues(alpha: 0.1),
+                            ),
+                            child: const Icon(
+                              Icons.favorite,
+                              size: 60,
+                              color: Colors.pink,
+                            ),
                           ),
-                          child: const Icon(
-                            Icons.favorite,
-                            size: 60,
-                            color: Colors.pink,
+                          const VSpace.xl(),
+                          Text(
+                            l10n.unknownGameDialogThankYouTitle,
+                            style: TKitTextStyles.heading1.copyWith(
+                              color: TKitColors.accent,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                        ),
-                        const VSpace.xl(),
-                        Text(
-                          l10n.unknownGameDialogThankYouTitle,
-                          style: TKitTextStyles.heading1.copyWith(
-                            color: TKitColors.accent,
+                          const VSpace.md(),
+                          Text(
+                            l10n.unknownGameDialogThankYouMessage,
+                            style: TKitTextStyles.bodyLarge.copyWith(
+                              color: TKitColors.textSecondary,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const VSpace.md(),
-                        Text(
-                          l10n.unknownGameDialogThankYouMessage,
-                          style: TKitTextStyles.bodyLarge.copyWith(
-                            color: TKitColors.textSecondary,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -1730,7 +1890,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
 
     // If submitting to community, always save to local list first (as per workflow)
     // Only use the selected list ID if it's a direct local save (no submission)
-    final targetListId = hasSubmissionHook ? 'my-custom-mappings' : _selectedList!.id;
+    final targetListId = hasSubmissionHook
+        ? 'my-custom-mappings'
+        : _selectedList!.id;
 
     final result = {
       'category': _selectedCategory!,
@@ -1741,7 +1903,8 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog> with Tick
       'executablePath': widget.executablePath,
       'normalizedInstallPath': normalizedPath,
       'windowTitle': widget.windowTitle,
-      'isEnabled': true, // Always enabled - ignore logic handled by categoryId == '-1'
+      'isEnabled':
+          true, // Always enabled - ignore logic handled by categoryId == '-1'
       'listId': targetListId,
     };
 

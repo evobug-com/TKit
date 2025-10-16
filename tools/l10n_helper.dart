@@ -12,7 +12,9 @@ void main(List<String> args) {
   switch (command) {
     case 'extract':
       if (args.length < 3) {
-        print('Usage: dart run tools/l10n_helper.dart extract <language> <output-file>');
+        print(
+          'Usage: dart run tools/l10n_helper.dart extract <language> <output-file>',
+        );
         exit(1);
       }
       handleExtract(args[1], args[2]);
@@ -20,7 +22,9 @@ void main(List<String> args) {
 
     case 'insert':
       if (args.length < 3) {
-        print('Usage: dart run tools/l10n_helper.dart insert <language> <translations-file>');
+        print(
+          'Usage: dart run tools/l10n_helper.dart insert <language> <translations-file>',
+        );
         exit(1);
       }
       handleInsert(args[1], args[2]);
@@ -63,7 +67,8 @@ void handleList() {
     exit(1);
   }
 
-  final data = jsonDecode(untranslatedFile.readAsStringSync()) as Map<String, dynamic>;
+  final data =
+      jsonDecode(untranslatedFile.readAsStringSync()) as Map<String, dynamic>;
 
   print('Missing translations by language:\n');
   for (final entry in data.entries) {
@@ -83,7 +88,8 @@ void handleExtract(String language, String outputFile) {
     exit(1);
   }
 
-  final untranslatedData = jsonDecode(untranslatedFile.readAsStringSync()) as Map<String, dynamic>;
+  final untranslatedData =
+      jsonDecode(untranslatedFile.readAsStringSync()) as Map<String, dynamic>;
 
   if (!untranslatedData.containsKey(language)) {
     print('Error: Language "$language" not found in untranslated_messages.txt');
@@ -106,7 +112,8 @@ void handleExtract(String language, String outputFile) {
     exit(1);
   }
 
-  final enArb = jsonDecode(enArbFile.readAsStringSync()) as Map<String, dynamic>;
+  final enArb =
+      jsonDecode(enArbFile.readAsStringSync()) as Map<String, dynamic>;
 
   // Read target language ARB file to find insertion positions
   final langArbFile = File('lib/l10n/app_$language.arb');
@@ -115,7 +122,8 @@ void handleExtract(String language, String outputFile) {
     exit(1);
   }
 
-  final langArb = jsonDecode(langArbFile.readAsStringSync()) as Map<String, dynamic>;
+  final langArb =
+      jsonDecode(langArbFile.readAsStringSync()) as Map<String, dynamic>;
   final existingKeys = langArb.keys.toList();
 
   // Extract data for each missing key
@@ -187,8 +195,10 @@ void handleInsert(String language, String translationsFile) {
     exit(1);
   }
 
-  final transData = jsonDecode(transFile.readAsStringSync()) as Map<String, dynamic>;
-  final translations = (transData['translations'] as List).cast<Map<String, dynamic>>();
+  final transData =
+      jsonDecode(transFile.readAsStringSync()) as Map<String, dynamic>;
+  final translations = (transData['translations'] as List)
+      .cast<Map<String, dynamic>>();
 
   if (translations.isEmpty) {
     print('No translations to insert');
@@ -265,7 +275,9 @@ void handleInsert(String language, String translationsFile) {
       final metadataLines = metadataJson.split('\n');
       entries.add('  "@$key": ${metadataLines[0]}');
       for (int i = 1; i < metadataLines.length; i++) {
-        entries.add('  ${metadataLines[i]}${i == metadataLines.length - 1 ? ',' : ''}');
+        entries.add(
+          '  ${metadataLines[i]}${i == metadataLines.length - 1 ? ',' : ''}',
+        );
       }
     }
 
@@ -319,7 +331,9 @@ void handleInsert(String language, String translationsFile) {
   // Write back to file
   langArbFile.writeAsStringSync(lines.join('\n'));
 
-  print('\n✓ Inserted $insertedCount translations into lib/l10n/app_$language.arb');
+  print(
+    '\n✓ Inserted $insertedCount translations into lib/l10n/app_$language.arb',
+  );
   print('\nNext steps:');
   print('1. Run: dart run build_runner build');
   print('2. Test the translations in the app');

@@ -49,7 +49,8 @@ class ProgressBar extends StatelessWidget {
                 ),
             ],
           ),
-        if (label != null || showPercentage) const SizedBox(height: TKitSpacing.xs),
+        if (label != null || showPercentage)
+          const SizedBox(height: TKitSpacing.xs),
         Container(
           height: height,
           decoration: BoxDecoration(
@@ -59,9 +60,7 @@ class ProgressBar extends StatelessWidget {
           child: FractionallySizedBox(
             alignment: Alignment.centerLeft,
             widthFactor: progress.clamp(0.0, 1.0),
-            child: Container(
-              color: color ?? TKitColors.accent,
-            ),
+            child: Container(color: color ?? TKitColors.accent),
           ),
         ),
       ],
@@ -138,74 +137,69 @@ class StepProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: List.generate(
-        totalSteps * 2 - 1,
-        (index) {
-          if (index.isEven) {
-            final stepIndex = index ~/ 2;
-            final isCompleted = stepIndex < currentStep;
-            final isCurrent = stepIndex == currentStep;
+      children: List.generate(totalSteps * 2 - 1, (index) {
+        if (index.isEven) {
+          final stepIndex = index ~/ 2;
+          final isCompleted = stepIndex < currentStep;
+          final isCurrent = stepIndex == currentStep;
 
-            return Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      color: isCompleted || isCurrent
-                          ? TKitColors.accent
-                          : TKitColors.surfaceVariant,
-                      border: Border.all(
-                        color: isCurrent
-                            ? TKitColors.accent
-                            : TKitColors.border,
-                        width: isCurrent ? 2 : 1,
-                      ),
-                      shape: BoxShape.circle,
+          return Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: isCompleted || isCurrent
+                        ? TKitColors.accent
+                        : TKitColors.surfaceVariant,
+                    border: Border.all(
+                      color: isCurrent ? TKitColors.accent : TKitColors.border,
+                      width: isCurrent ? 2 : 1,
                     ),
-                    child: Center(
-                      child: Text(
-                        '${stepIndex + 1}',
-                        style: TKitTextStyles.bodySmall.copyWith(
-                          color: isCompleted || isCurrent
-                              ? TKitColors.textPrimary
-                              : TKitColors.textMuted,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Text(
+                      '${stepIndex + 1}',
+                      style: TKitTextStyles.bodySmall.copyWith(
+                        color: isCompleted || isCurrent
+                            ? TKitColors.textPrimary
+                            : TKitColors.textMuted,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-                  if (labels != null && stepIndex < labels!.length) ...[
-                    const SizedBox(height: TKitSpacing.xs),
-                    Text(
-                      labels![stepIndex],
-                      style: TKitTextStyles.caption.copyWith(
-                        color: isCurrent
-                            ? TKitColors.textPrimary
-                            : TKitColors.textMuted,
-                      ),
-                      textAlign: TextAlign.center,
+                ),
+                if (labels != null && stepIndex < labels!.length) ...[
+                  const SizedBox(height: TKitSpacing.xs),
+                  Text(
+                    labels![stepIndex],
+                    style: TKitTextStyles.caption.copyWith(
+                      color: isCurrent
+                          ? TKitColors.textPrimary
+                          : TKitColors.textMuted,
                     ),
-                  ],
+                    textAlign: TextAlign.center,
+                  ),
                 ],
-              ),
-            );
-          } else {
-            final stepIndex = index ~/ 2;
-            final isCompleted = stepIndex < currentStep;
+              ],
+            ),
+          );
+        } else {
+          final stepIndex = index ~/ 2;
+          final isCompleted = stepIndex < currentStep;
 
-            return Expanded(
-              child: Container(
-                height: 2,
-                color: isCompleted ? TKitColors.accent : TKitColors.border,
-                margin: const EdgeInsets.only(bottom: 40),
-              ),
-            );
-          }
-        },
-      ),
+          return Expanded(
+            child: Container(
+              height: 2,
+              color: isCompleted ? TKitColors.accent : TKitColors.border,
+              margin: const EdgeInsets.only(bottom: 40),
+            ),
+          );
+        }
+      }),
     );
   }
 }

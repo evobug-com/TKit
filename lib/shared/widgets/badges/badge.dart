@@ -41,7 +41,10 @@ class TKitBadge extends StatelessWidget {
     this.variant = TKitBadgeVariant.defaultVariant,
     this.dotOnly = false,
     this.dotSize = 8.0,
-  }) : assert(dotOnly || text != null, 'Text is required when not in dot-only mode');
+  }) : assert(
+         dotOnly || text != null,
+         'Text is required when not in dot-only mode',
+       );
 
   /// Get color based on variant
   Color get _color {
@@ -80,10 +83,7 @@ class TKitBadge extends StatelessWidget {
 
     // Full badge with text
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 6,
-        vertical: 2,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
         color: _backgroundColor,
         border: Border.all(color: _color, width: 1),
@@ -131,9 +131,6 @@ class TKitCountBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TKitBadge(
-      text: _displayText,
-      variant: variant,
-    );
+    return TKitBadge(text: _displayText, variant: variant);
   }
 }

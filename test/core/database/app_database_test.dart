@@ -286,7 +286,9 @@ void main() {
 
     group('CommunityMappings', () {
       test('should insert community mapping', () async {
-        await database.into(database.communityMappings).insert(
+        await database
+            .into(database.communityMappings)
+            .insert(
               CommunityMappingsCompanion.insert(
                 processName: 'League of Legends.exe',
                 twitchCategoryId: '21779',
@@ -295,7 +297,9 @@ void main() {
               ),
             );
 
-        final mappings = await database.select(database.communityMappings).get();
+        final mappings = await database
+            .select(database.communityMappings)
+            .get();
 
         expect(mappings.length, 1);
         expect(mappings.first.processName, 'League of Legends.exe');
@@ -321,7 +325,9 @@ void main() {
 
         await database.upsertCommunityMappings(mappingsData);
 
-        final mappings = await database.select(database.communityMappings).get();
+        final mappings = await database
+            .select(database.communityMappings)
+            .get();
 
         expect(mappings.length, 2);
         expect(mappings.any((m) => m.processName == 'Valorant.exe'), true);
@@ -329,7 +335,9 @@ void main() {
       });
 
       test('should get community mapping by process name', () async {
-        await database.into(database.communityMappings).insert(
+        await database
+            .into(database.communityMappings)
+            .insert(
               CommunityMappingsCompanion.insert(
                 processName: 'TestGame.exe',
                 twitchCategoryId: '12345',

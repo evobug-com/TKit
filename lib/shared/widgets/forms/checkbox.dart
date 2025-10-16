@@ -45,9 +45,7 @@ class TKitCheckbox extends StatelessWidget {
               : TKitColors.borderSubtle,
           width: 1,
         ),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         visualDensity: VisualDensity.compact,
       ),
@@ -94,32 +92,32 @@ class TKitCheckboxFormField extends FormField<bool> {
     bool enabled = true,
     super.autovalidateMode,
   }) : super(
-          builder: (FormFieldState<bool> state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TKitCheckbox(
-                  value: state.value ?? false,
-                  onChanged: enabled
-                      ? (value) {
-                          state.didChange(value);
-                        }
-                      : null,
-                  label: label,
-                  enabled: enabled,
-                ),
-                if (state.hasError) ...[
-                  const SizedBox(height: TKitSpacing.xs),
-                  Text(
-                    state.errorText!,
-                    style: TKitTextStyles.caption.copyWith(
-                      color: TKitColors.error,
-                    ),
-                  ),
-                ],
-              ],
-            );
-          },
-        );
+         builder: (FormFieldState<bool> state) {
+           return Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             mainAxisSize: MainAxisSize.min,
+             children: [
+               TKitCheckbox(
+                 value: state.value ?? false,
+                 onChanged: enabled
+                     ? (value) {
+                         state.didChange(value);
+                       }
+                     : null,
+                 label: label,
+                 enabled: enabled,
+               ),
+               if (state.hasError) ...[
+                 const SizedBox(height: TKitSpacing.xs),
+                 Text(
+                   state.errorText!,
+                   style: TKitTextStyles.caption.copyWith(
+                     color: TKitColors.error,
+                   ),
+                 ),
+               ],
+             ],
+           );
+         },
+       );
 }

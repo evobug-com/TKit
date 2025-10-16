@@ -19,10 +19,7 @@ class CategoryMappingRepositoryImpl implements ICategoryMappingRepository {
   final CategoryMappingLocalDataSource localDataSource;
   final MemoryCache memoryCache;
 
-  CategoryMappingRepositoryImpl(
-    this.localDataSource,
-    this.memoryCache,
-  );
+  CategoryMappingRepositoryImpl(this.localDataSource, this.memoryCache);
 
   @override
   Future<Either<Failure, CategoryMapping?>> findMapping(

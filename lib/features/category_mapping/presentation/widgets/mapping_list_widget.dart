@@ -15,7 +15,8 @@ class MappingListWidget extends StatefulWidget {
   final void Function(CategoryMapping mapping)? onToggleEnabled;
   final void Function(List<int> ids)? onBulkDelete;
   final void Function(List<CategoryMapping> mappings)? onBulkExport;
-  final void Function(List<int> ids, {required bool enabled})? onBulkToggleEnabled;
+  final void Function(List<int> ids, {required bool enabled})?
+  onBulkToggleEnabled;
   final void Function(List<CategoryMapping> mappings)? onBulkRestore;
   final void Function(String? listId)? onSourceTap;
 
@@ -121,10 +122,13 @@ class _MappingListWidgetState extends State<MappingListWidget> {
 
     final l10n = AppLocalizations.of(context)!;
 
-    if (_lastAction == l10n.mappingListActionDelete && _deletedMappings != null && widget.onBulkRestore != null) {
+    if (_lastAction == l10n.mappingListActionDelete &&
+        _deletedMappings != null &&
+        widget.onBulkRestore != null) {
       // Restore deleted mappings
       widget.onBulkRestore!(_deletedMappings!);
-    } else if ((_lastAction == l10n.mappingListActionEnable || _lastAction == l10n.mappingListActionDisable) &&
+    } else if ((_lastAction == l10n.mappingListActionEnable ||
+            _lastAction == l10n.mappingListActionDisable) &&
         _previousEnabledStates != null &&
         widget.onBulkToggleEnabled != null) {
       // Restore previous enabled states
@@ -215,11 +219,17 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                   // checkboxHorizontalMargin: 8,
                   showCheckboxColumn: true,
                   columns: [
-                    DataColumn(label: Text(l10n.categoryMappingListColumnProcessName)),
-                    DataColumn(label: Text(l10n.categoryMappingListColumnCategory)),
+                    DataColumn(
+                      label: Text(l10n.categoryMappingListColumnProcessName),
+                    ),
+                    DataColumn(
+                      label: Text(l10n.categoryMappingListColumnCategory),
+                    ),
                     DataColumn(label: Text(l10n.mappingListColumnSource)),
                     DataColumn(label: Text(l10n.mappingListColumnEnabled)),
-                    DataColumn(label: Text(l10n.categoryMappingListColumnActions)),
+                    DataColumn(
+                      label: Text(l10n.categoryMappingListColumnActions),
+                    ),
                   ],
                   rows: _filteredMappings.map((mapping) {
                     final isSelected = _selectedIds.contains(mapping.id);
@@ -244,9 +254,13 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                               Tooltip(
                                 message: mapping.twitchCategoryId == "-1"
                                     ? l10n.mappingListTooltipIgnored
-                                    : l10n.mappingListTooltipTwitchId(mapping.twitchCategoryId),
+                                    : l10n.mappingListTooltipTwitchId(
+                                        mapping.twitchCategoryId,
+                                      ),
                                 child: Text(
-                                  mapping.twitchCategoryId == "-1" ? l10n.mappingListCategoryIgnored : mapping.twitchCategoryName,
+                                  mapping.twitchCategoryId == "-1"
+                                      ? l10n.mappingListCategoryIgnored
+                                      : mapping.twitchCategoryName,
                                   style: TKitTextStyles.bodyMedium.copyWith(
                                     color: TKitColors.textPrimary,
                                     fontSize: 13,
@@ -277,7 +291,8 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    mapping.sourceListName ?? l10n.mappingListSourceUnknown,
+                                    mapping.sourceListName ??
+                                        l10n.mappingListSourceUnknown,
                                     style: TKitTextStyles.caption.copyWith(
                                       color: TKitColors.info,
                                       letterSpacing: 0.5,
@@ -318,10 +333,15 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                                     IconButton(
                                       icon: const Icon(Icons.edit, size: 16),
                                       color: TKitColors.textSecondary,
-                                      hoverColor: TKitColors.accent.withValues(alpha: 0.2),
+                                      hoverColor: TKitColors.accent.withValues(
+                                        alpha: 0.2,
+                                      ),
                                       onPressed: () => widget.onEdit(mapping),
-                                      tooltip: l10n.categoryMappingListEditTooltip,
-                                      padding: const EdgeInsets.all(TKitSpacing.sm),
+                                      tooltip:
+                                          l10n.categoryMappingListEditTooltip,
+                                      padding: const EdgeInsets.all(
+                                        TKitSpacing.sm,
+                                      ),
                                       constraints: const BoxConstraints(
                                         minWidth: 32,
                                         minHeight: 32,
@@ -330,10 +350,16 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                                     IconButton(
                                       icon: const Icon(Icons.delete, size: 16),
                                       color: TKitColors.textSecondary,
-                                      hoverColor: TKitColors.error.withValues(alpha: 0.2),
-                                      onPressed: () => widget.onDelete(mapping.id!),
-                                      tooltip: l10n.categoryMappingListDeleteTooltip,
-                                      padding: const EdgeInsets.all(TKitSpacing.sm),
+                                      hoverColor: TKitColors.error.withValues(
+                                        alpha: 0.2,
+                                      ),
+                                      onPressed: () =>
+                                          widget.onDelete(mapping.id!),
+                                      tooltip:
+                                          l10n.categoryMappingListDeleteTooltip,
+                                      padding: const EdgeInsets.all(
+                                        TKitSpacing.sm,
+                                      ),
                                       constraints: const BoxConstraints(
                                         minWidth: 32,
                                         minHeight: 32,
@@ -379,7 +405,9 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                 ? l10n.mappingListSelected(_selectedIds.length)
                 : l10n.mappingListSelectedVisible(
                     _selectedIds.length,
-                    _filteredMappings.where((m) => _selectedIds.contains(m.id)).length,
+                    _filteredMappings
+                        .where((m) => _selectedIds.contains(m.id))
+                        .length,
                   ),
             style: TKitTextStyles.bodyMedium.copyWith(
               color: TKitColors.accent,
@@ -449,7 +477,10 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                 side: const BorderSide(color: TKitColors.border),
                 elevation: 0,
                 shape: const RoundedRectangleBorder(),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 minimumSize: const Size(0, 32),
               ),
             ),
@@ -461,12 +492,15 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                 setState(() {
                   _previousEnabledStates = {
                     for (final mapping in _selectedMappings)
-                      mapping.id!: mapping.isEnabled
+                      mapping.id!: mapping.isEnabled,
                   };
                   _lastAction = l10n.mappingListActionEnable;
                   _deletedMappings = null;
                 });
-                widget.onBulkToggleEnabled!(_selectedIds.toList(), enabled: true);
+                widget.onBulkToggleEnabled!(
+                  _selectedIds.toList(),
+                  enabled: true,
+                );
               },
               icon: const Icon(Icons.check_circle, size: 14),
               label: Text(
@@ -479,7 +513,10 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                 side: const BorderSide(color: TKitColors.border),
                 elevation: 0,
                 shape: const RoundedRectangleBorder(),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 minimumSize: const Size(0, 32),
               ),
             ),
@@ -491,12 +528,15 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                 setState(() {
                   _previousEnabledStates = {
                     for (final mapping in _selectedMappings)
-                      mapping.id!: mapping.isEnabled
+                      mapping.id!: mapping.isEnabled,
                   };
                   _lastAction = l10n.mappingListActionDisable;
                   _deletedMappings = null;
                 });
-                widget.onBulkToggleEnabled!(_selectedIds.toList(), enabled: false);
+                widget.onBulkToggleEnabled!(
+                  _selectedIds.toList(),
+                  enabled: false,
+                );
               },
               icon: const Icon(Icons.cancel, size: 14),
               label: Text(
@@ -509,7 +549,10 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                 side: const BorderSide(color: TKitColors.border),
                 elevation: 0,
                 shape: const RoundedRectangleBorder(),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 minimumSize: const Size(0, 32),
               ),
             ),
@@ -538,11 +581,18 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                   style: TKitTextStyles.buttonSmall,
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: _hasReadOnlySelection ? TKitColors.border : TKitColors.error,
-                  foregroundColor: _hasReadOnlySelection ? TKitColors.textMuted : Colors.white,
+                  backgroundColor: _hasReadOnlySelection
+                      ? TKitColors.border
+                      : TKitColors.error,
+                  foregroundColor: _hasReadOnlySelection
+                      ? TKitColors.textMuted
+                      : Colors.white,
                   elevation: 0,
                   shape: const RoundedRectangleBorder(),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   minimumSize: const Size(0, 32),
                   disabledBackgroundColor: TKitColors.surfaceVariant,
                   disabledForegroundColor: TKitColors.textMuted,
@@ -585,7 +635,10 @@ class _MappingListWidgetState extends State<MappingListWidget> {
         if (_searchQuery.isNotEmpty) ...[
           const HSpace.sm(),
           Text(
-            l10n.mappingListOfCount(_filteredMappings.length, widget.mappings.length),
+            l10n.mappingListOfCount(
+              _filteredMappings.length,
+              widget.mappings.length,
+            ),
             style: TKitTextStyles.bodySmall.copyWith(
               color: TKitColors.textMuted,
               fontSize: 12,
@@ -603,10 +656,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
             },
             tooltip: l10n.mappingListTooltipClearSearch,
             padding: const EdgeInsets.all(4),
-            constraints: const BoxConstraints(
-              minWidth: 24,
-              minHeight: 24,
-            ),
+            constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
           ),
         ],
       ],

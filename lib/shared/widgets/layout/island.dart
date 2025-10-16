@@ -69,21 +69,13 @@ class IslandVariant extends StatelessWidget {
   final Widget child;
   final EdgeInsets? padding;
 
-  const IslandVariant({
-    super.key,
-    required this.child,
-    this.padding,
-  });
+  const IslandVariant({super.key, required this.child, this.padding});
 
-  const IslandVariant.compact({
-    super.key,
-    required this.child,
-  }) : padding = const EdgeInsets.all(TKitSpacing.sm);
+  const IslandVariant.compact({super.key, required this.child})
+    : padding = const EdgeInsets.all(TKitSpacing.sm);
 
-  const IslandVariant.standard({
-    super.key,
-    required this.child,
-  }) : padding = const EdgeInsets.all(TKitSpacing.md);
+  const IslandVariant.standard({super.key, required this.child})
+    : padding = const EdgeInsets.all(TKitSpacing.md);
 
   @override
   Widget build(BuildContext context) {

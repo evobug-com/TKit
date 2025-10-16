@@ -17,10 +17,7 @@ class RefreshExpiringSoonUseCase {
   final CategoryMappingLocalDataSource localDataSource;
   final ITwitchApiRepository twitchApiRepository;
 
-  RefreshExpiringSoonUseCase(
-    this.localDataSource,
-    this.twitchApiRepository,
-  );
+  RefreshExpiringSoonUseCase(this.localDataSource, this.twitchApiRepository);
 
   /// Execute the use case
   ///

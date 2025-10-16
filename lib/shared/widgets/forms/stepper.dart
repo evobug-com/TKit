@@ -128,8 +128,9 @@ class _TKitNumberStepperState extends State<TKitNumberStepper> {
                 color: TKitColors.background,
                 border: Border.symmetric(
                   horizontal: BorderSide(
-                    color:
-                        isEnabled ? TKitColors.border : TKitColors.borderSubtle,
+                    color: isEnabled
+                        ? TKitColors.border
+                        : TKitColors.borderSubtle,
                   ),
                 ),
               ),
@@ -139,16 +140,16 @@ class _TKitNumberStepperState extends State<TKitNumberStepper> {
                 enabled: isEnabled,
                 textAlign: TextAlign.center,
                 keyboardType: TextInputType.numberWithOptions(
-                  decimal: widget.decimalPlaces != null && widget.decimalPlaces! > 0,
+                  decimal:
+                      widget.decimalPlaces != null && widget.decimalPlaces! > 0,
                 ),
                 inputFormatters: [
-                  FilteringTextInputFormatter.allow(
-                    RegExp(r'^\d*\.?\d*'),
-                  ),
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
                 ],
                 style: TKitTextStyles.bodyMedium.copyWith(
-                  color:
-                      isEnabled ? TKitColors.textPrimary : TKitColors.textDisabled,
+                  color: isEnabled
+                      ? TKitColors.textPrimary
+                      : TKitColors.textDisabled,
                 ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -237,37 +238,37 @@ class TKitNumberStepperFormField extends FormField<double> {
     bool enabled = true,
     super.autovalidateMode,
   }) : super(
-          builder: (FormFieldState<double> state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TKitNumberStepper(
-                  value: state.value ?? initialValue,
-                  onChanged: enabled
-                      ? (value) {
-                          state.didChange(value);
-                        }
-                      : null,
-                  min: min,
-                  max: max,
-                  step: step,
-                  decimalPlaces: decimalPlaces,
-                  enabled: enabled,
-                  suffix: suffix,
-                  width: width,
-                ),
-                if (state.hasError) ...[
-                  const SizedBox(height: TKitSpacing.xs),
-                  Text(
-                    state.errorText!,
-                    style: TKitTextStyles.caption.copyWith(
-                      color: TKitColors.error,
-                    ),
-                  ),
-                ],
-              ],
-            );
-          },
-        );
+         builder: (FormFieldState<double> state) {
+           return Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             mainAxisSize: MainAxisSize.min,
+             children: [
+               TKitNumberStepper(
+                 value: state.value ?? initialValue,
+                 onChanged: enabled
+                     ? (value) {
+                         state.didChange(value);
+                       }
+                     : null,
+                 min: min,
+                 max: max,
+                 step: step,
+                 decimalPlaces: decimalPlaces,
+                 enabled: enabled,
+                 suffix: suffix,
+                 width: width,
+               ),
+               if (state.hasError) ...[
+                 const SizedBox(height: TKitSpacing.xs),
+                 Text(
+                   state.errorText!,
+                   style: TKitTextStyles.caption.copyWith(
+                     color: TKitColors.error,
+                   ),
+                 ),
+               ],
+             ],
+           );
+         },
+       );
 }

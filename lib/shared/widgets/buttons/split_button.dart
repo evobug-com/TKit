@@ -97,10 +97,7 @@ class _SplitButtonState extends State<SplitButton> {
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.zero,
               ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 0,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               minimumSize: const Size(0, 32),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
@@ -122,10 +119,7 @@ class _SplitButtonState extends State<SplitButton> {
                         Icon(widget.icon, size: 14),
                         const SizedBox(width: 6),
                       ],
-                      Text(
-                        widget.text,
-                        style: TKitTextStyles.buttonSmall,
-                      ),
+                      Text(widget.text, style: TKitTextStyles.buttonSmall),
                     ],
                   ),
           ),
@@ -158,10 +152,7 @@ class _SplitButtonState extends State<SplitButton> {
               minimumSize: const Size(32, 32),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
-            child: const Icon(
-              Icons.keyboard_arrow_down,
-              size: 16,
-            ),
+            child: const Icon(Icons.keyboard_arrow_down, size: 16),
           ),
         ),
       ],
@@ -202,10 +193,7 @@ class _DropdownOverlay extends StatelessWidget {
                 width: buttonWidth,
                 decoration: BoxDecoration(
                   color: TKitColors.surface,
-                  border: Border.all(
-                    color: TKitColors.border,
-                    width: 1,
-                  ),
+                  border: Border.all(color: TKitColors.border, width: 1),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

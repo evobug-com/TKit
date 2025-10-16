@@ -10,8 +10,10 @@ import 'package:tkit/presentation/widgets/update_notification_widget.dart';
 enum UpdateCheckStatus {
   /// Haven't checked for updates yet or check failed
   unknown,
+
   /// Update is available
   updateAvailable,
+
   /// App is on the latest version
   upToDate,
 }
@@ -22,10 +24,12 @@ class VersionStatusIndicator extends ConsumerStatefulWidget {
   const VersionStatusIndicator({super.key, this.navigatorKey});
 
   @override
-  ConsumerState<VersionStatusIndicator> createState() => _VersionStatusIndicatorState();
+  ConsumerState<VersionStatusIndicator> createState() =>
+      _VersionStatusIndicatorState();
 }
 
-class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator> {
+class _VersionStatusIndicatorState
+    extends ConsumerState<VersionStatusIndicator> {
   UpdateCheckStatus _status = UpdateCheckStatus.unknown;
   var _isHovering = false;
   String? _errorMessage;
@@ -82,29 +86,32 @@ class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator>
     final updateService = ref.read(githubUpdateServiceProvider);
 
     // Listen for update availability changes
-    updateService.updateAvailable.listen((updateInfo) {
-      if (mounted) {
-        setState(() {
-          if (updateInfo != null) {
-            _status = UpdateCheckStatus.updateAvailable;
-            _errorMessage = null; // Clear any previous errors
-            // Note: We don't auto-show dialog here anymore since UpdateNotificationWidget handles that
-          } else {
-            // null means we checked and are up to date
-            _status = UpdateCheckStatus.upToDate;
-            _errorMessage = null; // Clear any previous errors
-          }
-        });
-      }
-    }, onError: (Object error) {
-      if (mounted) {
-        setState(() {
-          _status = UpdateCheckStatus.unknown;
-          // Capture the error message
-          _errorMessage = error.toString();
-        });
-      }
-    });
+    updateService.updateAvailable.listen(
+      (updateInfo) {
+        if (mounted) {
+          setState(() {
+            if (updateInfo != null) {
+              _status = UpdateCheckStatus.updateAvailable;
+              _errorMessage = null; // Clear any previous errors
+              // Note: We don't auto-show dialog here anymore since UpdateNotificationWidget handles that
+            } else {
+              // null means we checked and are up to date
+              _status = UpdateCheckStatus.upToDate;
+              _errorMessage = null; // Clear any previous errors
+            }
+          });
+        }
+      },
+      onError: (Object error) {
+        if (mounted) {
+          setState(() {
+            _status = UpdateCheckStatus.unknown;
+            // Capture the error message
+            _errorMessage = error.toString();
+          });
+        }
+      },
+    );
   }
 
   IconData _getIcon() {
@@ -164,11 +171,15 @@ class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator>
     final updateInfo = updateService.currentUpdate;
 
     if (updateInfo == null) {
-      logger.warning('[VersionIndicator] Attempted to show update dialog but no update available');
+      logger.warning(
+        '[VersionIndicator] Attempted to show update dialog but no update available',
+      );
       return;
     }
 
-    logger.info('[VersionIndicator] Showing update dialog for version ${updateInfo.version}');
+    logger.info(
+      '[VersionIndicator] Showing update dialog for version ${updateInfo.version}',
+    );
 
     // Use navigator key context if available, otherwise fall back to widget context
     final dialogContext = widget.navigatorKey?.currentContext ?? context;
@@ -190,7 +201,9 @@ class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator>
 
     return Builder(
       builder: (context) => MouseRegion(
-        cursor: isClickable ? SystemMouseCursors.click : SystemMouseCursors.help,
+        cursor: isClickable
+            ? SystemMouseCursors.click
+            : SystemMouseCursors.help,
         onEnter: (_) => setState(() => _isHovering = true),
         onExit: (_) => setState(() => _isHovering = false),
         child: GestureDetector(
@@ -198,17 +211,16 @@ class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator>
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              Icon(
-                _getIcon(),
-                size: 12,
-                color: _getColor(),
-              ),
+              Icon(_getIcon(), size: 12, color: _getColor()),
               if (_isHovering)
                 Positioned(
                   bottom: 16,
                   right: -8,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.black87,
                       borderRadius: BorderRadius.circular(4),
@@ -224,10 +236,7 @@ class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator>
                       isClickable
                           ? '${_getTooltip(context)} (Click to update)'
                           : _getTooltip(context),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                      ),
+                      style: const TextStyle(color: Colors.white, fontSize: 11),
                       textAlign: TextAlign.center,
                       softWrap: false,
                     ),
@@ -240,4 +249,3 @@ class _VersionStatusIndicatorState extends ConsumerState<VersionStatusIndicator>
     );
   }
 }
-

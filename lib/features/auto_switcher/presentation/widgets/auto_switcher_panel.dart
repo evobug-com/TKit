@@ -164,7 +164,10 @@ class AutoSwitcherPanel extends StatelessWidget {
                   ),
                   const VSpace.md(),
                   // How it works steps
-                  _buildHowItWorksStep('1', 'You switch to an app (e.g., VS Code)'),
+                  _buildHowItWorksStep(
+                    '1',
+                    'You switch to an app (e.g., VS Code)',
+                  ),
                   const VSpace.sm(),
                   _buildHowItWorksStep('2', 'System finds matching category'),
                   const VSpace.sm(),
@@ -185,10 +188,7 @@ class AutoSwitcherPanel extends StatelessWidget {
           const VSpace.lg(),
 
           // Divider
-          Container(
-            height: 1,
-            color: TKitColors.borderSubtle,
-          ),
+          Container(height: 1, color: TKitColors.borderSubtle),
 
           const VSpace.lg(),
 
@@ -226,7 +226,8 @@ class AutoSwitcherPanel extends StatelessWidget {
                         color: TKitColors.textMuted,
                       ),
                     ),
-                    if (manualUpdateHotkey != null && manualUpdateHotkey!.isNotEmpty) ...[
+                    if (manualUpdateHotkey != null &&
+                        manualUpdateHotkey!.isNotEmpty) ...[
                       const VSpace.sm(),
                       Row(
                         children: [
@@ -314,11 +315,7 @@ class AutoSwitcherPanel extends StatelessWidget {
           const VSpace.md(),
           Row(
             children: [
-              const Icon(
-                Icons.apps,
-                size: 18,
-                color: TKitColors.textMuted,
-              ),
+              const Icon(Icons.apps, size: 18, color: TKitColors.textMuted),
               const HSpace.sm(),
               Expanded(
                 child: Column(
@@ -334,7 +331,9 @@ class AutoSwitcherPanel extends StatelessWidget {
                     Text(
                       hasProcess ? status!.currentProcess! : 'None detected',
                       style: TKitTextStyles.bodyMedium.copyWith(
-                        color: hasProcess ? TKitColors.textPrimary : TKitColors.textMuted,
+                        color: hasProcess
+                            ? TKitColors.textPrimary
+                            : TKitColors.textMuted,
                         fontWeight: FontWeight.w600,
                       ),
                       overflow: TextOverflow.ellipsis,
@@ -367,7 +366,9 @@ class AutoSwitcherPanel extends StatelessWidget {
                     Text(
                       hasCategory ? status!.matchedCategory! : 'None set',
                       style: TKitTextStyles.bodyMedium.copyWith(
-                        color: hasCategory ? TKitColors.textPrimary : TKitColors.textMuted,
+                        color: hasCategory
+                            ? TKitColors.textPrimary
+                            : TKitColors.textMuted,
                         fontWeight: FontWeight.w600,
                       ),
                       overflow: TextOverflow.ellipsis,

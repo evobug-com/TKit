@@ -19,7 +19,9 @@ class SaveMappingUseCase {
   Future<Either<Failure, void>> call(CategoryMapping mapping) async {
     // Validation
     if (mapping.processName.trim().isEmpty) {
-      return const Left(ValidationFailure(message: 'Process name cannot be empty'));
+      return const Left(
+        ValidationFailure(message: 'Process name cannot be empty'),
+      );
     }
 
     if (mapping.twitchCategoryId.trim().isEmpty) {

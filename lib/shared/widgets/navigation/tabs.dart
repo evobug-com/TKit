@@ -9,11 +9,7 @@ class TKitTab {
   final IconData? icon;
   final Widget? badge;
 
-  const TKitTab({
-    required this.label,
-    this.icon,
-    this.badge,
-  });
+  const TKitTab({required this.label, this.icon, this.badge});
 }
 
 /// TKitTabBar - Horizontal tab navigation bar
@@ -37,10 +33,7 @@ class TKitTabBar extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-            color: TKitColors.border,
-            width: 1.0,
-          ),
+          bottom: BorderSide(color: TKitColors.border, width: 1.0),
         ),
       ),
       child: Row(
@@ -107,14 +100,15 @@ class _TabItem extends StatelessWidget {
             ],
             Text(
               tab.label,
-              style: (compact
-                      ? TKitTextStyles.labelSmall
-                      : TKitTextStyles.labelMedium)
-                  .copyWith(
-                color: isSelected
-                    ? TKitColors.textPrimary
-                    : TKitColors.textSecondary,
-              ),
+              style:
+                  (compact
+                          ? TKitTextStyles.labelSmall
+                          : TKitTextStyles.labelMedium)
+                      .copyWith(
+                        color: isSelected
+                            ? TKitColors.textPrimary
+                            : TKitColors.textSecondary,
+                      ),
             ),
             if (tab.badge != null) ...[
               const SizedBox(width: TKitSpacing.xs),
@@ -144,10 +138,7 @@ class TKitTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!animate) {
-      return IndexedStack(
-        index: selectedIndex,
-        children: children,
-      );
+      return IndexedStack(index: selectedIndex, children: children);
     }
 
     return AnimatedSwitcher(
@@ -180,8 +171,10 @@ class TKitTabController extends StatefulWidget {
     this.onTabChanged,
     this.compact = false,
     this.animate = true,
-  }) : assert(tabs.length == children.length,
-            'tabs and children must have the same length');
+  }) : assert(
+         tabs.length == children.length,
+         'tabs and children must have the same length',
+       );
 
   @override
   State<TKitTabController> createState() => _TKitTabControllerState();

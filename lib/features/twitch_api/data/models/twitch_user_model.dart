@@ -30,10 +30,10 @@ class TwitchUserModel extends TwitchUser {
     super.email,
     this.broadcasterType,
   }) : super(
-    displayName: displayName,
-    profileImageUrl: profileImageUrl,
-    broadcasterType: broadcasterType,
-  );
+         displayName: displayName,
+         profileImageUrl: profileImageUrl,
+         broadcasterType: broadcasterType,
+       );
 
   /// Create model from domain entity
   factory TwitchUserModel.fromEntity(TwitchUser entity) {

@@ -4,12 +4,7 @@ import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/theme/spacing.dart';
 
 /// Alert variant types
-enum AlertVariant {
-  info,
-  success,
-  warning,
-  error,
-}
+enum AlertVariant { info, success, warning, error }
 
 /// Alert - Persistent notification banner with variants
 /// Use this for important messages that need to stay visible
@@ -140,19 +135,12 @@ class _AlertState extends State<Alert> {
       padding: widget.padding ?? const EdgeInsets.all(TKitSpacing.md),
       decoration: BoxDecoration(
         color: _getBackgroundColor(),
-        border: Border.all(
-          color: _getBorderColor(),
-          width: 1.0,
-        ),
+        border: Border.all(color: _getBorderColor(), width: 1.0),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            _getIcon(),
-            size: 18,
-            color: _getBorderColor(),
-          ),
+          Icon(_getIcon(), size: 18, color: _getBorderColor()),
           const SizedBox(width: TKitSpacing.sm),
           Expanded(
             child: Text(

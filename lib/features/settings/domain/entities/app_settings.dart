@@ -194,19 +194,24 @@ class AppSettings extends Equatable {
       startMinimized: startMinimized ?? this.startMinimized,
       minimizeToTray: minimizeToTray ?? this.minimizeToTray,
       showNotifications: showNotifications ?? this.showNotifications,
-      notifyOnMissingCategory: notifyOnMissingCategory ?? this.notifyOnMissingCategory,
+      notifyOnMissingCategory:
+          notifyOnMissingCategory ?? this.notifyOnMissingCategory,
       autoStartMonitoring: autoStartMonitoring ?? this.autoStartMonitoring,
       manualUpdateHotkey: manualUpdateHotkey == _undefined
           ? this.manualUpdateHotkey
           : manualUpdateHotkey as String?,
       updateChannel: updateChannel ?? this.updateChannel,
-      windowControlsPosition: windowControlsPosition ?? this.windowControlsPosition,
+      windowControlsPosition:
+          windowControlsPosition ?? this.windowControlsPosition,
       useFramelessWindow: useFramelessWindow ?? this.useFramelessWindow,
       invertFooterHeader: invertFooterHeader ?? this.invertFooterHeader,
-      autoSyncMappingsOnStart: autoSyncMappingsOnStart ?? this.autoSyncMappingsOnStart,
-      mappingsSyncIntervalHours: mappingsSyncIntervalHours ?? this.mappingsSyncIntervalHours,
+      autoSyncMappingsOnStart:
+          autoSyncMappingsOnStart ?? this.autoSyncMappingsOnStart,
+      mappingsSyncIntervalHours:
+          mappingsSyncIntervalHours ?? this.mappingsSyncIntervalHours,
       enableErrorTracking: enableErrorTracking ?? this.enableErrorTracking,
-      enablePerformanceMonitoring: enablePerformanceMonitoring ?? this.enablePerformanceMonitoring,
+      enablePerformanceMonitoring:
+          enablePerformanceMonitoring ?? this.enablePerformanceMonitoring,
       enableSessionReplay: enableSessionReplay ?? this.enableSessionReplay,
     );
   }

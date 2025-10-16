@@ -42,11 +42,11 @@ class UnknownProcess extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        executableName,
-        windowTitle,
-        firstDetected,
-        occurrenceCount,
-        resolved,
-      ];
+    id,
+    executableName,
+    windowTitle,
+    firstDetected,
+    occurrenceCount,
+    resolved,
+  ];
 }

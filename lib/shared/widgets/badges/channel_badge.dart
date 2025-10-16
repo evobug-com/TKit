@@ -8,10 +8,7 @@ import 'package:tkit/shared/theme/text_styles.dart';
 class ChannelBadge extends StatelessWidget {
   final UpdateChannel channel;
 
-  const ChannelBadge({
-    super.key,
-    required this.channel,
-  });
+  const ChannelBadge({super.key, required this.channel});
 
   /// Get badge text for the channel
   String? get _badgeText {

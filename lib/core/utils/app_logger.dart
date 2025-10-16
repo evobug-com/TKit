@@ -12,9 +12,7 @@ class AppLogger {
     _talker = Talker(
       logger: TalkerLogger(
         formatter: const ColoredLoggerFormatter(),
-        settings: TalkerLoggerSettings(
-          enableColors: true,
-        ),
+        settings: TalkerLoggerSettings(enableColors: true),
       ),
     );
   }

@@ -25,11 +25,7 @@ class StatItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (icon != null) ...[
-          Icon(
-            icon,
-            size: 16,
-            color: valueColor ?? TKitColors.accent,
-          ),
+          Icon(icon, size: 16, color: valueColor ?? TKitColors.accent),
           const SizedBox(width: TKitSpacing.xs),
         ],
         Column(

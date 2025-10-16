@@ -41,9 +41,9 @@ class SettingsSlider extends StatelessWidget {
                 children: [
                   Text(
                     label,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 14,
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleMedium?.copyWith(fontSize: 14),
                   ),
                   if (description != null) ...[
                     const SizedBox(height: 2),
@@ -51,16 +51,23 @@ class SettingsSlider extends StatelessWidget {
                       description!,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontSize: 11,
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
                   ],
                   if (example != null) ...[
                     const SizedBox(height: 4),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primaryContainer.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Row(
@@ -75,10 +82,14 @@ class SettingsSlider extends StatelessWidget {
                           Flexible(
                             child: Text(
                               example!,
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                fontSize: 10,
-                                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    fontSize: 10,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.7),
+                                  ),
                             ),
                           ),
                         ],
@@ -90,7 +101,9 @@ class SettingsSlider extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             Text(
-              valueFormatter != null ? valueFormatter!(value) : '${value.toInt()}$suffix',
+              valueFormatter != null
+                  ? valueFormatter!(value)
+                  : '${value.toInt()}$suffix',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
@@ -103,7 +116,9 @@ class SettingsSlider extends StatelessWidget {
           min: min,
           max: max,
           divisions: divisions,
-          label: valueFormatter != null ? valueFormatter!(value) : '${value.toInt()}$suffix',
+          label: valueFormatter != null
+              ? valueFormatter!(value)
+              : '${value.toInt()}$suffix',
           onChanged: onChanged,
         ),
       ],

@@ -53,8 +53,7 @@ class AppConfig {
   static const maxDebounceInterval = 300;
 
   // Platform Channels
-  static const processDetectionChannel =
-      'com.evobug.tkit/process_detection';
+  static const processDetectionChannel = 'com.evobug.tkit/process_detection';
 
   // Logging
   static const enableLogging = true;

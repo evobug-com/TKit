@@ -22,4 +22,3 @@ class WindowControlsPreview extends _$WindowControlsPreview {
     state = null;
   }
 }
-

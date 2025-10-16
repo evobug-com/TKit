@@ -26,11 +26,7 @@ class EmptyState extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            size: 48,
-            color: TKitColors.textMuted,
-          ),
+          Icon(icon, size: 48, color: TKitColors.textMuted),
           const SizedBox(height: TKitSpacing.md),
           Text(
             message,

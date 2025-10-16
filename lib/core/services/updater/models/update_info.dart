@@ -78,7 +78,8 @@ class UpdateInfo {
     return UpdateInfo(
       version: _parseVersion(latestRelease['tag_name'] as String),
       downloadUrl: windowsAsset['browser_download_url'] as String,
-      releaseNotes: latestRelease['body'] as String? ?? 'No release notes available.',
+      releaseNotes:
+          latestRelease['body'] as String? ?? 'No release notes available.',
       assetName: windowsAsset['name'] as String,
       fileSize: windowsAsset['size'] as int? ?? 0,
       publishedAt: DateTime.parse(latestRelease['published_at'] as String),

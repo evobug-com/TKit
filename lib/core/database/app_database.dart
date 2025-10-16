@@ -39,12 +39,12 @@ class CategoryMappings extends Table {
   TextColumn get twitchCategoryName => text()();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get lastUsedAt => dateTime().nullable()();
-  DateTimeColumn get lastApiFetch => dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get lastApiFetch =>
+      dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get cacheExpiresAt => dateTime()();
   BoolColumn get manualOverride =>
       boolean().withDefault(const Constant(false))();
-  BoolColumn get isEnabled =>
-      boolean().withDefault(const Constant(true))();
+  BoolColumn get isEnabled => boolean().withDefault(const Constant(true))();
 
   /// Whether this mapping was submitted to a community list and is pending acceptance
   /// When true, this mapping will be checked for duplicates during sync
@@ -75,7 +75,8 @@ class UnknownProcesses extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get executableName => text()();
   TextColumn get windowTitle => text().nullable()();
-  DateTimeColumn get firstDetected => dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get firstDetected =>
+      dateTime().withDefault(currentDateAndTime)();
   IntColumn get occurrenceCount => integer().withDefault(const Constant(1))();
   BoolColumn get resolved => boolean().withDefault(const Constant(false))();
 }
@@ -86,7 +87,8 @@ class TopGamesCache extends Table {
   TextColumn get twitchCategoryId => text()();
   TextColumn get gameName => text()();
   TextColumn get boxArtUrl => text().nullable()();
-  DateTimeColumn get lastUpdated => dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get lastUpdated =>
+      dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get expiresAt => dateTime()();
 
   @override
@@ -121,8 +123,8 @@ class CommunityMappings extends Table {
 
   @override
   List<Set<Column>>? get uniqueKeys => [
-        {processName, twitchCategoryId}
-      ];
+    {processName, twitchCategoryId},
+  ];
 }
 
 /// Mapping Lists table - stores collections of mappings
@@ -136,26 +138,31 @@ class MappingLists extends Table {
   TextColumn get description => text().withDefault(const Constant(''))();
   TextColumn get sourceType => text()(); // 'local', 'official', 'remote'
   TextColumn get sourceUrl => text().nullable()();
-  TextColumn get submissionHookUrl => text().nullable()(); // URL for submitting unknown processes
+  TextColumn get submissionHookUrl =>
+      text().nullable()(); // URL for submitting unknown processes
   BoolColumn get isEnabled => boolean().withDefault(const Constant(true))();
   BoolColumn get isReadOnly => boolean().withDefault(const Constant(false))();
-  IntColumn get priority => integer().withDefault(const Constant(100))(); // Lower = higher priority
+  IntColumn get priority =>
+      integer().withDefault(const Constant(100))(); // Lower = higher priority
   DateTimeColumn get lastSyncedAt => dateTime().nullable()();
-  TextColumn get lastSyncError => text().nullable()(); // Error message from last sync attempt
+  TextColumn get lastSyncError =>
+      text().nullable()(); // Error message from last sync attempt
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 
   @override
   Set<Column> get primaryKey => {id};
 }
 
-@DriftDatabase(tables: [
-  CategoryMappings,
-  UpdateHistory,
-  UnknownProcesses,
-  TopGamesCache,
-  CommunityMappings,
-  MappingLists,
-])
+@DriftDatabase(
+  tables: [
+    CategoryMappings,
+    UpdateHistory,
+    UnknownProcesses,
+    TopGamesCache,
+    CommunityMappings,
+    MappingLists,
+  ],
+)
 class AppDatabase extends _$AppDatabase {
   // Support optional executor for testing (required for guided migrations testing)
   AppDatabase([QueryExecutor? e]) : super(e ?? _openConnection());
@@ -182,10 +189,12 @@ class AppDatabase extends _$AppDatabase {
   }
 
   /// Get community mapping by process name
-  Future<CommunityMappingEntity?> getCommunityMapping(String processName) async {
-    return (select(communityMappings)
-          ..where((tbl) => tbl.processName.equals(processName)))
-        .getSingleOrNull();
+  Future<CommunityMappingEntity?> getCommunityMapping(
+    String processName,
+  ) async {
+    return (select(
+      communityMappings,
+    )..where((tbl) => tbl.processName.equals(processName))).getSingleOrNull();
   }
 
   /// Get all community mappings
@@ -206,15 +215,14 @@ class AppDatabase extends _$AppDatabase {
             normalizedInstallPaths: Value(
               data['normalizedInstallPaths'] != null
                   ? (data['normalizedInstallPaths'] as List)
-                      .map((e) => e.toString())
-                      .toList()
-                      .join(',')
+                        .map((e) => e.toString())
+                        .toList()
+                        .join(',')
                   : null,
             ),
             twitchCategoryId: data['twitchCategoryId'] as String,
             twitchCategoryName: data['twitchCategoryName'] as String,
-            verificationCount:
-                Value(data['verificationCount'] as int? ?? 1),
+            verificationCount: Value(data['verificationCount'] as int? ?? 1),
             lastVerified: Value(
               data['lastVerified'] != null
                   ? DateTime.parse(data['lastVerified'] as String)
@@ -238,7 +246,9 @@ class AppDatabase extends _$AppDatabase {
   /// Get expired category mappings
   Future<List<CategoryMappingEntity>> getExpiredMappings() async {
     return (select(categoryMappings)
-          ..where((tbl) => tbl.cacheExpiresAt.isSmallerThanValue(DateTime.now()))
+          ..where(
+            (tbl) => tbl.cacheExpiresAt.isSmallerThanValue(DateTime.now()),
+          )
           ..where((tbl) => tbl.manualOverride.equals(false)))
         .get();
   }
@@ -257,7 +267,9 @@ class AppDatabase extends _$AppDatabase {
   /// Delete expired mappings (excluding manual overrides)
   Future<int> deleteExpiredMappings() async {
     return (delete(categoryMappings)
-          ..where((tbl) => tbl.cacheExpiresAt.isSmallerThanValue(DateTime.now()))
+          ..where(
+            (tbl) => tbl.cacheExpiresAt.isSmallerThanValue(DateTime.now()),
+          )
           ..where((tbl) => tbl.manualOverride.equals(false)))
         .go();
   }
@@ -278,9 +290,9 @@ class AppDatabase extends _$AppDatabase {
   /// This method populates the database with default ignored processes
   Future<void> seedDefaultMappings() async {
     // Check if already seeded by looking for tkit.exe mapping
-    final existing = await (select(categoryMappings)
-          ..where((tbl) => tbl.processName.equals('tkit.exe')))
-        .getSingleOrNull();
+    final existing = await (select(
+      categoryMappings,
+    )..where((tbl) => tbl.processName.equals('tkit.exe'))).getSingleOrNull();
 
     if (existing != null) {
       // Already seeded, skip
@@ -316,7 +328,6 @@ class AppDatabase extends _$AppDatabase {
       }
     });
   }
-
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -372,7 +383,9 @@ class AppDatabase extends _$AppDatabase {
 
         // Get current timestamp in milliseconds for migration
         final nowMs = DateTime.now().millisecondsSinceEpoch;
-        final expiresMs = DateTime.now().add(const Duration(hours: 24)).millisecondsSinceEpoch;
+        final expiresMs = DateTime.now()
+            .add(const Duration(hours: 24))
+            .millisecondsSinceEpoch;
 
         // Create new table with updated schema
         await customStatement(
@@ -402,7 +415,9 @@ class AppDatabase extends _$AppDatabase {
 
         // Drop old table and rename new one
         await customStatement('DROP TABLE category_mappings');
-        await customStatement('ALTER TABLE category_mappings_new RENAME TO category_mappings');
+        await customStatement(
+          'ALTER TABLE category_mappings_new RENAME TO category_mappings',
+        );
 
         // Create new tables
         await m.createTable(unknownProcesses);
@@ -454,7 +469,9 @@ class AppDatabase extends _$AppDatabase {
           'PRAGMA table_info(category_mappings)',
         ).get();
 
-        final hasIsEnabled = result.any((row) => row.data['name'] == 'is_enabled');
+        final hasIsEnabled = result.any(
+          (row) => row.data['name'] == 'is_enabled',
+        );
 
         if (!hasIsEnabled) {
           await customStatement(
@@ -524,7 +541,10 @@ class AppDatabase extends _$AppDatabase {
 
     // 1. Add category field to community_mappings
     logger.info('Adding category column to community_mappings');
-    await m.addColumn(schema.communityMappings, schema.communityMappings.category);
+    await m.addColumn(
+      schema.communityMappings,
+      schema.communityMappings.category,
+    );
 
     // 2. Create mapping_lists table
     logger.info('Creating mapping_lists table');
@@ -532,16 +552,23 @@ class AppDatabase extends _$AppDatabase {
 
     // 3. Create index for mapping lists
     logger.info('Creating index for mapping_lists');
-    await m.createIndex(Index(
-      'idx_mapping_lists_priority',
-      'CREATE INDEX IF NOT EXISTS idx_mapping_lists_priority '
-      'ON mapping_lists(priority, is_enabled)',
-    ));
+    await m.createIndex(
+      Index(
+        'idx_mapping_lists_priority',
+        'CREATE INDEX IF NOT EXISTS idx_mapping_lists_priority '
+            'ON mapping_lists(priority, is_enabled)',
+      ),
+    );
 
     // 4. Add columns to category_mappings
-    logger.info('Adding listId and pendingSubmission columns to category_mappings');
+    logger.info(
+      'Adding listId and pendingSubmission columns to category_mappings',
+    );
     await m.addColumn(schema.categoryMappings, schema.categoryMappings.listId);
-    await m.addColumn(schema.categoryMappings, schema.categoryMappings.pendingSubmission);
+    await m.addColumn(
+      schema.categoryMappings,
+      schema.categoryMappings.pendingSubmission,
+    );
 
     // 5. Create default lists and migrate existing mappings
     logger.info('Creating default mapping lists');
@@ -565,9 +592,13 @@ class AppDatabase extends _$AppDatabase {
       MappingListsCompanion.insert(
         id: 'official-tkit-mappings',
         name: 'Official TKit Mappings',
-        description: const Value('Verified game mappings from the TKit community'),
+        description: const Value(
+          'Verified game mappings from the TKit community',
+        ),
         sourceType: 'official',
-        sourceUrl: const Value('https://raw.githubusercontent.com/evobug-com/tkit-community-mapping/refs/heads/main/mappings.json'),
+        sourceUrl: const Value(
+          'https://raw.githubusercontent.com/evobug-com/tkit-community-mapping/refs/heads/main/mappings.json',
+        ),
         isEnabled: const Value(true),
         isReadOnly: const Value(true),
         priority: const Value(10),
@@ -583,9 +614,13 @@ class AppDatabase extends _$AppDatabase {
       MappingListsCompanion.insert(
         id: 'official-ignored-programs',
         name: 'Official Ignored Programs',
-        description: const Value('System apps, launchers, and other programs to ignore'),
+        description: const Value(
+          'System apps, launchers, and other programs to ignore',
+        ),
         sourceType: 'official',
-        sourceUrl: const Value('https://raw.githubusercontent.com/evobug-com/tkit-community-mapping/refs/heads/main/programs.json'),
+        sourceUrl: const Value(
+          'https://raw.githubusercontent.com/evobug-com/tkit-community-mapping/refs/heads/main/programs.json',
+        ),
         isEnabled: const Value(true),
         isReadOnly: const Value(true),
         priority: const Value(20),
@@ -616,11 +651,13 @@ class AppDatabase extends _$AppDatabase {
     final logger = AppLogger();
 
     // Get all existing category mappings without a listId
-    final unmappedMappings = await (select(categoryMappings)
-          ..where((tbl) => tbl.listId.isNull()))
-        .get();
+    final unmappedMappings = await (select(
+      categoryMappings,
+    )..where((tbl) => tbl.listId.isNull())).get();
 
-    logger.info('Found ${unmappedMappings.length} unmapped mappings to migrate');
+    logger.info(
+      'Found ${unmappedMappings.length} unmapped mappings to migrate',
+    );
 
     var customCount = 0;
     var officialCount = 0;
@@ -639,9 +676,7 @@ class AppDatabase extends _$AppDatabase {
 
       await (update(categoryMappings)
             ..where((tbl) => tbl.id.equals(mapping.id)))
-          .write(CategoryMappingsCompanion(
-        listId: Value(targetListId),
-      ));
+          .write(CategoryMappingsCompanion(listId: Value(targetListId)));
     }
 
     logger.info('Migrated $customCount mappings to my-custom-mappings');
@@ -674,20 +709,19 @@ class AppDatabase extends _$AppDatabase {
   /// Get all mapping lists
   /// Ordered by source type (official/remote first, local last), then by priority
   Future<List<MappingListEntity>> getAllMappingLists() async {
-    return (select(mappingLists)
-          ..orderBy([
-            (tbl) => OrderingTerm(
-              expression: tbl.sourceType.caseMatch(
-                when: {
-                  const Constant('official'): const Constant(0),
-                  const Constant('remote'): const Constant(1),
-                  const Constant('local'): const Constant(2),
-                },
-                orElse: const Constant(999),
-              ),
+    return (select(mappingLists)..orderBy([
+          (tbl) => OrderingTerm(
+            expression: tbl.sourceType.caseMatch(
+              when: {
+                const Constant('official'): const Constant(0),
+                const Constant('remote'): const Constant(1),
+                const Constant('local'): const Constant(2),
+              },
+              orElse: const Constant(999),
             ),
-            (tbl) => OrderingTerm(expression: tbl.priority),
-          ]))
+          ),
+          (tbl) => OrderingTerm(expression: tbl.priority),
+        ]))
         .get();
   }
 
@@ -713,27 +747,37 @@ class AppDatabase extends _$AppDatabase {
 
   /// Get mapping list by ID
   Future<MappingListEntity?> getMappingListById(String id) async {
-    return (select(mappingLists)..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+    return (select(
+      mappingLists,
+    )..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
   }
 
   /// Update mapping list
   Future<bool> updateMappingList(String id, MappingListsCompanion data) async {
-    final count = await (update(mappingLists)..where((tbl) => tbl.id.equals(id))).write(data);
+    final count = await (update(
+      mappingLists,
+    )..where((tbl) => tbl.id.equals(id))).write(data);
     return count > 0;
   }
 
   /// Delete mapping list (and optionally its mappings)
-  Future<void> deleteMappingList(String id, {bool deleteMappings = false}) async {
+  Future<void> deleteMappingList(
+    String id, {
+    bool deleteMappings = false,
+  }) async {
     await transaction(() async {
       if (deleteMappings) {
         // Delete all mappings in this list
-        await (delete(categoryMappings)..where((tbl) => tbl.listId.equals(id))).go();
+        await (delete(
+          categoryMappings,
+        )..where((tbl) => tbl.listId.equals(id))).go();
       } else {
         // Reassign mappings to "My Custom Mappings"
-        await (update(categoryMappings)..where((tbl) => tbl.listId.equals(id)))
-            .write(const CategoryMappingsCompanion(
-          listId: Value('my-custom-mappings'),
-        ));
+        await (update(
+          categoryMappings,
+        )..where((tbl) => tbl.listId.equals(id))).write(
+          const CategoryMappingsCompanion(listId: Value('my-custom-mappings')),
+        );
       }
 
       // Delete the list
@@ -760,17 +804,27 @@ class AppDatabase extends _$AppDatabase {
     final logger = AppLogger();
 
     try {
-      final query = select(categoryMappings).join([
-        leftOuterJoin(
-          mappingLists,
-          mappingLists.id.equalsExp(categoryMappings.listId),
-        ),
-      ])
-        ..where(mappingLists.isEnabled.equals(true) | categoryMappings.listId.isNull())
-        ..orderBy([
-          OrderingTerm(expression: categoryMappings.lastUsedAt, mode: OrderingMode.desc),
-          OrderingTerm(expression: categoryMappings.createdAt, mode: OrderingMode.desc),
-        ]);
+      final query =
+          select(categoryMappings).join([
+              leftOuterJoin(
+                mappingLists,
+                mappingLists.id.equalsExp(categoryMappings.listId),
+              ),
+            ])
+            ..where(
+              mappingLists.isEnabled.equals(true) |
+                  categoryMappings.listId.isNull(),
+            )
+            ..orderBy([
+              OrderingTerm(
+                expression: categoryMappings.lastUsedAt,
+                mode: OrderingMode.desc,
+              ),
+              OrderingTerm(
+                expression: categoryMappings.createdAt,
+                mode: OrderingMode.desc,
+              ),
+            ]);
 
       final results = await query.get();
       return results.map((row) {
@@ -788,23 +842,40 @@ class AppDatabase extends _$AppDatabase {
       // Fallback for databases that haven't migrated to v7 yet (no mapping_lists table)
       // This can happen during migration or with very old databases
       if (e.toString().contains('no such table: mapping_lists')) {
-        logger.warning('mapping_lists table not found, using fallback (database may be migrating)');
+        logger.warning(
+          'mapping_lists table not found, using fallback (database may be migrating)',
+        );
 
         // Return all mappings without list information
         try {
-          final allMappings = await (select(categoryMappings)
-            ..orderBy([
-              (tbl) => OrderingTerm(expression: tbl.lastUsedAt, mode: OrderingMode.desc),
-              (tbl) => OrderingTerm(expression: tbl.createdAt, mode: OrderingMode.desc),
-            ])).get();
+          final allMappings =
+              await (select(categoryMappings)..orderBy([
+                    (tbl) => OrderingTerm(
+                      expression: tbl.lastUsedAt,
+                      mode: OrderingMode.desc,
+                    ),
+                    (tbl) => OrderingTerm(
+                      expression: tbl.createdAt,
+                      mode: OrderingMode.desc,
+                    ),
+                  ]))
+                  .get();
 
-          return allMappings.map((mapping) => {
-            'mapping': mapping,
-            'listName': 'My Mappings',
-            'isReadOnly': false,
-          }).toList();
+          return allMappings
+              .map(
+                (mapping) => {
+                  'mapping': mapping,
+                  'listName': 'My Mappings',
+                  'isReadOnly': false,
+                },
+              )
+              .toList();
         } catch (fallbackError, fallbackStackTrace) {
-          logger.error('Fallback query also failed', fallbackError, fallbackStackTrace);
+          logger.error(
+            'Fallback query also failed',
+            fallbackError,
+            fallbackStackTrace,
+          );
           rethrow;
         }
       }

@@ -105,7 +105,8 @@ class CategoryMapping extends Equatable {
       id: id ?? this.id,
       processName: processName ?? this.processName,
       executablePath: executablePath ?? this.executablePath,
-      normalizedInstallPaths: normalizedInstallPaths ?? this.normalizedInstallPaths,
+      normalizedInstallPaths:
+          normalizedInstallPaths ?? this.normalizedInstallPaths,
       twitchCategoryId: twitchCategoryId ?? this.twitchCategoryId,
       twitchCategoryName: twitchCategoryName ?? this.twitchCategoryName,
       createdAt: createdAt ?? this.createdAt,

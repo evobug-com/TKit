@@ -75,7 +75,12 @@ GptMarkdownThemeData _createMarkdownTheme() {
 }
 
 /// Custom code block builder with modern styling using TKit components
-Widget _buildCodeBlock(BuildContext context, String name, String code, bool closed) {
+Widget _buildCodeBlock(
+  BuildContext context,
+  String name,
+  String code,
+  bool closed,
+) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: TKitSpacing.md),
     decoration: BoxDecoration(
@@ -117,10 +122,7 @@ Widget _buildCodeBlock(BuildContext context, String name, String code, bool clos
 /// Custom unordered list builder using fancy card layout
 Widget _buildUnorderedList(BuildContext context, Widget child, dynamic config) {
   return Container(
-    margin: const EdgeInsets.only(
-      left: TKitSpacing.sm,
-      bottom: TKitSpacing.sm,
-    ),
+    margin: const EdgeInsets.only(left: TKitSpacing.sm, bottom: TKitSpacing.sm),
     child: PanelCard(
       padding: const EdgeInsets.symmetric(
         horizontal: TKitSpacing.md,
@@ -153,12 +155,14 @@ Widget _buildUnorderedList(BuildContext context, Widget child, dynamic config) {
 }
 
 /// Custom ordered list builder using fancy card layout with badge numbers
-Widget _buildOrderedList(BuildContext context, String no, Widget child, dynamic config) {
+Widget _buildOrderedList(
+  BuildContext context,
+  String no,
+  Widget child,
+  dynamic config,
+) {
   return Container(
-    margin: const EdgeInsets.only(
-      left: TKitSpacing.sm,
-      bottom: TKitSpacing.sm,
-    ),
+    margin: const EdgeInsets.only(left: TKitSpacing.sm, bottom: TKitSpacing.sm),
     child: PanelCard(
       padding: const EdgeInsets.symmetric(
         horizontal: TKitSpacing.md,
@@ -169,10 +173,7 @@ Widget _buildOrderedList(BuildContext context, String no, Widget child, dynamic 
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 4, right: TKitSpacing.md),
-            child: TKitBadge(
-              text: no,
-              variant: TKitBadgeVariant.info,
-            ),
+            child: TKitBadge(text: no, variant: TKitBadgeVariant.info),
           ),
           Expanded(
             child: DefaultTextStyle(
@@ -214,7 +215,8 @@ class UpdateNotificationWidget extends ConsumerStatefulWidget {
       _UpdateNotificationWidgetState();
 }
 
-class _UpdateNotificationWidgetState extends ConsumerState<UpdateNotificationWidget> {
+class _UpdateNotificationWidgetState
+    extends ConsumerState<UpdateNotificationWidget> {
   late final GitHubUpdateService _updateService;
   late final AppLogger _logger;
   UpdateInfo? _currentUpdate;
@@ -231,7 +233,9 @@ class _UpdateNotificationWidgetState extends ConsumerState<UpdateNotificationWid
       if (update != null && mounted && !_showDialog) {
         _logger.info('[UpdateWidget] Update available: ${update.version}');
         final shouldShow = !_updateService.isVersionIgnored(update.version);
-        _logger.info('[UpdateWidget] Should show dialog: $shouldShow (ignored: ${_updateService.isVersionIgnored(update.version)})');
+        _logger.info(
+          '[UpdateWidget] Should show dialog: $shouldShow (ignored: ${_updateService.isVersionIgnored(update.version)})',
+        );
 
         setState(() {
           _currentUpdate = update;
@@ -255,7 +259,9 @@ class _UpdateNotificationWidgetState extends ConsumerState<UpdateNotificationWid
       return;
     }
 
-    _logger.info('[UpdateWidget] Showing update dialog for version ${_currentUpdate!.version}');
+    _logger.info(
+      '[UpdateWidget] Showing update dialog for version ${_currentUpdate!.version}',
+    );
 
     // Use navigator key context if available, otherwise fall back to widget context
     final dialogContext = widget.navigatorKey?.currentContext ?? context;
@@ -375,7 +381,9 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
 
   // Default handlers if not provided
   Future<void> _handleDownload() async {
-    await ref.read(githubUpdateServiceProvider).downloadUpdate(widget.updateInfo);
+    await ref
+        .read(githubUpdateServiceProvider)
+        .downloadUpdate(widget.updateInfo);
   }
 
   void _handleDismiss(BuildContext dialogContext) {
@@ -475,10 +483,14 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
 
                             // Download Progress
                             if (progress != null && progress.isDownloading) ...[
-                              const Divider(color: TKitColors.border, height: 1),
+                              const Divider(
+                                color: TKitColors.border,
+                                height: 1,
+                              ),
                               const VSpace.md(),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     l10n.updateDialogDownloading,
@@ -509,7 +521,10 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
 
                             // Success State
                             if (progress != null && progress.isCompleted) ...[
-                              const Divider(color: TKitColors.border, height: 1),
+                              const Divider(
+                                color: TKitColors.border,
+                                height: 1,
+                              ),
                               const VSpace.md(),
                               Row(
                                 children: [
@@ -521,7 +536,8 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                                   const HSpace.sm(),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           l10n.updateDialogReadyToInstall,
@@ -541,7 +557,10 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
 
                             // Error State
                             if (progress != null && progress.isFailed) ...[
-                              const Divider(color: TKitColors.border, height: 1),
+                              const Divider(
+                                color: TKitColors.border,
+                                height: 1,
+                              ),
                               const VSpace.md(),
                               Row(
                                 children: [
@@ -553,13 +572,15 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                                   const HSpace.sm(),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           l10n.updateDialogDownloadFailedTitle,
-                                          style: TKitTextStyles.labelMedium.copyWith(
-                                            color: TKitColors.error,
-                                          ),
+                                          style: TKitTextStyles.labelMedium
+                                              .copyWith(
+                                                color: TKitColors.error,
+                                              ),
                                         ),
                                         if (progress.error != null)
                                           Text(
@@ -583,7 +604,8 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                     // Action Buttons
                     const Divider(color: TKitColors.border, height: 1),
                     const VSpace.md(),
-                    if (progress == null || progress.status == DownloadStatus.idle) ...[
+                    if (progress == null ||
+                        progress.status == DownloadStatus.idle) ...[
                       PrimaryButton(
                         text: l10n.updateDialogDownloadUpdate,
                         icon: Icons.download_rounded,
@@ -631,7 +653,9 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                         text: l10n.updateDialogCancel,
                         width: double.infinity,
                         onPressed: () {
-                          ref.read(githubUpdateServiceProvider).cancelDownload();
+                          ref
+                              .read(githubUpdateServiceProvider)
+                              .cancelDownload();
                           Navigator.of(context).pop();
                         },
                       ),
@@ -644,15 +668,23 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                           final logger = ref.read(appLoggerProvider);
                           final service = ref.read(githubUpdateServiceProvider);
 
-                          logger.info('[UpdateDialog] Install & Restart button clicked');
+                          logger.info(
+                            '[UpdateDialog] Install & Restart button clicked',
+                          );
 
                           // Use cached file if available, otherwise download
-                          final file = service.downloadedFile ?? await service.downloadUpdate(widget.updateInfo);
+                          final file =
+                              service.downloadedFile ??
+                              await service.downloadUpdate(widget.updateInfo);
                           if (file != null) {
-                            logger.info('[UpdateDialog] Installer file ready: ${file.path}');
+                            logger.info(
+                              '[UpdateDialog] Installer file ready: ${file.path}',
+                            );
                             await service.installUpdate(file);
                           } else {
-                            logger.error('[UpdateDialog] Failed to get installer file');
+                            logger.error(
+                              '[UpdateDialog] Failed to get installer file',
+                            );
                           }
                         },
                       ),
@@ -710,18 +742,25 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                                 ),
                               )
                             : ListView.separated(
-                                itemCount: widget.updateInfo.versionChangelogs.length,
-                                separatorBuilder: (context, index) => const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: TKitSpacing.md),
-                                  child: Divider(
-                                    color: TKitColors.border,
-                                    height: 1,
-                                  ),
-                                ),
+                                itemCount:
+                                    widget.updateInfo.versionChangelogs.length,
+                                separatorBuilder: (context, index) =>
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: TKitSpacing.md,
+                                      ),
+                                      child: Divider(
+                                        color: TKitColors.border,
+                                        height: 1,
+                                      ),
+                                    ),
                                 itemBuilder: (context, index) {
-                                  final changelog = widget.updateInfo.versionChangelogs[index];
+                                  final changelog = widget
+                                      .updateInfo
+                                      .versionChangelogs[index];
                                   return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -732,18 +771,24 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                                             ),
                                             decoration: BoxDecoration(
                                               color: TKitColors.surfaceVariant,
-                                              border: Border.all(color: TKitColors.border),
+                                              border: Border.all(
+                                                color: TKitColors.border,
+                                              ),
                                             ),
                                             child: Text(
                                               changelog.version,
-                                              style: TKitTextStyles.labelSmall.copyWith(
-                                                color: TKitColors.accent,
-                                              ),
+                                              style: TKitTextStyles.labelSmall
+                                                  .copyWith(
+                                                    color: TKitColors.accent,
+                                                  ),
                                             ),
                                           ),
                                           const HSpace.sm(),
                                           Text(
-                                            _formatDate(changelog.publishedAt, l10n),
+                                            _formatDate(
+                                              changelog.publishedAt,
+                                              l10n,
+                                            ),
                                             style: TKitTextStyles.bodySmall,
                                           ),
                                         ],
@@ -751,12 +796,14 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                                       const VSpace.sm(),
                                       GptMarkdown(
                                         changelog.notes,
-                                        style: TKitTextStyles.bodyMedium.copyWith(
-                                          height: 1.6,
-                                          letterSpacing: 0.1,
-                                        ),
+                                        style: TKitTextStyles.bodyMedium
+                                            .copyWith(
+                                              height: 1.6,
+                                              letterSpacing: 0.1,
+                                            ),
                                         codeBuilder: _buildCodeBlock,
-                                        unOrderedListBuilder: _buildUnorderedList,
+                                        unOrderedListBuilder:
+                                            _buildUnorderedList,
                                         orderedListBuilder: _buildOrderedList,
                                         highlightBuilder: _buildHighlight,
                                       ),

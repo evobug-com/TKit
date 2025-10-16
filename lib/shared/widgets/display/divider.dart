@@ -29,8 +29,8 @@ class TKitDivider extends StatelessWidget {
     this.color,
     this.thickness = 1.0,
     this.spacing = TKitSpacing.md,
-  })  : indent = null,
-        endIndent = null;
+  }) : indent = null,
+       endIndent = null;
 
   /// Subtle divider (lighter color)
   const TKitDivider.subtle({

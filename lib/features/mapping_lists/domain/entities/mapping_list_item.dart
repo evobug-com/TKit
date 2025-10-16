@@ -35,7 +35,8 @@ class MappingListItem extends Equatable {
   }) {
     return MappingListItem(
       processName: processName ?? this.processName,
-      normalizedInstallPaths: normalizedInstallPaths ?? this.normalizedInstallPaths,
+      normalizedInstallPaths:
+          normalizedInstallPaths ?? this.normalizedInstallPaths,
       twitchCategoryId: twitchCategoryId ?? this.twitchCategoryId,
       twitchCategoryName: twitchCategoryName ?? this.twitchCategoryName,
       verificationCount: verificationCount ?? this.verificationCount,
@@ -45,11 +46,11 @@ class MappingListItem extends Equatable {
 
   @override
   List<Object?> get props => [
-        processName,
-        normalizedInstallPaths,
-        twitchCategoryId,
-        twitchCategoryName,
-        verificationCount,
-        category,
-      ];
+    processName,
+    normalizedInstallPaths,
+    twitchCategoryId,
+    twitchCategoryName,
+    verificationCount,
+    category,
+  ];
 }

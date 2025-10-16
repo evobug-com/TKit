@@ -26,9 +26,13 @@ class SettingsLocalDataSource {
       final settingsJson = _prefs.getString(_settingsKey);
 
       if (settingsJson == null || settingsJson.isEmpty) {
-        _logger.info('No settings found, returning defaults with channel auto-detection');
+        _logger.info(
+          'No settings found, returning defaults with channel auto-detection',
+        );
         final appVersion = AppConfig.appVersion;
-        _logger.info('Detected app version: $appVersion, auto-selecting update channel');
+        _logger.info(
+          'Detected app version: $appVersion, auto-selecting update channel',
+        );
         return AppSettingsModel.defaults(appVersion: appVersion);
       }
 
@@ -106,7 +110,9 @@ class SettingsLocalDataSource {
 
       // Emit default settings to stream with channel auto-detection
       final appVersion = AppConfig.appVersion;
-      _settingsController.add(AppSettingsModel.defaults(appVersion: appVersion));
+      _settingsController.add(
+        AppSettingsModel.defaults(appVersion: appVersion),
+      );
     } catch (e, stackTrace) {
       _logger.error('Error clearing settings', e, stackTrace);
       throw CacheException(

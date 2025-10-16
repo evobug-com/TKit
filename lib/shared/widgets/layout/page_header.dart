@@ -26,10 +26,7 @@ class PageHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: TKitTextStyles.heading4,
-              ),
+              Text(title, style: TKitTextStyles.heading4),
               if (subtitle != null) ...[
                 const SizedBox(height: TKitSpacing.xs),
                 Text(

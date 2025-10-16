@@ -56,17 +56,14 @@ void main() {
 
         // Assert
         expect(result.isRight(), true);
-        result.fold(
-          (_) => fail('Should return Right'),
-          (categories) {
-            expect(categories.length, tCategories.length);
-            for (var i = 0; i < categories.length; i++) {
-              expect(categories[i].id, tCategories[i].id);
-              expect(categories[i].name, tCategories[i].name);
-              expect(categories[i].boxArtUrl, tCategories[i].boxArtUrl);
-            }
-          },
-        );
+        result.fold((_) => fail('Should return Right'), (categories) {
+          expect(categories.length, tCategories.length);
+          for (var i = 0; i < categories.length; i++) {
+            expect(categories[i].id, tCategories[i].id);
+            expect(categories[i].name, tCategories[i].name);
+            expect(categories[i].boxArtUrl, tCategories[i].boxArtUrl);
+          }
+        });
         verify(mockRemoteDataSource.searchCategories(tQuery, first: tFirst));
       },
     );
@@ -276,14 +273,11 @@ void main() {
 
       // Assert
       expect(result.isRight(), true);
-      result.fold(
-        (_) => fail('Should return Right'),
-        (user) {
-          expect(user.id, tUser.id);
-          expect(user.login, tUser.login);
-          expect(user.displayName, tUser.displayName);
-        },
-      );
+      result.fold((_) => fail('Should return Right'), (user) {
+        expect(user.id, tUser.id);
+        expect(user.login, tUser.login);
+        expect(user.displayName, tUser.displayName);
+      });
       verify(mockRemoteDataSource.getCurrentUser());
     });
 
@@ -302,23 +296,17 @@ void main() {
 
         // Assert
         expect(result1.isRight(), true);
-        result1.fold(
-          (_) => fail('Should return Right'),
-          (user) {
-            expect(user.id, tUser.id);
-            expect(user.login, tUser.login);
-            expect(user.displayName, tUser.displayName);
-          },
-        );
+        result1.fold((_) => fail('Should return Right'), (user) {
+          expect(user.id, tUser.id);
+          expect(user.login, tUser.login);
+          expect(user.displayName, tUser.displayName);
+        });
         expect(result2.isRight(), true);
-        result2.fold(
-          (_) => fail('Should return Right'),
-          (user) {
-            expect(user.id, tUser.id);
-            expect(user.login, tUser.login);
-            expect(user.displayName, tUser.displayName);
-          },
-        );
+        result2.fold((_) => fail('Should return Right'), (user) {
+          expect(user.id, tUser.id);
+          expect(user.login, tUser.login);
+          expect(user.displayName, tUser.displayName);
+        });
         // Should only call remote data source once
         verify(mockRemoteDataSource.getCurrentUser()).called(1);
       },
@@ -405,14 +393,11 @@ void main() {
 
         // Assert
         expect(result.isRight(), true);
-        result.fold(
-          (_) => fail('Should return Right'),
-          (category) {
-            expect(category.id, tCategory.id);
-            expect(category.name, tCategory.name);
-            expect(category.boxArtUrl, tCategory.boxArtUrl);
-          },
-        );
+        result.fold((_) => fail('Should return Right'), (category) {
+          expect(category.id, tCategory.id);
+          expect(category.name, tCategory.name);
+          expect(category.boxArtUrl, tCategory.boxArtUrl);
+        });
         verify(mockRemoteDataSource.getCategoryById(tCategoryId));
       },
     );

@@ -142,14 +142,12 @@ class _KeyCap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final effectiveKeyColor = keyColor ?? theme.colorScheme.surfaceContainerHighest;
+    final effectiveKeyColor =
+        keyColor ?? theme.colorScheme.surfaceContainerHighest;
     final effectiveTextColor = textColor ?? theme.colorScheme.onSurface;
 
     return Container(
-      constraints: BoxConstraints(
-        minWidth: size,
-        minHeight: size,
-      ),
+      constraints: BoxConstraints(minWidth: size, minHeight: size),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       decoration: BoxDecoration(
         color: effectiveKeyColor,

@@ -75,9 +75,7 @@ class StatusDashboard extends StatelessWidget {
                 ),
               ),
               const HSpace.lg(),
-              Expanded(
-                child: _buildUpdateStatusCompact(context),
-              ),
+              Expanded(child: _buildUpdateStatusCompact(context)),
             ],
           ),
         ],
@@ -96,11 +94,7 @@ class StatusDashboard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (icon != null) ...[
-          Icon(
-            icon,
-            size: 16,
-            color: TKitColors.textMuted,
-          ),
+          Icon(icon, size: 16, color: TKitColors.textMuted),
           const HSpace.sm(),
         ],
         Expanded(
@@ -147,17 +141,15 @@ class StatusDashboard extends StatelessWidget {
     final indicator = lastSuccess
         ? UpdateStatusType.success
         : UpdateStatusType.error;
-    final statusText = lastSuccess ? l10n.autoSwitcherStatusSuccess : l10n.autoSwitcherStatusFailed;
+    final statusText = lastSuccess
+        ? l10n.autoSwitcherStatusSuccess
+        : l10n.autoSwitcherStatusFailed;
     final statusColor = lastSuccess ? TKitColors.success : TKitColors.error;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Icon(
-          Icons.update,
-          size: 16,
-          color: TKitColors.textMuted,
-        ),
+        const Icon(Icons.update, size: 16, color: TKitColors.textMuted),
         const HSpace.sm(),
         Expanded(
           child: Column(
@@ -191,7 +183,9 @@ class StatusDashboard extends StatelessWidget {
                 const VSpace.xs(),
                 Text(
                   status!.errorMessage!,
-                  style: TKitTextStyles.caption.copyWith(color: TKitColors.error),
+                  style: TKitTextStyles.caption.copyWith(
+                    color: TKitColors.error,
+                  ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),

@@ -43,7 +43,9 @@ class LanguageService {
     final systemLocale = PlatformDispatcher.instance.locale;
     final languageCode = systemLocale.languageCode;
 
-    _logger.info('System locale detected: $languageCode (full: ${systemLocale.toString()})');
+    _logger.info(
+      'System locale detected: $languageCode (full: ${systemLocale.toString()})',
+    );
 
     // Get supported language codes from AppLocalizations (single source of truth)
     final supportedLanguages = AppLocalizations.supportedLocales
@@ -51,10 +53,14 @@ class LanguageService {
         .toSet();
 
     // Return detected language if supported, otherwise default to English
-    final detectedLanguage = supportedLanguages.contains(languageCode) ? languageCode : 'en';
+    final detectedLanguage = supportedLanguages.contains(languageCode)
+        ? languageCode
+        : 'en';
 
     if (languageCode != detectedLanguage) {
-      _logger.info('Language "$languageCode" not supported, falling back to English');
+      _logger.info(
+        'Language "$languageCode" not supported, falling back to English',
+      );
     } else {
       _logger.info('Detected supported language: $detectedLanguage');
     }

@@ -117,10 +117,7 @@ class StatusBadge extends StatelessWidget {
 
     // Full badge with border and background
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 6,
-        vertical: 2,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
         color: _backgroundColor,
         border: Border.all(color: _color, width: 1),
@@ -255,10 +252,7 @@ class _PulsingStatusBadgeState extends State<PulsingStatusBadge>
 
     // Full badge with border and background
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 6,
-        vertical: 2,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
         color: _backgroundColor,
         border: Border.all(color: _color, width: 1),

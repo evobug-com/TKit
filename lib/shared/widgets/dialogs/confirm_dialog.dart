@@ -89,7 +89,10 @@ class ConfirmDialog extends StatelessWidget {
                           ),
                           padding: const EdgeInsets.symmetric(horizontal: 24),
                         ),
-                        child: Text(effectiveConfirmText, style: TKitTextStyles.button),
+                        child: Text(
+                          effectiveConfirmText,
+                          style: TKitTextStyles.button,
+                        ),
                       ),
                     )
                   else

@@ -140,22 +140,21 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
             executablePath: process.executablePath,
           );
 
-          return mappingResult.fold(
-            (failure) => null,
-            (mapping) {
-              if (mapping == null) {
-                return null;
-              }
+          return mappingResult.fold((failure) => null, (mapping) {
+            if (mapping == null) {
+              return null;
+            }
 
-              // Check if mapping is disabled - treat as unknown game
-              if (!mapping.isEnabled) {
-                _logger.debug('[AutoSwitcher] Mapping found but disabled for: ${process.processName}, treating as unknown');
-                return null; // Return null to trigger _handleUnknownGame
-              }
+            // Check if mapping is disabled - treat as unknown game
+            if (!mapping.isEnabled) {
+              _logger.debug(
+                '[AutoSwitcher] Mapping found but disabled for: ${process.processName}, treating as unknown',
+              );
+              return null; // Return null to trigger _handleUnknownGame
+            }
 
-              return {'process': process, 'mapping': mapping};
-            },
-          );
+            return {'process': process, 'mapping': mapping};
+          });
         })
         .listen(
           (Object? data) async {
@@ -296,7 +295,9 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
 
           // Check if mapping is disabled - treat as unknown game
           if (!mapping.isEnabled) {
-            _logger.debug('[AutoSwitcher] Mapping found but disabled for: ${process.processName}, treating as unknown');
+            _logger.debug(
+              '[AutoSwitcher] Mapping found but disabled for: ${process.processName}, treating as unknown',
+            );
             return await _handleUnknownGame(
               processName: process.processName,
               executablePath: process.executablePath,
@@ -332,7 +333,9 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
     // Never send -1 (ignored processes) to Twitch
     // Check for both string '-1' and any invalid/empty category IDs
     if (categoryId == '-1' || categoryId.trim().isEmpty) {
-      _logger.debug('[AutoSwitcher] Skipping Twitch update for ignored/invalid process: $processName (categoryId: $categoryId)');
+      _logger.debug(
+        '[AutoSwitcher] Skipping Twitch update for ignored/invalid process: $processName (categoryId: $categoryId)',
+      );
       _currentStatus = _currentStatus.copyWith(
         state: _isMonitoring
             ? OrchestrationState.detectingProcess
@@ -458,7 +461,9 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
 
   /// Handle when no process is detected - apply fallback behavior
   Future<Either<Failure, void>> _handleNoProcess() async {
-    _logger.info('[AutoSwitcher] No process detected, applying fallback behavior');
+    _logger.info(
+      '[AutoSwitcher] No process detected, applying fallback behavior',
+    );
 
     final settings = _currentSettings ?? AppSettings.defaults();
 
@@ -488,12 +493,16 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
     }
 
     _logger.info('[AutoSwitcher] Handling unknown game: $processName');
-    _logger.debug('[AutoSwitcher] Callback available: ${unknownGameCallback != null}');
+    _logger.debug(
+      '[AutoSwitcher] Callback available: ${unknownGameCallback != null}',
+    );
 
     // Try to invoke callback if available (UI will show dialog)
     if (unknownGameCallback != null) {
       try {
-        _logger.info('[AutoSwitcher] Invoking unknown game callback for: $processName');
+        _logger.info(
+          '[AutoSwitcher] Invoking unknown game callback for: $processName',
+        );
         final mapping = await unknownGameCallback!(
           processName: processName,
           executablePath: executablePath,
@@ -501,7 +510,9 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
         );
 
         if (mapping != null) {
-          _logger.info('[AutoSwitcher] User selected category: ${mapping.twitchCategoryName}');
+          _logger.info(
+            '[AutoSwitcher] User selected category: ${mapping.twitchCategoryName}',
+          );
           // User selected a category - save and use it
           await _saveMappingUseCase(mapping);
 
@@ -510,7 +521,9 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
 
           // Check if mapping is enabled before updating Twitch
           if (!mapping.isEnabled) {
-            _logger.debug('[AutoSwitcher] Mapping is disabled (ignored), skipping Twitch update');
+            _logger.debug(
+              '[AutoSwitcher] Mapping is disabled (ignored), skipping Twitch update',
+            );
             _currentStatus = _currentStatus.copyWith(
               state: _isMonitoring
                   ? OrchestrationState.detectingProcess
@@ -536,7 +549,9 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
         _logger.error('[AutoSwitcher] Callback failed', e);
       }
     } else {
-      _logger.info('[AutoSwitcher] No callback registered, using notification fallback');
+      _logger.info(
+        '[AutoSwitcher] No callback registered, using notification fallback',
+      );
     }
 
     // Show notification if enabled and callback not available/failed

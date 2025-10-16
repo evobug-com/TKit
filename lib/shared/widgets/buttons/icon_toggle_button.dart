@@ -49,8 +49,7 @@ class IconToggleButton extends StatelessWidget {
     final effectiveBorderColor = isActive
         ? (activeBorderColor ?? TKitColors.accent)
         : (borderColor ?? TKitColors.border);
-    final effectiveTooltip =
-        isActive ? (activeTooltip ?? tooltip) : tooltip;
+    final effectiveTooltip = isActive ? (activeTooltip ?? tooltip) : tooltip;
 
     final Widget button = SizedBox(
       width: size,
@@ -76,10 +75,7 @@ class IconToggleButton extends StatelessWidget {
     );
 
     if (effectiveTooltip != null) {
-      return Tooltip(
-        message: effectiveTooltip,
-        child: button,
-      );
+      return Tooltip(message: effectiveTooltip, child: button);
     }
 
     return button;

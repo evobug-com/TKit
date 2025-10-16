@@ -9,8 +9,9 @@ import 'package:tkit/features/category_mapping/domain/entities/category_mapping.
 /// - processName: Name of the unknown process
 /// - executablePath: Full path to the executable (optional)
 /// - windowTitle: Window title if available (optional)
-typedef UnknownGameCallback = Future<CategoryMapping?> Function({
-  required String processName,
-  String? executablePath,
-  String? windowTitle,
-});
+typedef UnknownGameCallback =
+    Future<CategoryMapping?> Function({
+      required String processName,
+      String? executablePath,
+      String? windowTitle,
+    });

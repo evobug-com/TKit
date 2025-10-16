@@ -64,7 +64,10 @@ class _DatePickerFieldState extends State<DatePickerField> {
               style: TextButton.styleFrom(
                 foregroundColor: TKitColors.textPrimary,
               ),
-            ), dialogTheme: const DialogThemeData(backgroundColor: TKitColors.surface),
+            ),
+            dialogTheme: const DialogThemeData(
+              backgroundColor: TKitColors.surface,
+            ),
           ),
           child: child!,
         );
@@ -101,10 +104,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
       children: [
         // Label
         if (widget.label != null) ...[
-          Text(
-            widget.label!,
-            style: TKitTextStyles.labelMedium,
-          ),
+          Text(widget.label!, style: TKitTextStyles.labelMedium),
           const SizedBox(height: TKitSpacing.xs),
         ],
 
@@ -113,9 +113,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
           onTap: _showDatePicker,
           child: Container(
             height: 32,
-            padding: const EdgeInsets.symmetric(
-              horizontal: TKitSpacing.sm,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.sm),
             decoration: BoxDecoration(
               color: TKitColors.surface,
               border: Border.all(color: TKitColors.border, width: 1),
@@ -213,12 +211,15 @@ class _TimePickerFieldState extends State<TimePickerField> {
               style: TextButton.styleFrom(
                 foregroundColor: TKitColors.textPrimary,
               ),
-            ), dialogTheme: const DialogThemeData(backgroundColor: TKitColors.surface),
+            ),
+            dialogTheme: const DialogThemeData(
+              backgroundColor: TKitColors.surface,
+            ),
           ),
           child: MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              alwaysUse24HourFormat: widget.use24HourFormat,
-            ),
+            data: MediaQuery.of(
+              context,
+            ).copyWith(alwaysUse24HourFormat: widget.use24HourFormat),
             child: child!,
           ),
         );
@@ -263,10 +264,7 @@ class _TimePickerFieldState extends State<TimePickerField> {
       children: [
         // Label
         if (widget.label != null) ...[
-          Text(
-            widget.label!,
-            style: TKitTextStyles.labelMedium,
-          ),
+          Text(widget.label!, style: TKitTextStyles.labelMedium),
           const SizedBox(height: TKitSpacing.xs),
         ],
 
@@ -275,9 +273,7 @@ class _TimePickerFieldState extends State<TimePickerField> {
           onTap: _showTimePicker,
           child: Container(
             height: 32,
-            padding: const EdgeInsets.symmetric(
-              horizontal: TKitSpacing.sm,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.sm),
             decoration: BoxDecoration(
               color: TKitColors.surface,
               border: Border.all(color: TKitColors.border, width: 1),

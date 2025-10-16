@@ -76,9 +76,9 @@ class _DeviceCodeAuthPageState extends ConsumerState<DeviceCodeAuthPage> {
 
     try {
       // Use Riverpod ref to access the auth notifier
-      await ref.read(authProvider.notifier).authenticateWithDeviceCode(
-        widget.deviceCodeResponse.deviceCode,
-      );
+      await ref
+          .read(authProvider.notifier)
+          .authenticateWithDeviceCode(widget.deviceCodeResponse.deviceCode);
 
       // Success!
       if (mounted) {

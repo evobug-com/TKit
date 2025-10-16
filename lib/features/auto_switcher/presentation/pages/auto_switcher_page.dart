@@ -105,7 +105,12 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             // Status card - what's happening right now
-                            _buildStatusCard(context, l10n, status, isMonitoring),
+                            _buildStatusCard(
+                              context,
+                              l10n,
+                              status,
+                              isMonitoring,
+                            ),
                             const VSpace.sm(),
 
                             // Main control card
@@ -115,9 +120,15 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                               isMonitoring: isMonitoring,
                               isLoading: isLoading,
                               hotkey: manualUpdateHotkey,
-                              onStart: () => ref.read(autoSwitcherProvider.notifier).startMonitoring(),
-                              onStop: () => ref.read(autoSwitcherProvider.notifier).stopMonitoring(),
-                              onUpdate: () => ref.read(autoSwitcherProvider.notifier).manualUpdate(),
+                              onStart: () => ref
+                                  .read(autoSwitcherProvider.notifier)
+                                  .startMonitoring(),
+                              onStop: () => ref
+                                  .read(autoSwitcherProvider.notifier)
+                                  .stopMonitoring(),
+                              onUpdate: () => ref
+                                  .read(autoSwitcherProvider.notifier)
+                                  .manualUpdate(),
                             ),
                           ],
                         ),
@@ -126,9 +137,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                   );
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stack) => Center(
-                  child: Text('Error: $error'),
-                ),
+                error: (error, stack) => Center(child: Text('Error: $error')),
               ),
             ),
           ],
@@ -176,13 +185,17 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                 width: 8,
                 height: 8,
                 decoration: BoxDecoration(
-                  color: isMonitoring ? TKitColors.success : TKitColors.textMuted,
+                  color: isMonitoring
+                      ? TKitColors.success
+                      : TKitColors.textMuted,
                   shape: BoxShape.circle,
                 ),
               ),
               const HSpace.sm(),
               Text(
-                isMonitoring ? l10n.autoSwitcherStatusActive : l10n.autoSwitcherStatusInactive,
+                isMonitoring
+                    ? l10n.autoSwitcherStatusActive
+                    : l10n.autoSwitcherStatusInactive,
                 style: TKitTextStyles.bodySmall.copyWith(
                   color: TKitColors.textSecondary,
                 ),
@@ -370,7 +383,11 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
     );
   }
 
-  String _formatTimestamp(BuildContext context, AppLocalizations l10n, DateTime timestamp) {
+  String _formatTimestamp(
+    BuildContext context,
+    AppLocalizations l10n,
+    DateTime timestamp,
+  ) {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
 

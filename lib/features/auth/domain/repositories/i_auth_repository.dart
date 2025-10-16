@@ -13,7 +13,9 @@ abstract class IAuthRepository {
 
   /// Polls for device code authorization and completes authentication
   /// Returns `Either<Failure, TwitchUser>` on success with user info
-  Future<Either<Failure, TwitchUser>> authenticateWithDeviceCode(String deviceCode);
+  Future<Either<Failure, TwitchUser>> authenticateWithDeviceCode(
+    String deviceCode,
+  );
 
   /// Logs out the current user by revoking tokens and clearing local storage
   /// Returns `Either<Failure, void>` on success

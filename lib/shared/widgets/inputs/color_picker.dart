@@ -32,9 +32,7 @@ class _ColorPickerFieldState extends State<ColorPickerField> {
   void initState() {
     super.initState();
     _selectedColor = widget.initialColor;
-    _hexController = TextEditingController(
-      text: _colorToHex(_selectedColor),
-    );
+    _hexController = TextEditingController(text: _colorToHex(_selectedColor));
   }
 
   @override
@@ -98,10 +96,7 @@ class _ColorPickerFieldState extends State<ColorPickerField> {
       children: [
         // Label
         if (widget.label != null) ...[
-          Text(
-            widget.label!,
-            style: TKitTextStyles.labelMedium,
-          ),
+          Text(widget.label!, style: TKitTextStyles.labelMedium),
           const SizedBox(height: TKitSpacing.xs),
         ],
 
@@ -223,7 +218,12 @@ class _ColorPickerDialogState extends State<_ColorPickerDialog> {
 
   void _updateColor() {
     setState(() {
-      _currentColor = HSVColor.fromAHSV(1.0, _hue, _saturation, _value).toColor();
+      _currentColor = HSVColor.fromAHSV(
+        1.0,
+        _hue,
+        _saturation,
+        _value,
+      ).toColor();
     });
   }
 
@@ -238,10 +238,7 @@ class _ColorPickerDialogState extends State<_ColorPickerDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Pick Color',
-              style: TKitTextStyles.heading3,
-            ),
+            const Text('Pick Color', style: TKitTextStyles.heading3),
             const SizedBox(height: TKitSpacing.md),
 
             // Color preview
@@ -325,10 +322,7 @@ class _ColorPickerDialogState extends State<_ColorPickerDialog> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TKitTextStyles.labelSmall,
-        ),
+        Text(label, style: TKitTextStyles.labelSmall),
         const SizedBox(height: TKitSpacing.xs),
         SliderTheme(
           data: SliderThemeData(
@@ -339,12 +333,7 @@ class _ColorPickerDialogState extends State<_ColorPickerDialog> {
             trackHeight: 2,
             thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
           ),
-          child: Slider(
-            value: value,
-            min: min,
-            max: max,
-            onChanged: onChanged,
-          ),
+          child: Slider(value: value, min: min, max: max, onChanged: onChanged),
         ),
       ],
     );

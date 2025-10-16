@@ -15,4 +15,3 @@ class LocaleNotifier extends _$LocaleNotifier {
     state = locale;
   }
 }
-

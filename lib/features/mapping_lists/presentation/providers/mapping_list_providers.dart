@@ -7,9 +7,11 @@ import 'package:tkit/features/mapping_lists/domain/usecases/get_all_lists_usecas
 import 'package:tkit/features/mapping_lists/domain/usecases/sync_list_usecase.dart';
 import 'package:tkit/features/mapping_lists/domain/usecases/import_list_from_url_usecase.dart';
 import 'package:tkit/features/mapping_lists/domain/usecases/toggle_list_enabled_usecase.dart';
-import 'package:tkit/features/mapping_lists/domain/entities/mapping_list.dart' as entity;
+import 'package:tkit/features/mapping_lists/domain/entities/mapping_list.dart'
+    as entity;
 
-export 'package:tkit/features/mapping_lists/domain/usecases/import_list_from_url_usecase.dart' show ImportListParams;
+export 'package:tkit/features/mapping_lists/domain/usecases/import_list_from_url_usecase.dart'
+    show ImportListParams;
 
 part 'mapping_list_providers.g.dart';
 
@@ -23,7 +25,12 @@ IMappingListRepository mappingListRepository(Ref ref) {
   final syncDataSource = ref.watch(mappingListSyncDataSourceProvider);
   final database = ref.watch(appDatabaseProvider);
   final logger = ref.watch(appLoggerProvider);
-  return MappingListRepositoryImpl(localDataSource, syncDataSource, database, logger);
+  return MappingListRepositoryImpl(
+    localDataSource,
+    syncDataSource,
+    database,
+    logger,
+  );
 }
 
 // =============================================================================
@@ -67,10 +74,7 @@ class MappingLists extends _$MappingLists {
 
   /// Clear messages
   void clearMessages() {
-    state = state.copyWith(
-      errorMessage: null,
-      successMessage: null,
-    );
+    state = state.copyWith(errorMessage: null, successMessage: null);
   }
 
   /// Load all lists
@@ -82,10 +86,7 @@ class MappingLists extends _$MappingLists {
 
     result.fold(
       (failure) {
-        state = state.copyWith(
-          isLoading: false,
-          errorMessage: failure.message,
-        );
+        state = state.copyWith(isLoading: false, errorMessage: failure.message);
       },
       (lists) {
         state = state.copyWith(
@@ -100,14 +101,16 @@ class MappingLists extends _$MappingLists {
   /// Sync a list
   Future<void> syncList(String listId) async {
     // Mark list as syncing
-    final updatedSyncingIds = Set<String>.from(state.syncingListIds)..add(listId);
+    final updatedSyncingIds = Set<String>.from(state.syncingListIds)
+      ..add(listId);
     state = state.copyWith(syncingListIds: updatedSyncingIds);
 
     final useCase = ref.read(syncListUseCaseProvider);
     final result = await useCase(listId);
 
     // Remove from syncing set
-    final finalSyncingIds = Set<String>.from(state.syncingListIds)..remove(listId);
+    final finalSyncingIds = Set<String>.from(state.syncingListIds)
+      ..remove(listId);
 
     result.fold(
       (failure) {
@@ -142,7 +145,8 @@ class MappingLists extends _$MappingLists {
       },
       (_) {
         state = state.copyWith(
-          successMessage: 'List ${newEnabledState ? 'enabled' : 'disabled'} successfully',
+          successMessage:
+              'List ${newEnabledState ? 'enabled' : 'disabled'} successfully',
         );
         // Reload lists after toggle
         loadLists();
@@ -182,10 +186,7 @@ class MappingLists extends _$MappingLists {
 
     return result.fold(
       (failure) {
-        state = state.copyWith(
-          isLoading: false,
-          errorMessage: failure.message,
-        );
+        state = state.copyWith(isLoading: false, errorMessage: failure.message);
         return false;
       },
       (_) {

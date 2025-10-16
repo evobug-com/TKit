@@ -106,8 +106,13 @@ class Settings extends _$Settings {
       (failure) {
         logger.error('Failed to update settings: ${failure.message}');
         final currentState = state;
-        final currentSettings = currentState is SettingsSaving ? currentState.settings : null;
-        state = SettingsError(failure.message, currentSettings: currentSettings);
+        final currentSettings = currentState is SettingsSaving
+            ? currentState.settings
+            : null;
+        state = SettingsError(
+          failure.message,
+          currentSettings: currentSettings,
+        );
       },
       (_) {
         logger.info('Settings updated successfully');

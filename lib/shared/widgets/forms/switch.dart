@@ -83,32 +83,32 @@ class TKitSwitchFormField extends FormField<bool> {
     bool enabled = true,
     super.autovalidateMode,
   }) : super(
-          builder: (FormFieldState<bool> state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TKitSwitch(
-                  value: state.value ?? false,
-                  onChanged: enabled
-                      ? (value) {
-                          state.didChange(value);
-                        }
-                      : null,
-                  label: label,
-                  enabled: enabled,
-                ),
-                if (state.hasError) ...[
-                  const SizedBox(height: TKitSpacing.xs),
-                  Text(
-                    state.errorText!,
-                    style: TKitTextStyles.caption.copyWith(
-                      color: TKitColors.error,
-                    ),
-                  ),
-                ],
-              ],
-            );
-          },
-        );
+         builder: (FormFieldState<bool> state) {
+           return Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             mainAxisSize: MainAxisSize.min,
+             children: [
+               TKitSwitch(
+                 value: state.value ?? false,
+                 onChanged: enabled
+                     ? (value) {
+                         state.didChange(value);
+                       }
+                     : null,
+                 label: label,
+                 enabled: enabled,
+               ),
+               if (state.hasError) ...[
+                 const SizedBox(height: TKitSpacing.xs),
+                 Text(
+                   state.errorText!,
+                   style: TKitTextStyles.caption.copyWith(
+                     color: TKitColors.error,
+                   ),
+                 ),
+               ],
+             ],
+           );
+         },
+       );
 }

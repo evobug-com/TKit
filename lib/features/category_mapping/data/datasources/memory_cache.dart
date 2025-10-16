@@ -126,12 +126,12 @@ class MemoryCache {
 
   /// Get cache statistics
   CacheStats get stats => CacheStats(
-        size: size,
-        maxSize: maxSize,
-        hitCount: _hitCount,
-        missCount: _missCount,
-        hitRate: hitRate,
-      );
+    size: size,
+    maxSize: maxSize,
+    hitCount: _hitCount,
+    missCount: _missCount,
+    hitRate: hitRate,
+  );
 
   /// Reset statistics
   void resetStats() {

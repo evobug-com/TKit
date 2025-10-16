@@ -23,12 +23,12 @@ class MenuAction {
 
   /// Creates a divider
   const MenuAction.divider()
-      : label = '',
-        icon = null,
-        onTap = _emptyCallback,
-        enabled = true,
-        textColor = null,
-        isDivider = true;
+    : label = '',
+      icon = null,
+      onTap = _emptyCallback,
+      enabled = true,
+      textColor = null,
+      isDivider = true;
 
   static void _emptyCallback() {}
 }
@@ -68,9 +68,9 @@ class MenuButton extends StatelessWidget {
     this.compact = true,
     this.iconColor,
     this.backgroundColor,
-  })  : child = null,
-        icon = Icons.more_vert,
-        label = null;
+  }) : child = null,
+       icon = Icons.more_vert,
+       label = null;
 
   /// Creates an icon-only menu button
   const MenuButton.icon({
@@ -82,8 +82,8 @@ class MenuButton extends StatelessWidget {
     this.compact = true,
     this.iconColor,
     this.backgroundColor,
-  })  : child = null,
-        label = null;
+  }) : child = null,
+       label = null;
 
   @override
   Widget build(BuildContext context) {
@@ -95,10 +95,7 @@ class MenuButton extends StatelessWidget {
       shadowColor: TKitColors.overlay,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(TKitSpacing.xs),
-        side: const BorderSide(
-          color: TKitColors.border,
-          width: 1,
-        ),
+        side: const BorderSide(color: TKitColors.border, width: 1),
       ),
       padding: EdgeInsets.zero,
       itemBuilder: (context) {
@@ -173,10 +170,7 @@ class MenuButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor ?? TKitColors.surface,
         borderRadius: BorderRadius.circular(TKitSpacing.xs),
-        border: Border.all(
-          color: TKitColors.border,
-          width: 1,
-        ),
+        border: Border.all(color: TKitColors.border, width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -195,7 +189,9 @@ class MenuButton extends StatelessWidget {
             Text(
               label!,
               style: TKitTextStyles.bodySmall.copyWith(
-                color: enabled ? TKitColors.textPrimary : TKitColors.textDisabled,
+                color: enabled
+                    ? TKitColors.textPrimary
+                    : TKitColors.textDisabled,
               ),
             ),
           const SizedBox(width: TKitSpacing.xs),

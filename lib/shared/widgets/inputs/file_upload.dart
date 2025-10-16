@@ -46,9 +46,7 @@ class _FileUploadFieldState extends State<FileUploadField> {
 
     try {
       final FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: widget.allowedExtensions != null
-            ? FileType.custom
-            : FileType.any,
+        type: widget.allowedExtensions != null ? FileType.custom : FileType.any,
         allowedExtensions: widget.allowedExtensions,
       );
 
@@ -103,10 +101,7 @@ class _FileUploadFieldState extends State<FileUploadField> {
       children: [
         // Label
         if (widget.label != null) ...[
-          Text(
-            widget.label!,
-            style: TKitTextStyles.labelMedium,
-          ),
+          Text(widget.label!, style: TKitTextStyles.labelMedium),
           const SizedBox(height: TKitSpacing.xs),
         ],
 
@@ -127,13 +122,11 @@ class _FileUploadFieldState extends State<FileUploadField> {
               decoration: BoxDecoration(
                 color: widget.enabled
                     ? (_isDragging
-                        ? TKitColors.surfaceVariant
-                        : TKitColors.surface)
+                          ? TKitColors.surfaceVariant
+                          : TKitColors.surface)
                     : TKitColors.surface,
                 border: Border.all(
-                  color: _isDragging
-                      ? TKitColors.accent
-                      : TKitColors.border,
+                  color: _isDragging ? TKitColors.accent : TKitColors.border,
                   width: 1,
                 ),
               ),
@@ -147,10 +140,7 @@ class _FileUploadFieldState extends State<FileUploadField> {
         // Hint text
         if (widget.hint != null) ...[
           const SizedBox(height: TKitSpacing.xs),
-          Text(
-            widget.hint!,
-            style: TKitTextStyles.bodySmall,
-          ),
+          Text(widget.hint!, style: TKitTextStyles.bodySmall),
         ],
       ],
     );
@@ -217,10 +207,7 @@ class _FileUploadFieldState extends State<FileUploadField> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 2),
-                Text(
-                  _getFileSize(),
-                  style: TKitTextStyles.bodySmall,
-                ),
+                Text(_getFileSize(), style: TKitTextStyles.bodySmall),
               ],
             ),
           ),

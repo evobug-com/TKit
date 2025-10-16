@@ -65,8 +65,9 @@ class MappingImporter {
           final existing = await localDataSource.findMapping(exe, null);
           if (existing == null) {
             // Verify the Twitch ID is still valid
-            final categoryResult =
-                await twitchApiRepository.getCategoryById(twitchId);
+            final categoryResult = await twitchApiRepository.getCategoryById(
+              twitchId,
+            );
 
             await categoryResult.fold(
               (failure) async {
@@ -85,7 +86,9 @@ class MappingImporter {
                   manualOverride: false,
                 );
 
-                await localDataSource.saveMapping(CategoryMappingModel.fromEntity(mapping));
+                await localDataSource.saveMapping(
+                  CategoryMappingModel.fromEntity(mapping),
+                );
                 importedCount++;
               },
             );
@@ -162,7 +165,9 @@ class MappingImporter {
                 manualOverride: false,
               );
 
-              await localDataSource.saveMapping(CategoryMappingModel.fromEntity(mapping));
+              await localDataSource.saveMapping(
+                CategoryMappingModel.fromEntity(mapping),
+              );
               importedCount++;
               break; // Only create one mapping per game
             }
@@ -226,7 +231,9 @@ class MappingImporter {
               manualOverride: false,
             );
 
-            await localDataSource.saveMapping(CategoryMappingModel.fromEntity(mapping));
+            await localDataSource.saveMapping(
+              CategoryMappingModel.fromEntity(mapping),
+            );
             importedCount++;
           }
         } catch (e) {

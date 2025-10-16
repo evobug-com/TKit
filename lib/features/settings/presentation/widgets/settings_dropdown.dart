@@ -29,9 +29,9 @@ class SettingsDropdown<T> extends StatelessWidget {
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontSize: 14,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontSize: 14),
         ),
         if (description != null) ...[
           const SizedBox(height: TKitSpacing.headerGap),
@@ -39,7 +39,9 @@ class SettingsDropdown<T> extends StatelessWidget {
             description!,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               fontSize: 11,
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -48,7 +50,10 @@ class SettingsDropdown<T> extends StatelessWidget {
           initialValue: value,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.symmetric(horizontal: TKitSpacing.md, vertical: TKitSpacing.lg),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: TKitSpacing.md,
+              vertical: TKitSpacing.lg,
+            ),
           ),
           items: items,
           onChanged: onChanged,

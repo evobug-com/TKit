@@ -38,8 +38,7 @@ class Pagination extends StatefulWidget {
     this.maxPageButtons = 5,
   }) : assert(currentPage >= 1, 'currentPage must be >= 1'),
        assert(totalPages >= 1, 'totalPages must be >= 1'),
-       assert(currentPage <= totalPages,
-           'currentPage must be <= totalPages'),
+       assert(currentPage <= totalPages, 'currentPage must be <= totalPages'),
        assert(maxPageButtons >= 3, 'maxPageButtons must be >= 3');
 
   @override
@@ -86,17 +85,21 @@ class _PaginationState extends State<Pagination> {
     } else if (widget.currentPage >= widget.totalPages - half - 1) {
       // Near the end
       pages.add(null); // Ellipsis
-      for (int i = widget.totalPages - widget.maxPageButtons + 2;
-          i < widget.totalPages;
-          i++) {
+      for (
+        int i = widget.totalPages - widget.maxPageButtons + 2;
+        i < widget.totalPages;
+        i++
+      ) {
         pages.add(i);
       }
     } else {
       // In the middle
       pages.add(null); // Ellipsis
-      for (int i = widget.currentPage - half;
-          i <= widget.currentPage + half;
-          i++) {
+      for (
+        int i = widget.currentPage - half;
+        i <= widget.currentPage + half;
+        i++
+      ) {
         pages.add(i);
       }
       pages.add(null); // Ellipsis
@@ -188,9 +191,7 @@ class _PaginationState extends State<Pagination> {
                 }
 
                 return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 2,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
                   child: _PaginationButton(
                     onPressed: page != widget.currentPage
                         ? () => widget.onPageChanged(page)
@@ -348,8 +349,8 @@ class _PaginationButtonState extends State<_PaginationButton> {
         color: widget.isActive
             ? TKitColors.accent
             : (_isHovered && !isDisabled
-                ? TKitColors.surfaceVariant
-                : TKitColors.surface),
+                  ? TKitColors.surfaceVariant
+                  : TKitColors.surface),
         child: InkWell(
           onTap: widget.onPressed,
           child: Container(

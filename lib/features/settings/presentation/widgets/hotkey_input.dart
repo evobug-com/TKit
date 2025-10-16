@@ -299,7 +299,9 @@ class _HotkeyInputState extends State<HotkeyInput> {
                       widget.description!,
                       style: TextStyle(
                         fontSize: 11,
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.6,
+                        ),
                       ),
                     ),
                   ],
@@ -311,7 +313,10 @@ class _HotkeyInputState extends State<HotkeyInput> {
             // Display current or recording state
             if (_isRecording) ...[
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(6),
@@ -333,12 +338,10 @@ class _HotkeyInputState extends State<HotkeyInput> {
                 tooltip: AppLocalizations.of(context)!.hotkeyInputCancel,
                 onPressed: _stopRecording,
                 padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(
-                  minWidth: 32,
-                  minHeight: 32,
-                ),
+                constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
               ),
-            ] else if (widget.currentHotkey != null && widget.currentHotkey!.isNotEmpty) ...[
+            ] else if (widget.currentHotkey != null &&
+                widget.currentHotkey!.isNotEmpty) ...[
               HotkeyDisplay(hotkeyString: widget.currentHotkey!),
               const SizedBox(width: 6),
               AccentButton(
@@ -352,10 +355,7 @@ class _HotkeyInputState extends State<HotkeyInput> {
                 tooltip: AppLocalizations.of(context)!.hotkeyInputClearHotkey,
                 onPressed: _clearHotkey,
                 padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(
-                  minWidth: 28,
-                  minHeight: 28,
-                ),
+                constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
               ),
             ] else ...[
               AccentButton(

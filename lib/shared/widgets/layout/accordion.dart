@@ -109,12 +109,7 @@ class _AccordionItemState extends State<AccordionItem> {
     return Container(
       decoration: const BoxDecoration(
         color: TKitColors.surface,
-        border: Border(
-          bottom: BorderSide(
-            color: TKitColors.border,
-            width: 1,
-          ),
-        ),
+        border: Border(bottom: BorderSide(color: TKitColors.border, width: 1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -153,10 +148,7 @@ class _AccordionItemState extends State<AccordionItem> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.title,
-                          style: TKitTextStyles.labelMedium,
-                        ),
+                        Text(widget.title, style: TKitTextStyles.labelMedium),
                         if (widget.subtitle != null) ...[
                           const SizedBox(height: 2),
                           Text(

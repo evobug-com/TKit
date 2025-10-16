@@ -23,7 +23,8 @@ class ListManagementDialog extends ConsumerStatefulWidget {
   }
 
   @override
-  ConsumerState<ListManagementDialog> createState() => _ListManagementDialogState();
+  ConsumerState<ListManagementDialog> createState() =>
+      _ListManagementDialogState();
 }
 
 class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
@@ -57,9 +58,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                 }
 
                 if (state.lists.isEmpty) {
-                  return Center(
-                    child: Text(l10n.listManagementEmptyState),
-                  );
+                  return Center(child: Text(l10n.listManagementEmptyState));
                 }
 
                 return _buildListsView(l10n, state);
@@ -76,12 +75,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
     return Container(
       padding: const EdgeInsets.all(TKitSpacing.pagePadding),
       decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: TKitColors.border,
-            width: 1,
-          ),
-        ),
+        border: Border(bottom: BorderSide(color: TKitColors.border, width: 1)),
         color: TKitColors.surfaceVariant,
       ),
       child: Row(
@@ -115,7 +109,11 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
     );
   }
 
-  Widget _buildListTile(AppLocalizations l10n, MappingList list, MappingListState state) {
+  Widget _buildListTile(
+    AppLocalizations l10n,
+    MappingList list,
+    MappingListState state,
+  ) {
     final isSyncing = state.syncingListIds.contains(list.id);
 
     return IslandVariant.standard(
@@ -128,7 +126,9 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
               width: 40,
               child: Checkbox(
                 value: list.isEnabled,
-                onChanged: (value) => ref.read(mappingListsProvider.notifier).toggleListEnabled(list.id),
+                onChanged: (value) => ref
+                    .read(mappingListsProvider.notifier)
+                    .toggleListEnabled(list.id),
                 fillColor: WidgetStateProperty.resolveWith((states) {
                   if (states.contains(WidgetState.disabled)) {
                     return TKitColors.textDisabled;
@@ -146,10 +146,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                 children: [
                   Row(
                     children: [
-                      Text(
-                        list.name,
-                        style: TKitTextStyles.labelMedium,
-                      ),
+                      Text(list.name, style: TKitTextStyles.labelMedium),
                       const HSpace.sm(),
                       _buildSourceBadge(l10n, list.sourceType),
                       if (list.isReadOnly) ...[
@@ -226,7 +223,9 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                         )
                       : IconButton(
                           icon: const Icon(Icons.sync, size: 18),
-                          onPressed: () => ref.read(mappingListsProvider.notifier).syncList(list.id),
+                          onPressed: () => ref
+                              .read(mappingListsProvider.notifier)
+                              .syncList(list.id),
                           tooltip: l10n.listManagementSyncNow,
                           color: TKitColors.accent,
                           padding: EdgeInsets.zero,
@@ -296,12 +295,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
     return Container(
       padding: const EdgeInsets.all(TKitSpacing.pagePadding),
       decoration: const BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            color: TKitColors.border,
-            width: 1,
-          ),
-        ),
+        border: Border(top: BorderSide(color: TKitColors.border, width: 1)),
       ),
       child: Row(
         children: [
@@ -315,7 +309,9 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
           AccentButton(
             text: l10n.listManagementButtonSyncAll,
             icon: Icons.sync,
-            onPressed: state.isLoading ? null : () => ref.read(mappingListsProvider.notifier).syncAllLists(),
+            onPressed: state.isLoading
+                ? null
+                : () => ref.read(mappingListsProvider.notifier).syncAllLists(),
             width: 120,
           ),
           const Spacer(),
@@ -338,14 +334,20 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
       context: context,
       builder: (dialogContext) => AlertDialog(
         backgroundColor: TKitColors.surface,
-        title: Text(l10n.listManagementImportTitle, style: TKitTextStyles.heading3),
+        title: Text(
+          l10n.listManagementImportTitle,
+          style: TKitTextStyles.heading3,
+        ),
         content: SizedBox(
           width: 500,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(l10n.listManagementImportUrl, style: TKitTextStyles.labelSmall),
+              Text(
+                l10n.listManagementImportUrl,
+                style: TKitTextStyles.labelSmall,
+              ),
               const VSpace.sm(),
               TextFormField(
                 controller: urlController,
@@ -356,7 +358,10 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                 ),
               ),
               const VSpace.md(),
-              Text(l10n.listManagementImportName, style: TKitTextStyles.labelSmall),
+              Text(
+                l10n.listManagementImportName,
+                style: TKitTextStyles.labelSmall,
+              ),
               const VSpace.xs(),
               Text(
                 l10n.listManagementImportNameHelper,
@@ -374,7 +379,10 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
                 ),
               ),
               const VSpace.md(),
-              Text(l10n.listManagementImportDescription, style: TKitTextStyles.labelSmall),
+              Text(
+                l10n.listManagementImportDescription,
+                style: TKitTextStyles.labelSmall,
+              ),
               const VSpace.xs(),
               Text(
                 l10n.listManagementImportDescriptionHelper,
@@ -414,7 +422,9 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
 
               Navigator.of(dialogContext).pop();
 
-              final success = await ref.read(mappingListsProvider.notifier).importListFromUrl(
+              final success = await ref
+                  .read(mappingListsProvider.notifier)
+                  .importListFromUrl(
                     url: url,
                     name: name.isEmpty ? l10n.listManagementDefaultName : name,
                     description: description.isEmpty ? null : description,

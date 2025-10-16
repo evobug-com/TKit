@@ -20,7 +20,9 @@ class UnsavedChangesState {
   }) {
     return UnsavedChangesState(
       hasUnsavedChanges: hasUnsavedChanges ?? this.hasUnsavedChanges,
-      onNavigationAttempt: clearCallback ? null : (onNavigationAttempt ?? this.onNavigationAttempt),
+      onNavigationAttempt: clearCallback
+          ? null
+          : (onNavigationAttempt ?? this.onNavigationAttempt),
     );
   }
 }

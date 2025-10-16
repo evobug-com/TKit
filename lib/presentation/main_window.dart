@@ -100,16 +100,16 @@ class _MainWindowState extends ConsumerState<MainWindow> {
       final logger = ref.read(appLoggerProvider);
       Navigator.of(navigatorContext)
           .push<void>(
-        MaterialPageRoute<void>(
-          builder: (context) => TalkerScreen(talker: logger.talker),
-        ),
-      )
+            MaterialPageRoute<void>(
+              builder: (context) => TalkerScreen(talker: logger.talker),
+            ),
+          )
           .then((_) {
-        // Reset flag when screen is closed by other means (back button, etc)
-        setState(() {
-          _isLogScreenOpen = false;
-        });
-      });
+            // Reset flag when screen is closed by other means (back button, etc)
+            setState(() {
+              _isLogScreenOpen = false;
+            });
+          });
       setState(() {
         _isLogScreenOpen = true;
       });
@@ -206,64 +206,153 @@ class _MainWindowState extends ConsumerState<MainWindow> {
         children: [
           // LEFT POSITION LAYOUT: Controls → Spacer → Tabs → Title
           if (windowControlsPosition == WindowControlsPosition.left) ...[
-                // Window controls on the left (reversed order)
-                _buildWindowControls(reversed: true),
+            // Window controls on the left (reversed order)
+            _buildWindowControls(reversed: true),
 
-                // Spacer
-                Expanded(
-                  child: GestureDetector(
-                    onDoubleTap: () async {
-                      if (await windowManager.isMaximized()) {
-                        await windowManager.unmaximize();
-                      } else {
-                        await windowManager.maximize();
-                      }
-                    },
-                    child: DragToMoveArea(
-                      child: Container(color: Colors.transparent),
+            // Spacer
+            Expanded(
+              child: GestureDetector(
+                onDoubleTap: () async {
+                  if (await windowManager.isMaximized()) {
+                    await windowManager.unmaximize();
+                  } else {
+                    await windowManager.maximize();
+                  }
+                },
+                child: DragToMoveArea(
+                  child: Container(color: Colors.transparent),
+                ),
+              ),
+            ),
+
+            // Divider
+            if (!isWelcomeScreen)
+              Container(width: 1, height: 36, color: TKitColors.border),
+
+            // Navigation tabs (before title)
+            if (!isWelcomeScreen)
+              _buildTab(
+                context: context,
+                label: l10n.mainWindowNavAutoSwitcher,
+                isSelected: currentRouteName == AutoSwitcherRoute.name,
+                onTap: () {
+                  _handleNavigation(context, const AutoSwitcherRoute());
+                },
+              ),
+            if (!isWelcomeScreen)
+              _buildTab(
+                context: context,
+                label: l10n.mainWindowNavMappings,
+                isSelected: currentRouteName == CategoryMappingEditorRoute.name,
+                onTap: () {
+                  _handleNavigation(
+                    context,
+                    const CategoryMappingEditorRoute(),
+                  );
+                },
+              ),
+            if (!isWelcomeScreen)
+              _buildTab(
+                context: context,
+                label: l10n.mainWindowNavSettings,
+                isSelected: currentRouteName == SettingsRoute.name,
+                onTap: () {
+                  _handleNavigation(context, const SettingsRoute());
+                },
+              ),
+
+            // App name on the right
+            GestureDetector(
+              onDoubleTap: () async {
+                if (await windowManager.isMaximized()) {
+                  await windowManager.unmaximize();
+                } else {
+                  await windowManager.maximize();
+                }
+              },
+              child: DragToMoveArea(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    AppConfig.appName.toUpperCase(),
+                    style: TKitTextStyles.heading4.copyWith(
+                      letterSpacing: 1.8,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
+              ),
+            ),
+          ],
 
-                // Divider
-                if (!isWelcomeScreen)
-                  Container(width: 1, height: 36, color: TKitColors.border),
+          // CENTER/RIGHT POSITION LAYOUT: Title → Tabs → Spacer/Controls → Controls
+          if (windowControlsPosition != WindowControlsPosition.left) ...[
+            // App name - draggable area with double-click
+            GestureDetector(
+              onDoubleTap: () async {
+                if (await windowManager.isMaximized()) {
+                  await windowManager.unmaximize();
+                } else {
+                  await windowManager.maximize();
+                }
+              },
+              child: DragToMoveArea(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    AppConfig.appName.toUpperCase(),
+                    style: TKitTextStyles.heading4.copyWith(
+                      letterSpacing: 1.8,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            ),
 
-                // Navigation tabs (before title)
-                if (!isWelcomeScreen)
-                  _buildTab(
-                    context: context,
-                    label: l10n.mainWindowNavAutoSwitcher,
-                    isSelected: currentRouteName == AutoSwitcherRoute.name,
-                    onTap: () {
-                      _handleNavigation(context, const AutoSwitcherRoute());
-                    },
-                  ),
-                if (!isWelcomeScreen)
-                  _buildTab(
-                    context: context,
-                    label: l10n.mainWindowNavMappings,
-                    isSelected:
-                        currentRouteName == CategoryMappingEditorRoute.name,
-                    onTap: () {
-                      _handleNavigation(
-                        context,
-                        const CategoryMappingEditorRoute(),
-                      );
-                    },
-                  ),
-                if (!isWelcomeScreen)
-                  _buildTab(
-                    context: context,
-                    label: l10n.mainWindowNavSettings,
-                    isSelected: currentRouteName == SettingsRoute.name,
-                    onTap: () {
-                      _handleNavigation(context, const SettingsRoute());
-                    },
-                  ),
+            // Divider
+            if (!isWelcomeScreen)
+              Container(width: 1, height: 36, color: TKitColors.border),
 
-                // App name on the right
-                GestureDetector(
+            // Navigation tabs - NOT in draggable area (hidden on welcome screen)
+            if (!isWelcomeScreen)
+              _buildTab(
+                context: context,
+                label: l10n.mainWindowNavAutoSwitcher,
+                isSelected: currentRouteName == AutoSwitcherRoute.name,
+                onTap: () {
+                  _handleNavigation(context, const AutoSwitcherRoute());
+                },
+              ),
+            if (!isWelcomeScreen)
+              _buildTab(
+                context: context,
+                label: l10n.mainWindowNavMappings,
+                isSelected: currentRouteName == CategoryMappingEditorRoute.name,
+                onTap: () {
+                  _handleNavigation(
+                    context,
+                    const CategoryMappingEditorRoute(),
+                  );
+                },
+              ),
+            if (!isWelcomeScreen)
+              _buildTab(
+                context: context,
+                label: l10n.mainWindowNavSettings,
+                isSelected: currentRouteName == SettingsRoute.name,
+                onTap: () {
+                  _handleNavigation(context, const SettingsRoute());
+                },
+              ),
+
+            // Window controls in the center (truly centered)
+            if (windowControlsPosition == WindowControlsPosition.center) ...[
+              // Left spacer
+              Expanded(
+                child: GestureDetector(
                   onDoubleTap: () async {
                     if (await windowManager.isMaximized()) {
                       await windowManager.unmaximize();
@@ -272,25 +361,14 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                     }
                   },
                   child: DragToMoveArea(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Text(
-                        AppConfig.appName.toUpperCase(),
-                        style: TKitTextStyles.heading4.copyWith(
-                          letterSpacing: 1.8,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+                    child: Container(color: Colors.transparent),
                   ),
                 ),
-              ],
-
-              // CENTER/RIGHT POSITION LAYOUT: Title → Tabs → Spacer/Controls → Controls
-              if (windowControlsPosition != WindowControlsPosition.left) ...[
-                // App name - draggable area with double-click
-                GestureDetector(
+              ),
+              _buildWindowControls(reversed: false),
+              // Right spacer
+              Expanded(
+                child: GestureDetector(
                   onDoubleTap: () async {
                     if (await windowManager.isMaximized()) {
                       await windowManager.unmaximize();
@@ -299,116 +377,35 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                     }
                   },
                   child: DragToMoveArea(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Text(
-                        AppConfig.appName.toUpperCase(),
-                        style: TKitTextStyles.heading4.copyWith(
-                          letterSpacing: 1.8,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+                    child: Container(color: Colors.transparent),
                   ),
                 ),
-
-                // Divider
-                if (!isWelcomeScreen)
-                  Container(width: 1, height: 36, color: TKitColors.border),
-
-                // Navigation tabs - NOT in draggable area (hidden on welcome screen)
-                if (!isWelcomeScreen)
-                  _buildTab(
-                    context: context,
-                    label: l10n.mainWindowNavAutoSwitcher,
-                    isSelected: currentRouteName == AutoSwitcherRoute.name,
-                    onTap: () {
-                      _handleNavigation(context, const AutoSwitcherRoute());
-                    },
-                  ),
-                if (!isWelcomeScreen)
-                  _buildTab(
-                    context: context,
-                    label: l10n.mainWindowNavMappings,
-                    isSelected:
-                        currentRouteName == CategoryMappingEditorRoute.name,
-                    onTap: () {
-                      _handleNavigation(
-                        context,
-                        const CategoryMappingEditorRoute(),
-                      );
-                    },
-                  ),
-                if (!isWelcomeScreen)
-                  _buildTab(
-                    context: context,
-                    label: l10n.mainWindowNavSettings,
-                    isSelected: currentRouteName == SettingsRoute.name,
-                    onTap: () {
-                      _handleNavigation(context, const SettingsRoute());
-                    },
-                  ),
-
-                // Window controls in the center (truly centered)
-                if (windowControlsPosition ==
-                    WindowControlsPosition.center) ...[
-                  // Left spacer
-                  Expanded(
-                    child: GestureDetector(
-                      onDoubleTap: () async {
-                        if (await windowManager.isMaximized()) {
-                          await windowManager.unmaximize();
-                        } else {
-                          await windowManager.maximize();
-                        }
-                      },
-                      child: DragToMoveArea(
-                        child: Container(color: Colors.transparent),
-                      ),
-                    ),
-                  ),
-                  _buildWindowControls(reversed: false),
-                  // Right spacer
-                  Expanded(
-                    child: GestureDetector(
-                      onDoubleTap: () async {
-                        if (await windowManager.isMaximized()) {
-                          await windowManager.unmaximize();
-                        } else {
-                          await windowManager.maximize();
-                        }
-                      },
-                      child: DragToMoveArea(
-                        child: Container(color: Colors.transparent),
-                      ),
-                    ),
-                  ),
-                ],
-
-                // Spacer - draggable area with double-click (only for right position)
-                if (windowControlsPosition == WindowControlsPosition.right)
-                  Expanded(
-                    child: GestureDetector(
-                      onDoubleTap: () async {
-                        if (await windowManager.isMaximized()) {
-                          await windowManager.unmaximize();
-                        } else {
-                          await windowManager.maximize();
-                        }
-                      },
-                      child: DragToMoveArea(
-                        child: Container(color: Colors.transparent),
-                      ),
-                    ),
-                  ),
-
-                // Window controls on the right (default)
-                if (windowControlsPosition == WindowControlsPosition.right)
-                  _buildWindowControls(reversed: false),
-              ],
+              ),
             ],
-          ),
+
+            // Spacer - draggable area with double-click (only for right position)
+            if (windowControlsPosition == WindowControlsPosition.right)
+              Expanded(
+                child: GestureDetector(
+                  onDoubleTap: () async {
+                    if (await windowManager.isMaximized()) {
+                      await windowManager.unmaximize();
+                    } else {
+                      await windowManager.maximize();
+                    }
+                  },
+                  child: DragToMoveArea(
+                    child: Container(color: Colors.transparent),
+                  ),
+                ),
+              ),
+
+            // Window controls on the right (default)
+            if (windowControlsPosition == WindowControlsPosition.right)
+              _buildWindowControls(reversed: false),
+          ],
+        ],
+      ),
     );
   }
 
@@ -596,7 +593,9 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                     channel: _getChannelFromVersion(AppConfig.appVersion),
                   ),
                   const SizedBox(width: 6),
-                  VersionStatusIndicator(navigatorKey: widget.router.navigatorKey),
+                  VersionStatusIndicator(
+                    navigatorKey: widget.router.navigatorKey,
+                  ),
                 ],
               ),
             ),

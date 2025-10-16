@@ -32,7 +32,8 @@ class GitHubUpdateService {
 
   GitHubUpdateService(this._dio, this._logger) {
     _updateAvailableController = StreamController<UpdateInfo?>.broadcast();
-    _downloadProgressController = StreamController<DownloadProgress>.broadcast();
+    _downloadProgressController =
+        StreamController<DownloadProgress>.broadcast();
   }
 
   /// Set the channel provider to get user's channel preference
@@ -73,21 +74,29 @@ class GitHubUpdateService {
 
       // Detect installation type
       final installationType = InstallationDetector.detect();
-      _logger.info('Detected installation type: ${InstallationDetector.getDescription(installationType)}');
+      _logger.info(
+        'Detected installation type: ${InstallationDetector.getDescription(installationType)}',
+      );
 
       _isInitialized = true;
       _logger.info('GitHub update service initialized successfully');
 
       // Check for updates on startup (brief delay to let app finish initializing)
-      unawaited(Future.delayed(const Duration(seconds: 2), () async {
-        // Get channel from provider if available, otherwise use stable
-        final channel = _channelProvider != null
-            ? await _channelProvider!()
-            : UpdateChannel.stable;
-        await checkForUpdates(channel: channel);
-      }));
+      unawaited(
+        Future.delayed(const Duration(seconds: 2), () async {
+          // Get channel from provider if available, otherwise use stable
+          final channel = _channelProvider != null
+              ? await _channelProvider!()
+              : UpdateChannel.stable;
+          await checkForUpdates(channel: channel);
+        }),
+      );
     } catch (e, stackTrace) {
-      _logger.error('Failed to initialize GitHub update service', e, stackTrace);
+      _logger.error(
+        'Failed to initialize GitHub update service',
+        e,
+        stackTrace,
+      );
     }
   }
 
@@ -107,27 +116,36 @@ class GitHubUpdateService {
       if (_lastCheckTime != null) {
         final timeSinceLastCheck = DateTime.now().difference(_lastCheckTime!);
         if (timeSinceLastCheck.inMinutes < 30) {
-          _logger.debug('Skipping update check, last check was ${timeSinceLastCheck.inMinutes} minutes ago');
+          _logger.debug(
+            'Skipping update check, last check was ${timeSinceLastCheck.inMinutes} minutes ago',
+          );
           return _currentUpdateValue;
         }
       }
 
-      _logger.info('Checking for updates from GitHub (channel: ${channel.value})');
+      _logger.info(
+        'Checking for updates from GitHub (channel: ${channel.value})',
+      );
       _lastCheckTime = DateTime.now();
 
       // Detect current installation type
       final installationType = InstallationDetector.detect();
-      _logger.debug('Using installation type: ${InstallationDetector.getDescription(installationType)}');
+      _logger.debug(
+        'Using installation type: ${InstallationDetector.getDescription(installationType)}',
+      );
 
       // In debug mode or unknown installations, log a warning
       if (installationType == InstallationType.unknown) {
-        _logger.warning('Running in debug/development mode - update checks are for testing only');
+        _logger.warning(
+          'Running in debug/development mode - update checks are for testing only',
+        );
       }
 
       UpdateInfo? updateInfo;
 
       // Fetch all releases to support multi-version changelogs
-      final url = 'https://api.github.com/repos/${AppConfig.githubOwner}/${AppConfig.githubRepo}/releases';
+      final url =
+          'https://api.github.com/repos/${AppConfig.githubOwner}/${AppConfig.githubRepo}/releases';
 
       Response<dynamic>? response;
       try {
@@ -160,7 +178,9 @@ class GitHubUpdateService {
       for (final release in allReleases) {
         final releaseData = release as Map<String, dynamic>;
         final tagName = releaseData['tag_name'] as String;
-        final version = tagName.startsWith('v') ? tagName.substring(1) : tagName;
+        final version = tagName.startsWith('v')
+            ? tagName.substring(1)
+            : tagName;
 
         // For stable channel, check if it's not a prerelease
         if (channel == UpdateChannel.stable) {
@@ -194,12 +214,14 @@ class GitHubUpdateService {
       for (final release in allReleases) {
         final releaseData = release as Map<String, dynamic>;
         final tagName = releaseData['tag_name'] as String;
-        final version = tagName.startsWith('v') ? tagName.substring(1) : tagName;
+        final version = tagName.startsWith('v')
+            ? tagName.substring(1)
+            : tagName;
 
         // Check if version is between current and latest (inclusive of latest)
         if (VersionComparator.isGreaterThan(version, AppConfig.appVersion) &&
             (VersionComparator.isLessThan(version, latestVersion) ||
-             VersionComparator.isEqual(version, latestVersion))) {
+                VersionComparator.isEqual(version, latestVersion))) {
           // For stable channel, exclude prereleases
           if (channel == UpdateChannel.stable) {
             final isPrerelease = releaseData['prerelease'] as bool? ?? false;
@@ -223,7 +245,10 @@ class GitHubUpdateService {
             installationType: installationType,
           );
         } catch (e) {
-          _logger.warning('Failed to parse releases with changelogs, falling back to single release', e);
+          _logger.warning(
+            'Failed to parse releases with changelogs, falling back to single release',
+            e,
+          );
           // Fallback to single release
           updateInfo = UpdateInfo.fromGitHubRelease(
             latestRelease,
@@ -240,7 +265,9 @@ class GitHubUpdateService {
       _logger.info('Latest version from GitHub: ${updateInfo.version}');
       _logger.info('Current version: ${AppConfig.appVersion}');
       _logger.info('Selected installer: ${updateInfo.assetName}');
-      _logger.info('Found ${updateInfo.versionChangelogs.length} version changelog(s)');
+      _logger.info(
+        'Found ${updateInfo.versionChangelogs.length} version changelog(s)',
+      );
 
       // Compare versions
       if (VersionComparator.isGreaterThan(
@@ -251,7 +278,9 @@ class GitHubUpdateService {
 
         // Check if this version is ignored
         if (isVersionIgnored(updateInfo.version)) {
-          _logger.info('Update version ${updateInfo.version} is ignored - update indicator will show but auto-dialog will not');
+          _logger.info(
+            'Update version ${updateInfo.version} is ignored - update indicator will show but auto-dialog will not',
+          );
         }
 
         // Always set current update and emit to stream
@@ -277,8 +306,10 @@ class GitHubUpdateService {
   Future<File?> downloadUpdate(UpdateInfo updateInfo) async {
     try {
       // Use a consistent temp directory path (not a new random one each time)
-      final tempDirPath = '${Directory.systemTemp.path}${Platform.pathSeparator}tkit_updates';
-      final savePath = '$tempDirPath${Platform.pathSeparator}${updateInfo.assetName}';
+      final tempDirPath =
+          '${Directory.systemTemp.path}${Platform.pathSeparator}tkit_updates';
+      final savePath =
+          '$tempDirPath${Platform.pathSeparator}${updateInfo.assetName}';
       final file = File(savePath);
 
       // Check if file already exists on disk (works even after app restart)
@@ -379,7 +410,9 @@ class GitHubUpdateService {
   void cancelDownload() {
     if (_downloadCancelToken != null && !_downloadCancelToken!.isCancelled) {
       _downloadCancelToken!.cancel('User cancelled download');
-      _currentDownloadProgress = DownloadProgress(status: DownloadStatus.cancelled);
+      _currentDownloadProgress = DownloadProgress(
+        status: DownloadStatus.cancelled,
+      );
       _downloadProgressController.add(_currentDownloadProgress);
       _logger.info('Download cancelled by user');
     }
@@ -401,19 +434,23 @@ class GitHubUpdateService {
 
       // Determine file type and launch appropriately
       final fileName = installerFile.path.toLowerCase();
-      _logger.info('Detected file extension: ${fileName.substring(fileName.lastIndexOf('.'))}');
+      _logger.info(
+        'Detected file extension: ${fileName.substring(fileName.lastIndexOf('.'))}',
+      );
 
       if (fileName.endsWith('.exe')) {
         // For .exe files: Launch directly with silent install flags
         // This allows passing command-line arguments for silent install + auto-launch
         _logger.info('Launching EXE installer with silent mode...');
-        _logger.info('Command: ${installerFile.path} /VERYSILENT /NORESTART /RESTARTAPPLICATIONS');
+        _logger.info(
+          'Command: ${installerFile.path} /VERYSILENT /NORESTART /RESTARTAPPLICATIONS',
+        );
 
         final process = await Process.start(
           installerFile.path,
           [
-            '/VERYSILENT',        // Completely silent install (Inno Setup)
-            '/NORESTART',          // Don't restart the computer
+            '/VERYSILENT', // Completely silent install (Inno Setup)
+            '/NORESTART', // Don't restart the computer
             '/RESTARTAPPLICATIONS', // Restart applications after install (auto-launch)
           ],
           mode: ProcessStartMode.detached,
@@ -424,7 +461,9 @@ class GitHubUpdateService {
       } else {
         // For MSIX and other files: Use explorer.exe for true process independence
         // This ensures the installer continues running even after the app exits
-        _logger.info('Launching installer via explorer.exe for independent process...');
+        _logger.info(
+          'Launching installer via explorer.exe for independent process...',
+        );
         _logger.info('File: ${installerFile.path}');
 
         final process = await Process.start(
@@ -434,7 +473,9 @@ class GitHubUpdateService {
           runInShell: false,
         );
 
-        _logger.info('Installer launched via explorer.exe with PID: ${process.pid}');
+        _logger.info(
+          'Installer launched via explorer.exe with PID: ${process.pid}',
+        );
       }
 
       _logger.info('Installer launched successfully');
@@ -463,7 +504,9 @@ class GitHubUpdateService {
       final prefs = await SharedPreferences.getInstance();
       final ignoredList = prefs.getStringList(_ignoredVersionsKey) ?? [];
       _ignoredVersions = ignoredList.toSet();
-      _logger.info('Loaded ${_ignoredVersions.length} ignored version(s): ${_ignoredVersions.join(", ")}');
+      _logger.info(
+        'Loaded ${_ignoredVersions.length} ignored version(s): ${_ignoredVersions.join(", ")}',
+      );
     } catch (e, stackTrace) {
       _logger.error('Failed to load ignored versions', e, stackTrace);
     }
@@ -521,8 +564,10 @@ class GitHubUpdateService {
 
     // Then check on disk if we have current update info
     if (_currentUpdateValue != null) {
-      final tempDirPath = '${Directory.systemTemp.path}${Platform.pathSeparator}tkit_updates';
-      final savePath = '$tempDirPath${Platform.pathSeparator}${_currentUpdateValue!.assetName}';
+      final tempDirPath =
+          '${Directory.systemTemp.path}${Platform.pathSeparator}tkit_updates';
+      final savePath =
+          '$tempDirPath${Platform.pathSeparator}${_currentUpdateValue!.assetName}';
       final file = File(savePath);
 
       if (file.existsSync()) {

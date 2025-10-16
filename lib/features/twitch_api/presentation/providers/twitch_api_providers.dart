@@ -72,7 +72,9 @@ class TwitchApi extends _$TwitchApi {
         );
       },
       (categories) {
-        logger.info('Found ${categories.length} categories for "$trimmedQuery"');
+        logger.info(
+          'Found ${categories.length} categories for "$trimmedQuery"',
+        );
         state = state.copyWith(
           isLoading: false,
           categories: categories,

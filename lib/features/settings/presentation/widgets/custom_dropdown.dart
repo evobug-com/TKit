@@ -26,9 +26,9 @@ class CustomDropdown<T> extends StatelessWidget {
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontSize: 14,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontSize: 14),
         ),
         if (description != null) ...[
           const SizedBox(height: 2),
@@ -36,7 +36,9 @@ class CustomDropdown<T> extends StatelessWidget {
             description!,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               fontSize: 11,
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -47,9 +49,7 @@ class CustomDropdown<T> extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             decoration: BoxDecoration(
-              border: Border.all(
-                color: Theme.of(context).colorScheme.outline,
-              ),
+              border: Border.all(color: Theme.of(context).colorScheme.outline),
               borderRadius: BorderRadius.circular(4),
             ),
             child: Row(
@@ -60,18 +60,21 @@ class CustomDropdown<T> extends StatelessWidget {
                     children: [
                       Text(
                         selectedItem.title,
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontSize: 14,
-                        ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodyLarge?.copyWith(fontSize: 14),
                       ),
                       if (selectedItem.subtitle != null) ...[
                         const SizedBox(height: 2),
                         Text(
                           selectedItem.subtitle!,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontSize: 11,
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                fontSize: 11,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withValues(alpha: 0.6),
+                              ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -111,9 +114,9 @@ class CustomDropdown<T> extends StatelessWidget {
                       Expanded(
                         child: Text(
                           label,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontSize: 16,
-                          ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.titleLarge?.copyWith(fontSize: 16),
                         ),
                       ),
                       IconButton(
@@ -142,7 +145,8 @@ class CustomDropdown<T> extends StatelessWidget {
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3)
+                                ? Theme.of(context).colorScheme.primaryContainer
+                                      .withValues(alpha: 0.3)
                                 : null,
                           ),
                           child: Row(
@@ -153,19 +157,30 @@ class CustomDropdown<T> extends StatelessWidget {
                                   children: [
                                     Text(
                                       item.title,
-                                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                        fontSize: 14,
-                                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(
+                                            fontSize: 14,
+                                            fontWeight: isSelected
+                                                ? FontWeight.bold
+                                                : FontWeight.normal,
+                                          ),
                                     ),
                                     if (item.subtitle != null) ...[
                                       const SizedBox(height: 3),
                                       Text(
                                         item.subtitle!,
-                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          fontSize: 11,
-                                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(
+                                              fontSize: 11,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface
+                                                  .withValues(alpha: 0.6),
+                                            ),
                                       ),
                                     ],
                                   ],

@@ -105,10 +105,7 @@ class Avatar extends StatelessWidget {
       height: size.size,
       decoration: BoxDecoration(
         color: backgroundColor ?? TKitColors.surfaceVariant,
-        border: Border.all(
-          color: TKitColors.border,
-          width: 1,
-        ),
+        border: Border.all(color: TKitColors.border, width: 1),
       ),
       child: imageUrl != null && imageUrl!.isNotEmpty
           ? Image.network(
@@ -122,10 +119,7 @@ class Avatar extends StatelessWidget {
     );
 
     if (onTap != null) {
-      return InkWell(
-        onTap: onTap,
-        child: content,
-      );
+      return InkWell(onTap: onTap, child: content);
     }
 
     return content;
@@ -172,9 +166,7 @@ class AvatarGroup extends StatelessWidget {
           final avatar = entry.value;
 
           return Padding(
-            padding: EdgeInsets.only(
-              left: index > 0 ? overlap : 0,
-            ),
+            padding: EdgeInsets.only(left: index > 0 ? overlap : 0),
             child: avatar,
           );
         }),

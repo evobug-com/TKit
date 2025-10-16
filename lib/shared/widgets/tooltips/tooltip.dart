@@ -39,10 +39,7 @@ class TKitTooltip extends StatelessWidget {
       decoration: BoxDecoration(
         color: TKitColors.surfaceVariant,
         borderRadius: BorderRadius.circular(TKitSpacing.xs),
-        border: Border.all(
-          color: TKitColors.border,
-          width: 1,
-        ),
+        border: Border.all(color: TKitColors.border, width: 1),
         boxShadow: [
           const BoxShadow(
             color: TKitColors.overlay,
@@ -51,10 +48,12 @@ class TKitTooltip extends StatelessWidget {
           ),
         ],
       ),
-      padding: padding ?? const EdgeInsets.symmetric(
-        horizontal: TKitSpacing.sm,
-        vertical: TKitSpacing.xs,
-      ),
+      padding:
+          padding ??
+          const EdgeInsets.symmetric(
+            horizontal: TKitSpacing.sm,
+            vertical: TKitSpacing.xs,
+          ),
       margin: margin ?? const EdgeInsets.all(TKitSpacing.xs),
       verticalOffset: verticalOffset ?? 8,
       preferBelow: preferBelow,

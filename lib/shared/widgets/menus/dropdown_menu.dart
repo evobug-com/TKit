@@ -49,10 +49,7 @@ class TKitDropdownMenu<T> extends StatelessWidget {
       decoration: BoxDecoration(
         color: TKitColors.surface,
         borderRadius: BorderRadius.circular(TKitSpacing.xs),
-        border: Border.all(
-          color: TKitColors.border,
-          width: 1,
-        ),
+        border: Border.all(color: TKitColors.border, width: 1),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<T>(
@@ -167,10 +164,7 @@ class TKitDropdownMenuButton<T> extends StatelessWidget {
       shadowColor: TKitColors.overlay,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(TKitSpacing.xs),
-        side: const BorderSide(
-          color: TKitColors.border,
-          width: 1,
-        ),
+        side: const BorderSide(color: TKitColors.border, width: 1),
       ),
       padding: EdgeInsets.zero,
       itemBuilder: (context) {
@@ -192,8 +186,8 @@ class TKitDropdownMenuButton<T> extends StatelessWidget {
                     color: isSelected
                         ? TKitColors.accent
                         : (item.enabled
-                            ? TKitColors.textSecondary
-                            : TKitColors.textDisabled),
+                              ? TKitColors.textSecondary
+                              : TKitColors.textDisabled),
                   ),
                   const SizedBox(width: TKitSpacing.sm),
                 ],
@@ -204,18 +198,16 @@ class TKitDropdownMenuButton<T> extends StatelessWidget {
                       color: isSelected
                           ? TKitColors.accent
                           : (item.enabled
-                              ? TKitColors.textPrimary
-                              : TKitColors.textDisabled),
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                                ? TKitColors.textPrimary
+                                : TKitColors.textDisabled),
+                      fontWeight: isSelected
+                          ? FontWeight.w600
+                          : FontWeight.w400,
                     ),
                   ),
                 ),
                 if (isSelected)
-                  const Icon(
-                    Icons.check,
-                    size: 16,
-                    color: TKitColors.accent,
-                  ),
+                  const Icon(Icons.check, size: 16, color: TKitColors.accent),
               ],
             ),
           );
@@ -229,10 +221,7 @@ class TKitDropdownMenuButton<T> extends StatelessWidget {
         decoration: BoxDecoration(
           color: TKitColors.surface,
           borderRadius: BorderRadius.circular(TKitSpacing.xs),
-          border: Border.all(
-            color: TKitColors.border,
-            width: 1,
-          ),
+          border: Border.all(color: TKitColors.border, width: 1),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -241,7 +230,9 @@ class TKitDropdownMenuButton<T> extends StatelessWidget {
               Icon(
                 icon,
                 size: 16,
-                color: enabled ? TKitColors.textSecondary : TKitColors.textDisabled,
+                color: enabled
+                    ? TKitColors.textSecondary
+                    : TKitColors.textDisabled,
               ),
               if (label != null) const SizedBox(width: TKitSpacing.sm),
             ],
@@ -249,14 +240,18 @@ class TKitDropdownMenuButton<T> extends StatelessWidget {
               Text(
                 label!,
                 style: TKitTextStyles.bodySmall.copyWith(
-                  color: enabled ? TKitColors.textPrimary : TKitColors.textDisabled,
+                  color: enabled
+                      ? TKitColors.textPrimary
+                      : TKitColors.textDisabled,
                 ),
               ),
             const SizedBox(width: TKitSpacing.xs),
             Icon(
               Icons.arrow_drop_down,
               size: 20,
-              color: enabled ? TKitColors.textSecondary : TKitColors.textDisabled,
+              color: enabled
+                  ? TKitColors.textSecondary
+                  : TKitColors.textDisabled,
             ),
           ],
         ),

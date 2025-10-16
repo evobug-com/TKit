@@ -9,14 +9,17 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Navigation Integration Tests', () {
-    testWidgets('navigates between pages using sidebar', (WidgetTester tester) async {
+    testWidgets('navigates between pages using sidebar', (
+      WidgetTester tester,
+    ) async {
       final appRouter = AppRouter();
 
       await tester.pumpWidget(
         MaterialApp.router(
           theme: AppTheme.darkTheme,
           routerConfig: appRouter.config(),
-          builder: (context, child) => MainWindow(child: child ?? const SizedBox.shrink()),
+          builder: (context, child) =>
+              MainWindow(child: child ?? const SizedBox.shrink()),
         ),
       );
 
@@ -44,14 +47,17 @@ void main() {
       expect(find.text('Auto Switcher Page'), findsOneWidget);
     });
 
-    testWidgets('highlights current route in sidebar', (WidgetTester tester) async {
+    testWidgets('highlights current route in sidebar', (
+      WidgetTester tester,
+    ) async {
       final appRouter = AppRouter();
 
       await tester.pumpWidget(
         MaterialApp.router(
           theme: AppTheme.darkTheme,
           routerConfig: appRouter.config(),
-          builder: (context, child) => MainWindow(child: child ?? const SizedBox.shrink()),
+          builder: (context, child) =>
+              MainWindow(child: child ?? const SizedBox.shrink()),
         ),
       );
 
@@ -68,14 +74,17 @@ void main() {
       expect(find.text('Settings Page'), findsOneWidget);
     });
 
-    testWidgets('maintains sidebar visibility across navigation', (WidgetTester tester) async {
+    testWidgets('maintains sidebar visibility across navigation', (
+      WidgetTester tester,
+    ) async {
       final appRouter = AppRouter();
 
       await tester.pumpWidget(
         MaterialApp.router(
           theme: AppTheme.darkTheme,
           routerConfig: appRouter.config(),
-          builder: (context, child) => MainWindow(child: child ?? const SizedBox.shrink()),
+          builder: (context, child) =>
+              MainWindow(child: child ?? const SizedBox.shrink()),
         ),
       );
 

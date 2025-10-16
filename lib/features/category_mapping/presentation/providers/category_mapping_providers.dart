@@ -6,7 +6,8 @@ import 'package:tkit/features/category_mapping/domain/usecases/get_all_mappings_
 import 'package:tkit/features/category_mapping/domain/usecases/find_mapping_usecase.dart';
 import 'package:tkit/features/category_mapping/domain/usecases/save_mapping_usecase.dart';
 import 'package:tkit/features/category_mapping/domain/usecases/delete_mapping_usecase.dart';
-import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart' as entity;
+import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart'
+    as entity;
 
 part 'category_mapping_providers.g.dart';
 
@@ -62,10 +63,7 @@ class CategoryMappings extends _$CategoryMappings {
 
   /// Clear messages
   void clearMessages() {
-    state = state.copyWith(
-      errorMessage: null,
-      successMessage: null,
-    );
+    state = state.copyWith(errorMessage: null, successMessage: null);
   }
 
   /// Load all mappings
@@ -77,10 +75,7 @@ class CategoryMappings extends _$CategoryMappings {
 
     result.fold(
       (failure) {
-        state = state.copyWith(
-          isLoading: false,
-          errorMessage: failure.message,
-        );
+        state = state.copyWith(isLoading: false, errorMessage: failure.message);
       },
       (mappings) {
         state = state.copyWith(
@@ -97,10 +92,7 @@ class CategoryMappings extends _$CategoryMappings {
     final useCase = ref.read(findMappingUseCaseProvider);
     final result = await useCase(processName: processName);
 
-    return result.fold(
-      (failure) => null,
-      (mapping) => mapping,
-    );
+    return result.fold((failure) => null, (mapping) => mapping);
   }
 
   /// Add a new mapping
@@ -112,10 +104,7 @@ class CategoryMappings extends _$CategoryMappings {
 
     result.fold(
       (failure) {
-        state = state.copyWith(
-          isLoading: false,
-          errorMessage: failure.message,
-        );
+        state = state.copyWith(isLoading: false, errorMessage: failure.message);
       },
       (_) {
         state = state.copyWith(
@@ -137,10 +126,7 @@ class CategoryMappings extends _$CategoryMappings {
 
     result.fold(
       (failure) {
-        state = state.copyWith(
-          isLoading: false,
-          errorMessage: failure.message,
-        );
+        state = state.copyWith(isLoading: false, errorMessage: failure.message);
       },
       (_) {
         state = state.copyWith(
@@ -162,10 +148,7 @@ class CategoryMappings extends _$CategoryMappings {
 
     result.fold(
       (failure) {
-        state = state.copyWith(
-          isLoading: false,
-          errorMessage: failure.message,
-        );
+        state = state.copyWith(isLoading: false, errorMessage: failure.message);
       },
       (_) {
         state = state.copyWith(
@@ -228,7 +211,8 @@ class CategoryMappings extends _$CategoryMappings {
     // Reload all mappings to show the updated list
     state = state.copyWith(
       isLoading: false,
-      successMessage: 'Deleted ${ids.length} mapping${ids.length > 1 ? 's' : ''}',
+      successMessage:
+          'Deleted ${ids.length} mapping${ids.length > 1 ? 's' : ''}',
     );
     await loadMappings();
   }
@@ -263,13 +247,16 @@ class CategoryMappings extends _$CategoryMappings {
     // Reload all mappings to show the updated list
     state = state.copyWith(
       isLoading: false,
-      successMessage: '${enabled ? 'Enabled' : 'Disabled'} ${ids.length} mapping${ids.length > 1 ? 's' : ''}',
+      successMessage:
+          '${enabled ? 'Enabled' : 'Disabled'} ${ids.length} mapping${ids.length > 1 ? 's' : ''}',
     );
     await loadMappings();
   }
 
   /// Bulk restore deleted mappings
-  Future<void> bulkRestore(List<entity.CategoryMapping> mappingsToRestore) async {
+  Future<void> bulkRestore(
+    List<entity.CategoryMapping> mappingsToRestore,
+  ) async {
     if (mappingsToRestore.isEmpty) {
       return;
     }
@@ -295,7 +282,8 @@ class CategoryMappings extends _$CategoryMappings {
     // Reload all mappings to show the updated list
     state = state.copyWith(
       isLoading: false,
-      successMessage: 'Restored ${mappingsToRestore.length} mapping${mappingsToRestore.length > 1 ? 's' : ''}',
+      successMessage:
+          'Restored ${mappingsToRestore.length} mapping${mappingsToRestore.length > 1 ? 's' : ''}',
     );
     await loadMappings();
   }

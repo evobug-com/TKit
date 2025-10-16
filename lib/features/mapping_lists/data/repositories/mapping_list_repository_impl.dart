@@ -84,7 +84,9 @@ class MappingListRepositoryImpl implements IMappingListRepository {
       final model = MappingListModel.fromEntity(list);
       final success = await _localDataSource.updateList(list.id, model);
       if (!success) {
-        return const Left(CacheFailure(message: 'Failed to update list: not found'));
+        return const Left(
+          CacheFailure(message: 'Failed to update list: not found'),
+        );
       }
       return const Right(null);
     } on CacheException catch (e) {
@@ -95,7 +97,10 @@ class MappingListRepositoryImpl implements IMappingListRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteList(String id, {bool deleteMappings = false}) async {
+  Future<Either<Failure, void>> deleteList(
+    String id, {
+    bool deleteMappings = false,
+  }) async {
     try {
       await _localDataSource.deleteList(id, deleteMappings: deleteMappings);
       return const Right(null);
@@ -107,11 +112,19 @@ class MappingListRepositoryImpl implements IMappingListRepository {
   }
 
   @override
-  Future<Either<Failure, void>> toggleListEnabled(String id, {required bool isEnabled}) async {
+  Future<Either<Failure, void>> toggleListEnabled(
+    String id, {
+    required bool isEnabled,
+  }) async {
     try {
-      final success = await _localDataSource.toggleListEnabled(id, isEnabled: isEnabled);
+      final success = await _localDataSource.toggleListEnabled(
+        id,
+        isEnabled: isEnabled,
+      );
       if (!success) {
-        return const Left(CacheFailure(message: 'Failed to toggle list: not found'));
+        return const Left(
+          CacheFailure(message: 'Failed to toggle list: not found'),
+        );
       }
       return const Right(null);
     } on CacheException catch (e) {
@@ -136,20 +149,28 @@ class MappingListRepositoryImpl implements IMappingListRepository {
       }
 
       // Fetch mappings and metadata from URL
-      final remoteData = await _syncDataSource.fetchListFromUrl(model.sourceUrl!);
+      final remoteData = await _syncDataSource.fetchListFromUrl(
+        model.sourceUrl!,
+      );
 
       // Update list metadata from remote JSON if provided
       if (remoteData.name != null ||
           remoteData.description != null ||
           remoteData.submissionHookUrl != null) {
-        await (_database.update(_database.mappingLists)
-              ..where((tbl) => tbl.id.equals(listId)))
-            .write(MappingListsCompanion(
-          name: remoteData.name != null ? Value(remoteData.name!) : const Value.absent(),
-          description: remoteData.description != null ? Value(remoteData.description!) : const Value.absent(),
-          isReadOnly: Value(remoteData.isReadOnly),
-          submissionHookUrl: Value(remoteData.submissionHookUrl),
-        ));
+        await (_database.update(
+          _database.mappingLists,
+        )..where((tbl) => tbl.id.equals(listId))).write(
+          MappingListsCompanion(
+            name: remoteData.name != null
+                ? Value(remoteData.name!)
+                : const Value.absent(),
+            description: remoteData.description != null
+                ? Value(remoteData.description!)
+                : const Value.absent(),
+            isReadOnly: Value(remoteData.isReadOnly),
+            submissionHookUrl: Value(remoteData.submissionHookUrl),
+          ),
+        );
       }
 
       // Convert mapping items to category mappings and insert into database
@@ -187,13 +208,10 @@ class MappingListRepositoryImpl implements IMappingListRepository {
 
       for (final list in listsToSync) {
         final result = await syncList(list.id);
-        result.fold(
-          (failure) {
-            // Log failure but continue syncing other lists
-            _logger.warning('Failed to sync list ${list.name}', failure);
-          },
-          (_) => successCount++,
-        );
+        result.fold((failure) {
+          // Log failure but continue syncing other lists
+          _logger.warning('Failed to sync list ${list.name}', failure);
+        }, (_) => successCount++);
       }
 
       return Right(successCount);
@@ -212,7 +230,9 @@ class MappingListRepositoryImpl implements IMappingListRepository {
       // Validate URL first
       final isValid = await _syncDataSource.validateListUrl(url);
       if (!isValid) {
-        return const Left(NetworkFailure(message: 'Invalid URL or unreachable'));
+        return const Left(
+          NetworkFailure(message: 'Invalid URL or unreachable'),
+        );
       }
 
       // Fetch mappings and metadata from remote source
@@ -266,12 +286,15 @@ class MappingListRepositoryImpl implements IMappingListRepository {
   }
 
   /// Import mapping items into a list
-  Future<void> _importMappingsToList(String listId, List<MappingListItem> items) async {
+  Future<void> _importMappingsToList(
+    String listId,
+    List<MappingListItem> items,
+  ) async {
     await _database.transaction(() async {
       // First, delete all existing mappings for this list to avoid duplicates
-      await (_database.delete(_database.categoryMappings)
-            ..where((tbl) => tbl.listId.equals(listId)))
-          .go();
+      await (_database.delete(
+        _database.categoryMappings,
+      )..where((tbl) => tbl.listId.equals(listId))).go();
 
       // Then insert the new mappings
       for (final item in items) {
@@ -293,10 +316,9 @@ class MappingListRepositoryImpl implements IMappingListRepository {
         );
 
         // Insert mapping
-        await _database.into(_database.categoryMappings).insert(
-              mapping.toCompanion(),
-              mode: InsertMode.insert,
-            );
+        await _database
+            .into(_database.categoryMappings)
+            .insert(mapping.toCompanion(), mode: InsertMode.insert);
       }
     });
   }
@@ -313,20 +335,22 @@ class MappingListRepositoryImpl implements IMappingListRepository {
     try {
       // Only check for duplicates if we just synced an official or remote list
       final syncedList = await _localDataSource.getListById(syncedListId);
-      if (syncedList == null || syncedList.sourceType == MappingListSourceType.local) {
+      if (syncedList == null ||
+          syncedList.sourceType == MappingListSourceType.local) {
         return; // Nothing to do for local lists
       }
 
       // Get all mappings from the synced list
-      final syncedMappings = await (_database.select(_database.categoryMappings)
-            ..where((tbl) => tbl.listId.equals(syncedListId)))
-          .get();
+      final syncedMappings = await (_database.select(
+        _database.categoryMappings,
+      )..where((tbl) => tbl.listId.equals(syncedListId))).get();
 
       // Get all pending submission mappings from local lists
-      final pendingMappings = await (_database.select(_database.categoryMappings)
-            ..where((tbl) => tbl.pendingSubmission.equals(true))
-            ..where((tbl) => tbl.listId.equals('my-custom-mappings')))
-          .get();
+      final pendingMappings =
+          await (_database.select(_database.categoryMappings)
+                ..where((tbl) => tbl.pendingSubmission.equals(true))
+                ..where((tbl) => tbl.listId.equals('my-custom-mappings')))
+              .get();
 
       if (pendingMappings.isEmpty) {
         return; // No pending submissions to check
@@ -336,20 +360,25 @@ class MappingListRepositoryImpl implements IMappingListRepository {
       var removedCount = 0;
       for (final pending in pendingMappings) {
         // Check if this pending mapping now exists in the synced list
-        final isDuplicate = syncedMappings.any((synced) =>
-            synced.processName.toLowerCase() == pending.processName.toLowerCase() &&
-            synced.twitchCategoryId == pending.twitchCategoryId);
+        final isDuplicate = syncedMappings.any(
+          (synced) =>
+              synced.processName.toLowerCase() ==
+                  pending.processName.toLowerCase() &&
+              synced.twitchCategoryId == pending.twitchCategoryId,
+        );
 
         if (isDuplicate) {
-          await (_database.delete(_database.categoryMappings)
-                ..where((tbl) => tbl.id.equals(pending.id)))
-              .go();
+          await (_database.delete(
+            _database.categoryMappings,
+          )..where((tbl) => tbl.id.equals(pending.id))).go();
           removedCount++;
         }
       }
 
       if (removedCount > 0) {
-        _logger.info('Removed $removedCount duplicate mapping(s) from local list after sync');
+        _logger.info(
+          'Removed $removedCount duplicate mapping(s) from local list after sync',
+        );
       }
     } catch (e) {
       // Log error but don't fail the sync

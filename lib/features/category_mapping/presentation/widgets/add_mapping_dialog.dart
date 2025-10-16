@@ -95,7 +95,9 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                   ),
                   const HSpace.sm(),
                   Text(
-                    isEditMode ? l10n.categoryMappingAddDialogEditTitle : l10n.categoryMappingAddDialogAddTitle,
+                    isEditMode
+                        ? l10n.categoryMappingAddDialogEditTitle
+                        : l10n.categoryMappingAddDialogAddTitle,
                     style: TKitTextStyles.heading3,
                   ),
                   const Spacer(),
@@ -143,15 +145,11 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         fillColor: TKitColors.background,
                         border: const OutlineInputBorder(
                           borderRadius: BorderRadius.zero,
-                          borderSide: BorderSide(
-                            color: TKitColors.border,
-                          ),
+                          borderSide: BorderSide(color: TKitColors.border),
                         ),
                         enabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.zero,
-                          borderSide: BorderSide(
-                            color: TKitColors.border,
-                          ),
+                          borderSide: BorderSide(color: TKitColors.border),
                         ),
                         focusedBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.zero,
@@ -168,7 +166,8 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return l10n.categoryMappingAddDialogProcessNameRequired;
+                          return l10n
+                              .categoryMappingAddDialogProcessNameRequired;
                         }
                         return null;
                       },
@@ -192,7 +191,8 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         fontSize: 13,
                       ),
                       decoration: InputDecoration(
-                        hintText: l10n.categoryMappingAddDialogExecutablePathHint,
+                        hintText:
+                            l10n.categoryMappingAddDialogExecutablePathHint,
                         hintStyle: TKitTextStyles.bodySmall.copyWith(
                           color: TKitColors.textMuted,
                           fontSize: 13,
@@ -201,15 +201,11 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         fillColor: TKitColors.background,
                         border: const OutlineInputBorder(
                           borderRadius: BorderRadius.zero,
-                          borderSide: BorderSide(
-                            color: TKitColors.border,
-                          ),
+                          borderSide: BorderSide(color: TKitColors.border),
                         ),
                         enabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.zero,
-                          borderSide: BorderSide(
-                            color: TKitColors.border,
-                          ),
+                          borderSide: BorderSide(color: TKitColors.border),
                         ),
                         focusedBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.zero,
@@ -253,15 +249,11 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         fillColor: TKitColors.background,
                         border: const OutlineInputBorder(
                           borderRadius: BorderRadius.zero,
-                          borderSide: BorderSide(
-                            color: TKitColors.border,
-                          ),
+                          borderSide: BorderSide(color: TKitColors.border),
                         ),
                         enabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.zero,
-                          borderSide: BorderSide(
-                            color: TKitColors.border,
-                          ),
+                          borderSide: BorderSide(color: TKitColors.border),
                         ),
                         focusedBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.zero,
@@ -278,7 +270,8 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return l10n.categoryMappingAddDialogCategoryIdRequired;
+                          return l10n
+                              .categoryMappingAddDialogCategoryIdRequired;
                         }
                         return null;
                       },
@@ -311,15 +304,11 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                         fillColor: TKitColors.background,
                         border: const OutlineInputBorder(
                           borderRadius: BorderRadius.zero,
-                          borderSide: BorderSide(
-                            color: TKitColors.border,
-                          ),
+                          borderSide: BorderSide(color: TKitColors.border),
                         ),
                         enabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.zero,
-                          borderSide: BorderSide(
-                            color: TKitColors.border,
-                          ),
+                          borderSide: BorderSide(color: TKitColors.border),
                         ),
                         focusedBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.zero,
@@ -336,7 +325,8 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return l10n.categoryMappingAddDialogCategoryNameRequired;
+                          return l10n
+                              .categoryMappingAddDialogCategoryNameRequired;
                         }
                         return null;
                       },
@@ -370,7 +360,9 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
                   ),
                   const HSpace.sm(),
                   PrimaryButton(
-                    text: isEditMode ? l10n.categoryMappingAddDialogUpdate : l10n.categoryMappingAddDialogAdd,
+                    text: isEditMode
+                        ? l10n.categoryMappingAddDialogUpdate
+                        : l10n.categoryMappingAddDialogAdd,
                     icon: isEditMode ? Icons.check : Icons.add,
                     onPressed: _handleSubmit,
                     width: 110,
@@ -420,9 +412,7 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  hasRecognizedPath
-                      ? 'Privacy-Safe Path'
-                      : 'Custom Location',
+                  hasRecognizedPath ? 'Privacy-Safe Path' : 'Custom Location',
                   style: TKitTextStyles.labelSmall.copyWith(
                     color: TKitColors.textPrimary,
                     fontWeight: FontWeight.w600,
@@ -492,7 +482,8 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
       }
 
       // Remove .exe extension for cross-platform compatibility
-      final sanitizedProcessName = _processNameController.text.trim()
+      final sanitizedProcessName = _processNameController.text
+          .trim()
           .replaceAll(RegExp(r'\.exe$', caseSensitive: false), '');
 
       final mapping = CategoryMapping(
@@ -505,9 +496,13 @@ class _AddMappingDialogState extends State<AddMappingDialog> {
         createdAt: widget.mapping?.createdAt ?? now,
         lastUsedAt: widget.mapping?.lastUsedAt,
         lastApiFetch: widget.mapping?.lastApiFetch ?? now,
-        cacheExpiresAt: widget.mapping?.cacheExpiresAt ?? now.add(const Duration(hours: 24)),
+        cacheExpiresAt:
+            widget.mapping?.cacheExpiresAt ??
+            now.add(const Duration(hours: 24)),
         manualOverride: true,
-        listId: widget.mapping?.listId ?? 'my-custom-mappings', // Default to custom list
+        listId:
+            widget.mapping?.listId ??
+            'my-custom-mappings', // Default to custom list
       );
 
       Navigator.of(context).pop(mapping);

@@ -25,9 +25,7 @@ class GetTopGamesUseCase {
     // Validation
     if (first < 1 || first > 100) {
       return const Left(
-        ValidationFailure(
-          message: 'first parameter must be between 1 and 100',
-        ),
+        ValidationFailure(message: 'first parameter must be between 1 and 100'),
       );
     }
 

@@ -39,7 +39,7 @@ void main() {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: AppLocalizations.supportedLocales,
-          home:const Scaffold(
+          home: const Scaffold(
             body: ConfirmDialog(
               title: 'Test Title',
               message: 'Test Message',
@@ -69,7 +69,7 @@ void main() {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: AppLocalizations.supportedLocales,
-          home:Scaffold(
+          home: Scaffold(
             body: Builder(
               builder: (context) => ElevatedButton(
                 onPressed: () async {
@@ -110,7 +110,7 @@ void main() {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: AppLocalizations.supportedLocales,
-          home:Scaffold(
+          home: Scaffold(
             body: Builder(
               builder: (context) => ElevatedButton(
                 onPressed: () async {
@@ -149,7 +149,7 @@ void main() {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: AppLocalizations.supportedLocales,
-          home:const Scaffold(
+          home: const Scaffold(
             body: ConfirmDialog(
               title: 'Delete',
               message: 'Are you sure?',

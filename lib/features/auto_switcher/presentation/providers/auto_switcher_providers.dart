@@ -24,15 +24,23 @@ part 'auto_switcher_providers.g.dart';
 
 @Riverpod(keepAlive: true)
 Future<IAutoSwitcherRepository> autoSwitcherRepository(Ref ref) async {
-  final watchProcessChangesUseCase = ref.watch(watchProcessChangesUseCaseProvider);
+  final watchProcessChangesUseCase = ref.watch(
+    watchProcessChangesUseCaseProvider,
+  );
   final getFocusedProcessUseCase = ref.watch(getFocusedProcessUseCaseProvider);
   final findMappingUseCase = ref.watch(findMappingUseCaseProvider);
   final saveMappingUseCase = ref.watch(saveMappingUseCaseProvider);
-  final updateChannelCategoryUseCase = ref.watch(updateChannelCategoryUseCaseProvider);
+  final updateChannelCategoryUseCase = ref.watch(
+    updateChannelCategoryUseCaseProvider,
+  );
   final getSettingsUseCase = await ref.watch(getSettingsUseCaseProvider.future);
-  final watchSettingsUseCase = await ref.watch(watchSettingsUseCaseProvider.future);
+  final watchSettingsUseCase = await ref.watch(
+    watchSettingsUseCaseProvider.future,
+  );
   final updateLastUsedUseCase = ref.watch(updateLastUsedUseCaseProvider);
-  final updateHistoryLocalDataSource = ref.watch(updateHistoryLocalDataSourceProvider);
+  final updateHistoryLocalDataSource = ref.watch(
+    updateHistoryLocalDataSourceProvider,
+  );
   final unknownProcessDataSource = ref.watch(unknownProcessDataSourceProvider);
   final notificationService = ref.watch(notificationServiceProvider);
 
@@ -62,7 +70,9 @@ Future<IAutoSwitcherRepository> autoSwitcherRepository(Ref ref) async {
 // =============================================================================
 
 @Riverpod(keepAlive: true)
-Future<GetOrchestrationStatusUseCase> getOrchestrationStatusUseCase(Ref ref) async {
+Future<GetOrchestrationStatusUseCase> getOrchestrationStatusUseCase(
+  Ref ref,
+) async {
   final repository = await ref.watch(autoSwitcherRepositoryProvider.future);
   return GetOrchestrationStatusUseCase(repository);
 }
@@ -102,7 +112,9 @@ class AutoSwitcher extends _$AutoSwitcher {
   @override
   Future<AutoSwitcherState> build() async {
     // Initialize and subscribe to status stream
-    final getStatus = await ref.read(getOrchestrationStatusUseCaseProvider.future);
+    final getStatus = await ref.read(
+      getOrchestrationStatusUseCaseProvider.future,
+    );
 
     await _statusSubscription?.cancel();
     _statusSubscription = getStatus.watchStatus().listen((status) {
@@ -132,7 +144,9 @@ class AutoSwitcher extends _$AutoSwitcher {
     final currentStatus = await _getCurrentStatus();
     state = AsyncData(AutoSwitcherLoading(currentStatus));
 
-    final startMonitoring = await ref.read(startMonitoringUseCaseProvider.future);
+    final startMonitoring = await ref.read(
+      startMonitoringUseCaseProvider.future,
+    );
     final result = await startMonitoring();
 
     result.fold(
@@ -140,7 +154,9 @@ class AutoSwitcher extends _$AutoSwitcher {
         state = AsyncData(UpdateError(currentStatus, failure.message));
       },
       (_) {
-        state = AsyncData(MonitoringActive(currentStatus.copyWith(isMonitoring: true)));
+        state = AsyncData(
+          MonitoringActive(currentStatus.copyWith(isMonitoring: true)),
+        );
       },
     );
   }
@@ -177,7 +193,9 @@ class AutoSwitcher extends _$AutoSwitcher {
       },
       (_) async {
         final updatedStatus = await _getCurrentStatus();
-        state = AsyncData(UpdateSuccess(updatedStatus, message: 'Category updated'));
+        state = AsyncData(
+          UpdateSuccess(updatedStatus, message: 'Category updated'),
+        );
       },
     );
   }
@@ -186,7 +204,9 @@ class AutoSwitcher extends _$AutoSwitcher {
   void _handleStatusUpdate(OrchestrationStatus status) {
     // Update state based on orchestration status
     if (status.state == OrchestrationState.error) {
-      state = AsyncData(UpdateError(status, status.errorMessage ?? 'Unknown error'));
+      state = AsyncData(
+        UpdateError(status, status.errorMessage ?? 'Unknown error'),
+      );
     } else if (status.state == OrchestrationState.updatingCategory) {
       state = AsyncData(Updating(status));
     } else if (status.isMonitoring) {
@@ -198,7 +218,9 @@ class AutoSwitcher extends _$AutoSwitcher {
 
   /// Get current orchestration status
   Future<OrchestrationStatus> _getCurrentStatus() async {
-    final getStatus = await ref.read(getOrchestrationStatusUseCaseProvider.future);
+    final getStatus = await ref.read(
+      getOrchestrationStatusUseCaseProvider.future,
+    );
     final result = await getStatus();
     return result.getOrElse(() => OrchestrationStatus.idle());
   }

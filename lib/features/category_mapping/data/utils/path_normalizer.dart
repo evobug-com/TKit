@@ -173,8 +173,10 @@ class PathNormalizer {
       // Special case: 'games' should only match near root
       if (anchor == 'games') {
         final beforeAnchor = normalized.substring(0, idx);
-        final segments =
-            beforeAnchor.split('/').where((s) => s.isNotEmpty).length;
+        final segments = beforeAnchor
+            .split('/')
+            .where((s) => s.isNotEmpty)
+            .length;
         if (segments > 2) {
           continue; // Too deep, skip this anchor
         }

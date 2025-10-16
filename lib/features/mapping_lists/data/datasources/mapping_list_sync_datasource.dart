@@ -42,8 +42,12 @@ class MappingListSyncDataSource {
       );
 
       if (response.statusCode != 200) {
-        _logger.error('Failed to fetch list from $url: HTTP ${response.statusCode}');
-        throw Exception('Failed to fetch list from $url: HTTP ${response.statusCode}');
+        _logger.error(
+          'Failed to fetch list from $url: HTTP ${response.statusCode}',
+        );
+        throw Exception(
+          'Failed to fetch list from $url: HTTP ${response.statusCode}',
+        );
       }
 
       var data = response.data;
@@ -72,16 +76,26 @@ class MappingListSyncDataSource {
         mappingsJson = data['mappings'] as List? ?? [];
         name = data['name'] as String?;
         description = data['description'] as String?;
-        isReadOnly = data['isReadOnly'] as bool? ?? data['readonly'] as bool? ?? true;
-        submissionHookUrl = data['submissionHookUrl'] as String? ?? data['submissionHook'] as String?;
+        isReadOnly =
+            data['isReadOnly'] as bool? ?? data['readonly'] as bool? ?? true;
+        submissionHookUrl =
+            data['submissionHookUrl'] as String? ??
+            data['submissionHook'] as String?;
       } else {
         // Debug: log the actual data type and structure
         final dataType = data.runtimeType;
-        final dataPreview = data.toString().substring(0, data.toString().length > 200 ? 200 : data.toString().length);
-        throw Exception('Invalid list format: Expected array or object with "mappings" field. Got type: $dataType. Preview: $dataPreview');
+        final dataPreview = data.toString().substring(
+          0,
+          data.toString().length > 200 ? 200 : data.toString().length,
+        );
+        throw Exception(
+          'Invalid list format: Expected array or object with "mappings" field. Got type: $dataType. Preview: $dataPreview',
+        );
       }
 
-      final mappings = mappingsJson.map((json) => _parseMappingItem(json)).toList();
+      final mappings = mappingsJson
+          .map((json) => _parseMappingItem(json))
+          .toList();
 
       return RemoteListData(
         name: name,
@@ -107,7 +121,9 @@ class MappingListSyncDataSource {
 
     return MappingListItem(
       processName: json['processName'] as String,
-      normalizedInstallPaths: _parseInstallPaths(json['normalizedInstallPaths']),
+      normalizedInstallPaths: _parseInstallPaths(
+        json['normalizedInstallPaths'],
+      ),
       twitchCategoryId: json['twitchCategoryId'].toString(),
       twitchCategoryName: json['twitchCategoryName'] as String,
       verificationCount: json['verificationCount'] as int? ?? 1,
@@ -127,7 +143,11 @@ class MappingListSyncDataSource {
 
     if (paths is String) {
       // Handle comma-separated string
-      return paths.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
+      return paths
+          .split(',')
+          .map((e) => e.trim())
+          .where((e) => e.isNotEmpty)
+          .toList();
     }
 
     return [];

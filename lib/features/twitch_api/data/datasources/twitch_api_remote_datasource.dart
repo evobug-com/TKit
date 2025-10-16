@@ -81,12 +81,15 @@ class TwitchApiRemoteDataSource {
             _logger.warning('Rate limited. Retry after: $retryAfter seconds');
 
             // Wait and retry if retry time is reasonable
-            if (retryAfter > 0 && retryAfter <= NetworkConfig.maxRateLimitWaitSeconds) {
+            if (retryAfter > 0 &&
+                retryAfter <= NetworkConfig.maxRateLimitWaitSeconds) {
               await Future<void>.delayed(Duration(seconds: retryAfter));
 
               // Retry the request
               try {
-                final response = await _dio.fetch<dynamic>(error.requestOptions);
+                final response = await _dio.fetch<dynamic>(
+                  error.requestOptions,
+                );
                 return handler.resolve(response);
               } catch (e, stackTrace) {
                 _logger.error('Retry after rate limit failed', e, stackTrace);
@@ -100,27 +103,37 @@ class TwitchApiRemoteDataSource {
             _logger.warning('Unauthorized (401) - attempting token refresh');
 
             // Only retry once to avoid infinite loops
-            final isRetry = error.requestOptions.extra['_tokenRefreshRetry'] == true;
+            final isRetry =
+                error.requestOptions.extra['_tokenRefreshRetry'] == true;
             if (!isRetry && _refreshTokenCallback != null) {
               try {
                 // Force token refresh
                 final newToken = await _refreshTokenCallback!();
 
                 if (newToken != null) {
-                  _logger.info('Token refreshed successfully, retrying request');
+                  _logger.info(
+                    'Token refreshed successfully, retrying request',
+                  );
 
                   // Mark this request as a retry to prevent infinite loops
                   error.requestOptions.extra['_tokenRefreshRetry'] = true;
 
                   // Update the authorization header with new token
-                  error.requestOptions.headers['Authorization'] = 'Bearer $newToken';
+                  error.requestOptions.headers['Authorization'] =
+                      'Bearer $newToken';
 
                   // Retry the request
                   try {
-                    final response = await _dio.fetch<dynamic>(error.requestOptions);
+                    final response = await _dio.fetch<dynamic>(
+                      error.requestOptions,
+                    );
                     return handler.resolve(response);
                   } catch (e, stackTrace) {
-                    _logger.error('Retry after token refresh failed', e, stackTrace);
+                    _logger.error(
+                      'Retry after token refresh failed',
+                      e,
+                      stackTrace,
+                    );
                     return handler.next(error);
                   }
                 } else {
@@ -130,7 +143,9 @@ class TwitchApiRemoteDataSource {
                 _logger.error('Token refresh failed', e, stackTrace);
               }
             } else if (isRetry) {
-              _logger.error('Request failed with 401 after token refresh - not retrying again');
+              _logger.error(
+                'Request failed with 401 after token refresh - not retrying again',
+              );
             } else {
               _logger.error('No refresh token callback configured');
             }
@@ -171,7 +186,9 @@ class TwitchApiRemoteDataSource {
     final retryAfter = response.headers.value('Retry-After');
     if (retryAfter != null) {
       try {
-        return int.parse(retryAfter).clamp(1, NetworkConfig.maxRateLimitWaitSeconds);
+        return int.parse(
+          retryAfter,
+        ).clamp(1, NetworkConfig.maxRateLimitWaitSeconds);
       } catch (e, stackTrace) {
         _logger.error('Failed to parse Retry-After header', e, stackTrace);
       }
@@ -205,7 +222,8 @@ class TwitchApiRemoteDataSource {
             .toList();
       } else {
         throw ServerException(
-          message: 'Unable to search Twitch categories. Please check your connection and try again.',
+          message:
+              'Unable to search Twitch categories. Please check your connection and try again.',
           code: response.statusCode?.toString(),
           technicalDetails: 'HTTP ${response.statusCode}',
         );
@@ -256,7 +274,8 @@ class TwitchApiRemoteDataSource {
         final data = response.data?['data'] as List? ?? [];
         if (data.isEmpty) {
           throw const ServerException(
-            message: 'Unable to retrieve your account information. Please try logging in again.',
+            message:
+                'Unable to retrieve your account information. Please try logging in again.',
             code: '404',
             technicalDetails: 'Empty user data response',
           );
@@ -264,7 +283,8 @@ class TwitchApiRemoteDataSource {
         return TwitchUserModel.fromJson(data.first as Map<String, dynamic>);
       } else {
         throw ServerException(
-          message: 'Unable to retrieve your account information. Please check your connection.',
+          message:
+              'Unable to retrieve your account information. Please check your connection.',
           code: response.statusCode?.toString(),
           technicalDetails: 'HTTP ${response.statusCode}',
         );
@@ -314,7 +334,9 @@ class TwitchApiRemoteDataSource {
   /// GET https://api.twitch.tv/helix/games
   /// Supports up to 100 IDs per request
   /// Returns list of matching categories
-  Future<List<TwitchCategoryModel>> getGamesByIds(List<String> categoryIds) async {
+  Future<List<TwitchCategoryModel>> getGamesByIds(
+    List<String> categoryIds,
+  ) async {
     if (categoryIds.isEmpty) {
       return [];
     }
@@ -331,9 +353,7 @@ class TwitchApiRemoteDataSource {
     try {
       final response = await _dio.get<Map<String, dynamic>>(
         '/games',
-        queryParameters: {
-          'id': categoryIds,
-        },
+        queryParameters: {'id': categoryIds},
       );
 
       if (response.statusCode == 200) {
@@ -381,9 +401,7 @@ class TwitchApiRemoteDataSource {
     try {
       final response = await _dio.get<Map<String, dynamic>>(
         '/games',
-        queryParameters: {
-          'name': gameNames,
-        },
+        queryParameters: {'name': gameNames},
       );
 
       if (response.statusCode == 200) {
@@ -417,7 +435,8 @@ class TwitchApiRemoteDataSource {
   }) async {
     if (first < 1 || first > 100) {
       throw ServerException(
-        message: 'Invalid number of results requested. Must be between 1 and 100.',
+        message:
+            'Invalid number of results requested. Must be between 1 and 100.',
         code: '400',
         technicalDetails: 'Requested: $first',
       );
@@ -462,7 +481,8 @@ class TwitchApiRemoteDataSource {
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
         throw NetworkException(
-          message: 'Request timed out. Please check your internet connection and try again.',
+          message:
+              'Request timed out. Please check your internet connection and try again.',
           originalError: e,
           technicalDetails: 'Timeout during $operation',
         );
@@ -495,7 +515,8 @@ class TwitchApiRemoteDataSource {
       case DioExceptionType.unknown:
       default:
         throw NetworkException(
-          message: 'Unable to connect to Twitch. Please check your internet connection.',
+          message:
+              'Unable to connect to Twitch. Please check your internet connection.',
           originalError: e,
           technicalDetails: 'Network error during $operation: ${e.message}',
         );

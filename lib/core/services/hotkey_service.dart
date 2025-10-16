@@ -33,9 +33,10 @@ class HotkeyService {
       _logger.info('Initializing hotkey service');
 
       // Only initialize on supported platforms
-      if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows ||
-          defaultTargetPlatform == TargetPlatform.linux ||
-          defaultTargetPlatform == TargetPlatform.macOS)) {
+      if (!kIsWeb &&
+          (defaultTargetPlatform == TargetPlatform.windows ||
+              defaultTargetPlatform == TargetPlatform.linux ||
+              defaultTargetPlatform == TargetPlatform.macOS)) {
         await hotKeyManager.unregisterAll();
       }
 
@@ -43,7 +44,9 @@ class HotkeyService {
       final initialSettings = await _getSettings();
       initialSettings.fold(
         (failure) {
-          _logger.warning('Failed to load initial settings for hotkeys: ${failure.message}');
+          _logger.warning(
+            'Failed to load initial settings for hotkeys: ${failure.message}',
+          );
         },
         (settings) {
           final hotkeyString = settings.manualUpdateHotkey;
@@ -79,9 +82,10 @@ class HotkeyService {
   Future<void> _registerManualUpdateHotkey(String hotkeyString) async {
     try {
       // Skip if not on a supported platform
-      if (kIsWeb || (defaultTargetPlatform != TargetPlatform.windows &&
-          defaultTargetPlatform != TargetPlatform.linux &&
-          defaultTargetPlatform != TargetPlatform.macOS)) {
+      if (kIsWeb ||
+          (defaultTargetPlatform != TargetPlatform.windows &&
+              defaultTargetPlatform != TargetPlatform.linux &&
+              defaultTargetPlatform != TargetPlatform.macOS)) {
         _logger.debug('Hotkeys not supported on this platform');
         return;
       }
@@ -124,7 +128,11 @@ class HotkeyService {
         _logger.info('Unregistered manual update hotkey');
         _currentManualUpdateHotkey = null;
       } catch (e, stackTrace) {
-        _logger.error('Failed to unregister manual update hotkey', e, stackTrace);
+        _logger.error(
+          'Failed to unregister manual update hotkey',
+          e,
+          stackTrace,
+        );
       }
     }
   }
@@ -143,8 +151,7 @@ class HotkeyService {
 
       for (final part in parts) {
         final trimmed = part.trim();
-        switch (trimmed)
-        {
+        switch (trimmed) {
           case 'ctrl':
           case 'control':
             modifiers.add(HotKeyModifier.control);
@@ -166,10 +173,7 @@ class HotkeyService {
         return null;
       }
 
-      return HotKey(
-        key: physicalKey,
-        modifiers: modifiers,
-      );
+      return HotKey(key: physicalKey, modifiers: modifiers);
     } catch (e) {
       _logger.warning('Failed to parse hotkey string: $hotkeyString', e);
       return null;
@@ -183,18 +187,30 @@ class HotkeyService {
       final num = int.tryParse(key.substring(1));
       if (num != null && num >= 1 && num <= 12) {
         switch (num) {
-          case 1: return PhysicalKeyboardKey.f1;
-          case 2: return PhysicalKeyboardKey.f2;
-          case 3: return PhysicalKeyboardKey.f3;
-          case 4: return PhysicalKeyboardKey.f4;
-          case 5: return PhysicalKeyboardKey.f5;
-          case 6: return PhysicalKeyboardKey.f6;
-          case 7: return PhysicalKeyboardKey.f7;
-          case 8: return PhysicalKeyboardKey.f8;
-          case 9: return PhysicalKeyboardKey.f9;
-          case 10: return PhysicalKeyboardKey.f10;
-          case 11: return PhysicalKeyboardKey.f11;
-          case 12: return PhysicalKeyboardKey.f12;
+          case 1:
+            return PhysicalKeyboardKey.f1;
+          case 2:
+            return PhysicalKeyboardKey.f2;
+          case 3:
+            return PhysicalKeyboardKey.f3;
+          case 4:
+            return PhysicalKeyboardKey.f4;
+          case 5:
+            return PhysicalKeyboardKey.f5;
+          case 6:
+            return PhysicalKeyboardKey.f6;
+          case 7:
+            return PhysicalKeyboardKey.f7;
+          case 8:
+            return PhysicalKeyboardKey.f8;
+          case 9:
+            return PhysicalKeyboardKey.f9;
+          case 10:
+            return PhysicalKeyboardKey.f10;
+          case 11:
+            return PhysicalKeyboardKey.f11;
+          case 12:
+            return PhysicalKeyboardKey.f12;
         }
       }
     }
@@ -205,52 +221,92 @@ class HotkeyService {
       if (char.codeUnitAt(0) >= 'A'.codeUnitAt(0) &&
           char.codeUnitAt(0) <= 'Z'.codeUnitAt(0)) {
         switch (char) {
-          case 'A': return PhysicalKeyboardKey.keyA;
-          case 'B': return PhysicalKeyboardKey.keyB;
-          case 'C': return PhysicalKeyboardKey.keyC;
-          case 'D': return PhysicalKeyboardKey.keyD;
-          case 'E': return PhysicalKeyboardKey.keyE;
-          case 'F': return PhysicalKeyboardKey.keyF;
-          case 'G': return PhysicalKeyboardKey.keyG;
-          case 'H': return PhysicalKeyboardKey.keyH;
-          case 'I': return PhysicalKeyboardKey.keyI;
-          case 'J': return PhysicalKeyboardKey.keyJ;
-          case 'K': return PhysicalKeyboardKey.keyK;
-          case 'L': return PhysicalKeyboardKey.keyL;
-          case 'M': return PhysicalKeyboardKey.keyM;
-          case 'N': return PhysicalKeyboardKey.keyN;
-          case 'O': return PhysicalKeyboardKey.keyO;
-          case 'P': return PhysicalKeyboardKey.keyP;
-          case 'Q': return PhysicalKeyboardKey.keyQ;
-          case 'R': return PhysicalKeyboardKey.keyR;
-          case 'S': return PhysicalKeyboardKey.keyS;
-          case 'T': return PhysicalKeyboardKey.keyT;
-          case 'U': return PhysicalKeyboardKey.keyU;
-          case 'V': return PhysicalKeyboardKey.keyV;
-          case 'W': return PhysicalKeyboardKey.keyW;
-          case 'X': return PhysicalKeyboardKey.keyX;
-          case 'Y': return PhysicalKeyboardKey.keyY;
-          case 'Z': return PhysicalKeyboardKey.keyZ;
+          case 'A':
+            return PhysicalKeyboardKey.keyA;
+          case 'B':
+            return PhysicalKeyboardKey.keyB;
+          case 'C':
+            return PhysicalKeyboardKey.keyC;
+          case 'D':
+            return PhysicalKeyboardKey.keyD;
+          case 'E':
+            return PhysicalKeyboardKey.keyE;
+          case 'F':
+            return PhysicalKeyboardKey.keyF;
+          case 'G':
+            return PhysicalKeyboardKey.keyG;
+          case 'H':
+            return PhysicalKeyboardKey.keyH;
+          case 'I':
+            return PhysicalKeyboardKey.keyI;
+          case 'J':
+            return PhysicalKeyboardKey.keyJ;
+          case 'K':
+            return PhysicalKeyboardKey.keyK;
+          case 'L':
+            return PhysicalKeyboardKey.keyL;
+          case 'M':
+            return PhysicalKeyboardKey.keyM;
+          case 'N':
+            return PhysicalKeyboardKey.keyN;
+          case 'O':
+            return PhysicalKeyboardKey.keyO;
+          case 'P':
+            return PhysicalKeyboardKey.keyP;
+          case 'Q':
+            return PhysicalKeyboardKey.keyQ;
+          case 'R':
+            return PhysicalKeyboardKey.keyR;
+          case 'S':
+            return PhysicalKeyboardKey.keyS;
+          case 'T':
+            return PhysicalKeyboardKey.keyT;
+          case 'U':
+            return PhysicalKeyboardKey.keyU;
+          case 'V':
+            return PhysicalKeyboardKey.keyV;
+          case 'W':
+            return PhysicalKeyboardKey.keyW;
+          case 'X':
+            return PhysicalKeyboardKey.keyX;
+          case 'Y':
+            return PhysicalKeyboardKey.keyY;
+          case 'Z':
+            return PhysicalKeyboardKey.keyZ;
         }
       }
     }
 
     // Special keys
     switch (key) {
-      case 'space': return PhysicalKeyboardKey.space;
-      case 'enter': return PhysicalKeyboardKey.enter;
-      case 'tab': return PhysicalKeyboardKey.tab;
-      case 'backspace': return PhysicalKeyboardKey.backspace;
-      case 'delete': return PhysicalKeyboardKey.delete;
-      case 'escape': return PhysicalKeyboardKey.escape;
-      case 'home': return PhysicalKeyboardKey.home;
-      case 'end': return PhysicalKeyboardKey.end;
-      case 'pageup': return PhysicalKeyboardKey.pageUp;
-      case 'pagedown': return PhysicalKeyboardKey.pageDown;
-      case 'up': return PhysicalKeyboardKey.arrowUp;
-      case 'down': return PhysicalKeyboardKey.arrowDown;
-      case 'left': return PhysicalKeyboardKey.arrowLeft;
-      case 'right': return PhysicalKeyboardKey.arrowRight;
+      case 'space':
+        return PhysicalKeyboardKey.space;
+      case 'enter':
+        return PhysicalKeyboardKey.enter;
+      case 'tab':
+        return PhysicalKeyboardKey.tab;
+      case 'backspace':
+        return PhysicalKeyboardKey.backspace;
+      case 'delete':
+        return PhysicalKeyboardKey.delete;
+      case 'escape':
+        return PhysicalKeyboardKey.escape;
+      case 'home':
+        return PhysicalKeyboardKey.home;
+      case 'end':
+        return PhysicalKeyboardKey.end;
+      case 'pageup':
+        return PhysicalKeyboardKey.pageUp;
+      case 'pagedown':
+        return PhysicalKeyboardKey.pageDown;
+      case 'up':
+        return PhysicalKeyboardKey.arrowUp;
+      case 'down':
+        return PhysicalKeyboardKey.arrowDown;
+      case 'left':
+        return PhysicalKeyboardKey.arrowLeft;
+      case 'right':
+        return PhysicalKeyboardKey.arrowRight;
     }
 
     return null;

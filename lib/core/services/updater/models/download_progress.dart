@@ -1,11 +1,5 @@
 /// Represents the current state of a download
-enum DownloadStatus {
-  idle,
-  downloading,
-  completed,
-  failed,
-  cancelled,
-}
+enum DownloadStatus { idle, downloading, completed, failed, cancelled }
 
 /// Information about download progress
 class DownloadProgress {

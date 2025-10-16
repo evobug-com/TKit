@@ -53,7 +53,8 @@ class _SettingsPageContent extends ConsumerStatefulWidget {
   const _SettingsPageContent();
 
   @override
-  ConsumerState<_SettingsPageContent> createState() => _SettingsPageContentState();
+  ConsumerState<_SettingsPageContent> createState() =>
+      _SettingsPageContentState();
 }
 
 class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
@@ -107,9 +108,9 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
   }
 
   void _updateSettings(AppSettings settings) {
-    final hasChanges = ref.read(settingsProvider.notifier).hasUnsavedChanges(
-      settings,
-    );
+    final hasChanges = ref
+        .read(settingsProvider.notifier)
+        .hasUnsavedChanges(settings);
     setState(() {
       _currentSettings = settings;
       _hasChanges = hasChanges;
@@ -184,7 +185,11 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error_outline, size: 48, color: TKitColors.error),
+                  const Icon(
+                    Icons.error_outline,
+                    size: 48,
+                    color: TKitColors.error,
+                  ),
                   const VSpace.lg(),
                   Text(state.message, style: TKitTextStyles.bodyMedium),
                   const VSpace.lg(),
@@ -314,149 +319,162 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-            // Language selection
-            Consumer(
-              builder: (context, ref, child) {
-                final languageServiceAsync = ref.watch(languageServiceProvider);
+                // Language selection
+                Consumer(
+                  builder: (context, ref, child) {
+                    final languageServiceAsync = ref.watch(
+                      languageServiceProvider,
+                    );
 
-                return languageServiceAsync.when(
-                  data: (languageService) {
-                    final l10n = AppLocalizations.of(context)!;
-                    final currentLocale = languageService.getCurrentLocale();
+                    return languageServiceAsync.when(
+                      data: (languageService) {
+                        final l10n = AppLocalizations.of(context)!;
+                        final currentLocale = languageService
+                            .getCurrentLocale();
 
-                    // Map of language codes to their localized names
-                    final languageNames = <String, String>{
-                      'en': l10n.languageEnglish,
-                      'cs': l10n.languageCzech,
-                      'pl': l10n.languagePolish,
-                      'es': l10n.languageSpanish,
-                      'fr': l10n.languageFrench,
-                      'de': l10n.languageGerman,
-                      'pt': l10n.languagePortuguese,
-                      'ja': l10n.languageJapanese,
-                      'ko': l10n.languageKorean,
-                      'zh': l10n.languageChinese,
-                    };
+                        // Map of language codes to their localized names
+                        final languageNames = <String, String>{
+                          'en': l10n.languageEnglish,
+                          'cs': l10n.languageCzech,
+                          'pl': l10n.languagePolish,
+                          'es': l10n.languageSpanish,
+                          'fr': l10n.languageFrench,
+                          'de': l10n.languageGerman,
+                          'pt': l10n.languagePortuguese,
+                          'ja': l10n.languageJapanese,
+                          'ko': l10n.languageKorean,
+                          'zh': l10n.languageChinese,
+                        };
 
-                    return SettingsDropdown<String>(
-                      label: l10n.settingsLanguage,
-                      description: l10n.settingsLanguageDescription,
-                      value: currentLocale.languageCode,
-                      items: AppLocalizations.supportedLocales
-                          .map(
-                            (locale) => DropdownMenuItem(
-                              value: locale.languageCode,
-                              child: Text(
-                                languageNames[locale.languageCode] ??
-                                    locale.languageCode.toUpperCase(),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (languageCode) async {
-                        if (languageCode != null) {
-                          await languageService.saveLanguage(languageCode);
-                          ref.read(localeProvider.notifier).setLocale(Locale(languageCode));
+                        return SettingsDropdown<String>(
+                          label: l10n.settingsLanguage,
+                          description: l10n.settingsLanguageDescription,
+                          value: currentLocale.languageCode,
+                          items: AppLocalizations.supportedLocales
+                              .map(
+                                (locale) => DropdownMenuItem(
+                                  value: locale.languageCode,
+                                  child: Text(
+                                    languageNames[locale.languageCode] ??
+                                        locale.languageCode.toUpperCase(),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (languageCode) async {
+                            if (languageCode != null) {
+                              await languageService.saveLanguage(languageCode);
+                              ref
+                                  .read(localeProvider.notifier)
+                                  .setLocale(Locale(languageCode));
 
-                          if (context.mounted) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
                               if (context.mounted) {
-                                final newL10n = AppLocalizations.of(context)!;
-                                Toast.success(
-                                  context,
-                                  newL10n.languageChangeNotice,
-                                );
+                                WidgetsBinding.instance.addPostFrameCallback((
+                                  _,
+                                ) {
+                                  if (context.mounted) {
+                                    final newL10n = AppLocalizations.of(
+                                      context,
+                                    )!;
+                                    Toast.success(
+                                      context,
+                                      newL10n.languageChangeNotice,
+                                    );
+                                  }
+                                });
                               }
-                            });
-                          }
-                        }
+                            }
+                          },
+                        );
                       },
+                      loading: () => const SizedBox.shrink(),
+                      error: (error, stack) => const SizedBox.shrink(),
                     );
                   },
-                  loading: () => const SizedBox.shrink(),
-                  error: (error, stack) => const SizedBox.shrink(),
-                );
-              },
-            ),
-            const VSpace.md(),
-            SettingsCheckbox(
-              label: l10n.settingsAutoStartWindowsLabel,
-              subtitle: l10n.settingsAutoStartWindowsSubtitle,
-              value: settings.autoStartWithWindows,
-              onChanged: (value) {
-                _updateSettings(
-                  settings.copyWith(autoStartWithWindows: value ?? false),
-                );
-              },
-            ),
-            const VSpace.sm(),
-            SettingsCheckbox(
-              label: l10n.settingsStartMinimizedLabel,
-              subtitle: l10n.settingsStartMinimizedSubtitle,
-              value: settings.startMinimized,
-              onChanged: (value) {
-                _updateSettings(
-                  settings.copyWith(startMinimized: value ?? false),
-                );
-              },
-            ),
-            const VSpace.sm(),
-            SettingsCheckbox(
-              label: l10n.settingsMinimizeToTrayLabel,
-              subtitle: l10n.settingsMinimizeToTraySubtitle,
-              value: settings.minimizeToTray,
-              onChanged: (value) {
-                _updateSettings(
-                  settings.copyWith(minimizeToTray: value ?? false),
-                );
-              },
-            ),
-            const VSpace.sm(),
-            SettingsCheckbox(
-              label: l10n.settingsShowNotificationsLabel,
-              subtitle: l10n.settingsShowNotificationsSubtitle,
-              value: settings.showNotifications,
-              onChanged: (value) {
-                _updateSettings(
-                  settings.copyWith(showNotifications: value ?? false),
-                );
-              },
-            ),
-            const VSpace.sm(),
-            SettingsCheckbox(
-              label: l10n.settingsNotifyMissingCategoryLabel,
-              subtitle: l10n.settingsNotifyMissingCategorySubtitle,
-              value: settings.notifyOnMissingCategory,
-              onChanged: (value) {
-                _updateSettings(
-                  settings.copyWith(notifyOnMissingCategory: value ?? false),
-                );
-              },
-            ),
-            const VSpace.md(),
-            CustomDropdown<WindowControlsPosition>(
-              label: l10n.settingsWindowControlsPositionLabel,
-              description: l10n.settingsWindowControlsPositionDescription,
-              value: settings.windowControlsPosition,
-              items: WindowControlsPosition.values
-                  .map(
-                    (position) => CustomDropdownItem(
-                      value: position,
-                      title: position.localizedName(context),
-                      subtitle: null,
-                    ),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                if (value != null) {
-                  final updatedSettings = settings.copyWith(
-                    windowControlsPosition: value,
-                  );
-                  _updateSettings(updatedSettings);
-                  ref.read(windowControlsPreviewProvider.notifier).setPreviewPosition(value);
-                }
-              },
-            ),
+                ),
+                const VSpace.md(),
+                SettingsCheckbox(
+                  label: l10n.settingsAutoStartWindowsLabel,
+                  subtitle: l10n.settingsAutoStartWindowsSubtitle,
+                  value: settings.autoStartWithWindows,
+                  onChanged: (value) {
+                    _updateSettings(
+                      settings.copyWith(autoStartWithWindows: value ?? false),
+                    );
+                  },
+                ),
+                const VSpace.sm(),
+                SettingsCheckbox(
+                  label: l10n.settingsStartMinimizedLabel,
+                  subtitle: l10n.settingsStartMinimizedSubtitle,
+                  value: settings.startMinimized,
+                  onChanged: (value) {
+                    _updateSettings(
+                      settings.copyWith(startMinimized: value ?? false),
+                    );
+                  },
+                ),
+                const VSpace.sm(),
+                SettingsCheckbox(
+                  label: l10n.settingsMinimizeToTrayLabel,
+                  subtitle: l10n.settingsMinimizeToTraySubtitle,
+                  value: settings.minimizeToTray,
+                  onChanged: (value) {
+                    _updateSettings(
+                      settings.copyWith(minimizeToTray: value ?? false),
+                    );
+                  },
+                ),
+                const VSpace.sm(),
+                SettingsCheckbox(
+                  label: l10n.settingsShowNotificationsLabel,
+                  subtitle: l10n.settingsShowNotificationsSubtitle,
+                  value: settings.showNotifications,
+                  onChanged: (value) {
+                    _updateSettings(
+                      settings.copyWith(showNotifications: value ?? false),
+                    );
+                  },
+                ),
+                const VSpace.sm(),
+                SettingsCheckbox(
+                  label: l10n.settingsNotifyMissingCategoryLabel,
+                  subtitle: l10n.settingsNotifyMissingCategorySubtitle,
+                  value: settings.notifyOnMissingCategory,
+                  onChanged: (value) {
+                    _updateSettings(
+                      settings.copyWith(
+                        notifyOnMissingCategory: value ?? false,
+                      ),
+                    );
+                  },
+                ),
+                const VSpace.md(),
+                CustomDropdown<WindowControlsPosition>(
+                  label: l10n.settingsWindowControlsPositionLabel,
+                  description: l10n.settingsWindowControlsPositionDescription,
+                  value: settings.windowControlsPosition,
+                  items: WindowControlsPosition.values
+                      .map(
+                        (position) => CustomDropdownItem(
+                          value: position,
+                          title: position.localizedName(context),
+                          subtitle: null,
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      final updatedSettings = settings.copyWith(
+                        windowControlsPosition: value,
+                      );
+                      _updateSettings(updatedSettings);
+                      ref
+                          .read(windowControlsPreviewProvider.notifier)
+                          .setPreviewPosition(value);
+                    }
+                  },
+                ),
               ],
             ),
           ),
@@ -475,49 +493,49 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-            SettingsSlider(
-              label: l10n.settingsScanIntervalLabel,
-              description: l10n.settingsScanIntervalDescription,
-              value: settings.scanIntervalSeconds.toDouble(),
-              min: 1,
-              max: 60,
-              divisions: 59,
-              onChanged: (value) {
-                _updateSettings(
-                  settings.copyWith(scanIntervalSeconds: value.toInt()),
-                );
-              },
-            ),
-            const VSpace.md(),
-            SettingsSlider(
-              label: l10n.settingsDebounceTimeLabel,
-              description: l10n.settingsDebounceTimeDescription,
-              value: settings.debounceSeconds.toDouble(),
-              min: 0,
-              max: 60,
-              divisions: 60,
-              onChanged: (value) {
-                _updateSettings(
-                  settings.copyWith(debounceSeconds: value.toInt()),
-                );
-              },
-            ),
-            const VSpace.md(),
-            _buildTimingExplanation(
-              settings.scanIntervalSeconds,
-              settings.debounceSeconds,
-            ),
-            const VSpace.md(),
-            SettingsCheckbox(
-              label: l10n.settingsAutoStartMonitoringLabel,
-              subtitle: l10n.settingsAutoStartMonitoringSubtitle,
-              value: settings.autoStartMonitoring,
-              onChanged: (value) {
-                _updateSettings(
-                  settings.copyWith(autoStartMonitoring: value ?? false),
-                );
-              },
-            ),
+                SettingsSlider(
+                  label: l10n.settingsScanIntervalLabel,
+                  description: l10n.settingsScanIntervalDescription,
+                  value: settings.scanIntervalSeconds.toDouble(),
+                  min: 1,
+                  max: 60,
+                  divisions: 59,
+                  onChanged: (value) {
+                    _updateSettings(
+                      settings.copyWith(scanIntervalSeconds: value.toInt()),
+                    );
+                  },
+                ),
+                const VSpace.md(),
+                SettingsSlider(
+                  label: l10n.settingsDebounceTimeLabel,
+                  description: l10n.settingsDebounceTimeDescription,
+                  value: settings.debounceSeconds.toDouble(),
+                  min: 0,
+                  max: 60,
+                  divisions: 60,
+                  onChanged: (value) {
+                    _updateSettings(
+                      settings.copyWith(debounceSeconds: value.toInt()),
+                    );
+                  },
+                ),
+                const VSpace.md(),
+                _buildTimingExplanation(
+                  settings.scanIntervalSeconds,
+                  settings.debounceSeconds,
+                ),
+                const VSpace.md(),
+                SettingsCheckbox(
+                  label: l10n.settingsAutoStartMonitoringLabel,
+                  subtitle: l10n.settingsAutoStartMonitoringSubtitle,
+                  value: settings.autoStartMonitoring,
+                  onChanged: (value) {
+                    _updateSettings(
+                      settings.copyWith(autoStartMonitoring: value ?? false),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -526,40 +544,45 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-            SettingsDropdown<FallbackBehavior>(
-              label: l10n.settingsFallbackBehaviorLabel,
-              description: l10n.settingsFallbackBehaviorDescription,
-              value: settings.fallbackBehavior,
-              items: FallbackBehavior.values
-                  .map(
-                    (behavior) => DropdownMenuItem(
-                      value: behavior,
-                      child: Text(behavior.localizedName(context)),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                if (value != null) {
-                  _updateSettings(settings.copyWith(fallbackBehavior: value));
-                }
-              },
-            ),
-            if (settings.fallbackBehavior == FallbackBehavior.custom) ...[
-              const VSpace.md(),
-              FormFieldWrapper(
-                label: l10n.settingsCustomCategory,
-                child: TKitTextField(
-                  hintText: l10n.settingsCustomCategoryHint,
-                  controller: TextEditingController(
-                    text: settings.customFallbackCategoryName ?? '',
-                  ),
-                  readOnly: true,
-                  onTap: () {
-                    Toast.info(context, l10n.settingsCategorySearchUnavailable);
+                SettingsDropdown<FallbackBehavior>(
+                  label: l10n.settingsFallbackBehaviorLabel,
+                  description: l10n.settingsFallbackBehaviorDescription,
+                  value: settings.fallbackBehavior,
+                  items: FallbackBehavior.values
+                      .map(
+                        (behavior) => DropdownMenuItem(
+                          value: behavior,
+                          child: Text(behavior.localizedName(context)),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      _updateSettings(
+                        settings.copyWith(fallbackBehavior: value),
+                      );
+                    }
                   },
                 ),
-              ),
-            ],
+                if (settings.fallbackBehavior == FallbackBehavior.custom) ...[
+                  const VSpace.md(),
+                  FormFieldWrapper(
+                    label: l10n.settingsCustomCategory,
+                    child: TKitTextField(
+                      hintText: l10n.settingsCustomCategoryHint,
+                      controller: TextEditingController(
+                        text: settings.customFallbackCategoryName ?? '',
+                      ),
+                      readOnly: true,
+                      onTap: () {
+                        Toast.info(
+                          context,
+                          l10n.settingsCategorySearchUnavailable,
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -578,31 +601,34 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-            SettingsCheckbox(
-              label: l10n.settingsAutoSyncOnStart,
-              subtitle: l10n.settingsAutoSyncOnStartDesc,
-              value: settings.autoSyncMappingsOnStart,
-              onChanged: (value) {
-                _updateSettings(
-                  settings.copyWith(autoSyncMappingsOnStart: value ?? true),
-                );
-              },
-            ),
-            const VSpace.md(),
-            SettingsSlider(
-              label: l10n.settingsAutoSyncInterval,
-              description: l10n.settingsAutoSyncIntervalDesc,
-              value: settings.mappingsSyncIntervalHours.toDouble(),
-              min: 0,
-              max: 168,
-              divisions: 168,
-              valueFormatter: (value) => _formatSyncInterval(value.toInt(), l10n),
-              onChanged: (value) {
-                _updateSettings(
-                  settings.copyWith(mappingsSyncIntervalHours: value.toInt()),
-                );
-              },
-            ),
+                SettingsCheckbox(
+                  label: l10n.settingsAutoSyncOnStart,
+                  subtitle: l10n.settingsAutoSyncOnStartDesc,
+                  value: settings.autoSyncMappingsOnStart,
+                  onChanged: (value) {
+                    _updateSettings(
+                      settings.copyWith(autoSyncMappingsOnStart: value ?? true),
+                    );
+                  },
+                ),
+                const VSpace.md(),
+                SettingsSlider(
+                  label: l10n.settingsAutoSyncInterval,
+                  description: l10n.settingsAutoSyncIntervalDesc,
+                  value: settings.mappingsSyncIntervalHours.toDouble(),
+                  min: 0,
+                  max: 168,
+                  divisions: 168,
+                  valueFormatter: (value) =>
+                      _formatSyncInterval(value.toInt(), l10n),
+                  onChanged: (value) {
+                    _updateSettings(
+                      settings.copyWith(
+                        mappingsSyncIntervalHours: value.toInt(),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -645,11 +671,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
         children: [
           Row(
             children: [
-              const Icon(
-                Icons.schedule,
-                size: 16,
-                color: TKitColors.accent,
-              ),
+              const Icon(Icons.schedule, size: 16, color: TKitColors.accent),
               const SizedBox(width: 8),
               Text(
                 l10n.settingsTimingTitle,
@@ -680,7 +702,10 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
             '→',
             debounce == 0
                 ? l10n.settingsTimingStep3Instant(scanInterval)
-                : l10n.settingsTimingStep3Debounce(scanInterval, scanInterval + debounce),
+                : l10n.settingsTimingStep3Debounce(
+                    scanInterval,
+                    scanInterval + debounce,
+                  ),
             TKitColors.success,
           ),
         ],
@@ -733,15 +758,19 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-            HotkeyInput(
-              key: ValueKey('hotkey_${settings.manualUpdateHotkey}_$_resetKey'),
-              label: l10n.settingsManualUpdateHotkeyLabel,
-              description: l10n.settingsManualUpdateHotkeyDescription,
-              currentHotkey: settings.manualUpdateHotkey,
-              onChanged: (hotkey) {
-                _updateSettings(settings.copyWith(manualUpdateHotkey: hotkey));
-              },
-            ),
+                HotkeyInput(
+                  key: ValueKey(
+                    'hotkey_${settings.manualUpdateHotkey}_$_resetKey',
+                  ),
+                  label: l10n.settingsManualUpdateHotkeyLabel,
+                  description: l10n.settingsManualUpdateHotkeyDescription,
+                  currentHotkey: settings.manualUpdateHotkey,
+                  onChanged: (hotkey) {
+                    _updateSettings(
+                      settings.copyWith(manualUpdateHotkey: hotkey),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -760,33 +789,37 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-            SettingsCheckbox(
-              label: l10n.settingsFramelessWindow,
-              subtitle: l10n.settingsFramelessWindowDesc,
-              value: settings.useFramelessWindow,
-              onChanged: (value) async {
-                final newValue = value ?? false;
-                _updateSettings(settings.copyWith(useFramelessWindow: newValue));
+                SettingsCheckbox(
+                  label: l10n.settingsFramelessWindow,
+                  subtitle: l10n.settingsFramelessWindowDesc,
+                  value: settings.useFramelessWindow,
+                  onChanged: (value) async {
+                    final newValue = value ?? false;
+                    _updateSettings(
+                      settings.copyWith(useFramelessWindow: newValue),
+                    );
 
-                // Apply window style immediately
-                if (newValue) {
-                  await windowManager.setAsFrameless();
-                } else {
-                  await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
-                }
-              },
-            ),
-            const VSpace.sm(),
-            SettingsCheckbox(
-              label: l10n.settingsInvertLayout,
-              subtitle: l10n.settingsInvertLayoutDesc,
-              value: settings.invertFooterHeader,
-              onChanged: (value) {
-                _updateSettings(
-                  settings.copyWith(invertFooterHeader: value ?? false),
-                );
-              },
-            ),
+                    // Apply window style immediately
+                    if (newValue) {
+                      await windowManager.setAsFrameless();
+                    } else {
+                      await windowManager.setTitleBarStyle(
+                        TitleBarStyle.hidden,
+                      );
+                    }
+                  },
+                ),
+                const VSpace.sm(),
+                SettingsCheckbox(
+                  label: l10n.settingsInvertLayout,
+                  subtitle: l10n.settingsInvertLayoutDesc,
+                  value: settings.invertFooterHeader,
+                  onChanged: (value) {
+                    _updateSettings(
+                      settings.copyWith(invertFooterHeader: value ?? false),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -815,57 +848,66 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-            CustomDropdown<UpdateChannel>(
-              label: l10n.settingsUpdateChannelLabel,
-              description: l10n.settingsUpdateChannelDescription,
-              value: _currentSettings?.updateChannel ?? UpdateChannel.stable,
-              items: UpdateChannel.values
-                  .map(
-                    (channel) => CustomDropdownItem(
-                      value: channel,
-                      title: channel.localizedName(context),
-                      subtitle: channel.localizedDescription(context),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (value) async {
-                if (value != null && _currentSettings != null) {
-                  // Capture context-dependent values before async gap
-                  final localizedChannelName = value.localizedName(context);
-                  final successMessage = l10n.settingsUpdateChannelChanged(localizedChannelName);
+                CustomDropdown<UpdateChannel>(
+                  label: l10n.settingsUpdateChannelLabel,
+                  description: l10n.settingsUpdateChannelDescription,
+                  value:
+                      _currentSettings?.updateChannel ?? UpdateChannel.stable,
+                  items: UpdateChannel.values
+                      .map(
+                        (channel) => CustomDropdownItem(
+                          value: channel,
+                          title: channel.localizedName(context),
+                          subtitle: channel.localizedDescription(context),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) async {
+                    if (value != null && _currentSettings != null) {
+                      // Capture context-dependent values before async gap
+                      final localizedChannelName = value.localizedName(context);
+                      final successMessage = l10n.settingsUpdateChannelChanged(
+                        localizedChannelName,
+                      );
 
-                  final updatedSettings = _currentSettings!.copyWith(
-                    updateChannel: value,
-                  );
-                  _updateSettings(updatedSettings);
+                      final updatedSettings = _currentSettings!.copyWith(
+                        updateChannel: value,
+                      );
+                      _updateSettings(updatedSettings);
 
-                  await ref.read(settingsProvider.notifier).updateSettings(
-                    updatedSettings,
-                  );
+                      await ref
+                          .read(settingsProvider.notifier)
+                          .updateSettings(updatedSettings);
 
-                  if (!mounted) {
-                    return;
-                  }
+                      if (!mounted) {
+                        return;
+                      }
 
-                  final updateService = ref.read(githubUpdateServiceProvider);
-                  await updateService.checkForUpdates(
-                    silent: false,
-                    channel: value,
-                  );
+                      final updateService = ref.read(
+                        githubUpdateServiceProvider,
+                      );
+                      await updateService.checkForUpdates(
+                        silent: false,
+                        channel: value,
+                      );
 
-                  if (!mounted) {
-                    return;
-                  }
+                      if (!mounted) {
+                        return;
+                      }
 
-                  Toast.success(context, successMessage);
-                }
-              },
-            ),
+                      Toast.success(context, successMessage);
+                    }
+                  },
+                ),
               ],
             ),
           ),
           const VSpace.lg(),
-          _buildSentrySection(_currentSettings ?? AppSettings.defaults(appVersion: AppConfig.appVersion), l10n),
+          _buildSentrySection(
+            _currentSettings ??
+                AppSettings.defaults(appVersion: AppConfig.appVersion),
+            l10n,
+          ),
           const VSpace.lg(),
           _buildFactoryResetSection(context),
         ],
@@ -878,10 +920,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            l10n.settingsSentry,
-            style: TKitTextStyles.labelLarge,
-          ),
+          Text(l10n.settingsSentry, style: TKitTextStyles.labelLarge),
           const VSpace.xs(),
           Text(
             l10n.settingsSentryDescription,
@@ -1013,168 +1052,172 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
         final isLoading = authState is AuthLoading;
 
         return Island.standard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: isAuthenticated
-                              ? TKitColors.success
-                              : TKitColors.textDisabled,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const HSpace.md(),
-                      Text(
-                        isAuthenticated
-                            ? l10n.settingsTwitchStatusConnected
-                            : l10n.settingsTwitchStatusNotConnected,
-                        style: TKitTextStyles.labelLarge,
-                      ),
-                    ],
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: isAuthenticated
+                          ? TKitColors.success
+                          : TKitColors.textDisabled,
+                      shape: BoxShape.circle,
+                    ),
                   ),
-                  const VSpace.md(),
-                  if (isAuthenticated) ...[
-                    Text(
-                      l10n.settingsTwitchLoggedInAs,
-                      style: TKitTextStyles.caption,
-                    ),
-                    const VSpace.xs(),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.person,
-                          size: 16,
-                          color: TKitColors.accent,
-                        ),
-                        const HSpace.sm(),
-                        Text(
-                          authState.user.displayName,
-                          style: TKitTextStyles.bodyMedium,
-                        ),
-                        const HSpace.sm(),
-                        Text(
-                          '(@${authState.user.login})',
-                          style: TKitTextStyles.caption,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    FutureBuilder<DateTime?>(
-                      future: ref.read(authProvider.notifier).getTokenExpiration(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.data != null) {
-                          final l10n = AppLocalizations.of(context)!;
-                          final expiresAt = snapshot.data!;
-                          final now = DateTime.now();
-                          final isExpired = expiresAt.isBefore(now);
-                          final timeRemaining = expiresAt.difference(now);
-
-                          String expiryText;
-                          if (isExpired) {
-                            expiryText = l10n.settingsTokenExpired;
-                          } else if (timeRemaining.inDays > 0) {
-                            expiryText = l10n.settingsTokenExpiresDays(
-                              timeRemaining.inDays,
-                              timeRemaining.inHours % 24,
-                            );
-                          } else if (timeRemaining.inHours > 0) {
-                            expiryText = l10n.settingsTokenExpiresHours(
-                              timeRemaining.inHours,
-                              timeRemaining.inMinutes % 60,
-                            );
-                          } else {
-                            expiryText = l10n.settingsTokenExpiresMinutes(
-                              timeRemaining.inMinutes,
-                            );
-                          }
-
-                          return Row(
-                            children: [
-                              Icon(
-                                Icons.schedule,
-                                size: 14,
-                                color: isExpired
-                                    ? TKitColors.error
-                                    : TKitColors.textMuted,
-                              ),
-                              const HSpace.xs(),
-                              Text(
-                                expiryText,
-                                style: TKitTextStyles.caption.copyWith(
-                                  color: isExpired
-                                      ? TKitColors.error
-                                      : TKitColors.textMuted,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
-                            ],
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: AccentButton(
-                            text: l10n.settingsTwitchDisconnect,
-                            icon: Icons.logout,
-                            onPressed: isLoading
-                                ? null
-                                : () {
-                                    ref.read(authProvider.notifier).logout();
-                                  },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ] else ...[
-                    Text(
-                      l10n.settingsTwitchConnectDescription,
-                      style: TKitTextStyles.caption,
-                    ),
-                    const VSpace.md(),
-                    PrimaryButton(
-                      text: l10n.settingsTwitchConnect,
-                      icon: Icons.link,
-                      isLoading: isLoading,
-                      onPressed: isLoading
-                          ? null
-                          : () async {
-                              final notifier = ref.read(authProvider.notifier);
-                              final deviceCodeResponse = await notifier.initiateDeviceCodeAuth();
-
-                              if (deviceCodeResponse != null &&
-                                  context.mounted) {
-                                await showDialog<void>(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (dialogContext) =>
-                                      DeviceCodeAuthPage(
-                                        deviceCodeResponse: deviceCodeResponse as DeviceCodeResponse,
-                                        onSuccess: () {
-                                          Navigator.of(dialogContext).pop();
-                                          ref.read(authProvider.notifier).checkAuthStatus();
-                                        },
-                                        onCancel: () {
-                                          Navigator.of(dialogContext).pop();
-                                          ref.read(authProvider.notifier).checkAuthStatus();
-                                        },
-                                      ),
-                                );
-                              }
-                            },
-                    ),
-                  ],
+                  const HSpace.md(),
+                  Text(
+                    isAuthenticated
+                        ? l10n.settingsTwitchStatusConnected
+                        : l10n.settingsTwitchStatusNotConnected,
+                    style: TKitTextStyles.labelLarge,
+                  ),
                 ],
               ),
-            );
+              const VSpace.md(),
+              if (isAuthenticated) ...[
+                Text(
+                  l10n.settingsTwitchLoggedInAs,
+                  style: TKitTextStyles.caption,
+                ),
+                const VSpace.xs(),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.person,
+                      size: 16,
+                      color: TKitColors.accent,
+                    ),
+                    const HSpace.sm(),
+                    Text(
+                      authState.user.displayName,
+                      style: TKitTextStyles.bodyMedium,
+                    ),
+                    const HSpace.sm(),
+                    Text(
+                      '(@${authState.user.login})',
+                      style: TKitTextStyles.caption,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                FutureBuilder<DateTime?>(
+                  future: ref.read(authProvider.notifier).getTokenExpiration(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data != null) {
+                      final l10n = AppLocalizations.of(context)!;
+                      final expiresAt = snapshot.data!;
+                      final now = DateTime.now();
+                      final isExpired = expiresAt.isBefore(now);
+                      final timeRemaining = expiresAt.difference(now);
+
+                      String expiryText;
+                      if (isExpired) {
+                        expiryText = l10n.settingsTokenExpired;
+                      } else if (timeRemaining.inDays > 0) {
+                        expiryText = l10n.settingsTokenExpiresDays(
+                          timeRemaining.inDays,
+                          timeRemaining.inHours % 24,
+                        );
+                      } else if (timeRemaining.inHours > 0) {
+                        expiryText = l10n.settingsTokenExpiresHours(
+                          timeRemaining.inHours,
+                          timeRemaining.inMinutes % 60,
+                        );
+                      } else {
+                        expiryText = l10n.settingsTokenExpiresMinutes(
+                          timeRemaining.inMinutes,
+                        );
+                      }
+
+                      return Row(
+                        children: [
+                          Icon(
+                            Icons.schedule,
+                            size: 14,
+                            color: isExpired
+                                ? TKitColors.error
+                                : TKitColors.textMuted,
+                          ),
+                          const HSpace.xs(),
+                          Text(
+                            expiryText,
+                            style: TKitTextStyles.caption.copyWith(
+                              color: isExpired
+                                  ? TKitColors.error
+                                  : TKitColors.textMuted,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: AccentButton(
+                        text: l10n.settingsTwitchDisconnect,
+                        icon: Icons.logout,
+                        onPressed: isLoading
+                            ? null
+                            : () {
+                                ref.read(authProvider.notifier).logout();
+                              },
+                      ),
+                    ),
+                  ],
+                ),
+              ] else ...[
+                Text(
+                  l10n.settingsTwitchConnectDescription,
+                  style: TKitTextStyles.caption,
+                ),
+                const VSpace.md(),
+                PrimaryButton(
+                  text: l10n.settingsTwitchConnect,
+                  icon: Icons.link,
+                  isLoading: isLoading,
+                  onPressed: isLoading
+                      ? null
+                      : () async {
+                          final notifier = ref.read(authProvider.notifier);
+                          final deviceCodeResponse = await notifier
+                              .initiateDeviceCodeAuth();
+
+                          if (deviceCodeResponse != null && context.mounted) {
+                            await showDialog<void>(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (dialogContext) => DeviceCodeAuthPage(
+                                deviceCodeResponse:
+                                    deviceCodeResponse as DeviceCodeResponse,
+                                onSuccess: () {
+                                  Navigator.of(dialogContext).pop();
+                                  ref
+                                      .read(authProvider.notifier)
+                                      .checkAuthStatus();
+                                },
+                                onCancel: () {
+                                  Navigator.of(dialogContext).pop();
+                                  ref
+                                      .read(authProvider.notifier)
+                                      .checkAuthStatus();
+                                },
+                              ),
+                            );
+                          }
+                        },
+                ),
+              ],
+            ],
+          ),
+        );
       },
     );
   }
@@ -1182,49 +1225,45 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
   Widget _buildFactoryResetSection(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Container(
-          decoration: BoxDecoration(
-            color: TKitColors.surface,
-            border: Border.all(color: TKitColors.error, width: 1),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          padding: const EdgeInsets.all(TKitSpacing.lg),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.warning_rounded,
-                size: 20,
-                color: TKitColors.error,
-              ),
-              const HSpace.md(),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.settingsFactoryReset,
-                      style: TKitTextStyles.labelMedium.copyWith(
-                        color: TKitColors.error,
-                      ),
-                    ),
-                    const VSpace.xs(),
-                    Text(
-                      l10n.settingsResetDesc,
-                      style: TKitTextStyles.caption.copyWith(
-                        color: TKitColors.textSecondary,
-                      ),
-                    ),
-                  ],
+      decoration: BoxDecoration(
+        color: TKitColors.surface,
+        border: Border.all(color: TKitColors.error, width: 1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.all(TKitSpacing.lg),
+      child: Row(
+        children: [
+          const Icon(Icons.warning_rounded, size: 20, color: TKitColors.error),
+          const HSpace.md(),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.settingsFactoryReset,
+                  style: TKitTextStyles.labelMedium.copyWith(
+                    color: TKitColors.error,
+                  ),
                 ),
-              ),
-              const HSpace.md(),
-              AccentButton(
-                text: l10n.settingsButtonReset,
-                icon: Icons.restore,
-                onPressed: () => _showFactoryResetDialog(context),
-              ),
-            ],
+                const VSpace.xs(),
+                Text(
+                  l10n.settingsResetDesc,
+                  style: TKitTextStyles.caption.copyWith(
+                    color: TKitColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
           ),
-        );
+          const HSpace.md(),
+          AccentButton(
+            text: l10n.settingsButtonReset,
+            icon: Icons.restore,
+            onPressed: () => _showFactoryResetDialog(context),
+          ),
+        ],
+      ),
+    );
   }
 
   void _showFactoryResetDialog(BuildContext context) {
@@ -1271,7 +1310,9 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
 
     try {
       // Get the FactoryResetUseCase from Riverpod
-      final factoryResetUseCase = await ref.read(factoryResetUseCaseProvider.future);
+      final factoryResetUseCase = await ref.read(
+        factoryResetUseCaseProvider.future,
+      );
 
       final result = await factoryResetUseCase();
 

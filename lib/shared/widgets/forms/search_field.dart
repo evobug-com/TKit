@@ -84,9 +84,7 @@ class _SearchFieldState extends State<SearchField> {
       controller: _controller,
       autofocus: widget.autofocus,
       onChanged: _onChanged,
-      style: TKitTextStyles.bodyMedium.copyWith(
-        color: TKitColors.textPrimary,
-      ),
+      style: TKitTextStyles.bodyMedium.copyWith(color: TKitColors.textPrimary),
       decoration: InputDecoration(
         hintText: widget.hintText,
         hintStyle: TKitTextStyles.bodyMedium.copyWith(
@@ -114,10 +112,7 @@ class _SearchFieldState extends State<SearchField> {
               ),
               onPressed: _onClear,
               padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(
-                minWidth: 32,
-                minHeight: 32,
-              ),
+              constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
             );
           },
         ),

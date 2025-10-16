@@ -52,18 +52,14 @@ class FormFieldWrapper extends StatelessWidget {
           const SizedBox(height: TKitSpacing.xs),
           Text(
             helpText!,
-            style: TKitTextStyles.caption.copyWith(
-              color: TKitColors.textMuted,
-            ),
+            style: TKitTextStyles.caption.copyWith(color: TKitColors.textMuted),
           ),
         ],
         if (errorText != null) ...[
           const SizedBox(height: TKitSpacing.xs),
           Text(
             errorText!,
-            style: TKitTextStyles.caption.copyWith(
-              color: TKitColors.error,
-            ),
+            style: TKitTextStyles.caption.copyWith(color: TKitColors.error),
           ),
         ],
       ],
@@ -109,9 +105,7 @@ class TKitTextField extends StatelessWidget {
       readOnly: readOnly,
       maxLines: maxLines,
       minLines: minLines,
-      style: TKitTextStyles.bodyMedium.copyWith(
-        color: TKitColors.textPrimary,
-      ),
+      style: TKitTextStyles.bodyMedium.copyWith(color: TKitColors.textPrimary),
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TKitTextStyles.bodyMedium.copyWith(

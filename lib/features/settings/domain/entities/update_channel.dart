@@ -62,8 +62,7 @@ enum UpdateChannel {
 
     // RC accepts stable and rc
     if (this == UpdateChannel.rc) {
-      return !version.contains('-') ||
-          version.contains('-rc');
+      return !version.contains('-') || version.contains('-rc');
     }
 
     // Beta accepts stable, rc, and beta

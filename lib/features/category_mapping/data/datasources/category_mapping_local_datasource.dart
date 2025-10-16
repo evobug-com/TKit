@@ -61,12 +61,10 @@ class CategoryMappingLocalDataSource {
       }
 
       // Step 2: Try exact match on process name only
-      final exactMatches = allResults
-          .where((result) {
-            final mapping = result['mapping'] as CategoryMappingEntity;
-            return mapping.processName == processName;
-          })
-          .toList();
+      final exactMatches = allResults.where((result) {
+        final mapping = result['mapping'] as CategoryMappingEntity;
+        return mapping.processName == processName;
+      }).toList();
 
       if (exactMatches.isNotEmpty) {
         final result = exactMatches.first;
@@ -122,18 +120,16 @@ class CategoryMappingLocalDataSource {
     try {
       final results = await database.getMappingsFromEnabledLists();
 
-      return results
-          .map((result) {
-            final entity = result['mapping'] as CategoryMappingEntity;
-            final listName = result['listName'] as String;
-            final isReadOnly = result['isReadOnly'] as bool;
-            return CategoryMappingModel.fromDbEntity(
-              entity,
-              sourceListName: listName,
-              sourceListIsReadOnly: isReadOnly,
-            );
-          })
-          .toList();
+      return results.map((result) {
+        final entity = result['mapping'] as CategoryMappingEntity;
+        final listName = result['listName'] as String;
+        final isReadOnly = result['isReadOnly'] as bool;
+        return CategoryMappingModel.fromDbEntity(
+          entity,
+          sourceListName: listName,
+          sourceListIsReadOnly: isReadOnly,
+        );
+      }).toList();
     } catch (e, stackTrace) {
       _logger.error('Failed to get all mappings', e, stackTrace);
       throw CacheException(
@@ -152,9 +148,9 @@ class CategoryMappingLocalDataSource {
         await database.into(database.categoryMappings).insert(companion);
       } else {
         // Update existing mapping - use companion to preserve all fields
-        await (database.update(database.categoryMappings)
-              ..where((tbl) => tbl.id.equals(mapping.id!)))
-            .write(companion);
+        await (database.update(
+          database.categoryMappings,
+        )..where((tbl) => tbl.id.equals(mapping.id!))).write(companion);
       }
     } catch (e, stackTrace) {
       _logger.error('Failed to save mapping', e, stackTrace);

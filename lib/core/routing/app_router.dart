@@ -46,14 +46,13 @@ Widget _buildDirectionalSlideTransition(
     }
   }
 
-  final tween = Tween(begin: beginOffset, end: Offset.zero)
-      .chain(CurveTween(curve: Curves.easeInOut));
+  final tween = Tween(
+    begin: beginOffset,
+    end: Offset.zero,
+  ).chain(CurveTween(curve: Curves.easeInOut));
   final offsetAnimation = animation.drive(tween);
 
-  return SlideTransition(
-    position: offsetAnimation,
-    child: child,
-  );
+  return SlideTransition(position: offsetAnimation, child: child);
 }
 
 /// App routing configuration using auto_route
@@ -61,26 +60,26 @@ Widget _buildDirectionalSlideTransition(
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
-        // Welcome screen (for first-time setup)
-        AutoRoute(page: WelcomeRoute.page),
-        // Auto Switcher (initial route)
-        CustomRoute<void>(
-          page: AutoSwitcherRoute.page,
-          initial: true,
-          transitionsBuilder: _buildDirectionalSlideTransition,
-          duration: const Duration(milliseconds: 250),
-        ),
-        // Category Mapping Editor
-        CustomRoute<void>(
-          page: CategoryMappingEditorRoute.page,
-          transitionsBuilder: _buildDirectionalSlideTransition,
-          duration: const Duration(milliseconds: 250),
-        ),
-        // Settings
-        CustomRoute<void>(
-          page: SettingsRoute.page,
-          transitionsBuilder: _buildDirectionalSlideTransition,
-          duration: const Duration(milliseconds: 250),
-        )
-      ];
+    // Welcome screen (for first-time setup)
+    AutoRoute(page: WelcomeRoute.page),
+    // Auto Switcher (initial route)
+    CustomRoute<void>(
+      page: AutoSwitcherRoute.page,
+      initial: true,
+      transitionsBuilder: _buildDirectionalSlideTransition,
+      duration: const Duration(milliseconds: 250),
+    ),
+    // Category Mapping Editor
+    CustomRoute<void>(
+      page: CategoryMappingEditorRoute.page,
+      transitionsBuilder: _buildDirectionalSlideTransition,
+      duration: const Duration(milliseconds: 250),
+    ),
+    // Settings
+    CustomRoute<void>(
+      page: SettingsRoute.page,
+      transitionsBuilder: _buildDirectionalSlideTransition,
+      duration: const Duration(milliseconds: 250),
+    ),
+  ];
 }

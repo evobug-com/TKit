@@ -34,8 +34,10 @@ class TKitTableColumn<T> {
     this.sortable = false,
     this.textAlign = TextAlign.left,
     this.comparator,
-  }) : assert(!sortable || comparator != null,
-            'comparator is required when sortable is true');
+  }) : assert(
+         !sortable || comparator != null,
+         'comparator is required when sortable is true',
+       );
 }
 
 /// Sort direction for table columns
@@ -199,7 +201,8 @@ class _TKitDataTableState<T> extends State<TKitDataTable<T>> {
             sortDirection: _sortDirection,
             onSort: _handleSort,
             selectable: widget.selectable,
-            allSelected: widget.selectedItems?.length == _sortedItems.length &&
+            allSelected:
+                widget.selectedItems?.length == _sortedItems.length &&
                 _sortedItems.isNotEmpty,
             onSelectAll: ({bool? selected}) => _handleSelectAll(selected),
             verticalPadding: verticalPadding,
@@ -212,7 +215,9 @@ class _TKitDataTableState<T> extends State<TKitDataTable<T>> {
             return TKitTableRow<T>(
               item: item,
               columns: widget.columns,
-              onTap: widget.onRowTap != null ? () => widget.onRowTap!(item) : null,
+              onTap: widget.onRowTap != null
+                  ? () => widget.onRowTap!(item)
+                  : null,
               selected: isSelected,
               selectable: widget.selectable,
               onSelectionChanged: ({bool? selected}) =>
@@ -259,9 +264,7 @@ class TKitTableHeader<T> extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: backgroundColor ?? TKitColors.surfaceVariant,
-        border: const Border(
-          bottom: BorderSide(color: TKitColors.border),
-        ),
+        border: const Border(bottom: BorderSide(color: TKitColors.border)),
       ),
       child: Row(
         children: [
@@ -311,8 +314,8 @@ class TKitTableHeader<T> extends StatelessWidget {
                     Icon(
                       isSorted
                           ? (sortDirection == TKitSortDirection.ascending
-                              ? Icons.arrow_upward
-                              : Icons.arrow_downward)
+                                ? Icons.arrow_upward
+                                : Icons.arrow_downward)
                           : Icons.unfold_more,
                       size: 12,
                       color: isSorted
@@ -384,9 +387,7 @@ class _TKitTableRowState<T> extends State<TKitTableRow<T>> {
           onTap: widget.onTap,
           child: Container(
             decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: TKitColors.border),
-              ),
+              border: Border(bottom: BorderSide(color: TKitColors.border)),
             ),
             child: Row(
               children: [
@@ -397,7 +398,8 @@ class _TKitTableRowState<T> extends State<TKitTableRow<T>> {
                     child: Checkbox(
                       value: widget.selected,
                       onChanged: widget.onSelectionChanged != null
-                          ? (value) => widget.onSelectionChanged!(selected: value)
+                          ? (value) =>
+                                widget.onSelectionChanged!(selected: value)
                           : null,
                       fillColor: WidgetStateProperty.resolveWith((states) {
                         if (states.contains(WidgetState.selected)) {
@@ -454,9 +456,7 @@ class TKitTableCell extends StatelessWidget {
         vertical: verticalPadding,
       ),
       child: DefaultTextStyle(
-        style: TKitTextStyles.bodySmall.copyWith(
-          color: TKitColors.textPrimary,
-        ),
+        style: TKitTextStyles.bodySmall.copyWith(color: TKitColors.textPrimary),
         textAlign: textAlign,
         child: child,
       ),

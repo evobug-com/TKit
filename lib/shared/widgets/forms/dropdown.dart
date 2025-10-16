@@ -51,8 +51,10 @@ class _TKitDropdownState<T> extends State<TKitDropdown<T>> {
         _filteredOptions = widget.options;
       } else {
         _filteredOptions = widget.options
-            .where((option) =>
-                option.label.toLowerCase().contains(query.toLowerCase()))
+            .where(
+              (option) =>
+                  option.label.toLowerCase().contains(query.toLowerCase()),
+            )
             .toList();
       }
     });
@@ -87,10 +89,7 @@ class _TKitDropdownState<T> extends State<TKitDropdown<T>> {
       ),
       child: Container(
         height: 32,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 8,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
           color: TKitColors.background,
           border: Border.all(
@@ -107,8 +106,8 @@ class _TKitDropdownState<T> extends State<TKitDropdown<T>> {
                   color: widget.value == null
                       ? TKitColors.textMuted
                       : (isEnabled
-                          ? TKitColors.textPrimary
-                          : TKitColors.textDisabled),
+                            ? TKitColors.textPrimary
+                            : TKitColors.textDisabled),
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -177,9 +176,7 @@ class _TKitDropdownState<T> extends State<TKitDropdown<T>> {
             ),
           );
 
-          items.add(
-            const PopupMenuDivider(height: 1),
-          );
+          items.add(const PopupMenuDivider(height: 1));
         }
 
         // Add options
@@ -247,10 +244,7 @@ class TKitDropdownOption<T> {
   final T value;
   final String label;
 
-  const TKitDropdownOption({
-    required this.value,
-    required this.label,
-  });
+  const TKitDropdownOption({required this.value, required this.label});
 }
 
 /// FormField wrapper for TKitDropdown to work with forms
@@ -267,35 +261,35 @@ class TKitDropdownFormField<T> extends FormField<T> {
     String Function(T)? displayBuilder,
     super.autovalidateMode,
   }) : super(
-          builder: (FormFieldState<T> state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TKitDropdown<T>(
-                  value: state.value,
-                  onChanged: enabled
-                      ? (value) {
-                          state.didChange(value);
-                        }
-                      : null,
-                  options: options,
-                  placeholder: placeholder,
-                  enabled: enabled,
-                  searchable: searchable,
-                  displayBuilder: displayBuilder,
-                ),
-                if (state.hasError) ...[
-                  const SizedBox(height: TKitSpacing.xs),
-                  Text(
-                    state.errorText!,
-                    style: TKitTextStyles.caption.copyWith(
-                      color: TKitColors.error,
-                    ),
-                  ),
-                ],
-              ],
-            );
-          },
-        );
+         builder: (FormFieldState<T> state) {
+           return Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             mainAxisSize: MainAxisSize.min,
+             children: [
+               TKitDropdown<T>(
+                 value: state.value,
+                 onChanged: enabled
+                     ? (value) {
+                         state.didChange(value);
+                       }
+                     : null,
+                 options: options,
+                 placeholder: placeholder,
+                 enabled: enabled,
+                 searchable: searchable,
+                 displayBuilder: displayBuilder,
+               ),
+               if (state.hasError) ...[
+                 const SizedBox(height: TKitSpacing.xs),
+                 Text(
+                   state.errorText!,
+                   style: TKitTextStyles.caption.copyWith(
+                     color: TKitColors.error,
+                   ),
+                 ),
+               ],
+             ],
+           );
+         },
+       );
 }

@@ -28,9 +28,7 @@ class BaseDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: TKitColors.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.zero,
-      ),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       child: Container(
         width: width,
         decoration: BoxDecoration(
@@ -51,19 +49,10 @@ class BaseDialog extends StatelessWidget {
               child: Row(
                 children: [
                   if (icon != null) ...[
-                    Icon(
-                      icon,
-                      color: iconColor ?? TKitColors.accent,
-                      size: 20,
-                    ),
+                    Icon(icon, color: iconColor ?? TKitColors.accent, size: 20),
                     const SizedBox(width: TKitSpacing.sm),
                   ],
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: TKitTextStyles.heading3,
-                    ),
-                  ),
+                  Expanded(child: Text(title, style: TKitTextStyles.heading3)),
                   IconButton(
                     icon: const Icon(Icons.close, size: 18),
                     color: TKitColors.textSecondary,
@@ -123,10 +112,7 @@ class QuickActionDialog {
         title: title,
         icon: icon ?? Icons.help_outline,
         iconColor: iconColor ?? TKitColors.warning,
-        content: Text(
-          message,
-          style: TKitTextStyles.bodyMedium,
-        ),
+        content: Text(message, style: TKitTextStyles.bodyMedium),
         actions: [
           AccentButton(
             text: cancelText,
@@ -157,10 +143,7 @@ class QuickActionDialog {
         title: title,
         icon: icon ?? Icons.info_outline,
         iconColor: TKitColors.info,
-        content: Text(
-          message,
-          style: TKitTextStyles.bodyMedium,
-        ),
+        content: Text(message, style: TKitTextStyles.bodyMedium),
         actions: [
           PrimaryButton(
             text: buttonText,
@@ -184,10 +167,7 @@ class QuickActionDialog {
         title: title,
         icon: Icons.error_outline,
         iconColor: TKitColors.error,
-        content: Text(
-          message,
-          style: TKitTextStyles.bodyMedium,
-        ),
+        content: Text(message, style: TKitTextStyles.bodyMedium),
         actions: [
           PrimaryButton(
             text: buttonText,

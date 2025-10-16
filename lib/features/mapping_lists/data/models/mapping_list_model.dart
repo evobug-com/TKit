@@ -47,7 +47,10 @@ class MappingListModel extends MappingList {
   }
 
   /// Create from Drift database entity
-  factory MappingListModel.fromDbEntity(MappingListEntity dbEntity, {int? mappingCount}) {
+  factory MappingListModel.fromDbEntity(
+    MappingListEntity dbEntity, {
+    int? mappingCount,
+  }) {
     return MappingListModel(
       id: dbEntity.id,
       name: dbEntity.name,

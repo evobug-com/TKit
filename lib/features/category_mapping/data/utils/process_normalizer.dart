@@ -22,18 +22,27 @@ class ProcessNormalizer {
 
     // Remove version patterns
     // Patterns: v1.2.3, 1.2.3, v1_2_3, 1_2_3, etc.
-    normalized = normalized.replaceAll(RegExp(r'[_\-\s]?v?\d+[\._]\d+[\._]\d+'), '');
+    normalized = normalized.replaceAll(
+      RegExp(r'[_\-\s]?v?\d+[\._]\d+[\._]\d+'),
+      '',
+    );
     normalized = normalized.replaceAll(RegExp(r'[_\-\s]?v?\d+[\._]\d+'), '');
     normalized = normalized.replaceAll(RegExp(r'[_\-\s]?v\d+'), '');
 
     // Remove platform suffixes
-    normalized = normalized.replaceAll(RegExp(r'[_\-](x64|x86|64|32|win64|win32)$'), '');
+    normalized = normalized.replaceAll(
+      RegExp(r'[_\-](x64|x86|64|32|win64|win32)$'),
+      '',
+    );
 
     // Remove special characters
     normalized = normalized.replaceAll(RegExp(r'[_\-\s:]'), '');
 
     // Remove common suffixes
-    normalized = normalized.replaceAll(RegExp(r'(game|app|client|launcher)$'), '');
+    normalized = normalized.replaceAll(
+      RegExp(r'(game|app|client|launcher)$'),
+      '',
+    );
 
     return normalized.trim();
   }

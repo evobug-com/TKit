@@ -90,7 +90,8 @@ class _CollapsiblePanelState extends State<CollapsiblePanel>
           InkWell(
             onTap: _toggleExpanded,
             child: Container(
-              padding: widget.padding ??
+              padding:
+                  widget.padding ??
                   const EdgeInsets.symmetric(
                     horizontal: TKitSpacing.md,
                     vertical: TKitSpacing.sm,
@@ -124,10 +125,7 @@ class _CollapsiblePanelState extends State<CollapsiblePanel>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.title,
-                          style: TKitTextStyles.labelMedium,
-                        ),
+                        Text(widget.title, style: TKitTextStyles.labelMedium),
                         if (widget.subtitle != null) ...[
                           const SizedBox(height: 2),
                           Text(
@@ -147,7 +145,8 @@ class _CollapsiblePanelState extends State<CollapsiblePanel>
           SizeTransition(
             sizeFactor: _expandAnimation,
             child: Container(
-              padding: widget.padding ??
+              padding:
+                  widget.padding ??
                   const EdgeInsets.only(
                     left: TKitSpacing.xl,
                     right: TKitSpacing.md,

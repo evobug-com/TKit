@@ -7,10 +7,7 @@ import 'package:tkit/shared/theme/spacing.dart';
 class LoadingOverlay extends StatelessWidget {
   final String? message;
 
-  const LoadingOverlay({
-    super.key,
-    this.message,
-  });
+  const LoadingOverlay({super.key, this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +47,7 @@ class InlineLoading extends StatelessWidget {
   final String? message;
   final double size;
 
-  const InlineLoading({
-    super.key,
-    this.message,
-    this.size = 24,
-  });
+  const InlineLoading({super.key, this.message, this.size = 24});
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +105,10 @@ class _SkeletonLoaderState extends State<SkeletonLoader>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     )..repeat();
-    _animation = Tween<double>(begin: -1.0, end: 2.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _animation = Tween<double>(
+      begin: -1.0,
+      end: 2.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override

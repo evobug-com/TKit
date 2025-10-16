@@ -20,16 +20,14 @@ class SettingsCheckbox extends StatelessWidget {
     return CheckboxListTile(
       title: Text(
         label,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-          fontSize: 14,
-        ),
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14),
       ),
       subtitle: subtitle != null
           ? Text(
               subtitle!,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontSize: 11,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(fontSize: 11),
             )
           : null,
       value: value,

@@ -134,8 +134,10 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
                           ),
                           focusedBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.zero,
-                            borderSide:
-                                BorderSide(color: TKitColors.accent, width: 2),
+                            borderSide: BorderSide(
+                              color: TKitColors.accent,
+                              width: 2,
+                            ),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: TKitSpacing.sm,
@@ -145,10 +147,7 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
                         ),
                       ),
                     ),
-                    const Divider(
-                      height: 1,
-                      color: TKitColors.border,
-                    ),
+                    const Divider(height: 1, color: TKitColors.border),
                     // Items list
                     Flexible(
                       child: _filteredItems.isEmpty
@@ -190,10 +189,11 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
                                             widget.itemLabel(item),
                                             style: TKitTextStyles.bodyMedium
                                                 .copyWith(
-                                              color: isSelected
-                                                  ? TKitColors.textPrimary
-                                                  : TKitColors.textSecondary,
-                                            ),
+                                                  color: isSelected
+                                                      ? TKitColors.textPrimary
+                                                      : TKitColors
+                                                            .textSecondary,
+                                                ),
                                           ),
                                         ),
                                         if (isSelected)

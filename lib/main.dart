@@ -17,7 +17,6 @@ import 'package:tkit/shared/theme/app_theme.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-
 void main() async {
   // Ensure Flutter is initialized
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,7 +65,9 @@ void main() async {
     });
 
     // Load settings and configure window style
-    final getSettingsUseCase = await container.read(getSettingsUseCaseProvider.future);
+    final getSettingsUseCase = await container.read(
+      getSettingsUseCaseProvider.future,
+    );
     final initialSettings = await getSettingsUseCase();
     final windowService = container.read(windowServiceProvider);
 
@@ -83,7 +84,9 @@ void main() async {
           await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
           logger.info('Window set to normal mode with hidden title bar');
         }
-        logger.info('Initial minimize to tray setting: ${settings.minimizeToTray}');
+        logger.info(
+          'Initial minimize to tray setting: ${settings.minimizeToTray}',
+        );
       },
     );
 
@@ -91,12 +94,15 @@ void main() async {
     await windowService.initialize();
 
     // Watch for settings changes
-    final watchSettingsUseCase = await container.read(watchSettingsUseCaseProvider.future);
+    final watchSettingsUseCase = await container.read(
+      watchSettingsUseCaseProvider.future,
+    );
     watchSettingsUseCase().listen((settings) {
       // Settings changes are handled automatically by each component
-      logger.debug('Settings updated: minimize to tray = ${settings.minimizeToTray}');
+      logger.debug(
+        'Settings updated: minimize to tray = ${settings.minimizeToTray}',
+      );
     });
-
 
     // Initialize system tray
     final systemTrayService = container.read(systemTrayServiceProvider);
@@ -137,7 +143,9 @@ void main() async {
         (settings) => settings.updateChannel,
       ),
     );
-    unawaited(updateService.checkForUpdates(silent: true, channel: updateChannel));
+    unawaited(
+      updateService.checkForUpdates(silent: true, channel: updateChannel),
+    );
 
     logger.info('Initialization complete, launching app...');
 
@@ -171,15 +179,22 @@ void main() async {
 
         await SentryFlutter.init(
           (options) {
-            options.dsn = 'https://ac1a85025dfec5f5ff4e6852bcd19157@o4508065365950464.ingest.de.sentry.io/4510201319325776';
+            options.dsn =
+                'https://ac1a85025dfec5f5ff4e6852bcd19157@o4508065365950464.ingest.de.sentry.io/4510201319325776';
 
             // Release and environment tracking
             options.release = 'tkit@${AppConfig.appVersion}';
-            options.environment = AppConfig.appVersion.contains('dev') ? 'development' : 'production';
+            options.environment = AppConfig.appVersion.contains('dev')
+                ? 'development'
+                : 'production';
 
             // Sample rates based on settings (10% for production, 0 to disable)
-            options.tracesSampleRate = sentryConfig.performanceMonitoring ? 0.1 : 0.0;
-            options.profilesSampleRate = sentryConfig.performanceMonitoring ? 0.1 : 0.0;
+            options.tracesSampleRate = sentryConfig.performanceMonitoring
+                ? 0.1
+                : 0.0;
+            options.profilesSampleRate = sentryConfig.performanceMonitoring
+                ? 0.1
+                : 0.0;
 
             // Note: Session replay configuration will be added when available in Sentry Flutter SDK
             // The setting is available in UI but not yet functional until SDK support is added
@@ -195,15 +210,17 @@ void main() async {
           appRunner: () => runApp(
             UncontrolledProviderScope(
               container: container,
-              child: SentryWidget(
-                child: const TKitApp(),
-              ),
+              child: SentryWidget(child: const TKitApp()),
             ),
           ),
         );
       } catch (e, stackTrace) {
         // If Sentry fails to initialize, continue without it
-        logger.error('Sentry initialization failed, continuing without error tracking', e, stackTrace);
+        logger.error(
+          'Sentry initialization failed, continuing without error tracking',
+          e,
+          stackTrace,
+        );
         runApp(
           UncontrolledProviderScope(
             container: container,
@@ -214,13 +231,9 @@ void main() async {
     } else {
       logger.info('Sentry disabled in settings, skipping initialization');
       runApp(
-        UncontrolledProviderScope(
-          container: container,
-          child: const TKitApp(),
-        ),
+        UncontrolledProviderScope(container: container, child: const TKitApp()),
       );
     }
-
   } catch (e, stackTrace) {
     final logger = container.read(appLoggerProvider);
     logger.fatal('Failed to initialize app', e, stackTrace);
@@ -295,17 +308,18 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
     if (!windowService.forceExitRequested) {
       // Check if we should minimize to tray instead of closing
       try {
-        final getSettingsUseCase = await ref.read(getSettingsUseCaseProvider.future);
+        final getSettingsUseCase = await ref.read(
+          getSettingsUseCaseProvider.future,
+        );
 
         final settingsResult = await getSettingsUseCase();
 
-        final shouldMinimizeToTray = settingsResult.fold(
-          (failure) {
-            logger.warning('Could not load settings, assuming close to tray disabled');
-            return false;
-          },
-          (settings) => settings.minimizeToTray,
-        );
+        final shouldMinimizeToTray = settingsResult.fold((failure) {
+          logger.warning(
+            'Could not load settings, assuming close to tray disabled',
+          );
+          return false;
+        }, (settings) => settings.minimizeToTray);
 
         if (shouldMinimizeToTray) {
           // Hide window instead of closing
@@ -323,9 +337,11 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
 
     logger.info('Window close requested - starting fast shutdown');
 
-    unawaited(_cleanupResources().catchError((Object e, StackTrace stackTrace) {
-      logger.error('Cleanup error', e, stackTrace);
-    }));
+    unawaited(
+      _cleanupResources().catchError((Object e, StackTrace stackTrace) {
+        logger.error('Cleanup error', e, stackTrace);
+      }),
+    );
 
     try {
       await windowManager.destroy().timeout(
@@ -345,7 +361,9 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
     final stopwatch = Stopwatch()..start();
 
     try {
-      final autoSwitcherRepo = await ref.read(autoSwitcherRepositoryProvider.future);
+      final autoSwitcherRepo = await ref.read(
+        autoSwitcherRepositoryProvider.future,
+      );
       final systemTrayService = ref.read(systemTrayServiceProvider);
       final database = ref.read(databaseProvider);
 
@@ -367,7 +385,11 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
       logger.info('Cleanup completed in ${stopwatch.elapsedMilliseconds}ms');
     } catch (e, stackTrace) {
       stopwatch.stop();
-      logger.error('Cleanup error after ${stopwatch.elapsedMilliseconds}ms', e, stackTrace);
+      logger.error(
+        'Cleanup error after ${stopwatch.elapsedMilliseconds}ms',
+        e,
+        stackTrace,
+      );
     }
   }
 

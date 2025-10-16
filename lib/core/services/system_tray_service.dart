@@ -45,15 +45,9 @@ class SystemTrayService with TrayListener {
       // Build context menu
       final menu = Menu(
         items: [
-          MenuItem(
-            label: showLabel,
-            onClick: (_) => onShow(),
-          ),
+          MenuItem(label: showLabel, onClick: (_) => onShow()),
           MenuItem.separator(),
-          MenuItem(
-            label: exitLabel,
-            onClick: (_) => onExit(),
-          ),
+          MenuItem(label: exitLabel, onClick: (_) => onExit()),
         ],
       );
 

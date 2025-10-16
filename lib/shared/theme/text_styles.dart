@@ -6,8 +6,7 @@ class TKitTextStyles {
   TKitTextStyles._();
 
   // Font family
-  static const _fontFamily =
-      'Inter'; // Will use system font if not available
+  static const _fontFamily = 'Inter'; // Will use system font if not available
 
   // Headings
   static const heading1 = TextStyle(

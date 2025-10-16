@@ -34,9 +34,7 @@ class DataListItem extends StatelessWidget {
             vertical: TKitSpacing.sm,
           ),
           decoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(color: TKitColors.border),
-            ),
+            border: Border(bottom: BorderSide(color: TKitColors.border)),
           ),
           child: Row(
             children: [
@@ -53,7 +51,9 @@ class DataListItem extends StatelessWidget {
                       title,
                       style: TKitTextStyles.bodyMedium.copyWith(
                         color: TKitColors.textPrimary,
-                        fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+                        fontWeight: selected
+                            ? FontWeight.w600
+                            : FontWeight.normal,
                       ),
                     ),
                     if (subtitle != null) ...[
@@ -85,11 +85,7 @@ class DataList extends StatelessWidget {
   final List<Widget> children;
   final EdgeInsets? padding;
 
-  const DataList({
-    super.key,
-    required this.children,
-    this.padding,
-  });
+  const DataList({super.key, required this.children, this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -99,10 +95,7 @@ class DataList extends StatelessWidget {
         border: Border.all(color: TKitColors.border),
         color: TKitColors.surface,
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: children,
-      ),
+      child: Column(mainAxisSize: MainAxisSize.min, children: children),
     );
   }
 }

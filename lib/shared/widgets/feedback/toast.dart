@@ -91,9 +91,7 @@ class Toast {
         ),
         backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         duration: duration ?? const Duration(seconds: 3),
         margin: const EdgeInsets.all(TKitSpacing.md),
       ),
@@ -119,9 +117,7 @@ class Toast {
         ),
         backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         duration: duration ?? const Duration(seconds: 3),
         margin: const EdgeInsets.all(TKitSpacing.md),
       ),

@@ -54,7 +54,10 @@ class TKitTag extends StatelessWidget {
     this.onRemove,
     this.onTap,
     this.selected = false,
-  }) : assert(!removable || onRemove != null, 'onRemove callback is required when removable is true');
+  }) : assert(
+         !removable || onRemove != null,
+         'onRemove callback is required when removable is true',
+       );
 
   /// Get color based on variant
   Color get _color {
@@ -102,11 +105,7 @@ class TKitTag extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (icon != null) ...[
-          Icon(
-            icon,
-            size: 12,
-            color: _textColor,
-          ),
+          Icon(icon, size: 12, color: _textColor),
           const SizedBox(width: TKitSpacing.xs),
         ],
         Text(
@@ -121,11 +120,7 @@ class TKitTag extends StatelessWidget {
           const SizedBox(width: TKitSpacing.xs),
           GestureDetector(
             onTap: onRemove,
-            child: Icon(
-              Icons.close,
-              size: 12,
-              color: _textColor,
-            ),
+            child: Icon(Icons.close, size: 12, color: _textColor),
           ),
         ],
       ],
@@ -179,11 +174,7 @@ class TKitTagGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (wrap) {
-      return Wrap(
-        spacing: spacing,
-        runSpacing: spacing,
-        children: tags,
-      );
+      return Wrap(spacing: spacing, runSpacing: spacing, children: tags);
     }
 
     return Row(

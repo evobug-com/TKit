@@ -36,7 +36,8 @@ class CategoryMappingEditorPage extends ConsumerStatefulWidget {
       _CategoryMappingEditorPageState();
 }
 
-class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEditorPage> {
+class _CategoryMappingEditorPageState
+    extends ConsumerState<CategoryMappingEditorPage> {
   @override
   void initState() {
     super.initState();
@@ -162,7 +163,9 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
             onDelete: (id) => _handleDelete(context, id),
             onEdit: (mapping) => _showEditMappingDialog(context, mapping),
             onToggleEnabled: (mapping) {
-              ref.read(categoryMappingsProvider.notifier).toggleEnabled(mapping);
+              ref
+                  .read(categoryMappingsProvider.notifier)
+                  .toggleEnabled(mapping);
             },
             onBulkDelete: (ids) => _handleBulkDelete(context, ids),
             onBulkExport: (mappings) => _handleBulkExport(context, mappings),
@@ -212,7 +215,9 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
     );
 
     if (result != null && context.mounted) {
-      unawaited(ref.read(categoryMappingsProvider.notifier).updateMapping(result));
+      unawaited(
+        ref.read(categoryMappingsProvider.notifier).updateMapping(result),
+      );
     }
   }
 
@@ -282,8 +287,9 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
             'twitchCategoryId': mapping.twitchCategoryId,
             'twitchCategoryName': mapping.twitchCategoryName,
             'verificationCount': 1,
-            'lastVerified': mapping.lastUsedAt?.toIso8601String() ??
-                             mapping.createdAt.toIso8601String(),
+            'lastVerified':
+                mapping.lastUsedAt?.toIso8601String() ??
+                mapping.createdAt.toIso8601String(),
             'source': mapping.manualOverride ? 'user' : 'preset',
           };
         }).toList(),
@@ -312,11 +318,10 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
               InkWell(
                 onTap: () async {
                   // Open file location in Explorer (Windows)
-                  await Process.run(
-                    'explorer',
-                    ['/select,', file.path],
-                    runInShell: true,
-                  );
+                  await Process.run('explorer', [
+                    '/select,',
+                    file.path,
+                  ], runInShell: true);
                 },
                 child: Text(
                   file.path,
@@ -353,7 +358,9 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
     required bool enabled,
   }) async {
     unawaited(
-      ref.read(categoryMappingsProvider.notifier).bulkToggleEnabled(ids, enabled: enabled),
+      ref
+          .read(categoryMappingsProvider.notifier)
+          .bulkToggleEnabled(ids, enabled: enabled),
     );
   }
 

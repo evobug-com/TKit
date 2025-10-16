@@ -63,13 +63,13 @@ class AppSettingsModel extends AppSettings {
     required this.enablePerformanceMonitoring,
     required this.enableSessionReplay,
   }) : super(
-    invertFooterHeader: invertFooterHeader,
-    autoSyncMappingsOnStart: autoSyncMappingsOnStart,
-    mappingsSyncIntervalHours: mappingsSyncIntervalHours,
-    enableErrorTracking: enableErrorTracking,
-    enablePerformanceMonitoring: enablePerformanceMonitoring,
-    enableSessionReplay: enableSessionReplay,
-  );
+         invertFooterHeader: invertFooterHeader,
+         autoSyncMappingsOnStart: autoSyncMappingsOnStart,
+         mappingsSyncIntervalHours: mappingsSyncIntervalHours,
+         enableErrorTracking: enableErrorTracking,
+         enablePerformanceMonitoring: enablePerformanceMonitoring,
+         enableSessionReplay: enableSessionReplay,
+       );
 
   /// Create from domain entity
   factory AppSettingsModel.fromEntity(AppSettings settings) {

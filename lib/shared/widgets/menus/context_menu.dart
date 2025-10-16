@@ -23,12 +23,12 @@ class TKitContextMenuItem {
 
   /// Creates a divider menu item
   const TKitContextMenuItem.divider()
-      : label = '',
-        icon = null,
-        onTap = null,
-        enabled = true,
-        isDivider = true,
-        textColor = null;
+    : label = '',
+      icon = null,
+      onTap = null,
+      enabled = true,
+      isDivider = true,
+      textColor = null;
 }
 
 /// Right-click context menu component
@@ -52,10 +52,7 @@ class TKitContextMenu extends StatelessWidget {
 
     final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
     final position = RelativeRect.fromRect(
-      Rect.fromPoints(
-        details.globalPosition,
-        details.globalPosition,
-      ),
+      Rect.fromPoints(details.globalPosition, details.globalPosition),
       Offset.zero & overlay.size,
     );
 
@@ -67,10 +64,7 @@ class TKitContextMenu extends StatelessWidget {
       shadowColor: TKitColors.overlay,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(TKitSpacing.xs),
-        side: const BorderSide(
-          color: TKitColors.border,
-          width: 1,
-        ),
+        side: const BorderSide(color: TKitColors.border, width: 1),
       ),
       items: items.map<PopupMenuEntry<void>>((item) {
         if (item.isDivider) {
@@ -141,10 +135,7 @@ extension ContextMenuExtension on BuildContext {
       shadowColor: TKitColors.overlay,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(TKitSpacing.xs),
-        side: const BorderSide(
-          color: TKitColors.border,
-          width: 1,
-        ),
+        side: const BorderSide(color: TKitColors.border, width: 1),
       ),
       items: items.map<PopupMenuEntry<void>>((item) {
         if (item.isDivider) {

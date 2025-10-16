@@ -307,9 +307,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                     ),
                     const HSpace.sm(),
                     Text(
-                      l10n.welcomeTwitchConnectedAs(
-                        authState.user.displayName,
-                      ),
+                      l10n.welcomeTwitchConnectedAs(authState.user.displayName),
                       style: TKitTextStyles.bodyMedium.copyWith(
                         color: TKitColors.success,
                       ),
@@ -336,14 +334,19 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                             context: context,
                             barrierDismissible: false,
                             builder: (dialogContext) => DeviceCodeAuthPage(
-                              deviceCodeResponse: deviceCodeResponse as DeviceCodeResponse,
+                              deviceCodeResponse:
+                                  deviceCodeResponse as DeviceCodeResponse,
                               onSuccess: () {
                                 Navigator.of(dialogContext).pop();
-                                ref.read(authProvider.notifier).checkAuthStatus();
+                                ref
+                                    .read(authProvider.notifier)
+                                    .checkAuthStatus();
                               },
                               onCancel: () {
                                 Navigator.of(dialogContext).pop();
-                                ref.read(authProvider.notifier).checkAuthStatus();
+                                ref
+                                    .read(authProvider.notifier)
+                                    .checkAuthStatus();
                               },
                             ),
                           );
@@ -401,9 +404,11 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
               subtitle: l10n.settingsAutoStartWindowsSubtitle,
               value: settings.autoStartWithWindows,
               onChanged: (value) {
-                ref.read(settingsProvider.notifier).updateSettings(
-                  settings.copyWith(autoStartWithWindows: value),
-                );
+                ref
+                    .read(settingsProvider.notifier)
+                    .updateSettings(
+                      settings.copyWith(autoStartWithWindows: value),
+                    );
               },
             ),
             const VSpace.sm(),
@@ -413,9 +418,9 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
               subtitle: l10n.settingsStartMinimizedSubtitle,
               value: settings.startMinimized,
               onChanged: (value) {
-                ref.read(settingsProvider.notifier).updateSettings(
-                  settings.copyWith(startMinimized: value),
-                );
+                ref
+                    .read(settingsProvider.notifier)
+                    .updateSettings(settings.copyWith(startMinimized: value));
               },
             ),
             const VSpace.sm(),
@@ -425,9 +430,9 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
               subtitle: l10n.settingsMinimizeToTraySubtitle,
               value: settings.minimizeToTray,
               onChanged: (value) {
-                ref.read(settingsProvider.notifier).updateSettings(
-                  settings.copyWith(minimizeToTray: value),
-                );
+                ref
+                    .read(settingsProvider.notifier)
+                    .updateSettings(settings.copyWith(minimizeToTray: value));
               },
             ),
             const VSpace.xl(),
@@ -446,9 +451,11 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                 }).toList(),
                 onChanged: (WindowControlsPosition? newValue) {
                   if (newValue != null) {
-                    ref.read(settingsProvider.notifier).updateSettings(
-                      settings.copyWith(windowControlsPosition: newValue),
-                    );
+                    ref
+                        .read(settingsProvider.notifier)
+                        .updateSettings(
+                          settings.copyWith(windowControlsPosition: newValue),
+                        );
                   }
                 },
               ),
@@ -456,10 +463,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
             const VSpace.xl(),
 
             // Privacy & Diagnostics section
-            Text(
-              l10n.welcomeSentryTitle,
-              style: TKitTextStyles.labelLarge,
-            ),
+            Text(l10n.welcomeSentryTitle, style: TKitTextStyles.labelLarge),
             const VSpace.xs(),
             Text(
               l10n.welcomeSentryDescription,
@@ -474,9 +478,11 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
               subtitle: l10n.settingsEnableErrorTrackingSubtitle,
               value: settings.enableErrorTracking,
               onChanged: (value) {
-                ref.read(settingsProvider.notifier).updateSettings(
-                  settings.copyWith(enableErrorTracking: value ?? true),
-                );
+                ref
+                    .read(settingsProvider.notifier)
+                    .updateSettings(
+                      settings.copyWith(enableErrorTracking: value ?? true),
+                    );
               },
             ),
             const VSpace.sm(),
@@ -486,9 +492,13 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
               subtitle: l10n.settingsEnablePerformanceMonitoringSubtitle,
               value: settings.enablePerformanceMonitoring,
               onChanged: (value) {
-                ref.read(settingsProvider.notifier).updateSettings(
-                  settings.copyWith(enablePerformanceMonitoring: value ?? true),
-                );
+                ref
+                    .read(settingsProvider.notifier)
+                    .updateSettings(
+                      settings.copyWith(
+                        enablePerformanceMonitoring: value ?? true,
+                      ),
+                    );
               },
             ),
             const VSpace.sm(),
@@ -498,9 +508,11 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
               subtitle: l10n.settingsEnableSessionReplaySubtitle,
               value: settings.enableSessionReplay,
               onChanged: (value) {
-                ref.read(settingsProvider.notifier).updateSettings(
-                  settings.copyWith(enableSessionReplay: value ?? false),
-                );
+                ref
+                    .read(settingsProvider.notifier)
+                    .updateSettings(
+                      settings.copyWith(enableSessionReplay: value ?? false),
+                    );
               },
             ),
             const VSpace.xl(),

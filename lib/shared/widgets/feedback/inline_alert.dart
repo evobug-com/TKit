@@ -87,11 +87,7 @@ class InlineAlert extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (showIcon) ...[
-            Icon(
-              _getIcon(),
-              size: 14,
-              color: _getColor(),
-            ),
+            Icon(_getIcon(), size: 14, color: _getColor()),
             const SizedBox(width: TKitSpacing.xs),
           ],
           Flexible(

@@ -34,7 +34,8 @@ class MappingList extends Equatable {
   });
 
   /// Returns true if this list should be synced (has remote source)
-  bool get shouldSync => sourceUrl != null && sourceType != MappingListSourceType.local;
+  bool get shouldSync =>
+      sourceUrl != null && sourceType != MappingListSourceType.local;
 
   /// Returns true if sync is needed (6 hours passed since last sync)
   bool get needsSync {
@@ -108,24 +109,24 @@ class MappingList extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        name,
-        description,
-        sourceType,
-        sourceUrl,
-        submissionHookUrl,
-        isEnabled,
-        isReadOnly,
-        mappingCount,
-        lastSyncedAt,
-        lastSyncError,
-        createdAt,
-        priority,
-      ];
+    id,
+    name,
+    description,
+    sourceType,
+    sourceUrl,
+    submissionHookUrl,
+    isEnabled,
+    isReadOnly,
+    mappingCount,
+    lastSyncedAt,
+    lastSyncError,
+    createdAt,
+    priority,
+  ];
 }
 
 enum MappingListSourceType {
-  local,    // User-created, not synced
+  local, // User-created, not synced
   official, // Official TKit lists from GitHub
-  remote,   // Third-party lists from custom URLs
+  remote, // Third-party lists from custom URLs
 }

@@ -16,10 +16,7 @@ class RefreshExpiredMappingsUseCase {
   final CategoryMappingLocalDataSource localDataSource;
   final ITwitchApiRepository twitchApiRepository;
 
-  RefreshExpiredMappingsUseCase(
-    this.localDataSource,
-    this.twitchApiRepository,
-  );
+  RefreshExpiredMappingsUseCase(this.localDataSource, this.twitchApiRepository);
 
   /// Execute the use case
   ///
@@ -69,7 +66,9 @@ class RefreshExpiredMappingsUseCase {
 
         if (successfulIds.contains(categoryId)) {
           // Fetch the fresh category data
-          final categoryResult = await twitchApiRepository.getCategoryById(categoryId);
+          final categoryResult = await twitchApiRepository.getCategoryById(
+            categoryId,
+          );
 
           await categoryResult.fold(
             (failure) async {

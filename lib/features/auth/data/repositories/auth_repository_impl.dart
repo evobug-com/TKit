@@ -64,7 +64,9 @@ class AuthRepositoryImpl implements IAuthRepository {
       await _localDataSource.saveToken(token);
       await _localDataSource.saveUser(user);
 
-      _logger.info('Device code authentication successful for user: ${user.login}');
+      _logger.info(
+        'Device code authentication successful for user: ${user.login}',
+      );
       return Right(user.toEntity());
     } on AuthException catch (e) {
       // Don't log authorization_pending as errors - it's expected during polling
@@ -91,7 +93,8 @@ class AuthRepositoryImpl implements IAuthRepository {
       _logger.error('Unexpected error during device code authentication', e);
       return Left(
         UnknownFailure(
-          message: 'An unexpected error occurred during device code authentication',
+          message:
+              'An unexpected error occurred during device code authentication',
           originalError: e,
         ),
       );

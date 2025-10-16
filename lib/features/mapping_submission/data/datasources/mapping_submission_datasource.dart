@@ -66,10 +66,7 @@ class MappingSubmissionDataSource {
       bodyText.writeln('---');
       bodyText.writeln('*Submitted via TKit Community Mapping*');
 
-      final payload = {
-        'title': title,
-        'body': bodyText.toString(),
-      };
+      final payload = {'title': title, 'body': bodyText.toString()};
 
       // Log the payload being sent for debugging
       _logger.info('Submission payload: $payload');
@@ -80,9 +77,7 @@ class MappingSubmissionDataSource {
         submissionUrl,
         data: payload,
         options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: {'Content-Type': 'application/json'},
           validateStatus: (status) => status! < 500,
         ),
       );
@@ -111,7 +106,9 @@ class MappingSubmissionDataSource {
       } else {
         _logger.error('Failed to submit mapping: HTTP ${response.statusCode}');
         _logger.error('Response body: ${response.data}');
-        throw Exception('Failed to submit mapping: HTTP ${response.statusCode} - ${response.data}');
+        throw Exception(
+          'Failed to submit mapping: HTTP ${response.statusCode} - ${response.data}',
+        );
       }
     } on DioException catch (e, stackTrace) {
       _logger.error('Network error submitting mapping', e, stackTrace);

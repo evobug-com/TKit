@@ -16,13 +16,12 @@ part 'auth_providers.g.dart';
 
 @Riverpod(keepAlive: true)
 IAuthRepository authRepository(Ref ref) {
-  final twitchAuthRemoteDataSource = ref.watch(twitchAuthRemoteDataSourceProvider);
+  final twitchAuthRemoteDataSource = ref.watch(
+    twitchAuthRemoteDataSourceProvider,
+  );
   final tokenLocalDataSource = ref.watch(tokenLocalDataSourceProvider);
 
-  return AuthRepositoryImpl(
-    twitchAuthRemoteDataSource,
-    tokenLocalDataSource,
-  );
+  return AuthRepositoryImpl(twitchAuthRemoteDataSource, tokenLocalDataSource);
 }
 
 // =============================================================================
@@ -67,9 +66,12 @@ class Auth extends _$Auth {
   // Get dependencies from ref
   IAuthRepository get _authRepository => ref.read(authRepositoryProvider);
   LogoutUseCase get _logoutUseCase => ref.read(logoutUseCaseProvider);
-  CheckAuthStatusUseCase get _checkAuthStatusUseCase => ref.read(checkAuthStatusUseCaseProvider);
-  RefreshTokenUseCase get _refreshTokenUseCase => ref.read(refreshTokenUseCaseProvider);
-  GetCurrentUserUseCase get _getCurrentUserUseCase => ref.read(getCurrentUserUseCaseProvider);
+  CheckAuthStatusUseCase get _checkAuthStatusUseCase =>
+      ref.read(checkAuthStatusUseCaseProvider);
+  RefreshTokenUseCase get _refreshTokenUseCase =>
+      ref.read(refreshTokenUseCaseProvider);
+  GetCurrentUserUseCase get _getCurrentUserUseCase =>
+      ref.read(getCurrentUserUseCaseProvider);
 
   /// Logout user
   Future<void> logout() async {
@@ -78,7 +80,8 @@ class Auth extends _$Auth {
     final result = await _logoutUseCase();
 
     result.fold(
-      (failure) => state = AuthError(message: failure.message, code: failure.code),
+      (failure) =>
+          state = AuthError(message: failure.message, code: failure.code),
       (_) => state = const Unauthenticated(),
     );
   }
@@ -141,16 +144,15 @@ class Auth extends _$Auth {
         } else {
           // Get user info to transition to authenticated state
           _getCurrentUserUseCase().then((userResult) {
-            userResult.fold(
-              (failure) => state = const Unauthenticated(),
-              (user) {
-                if (user != null) {
-                  state = Authenticated(user);
-                } else {
-                  state = const Unauthenticated();
-                }
-              },
-            );
+            userResult.fold((failure) => state = const Unauthenticated(), (
+              user,
+            ) {
+              if (user != null) {
+                state = Authenticated(user);
+              } else {
+                state = const Unauthenticated();
+              }
+            });
           });
         }
       },
@@ -192,17 +194,14 @@ class Auth extends _$Auth {
   Future<void> authenticateWithDeviceCode(String deviceCode) async {
     final result = await _authRepository.authenticateWithDeviceCode(deviceCode);
 
-    result.fold(
-      (failure) {
-        // Only update state for real errors, not authorization_pending
-        if (failure.code != 'AUTHORIZATION_PENDING' &&
-            failure.code != 'SLOW_DOWN') {
-          state = AuthError(message: failure.message, code: failure.code);
-        }
-        // Re-throw so the UI can handle it
-        throw Exception(failure.code);
-      },
-      (user) => state = Authenticated(user),
-    );
+    result.fold((failure) {
+      // Only update state for real errors, not authorization_pending
+      if (failure.code != 'AUTHORIZATION_PENDING' &&
+          failure.code != 'SLOW_DOWN') {
+        state = AuthError(message: failure.message, code: failure.code);
+      }
+      // Re-throw so the UI can handle it
+      throw Exception(failure.code);
+    }, (user) => state = Authenticated(user));
   }
 }

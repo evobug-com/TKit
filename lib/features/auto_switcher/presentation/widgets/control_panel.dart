@@ -104,10 +104,7 @@ class ControlPanel extends StatelessWidget {
           const VSpace.lg(),
 
           // Divider
-          Container(
-            height: 1,
-            color: TKitColors.border,
-          ),
+          Container(height: 1, color: TKitColors.border),
 
           const VSpace.lg(),
 
@@ -163,14 +160,11 @@ class ControlPanel extends StatelessWidget {
 
           Text(
             'Checks active app and updates category immediately',
-            style: TKitTextStyles.caption.copyWith(
-              color: TKitColors.textMuted,
-            ),
+            style: TKitTextStyles.caption.copyWith(color: TKitColors.textMuted),
             textAlign: TextAlign.center,
           ),
         ],
       ),
     );
   }
-
 }

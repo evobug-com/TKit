@@ -12,7 +12,6 @@ class TwitchAuthRemoteDataSource {
   final Dio _dio;
   final _logger = AppLogger();
 
-
   TwitchAuthRemoteDataSource(this._dio);
 
   /// Initiate Device Code Flow
@@ -42,7 +41,8 @@ class TwitchAuthRemoteDataSource {
     } on DioException catch (e, stackTrace) {
       _logger.error('Device code request failed', e, stackTrace);
       throw AuthException(
-        message: 'Unable to connect to Twitch. Please check your internet connection.',
+        message:
+            'Unable to connect to Twitch. Please check your internet connection.',
         code: 'DEVICE_CODE_ERROR',
         originalError: e,
         technicalDetails: 'Network error: ${e.message}',
@@ -51,7 +51,11 @@ class TwitchAuthRemoteDataSource {
       if (e is AuthException) {
         rethrow;
       }
-      _logger.error('Unexpected error during device code request', e, stackTrace);
+      _logger.error(
+        'Unexpected error during device code request',
+        e,
+        stackTrace,
+      );
       throw AuthException(
         message: 'Authentication failed. Please try again.',
         code: 'UNKNOWN_ERROR',
@@ -163,7 +167,8 @@ class TwitchAuthRemoteDataSource {
     } on DioException catch (e, stackTrace) {
       _logger.error('Device code polling failed', e, stackTrace);
       throw AuthException(
-        message: 'Unable to connect to Twitch. Please check your internet connection.',
+        message:
+            'Unable to connect to Twitch. Please check your internet connection.',
         code: 'POLLING_ERROR',
         originalError: e,
         technicalDetails: 'Network error: ${e.message}',
@@ -172,7 +177,11 @@ class TwitchAuthRemoteDataSource {
       if (e is AuthException) {
         rethrow;
       }
-      _logger.error('Unexpected error during device code polling', e, stackTrace);
+      _logger.error(
+        'Unexpected error during device code polling',
+        e,
+        stackTrace,
+      );
       throw AuthException(
         message: 'Authentication failed. Please try again.',
         code: 'UNKNOWN_ERROR',
@@ -276,7 +285,8 @@ class TwitchAuthRemoteDataSource {
 
       if (response.statusCode != 200) {
         throw AuthException(
-          message: 'Unable to retrieve your account information. Please try logging in again.',
+          message:
+              'Unable to retrieve your account information. Please try logging in again.',
           code: 'USER_INFO_FAILED',
           technicalDetails: 'HTTP ${response.statusCode}',
         );
@@ -287,7 +297,8 @@ class TwitchAuthRemoteDataSource {
 
       if (users.isEmpty) {
         throw const AuthException(
-          message: 'Unable to retrieve your account information. Please try logging in again.',
+          message:
+              'Unable to retrieve your account information. Please try logging in again.',
           code: 'NO_USER_DATA',
           technicalDetails: 'Empty user data response',
         );
@@ -301,7 +312,8 @@ class TwitchAuthRemoteDataSource {
     } on DioException catch (e, stackTrace) {
       _logger.error('Failed to get user info', e, stackTrace);
       throw AuthException(
-        message: 'Unable to connect to Twitch. Please check your internet connection.',
+        message:
+            'Unable to connect to Twitch. Please check your internet connection.',
         code: 'USER_INFO_ERROR',
         originalError: e,
         technicalDetails: 'Network error: ${e.message}',
@@ -312,7 +324,8 @@ class TwitchAuthRemoteDataSource {
       }
       _logger.error('Unexpected error getting user info', e, stackTrace);
       throw AuthException(
-        message: 'Unable to retrieve your account information. Please try again.',
+        message:
+            'Unable to retrieve your account information. Please try again.',
         code: 'UNKNOWN_ERROR',
         originalError: e,
         technicalDetails: e.toString(),

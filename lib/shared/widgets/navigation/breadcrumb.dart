@@ -9,11 +9,7 @@ class BreadcrumbItem {
   final VoidCallback? onTap;
   final IconData? icon;
 
-  const BreadcrumbItem({
-    required this.label,
-    this.onTap,
-    this.icon,
-  });
+  const BreadcrumbItem({required this.label, this.onTap, this.icon});
 }
 
 /// Breadcrumb - Navigation path display with clickable items
@@ -163,18 +159,10 @@ class BreadcrumbCollapsed extends StatelessWidget {
 
     return Row(
       children: [
-        _BreadcrumbItemWidget(
-          item: first,
-          isLast: false,
-          fontSize: 13.0,
-        ),
+        _BreadcrumbItemWidget(item: first, isLast: false, fontSize: 13.0),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xs),
-          child: Icon(
-            separator,
-            size: 14,
-            color: TKitColors.textMuted,
-          ),
+          child: Icon(separator, size: 14, color: TKitColors.textMuted),
         ),
         PopupMenuButton<BreadcrumbItem>(
           tooltip: 'Show path',
@@ -185,9 +173,7 @@ class BreadcrumbCollapsed extends StatelessWidget {
           ),
           color: TKitColors.surface,
           elevation: 4,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-          ),
+          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
           itemBuilder: (context) => [
             for (final item in middle)
               PopupMenuItem<BreadcrumbItem>(
@@ -196,13 +182,14 @@ class BreadcrumbCollapsed extends StatelessWidget {
                 child: Row(
                   children: [
                     if (item.icon != null) ...[
-                      Icon(item.icon, size: 14, color: TKitColors.textSecondary),
+                      Icon(
+                        item.icon,
+                        size: 14,
+                        color: TKitColors.textSecondary,
+                      ),
                       const SizedBox(width: TKitSpacing.xs),
                     ],
-                    Text(
-                      item.label,
-                      style: TKitTextStyles.bodyMedium,
-                    ),
+                    Text(item.label, style: TKitTextStyles.bodyMedium),
                   ],
                 ),
               ),
@@ -210,17 +197,9 @@ class BreadcrumbCollapsed extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xs),
-          child: Icon(
-            separator,
-            size: 14,
-            color: TKitColors.textMuted,
-          ),
+          child: Icon(separator, size: 14, color: TKitColors.textMuted),
         ),
-        _BreadcrumbItemWidget(
-          item: last,
-          isLast: true,
-          fontSize: 13.0,
-        ),
+        _BreadcrumbItemWidget(item: last, isLast: true, fontSize: 13.0),
       ],
     );
   }

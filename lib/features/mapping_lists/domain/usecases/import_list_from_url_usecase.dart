@@ -10,11 +10,7 @@ class ImportListParams {
   final String name;
   final String? description;
 
-  ImportListParams({
-    required this.url,
-    required this.name,
-    this.description,
-  });
+  ImportListParams({required this.url, required this.name, this.description});
 }
 
 /// Use case for importing a new list from a URL

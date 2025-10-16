@@ -128,10 +128,7 @@ class TKitRadioOption<T> {
   final T value;
   final String label;
 
-  const TKitRadioOption({
-    required this.value,
-    required this.label,
-  });
+  const TKitRadioOption({required this.value, required this.label});
 }
 
 /// FormField wrapper for TKitRadioGroup to work with forms
@@ -146,33 +143,33 @@ class TKitRadioGroupFormField<T> extends FormField<T> {
     Axis direction = Axis.vertical,
     super.autovalidateMode,
   }) : super(
-          builder: (FormFieldState<T> state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TKitRadioGroup<T>(
-                  value: state.value,
-                  onChanged: enabled
-                      ? (value) {
-                          state.didChange(value);
-                        }
-                      : null,
-                  options: options,
-                  enabled: enabled,
-                  direction: direction,
-                ),
-                if (state.hasError) ...[
-                  const SizedBox(height: TKitSpacing.xs),
-                  Text(
-                    state.errorText!,
-                    style: TKitTextStyles.caption.copyWith(
-                      color: TKitColors.error,
-                    ),
-                  ),
-                ],
-              ],
-            );
-          },
-        );
+         builder: (FormFieldState<T> state) {
+           return Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             mainAxisSize: MainAxisSize.min,
+             children: [
+               TKitRadioGroup<T>(
+                 value: state.value,
+                 onChanged: enabled
+                     ? (value) {
+                         state.didChange(value);
+                       }
+                     : null,
+                 options: options,
+                 enabled: enabled,
+                 direction: direction,
+               ),
+               if (state.hasError) ...[
+                 const SizedBox(height: TKitSpacing.xs),
+                 Text(
+                   state.errorText!,
+                   style: TKitTextStyles.caption.copyWith(
+                     color: TKitColors.error,
+                   ),
+                 ),
+               ],
+             ],
+           );
+         },
+       );
 }
