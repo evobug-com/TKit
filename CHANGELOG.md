@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed autoupdate (it was running in subprocess and on app exit it closed the updater too)
 - Missing translations
+- Previously ignored processes were not working with new list management system
 
 ## [0.0.1-dev.6] - 2025-10-15
 

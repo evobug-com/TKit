@@ -347,7 +347,7 @@ void main() {
 
     group('Migration', () {
       test('should have correct schema version', () {
-        expect(database.schemaVersion, 3);
+        expect(database.schemaVersion, 7);
       });
     });
   });

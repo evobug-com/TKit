@@ -4,8 +4,8 @@ This document explains how database migrations work in TKit and how to create ne
 
 ## Current State
 
-- **Schema Version:** `6`
-- **Migration System:** Hybrid (Manual v1-v5, Guided v6+)
+- **Schema Version:** `7`
+- **Migration System:** Hybrid (Manual v1-v5, Guided v6+, Data migrations v7+)
 - **Database File:** `lib/core/database/app_database.dart`
 - **Schema Snapshots:** `drift_schemas/app_database/`
 
@@ -19,7 +19,8 @@ This document explains how database migrations work in TKit and how to create ne
 | v4 | Add isEnabled field | Manual |
 | v5 | Add normalizedInstallPaths (privacy-preserving) | Manual |
 | v6 | Add mapping lists system, category field, pending submissions | **Guided** ✅ |
-| v7+ | Future migrations | **Guided** |
+| v7 | Replace 'IGNORE' with '-1' for ignored processes | **Data Migration** ✅ |
+| v8+ | Future migrations | **Guided** |
 
 ## Architecture
 
@@ -381,4 +382,4 @@ Future<void> _migrateV5ToV6(Migrator m, Schema6 schema) async {
 
 ---
 
-**Last Updated:** Schema v6 with Guided Migrations (2025-10-15)
+**Last Updated:** Schema v7 - Replace 'IGNORE' with '-1' (2025-10-16)

@@ -165,7 +165,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.test(QueryExecutor e) : this(e);
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   static LazyDatabase _openConnection() {
     return LazyDatabase(() async {
@@ -506,6 +506,13 @@ class AppDatabase extends _$AppDatabase {
         final schema = Schema6(database: attachedDatabase);
         await _migrateV5ToV6(m, schema);
       }
+
+      if (from <= 6 && to >= 7) {
+        // Migration v6 → v7: Replace 'IGNORE' with '-1' for ignored processes
+        // This migration updates existing database records to match the code changes
+        // made in commit 2e08405 where 'IGNORE' was replaced with '-1'
+        await _migrateV6ToV7(m);
+      }
     },
   );
 
@@ -639,6 +646,29 @@ class AppDatabase extends _$AppDatabase {
 
     logger.info('Migrated $customCount mappings to my-custom-mappings');
     logger.info('Migrated $officialCount mappings to official-tkit-mappings');
+  }
+
+  /// Migration from v6 to v7
+  /// Replaces 'IGNORE' with '-1' for ignored processes in database records
+  Future<void> _migrateV6ToV7(Migrator m) async {
+    final logger = AppLogger();
+    logger.info('Starting migration v6 → v7');
+
+    // Update category_mappings table
+    logger.info('Updating category_mappings: replacing IGNORE with -1');
+    await customStatement(
+      "UPDATE category_mappings SET twitch_category_id = '-1' WHERE twitch_category_id = 'IGNORE'",
+    );
+    logger.info('Updated category_mappings records');
+
+    // Update community_mappings table
+    logger.info('Updating community_mappings: replacing IGNORE with -1');
+    await customStatement(
+      "UPDATE community_mappings SET twitch_category_id = '-1' WHERE twitch_category_id = 'IGNORE'",
+    );
+    logger.info('Updated community_mappings records');
+
+    logger.info('Migration v6 → v7 completed successfully');
   }
 
   /// Get all mapping lists
