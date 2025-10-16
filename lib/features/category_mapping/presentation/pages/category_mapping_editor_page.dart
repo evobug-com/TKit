@@ -8,9 +8,7 @@ import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
-import 'package:tkit/shared/widgets/layout/page_header.dart';
 import 'package:tkit/shared/widgets/layout/island.dart';
-import 'package:tkit/shared/widgets/layout/stat_item.dart';
 import 'package:tkit/shared/widgets/layout/empty_state.dart';
 import 'package:tkit/shared/widgets/layout/spacer.dart';
 import 'package:tkit/shared/widgets/buttons/primary_button.dart';
@@ -52,28 +50,11 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
     return Scaffold(
       backgroundColor: TKitColors.background,
       body: Padding(
         padding: const EdgeInsets.all(TKitSpacing.pagePadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Page Header
-            PageHeader(
-              title: l10n.categoryMappingTitle,
-              subtitle: l10n.categoryMappingSubtitle,
-            ),
-            const VSpace.lg(),
-
-            // Unified mappings view
-            Expanded(
-              child: _buildMappingsView(context),
-            ),
-          ],
-        ),
+        child: _buildMappingsView(context),
       ),
     );
   }
@@ -92,7 +73,7 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
         Toast.success(context, successMsg);
         ref.read(categoryMappingsProvider.notifier).clearMessages();
       } else if (errorMsg != null) {
-        showDialog(
+        showDialog<void>(
           context: context,
           builder: (dialogContext) => ErrorDialog(
             title: l10n.categoryMappingErrorDialogTitle,
@@ -127,43 +108,44 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Stats bar with actions
-        IslandVariant.standard(
-          child: Row(
-            children: [
-              StatItem(
-                label: l10n.categoryMappingStatsTotalMappings,
-                value: mappings.length.toString(),
-                valueColor: TKitColors.accent,
+        // Summary card - conversational style
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${mappings.length} process mapping${mappings.length != 1 ? 's' : ''} from $enabledLists active list${enabledLists != 1 ? 's' : ''}',
+                    style: TKitTextStyles.bodyLarge.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const VSpace.xs(),
+                  Text(
+                    '${mappings.where((m) => m.manualOverride).length} custom, ${mappings.where((m) => !m.manualOverride).length} from community lists',
+                    style: TKitTextStyles.bodySmall.copyWith(
+                      color: TKitColors.textMuted,
+                    ),
+                  ),
+                ],
               ),
-              const HSpace.xxl(),
-              StatItem(
-                label: 'Active Lists',
-                value: enabledLists.toString(),
-              ),
-              const HSpace.xxl(),
-              StatItem(
-                label: l10n.categoryMappingStatsUserDefined,
-                value: mappings.where((m) => m.manualOverride).length.toString(),
-              ),
-              const Spacer(),
-              AccentButton(
-                text: 'View Lists',
-                icon: Icons.list_alt,
-                onPressed: () => ListManagementDialog.show(context),
-                width: 140,
-              ),
-              const HSpace.md(),
-              PrimaryButton(
-                text: l10n.categoryMappingAddMappingButton,
-                icon: Icons.add,
-                onPressed: () => _showAddMappingDialog(context),
-                width: 180,
-              ),
-            ],
-          ),
+            ),
+            const HSpace.xl(),
+            AccentButton(
+              text: 'Lists',
+              icon: Icons.list_alt,
+              onPressed: () => ListManagementDialog.show(context),
+            ),
+            const HSpace.md(),
+            PrimaryButton(
+              text: 'Add',
+              icon: Icons.add,
+              onPressed: () => _showAddMappingDialog(context),
+            ),
+          ],
         ),
-        const VSpace.md(),
+        const VSpace.lg(),
 
         // Mappings table
         Expanded(
@@ -339,7 +321,7 @@ class _CategoryMappingEditorPageState extends ConsumerState<CategoryMappingEdito
       }
     } catch (e) {
       if (context.mounted) {
-        showDialog(
+        showDialog<void>(
           context: context,
           builder: (dialogContext) => ErrorDialog(
             title: 'Export Failed',

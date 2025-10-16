@@ -3,6 +3,7 @@ import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/widgets/layout/island.dart';
 import 'package:tkit/shared/widgets/layout/spacer.dart';
 import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
 
@@ -177,29 +178,22 @@ class _MappingListWidgetState extends State<MappingListWidget> {
 
         // Data table
         Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: TKitColors.border),
-              color: TKitColors.surface,
-            ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SizedBox(
-                width: double.infinity,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: SizedBox(
+              width: double.infinity,
+              child: Island.standard(
                 child: DataTable(
-                  headingRowColor: WidgetStateProperty.all(TKitColors.surfaceVariant),
-                  dataRowColor: WidgetStateProperty.resolveWith((states) {
-                    if (states.contains(WidgetState.selected)) {
-                      return TKitColors.accent.withValues(alpha: 0.1);
-                    }
-                    if (states.contains(WidgetState.hovered)) {
-                      return TKitColors.surfaceVariant;
-                    }
-                    return TKitColors.surface;
-                  }),
-                  border: const TableBorder.symmetric(
-                    inside: BorderSide(color: TKitColors.border),
-                  ),
+                  // headingRowColor: WidgetStateProperty.all(TKitColors.surfaceVariant),
+                  // dataRowColor: WidgetStateProperty.resolveWith((states) {
+                  //   if (states.contains(WidgetState.selected)) {
+                  //     return TKitColors.accent.withValues(alpha: 0.1);
+                  //   }
+                  //   if (states.contains(WidgetState.hovered)) {
+                  //     return TKitColors.surfaceVariant;
+                  //   }
+                  //   return TKitColors.surface;
+                  // }),
                   headingTextStyle: TKitTextStyles.labelLarge.copyWith(
                     color: TKitColors.textPrimary,
                     fontSize: 12,
@@ -209,12 +203,12 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                     color: TKitColors.textSecondary,
                     fontSize: 13,
                   ),
-                  headingRowHeight: 48,
-                  dataRowMinHeight: 52,
-                  dataRowMaxHeight: 64,
-                  columnSpacing: 16,
-                  horizontalMargin: TKitSpacing.md,
-                  checkboxHorizontalMargin: 8,
+                  headingRowHeight: 32,
+                  dataRowMinHeight: 32,
+                  dataRowMaxHeight: 32,
+                  // columnSpacing: 50,
+                  horizontalMargin: TKitSpacing.sm,
+                  // checkboxHorizontalMargin: 8,
                   showCheckboxColumn: true,
                   columns: [
                     DataColumn(label: Text(l10n.categoryMappingListColumnProcessName)),
@@ -243,18 +237,16 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                mapping.twitchCategoryName,
-                                style: TKitTextStyles.bodyMedium.copyWith(
-                                  color: TKitColors.textPrimary,
-                                  fontSize: 13,
-                                ),
-                              ),
-                              Text(
-                                l10n.categoryMappingListCategoryId(mapping.twitchCategoryId),
-                                style: TKitTextStyles.bodySmall.copyWith(
-                                  color: TKitColors.textMuted,
-                                  fontSize: 11,
+                              Tooltip(
+                                message: mapping.twitchCategoryId == "-1"
+                                    ? "This category is ignored"
+                                    : "Twitch ID: ${mapping.twitchCategoryId}",
+                                child: Text(
+                                  mapping.twitchCategoryId == "-1" ? "Ignored" : mapping.twitchCategoryName,
+                                  style: TKitTextStyles.bodyMedium.copyWith(
+                                    color: TKitColors.textPrimary,
+                                    fontSize: 13,
+                                  ),
                                 ),
                               ),
                             ],
@@ -555,77 +547,60 @@ class _MappingListWidgetState extends State<MappingListWidget> {
   }
 
   Widget _buildSearchField(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: TKitSpacing.md,
-        vertical: TKitSpacing.sm,
-      ),
-      decoration: BoxDecoration(
-        color: TKitColors.surface,
-        border: Border.all(color: TKitColors.border),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.search,
-            size: 20,
-            color: TKitColors.textMuted,
-          ),
-          const HSpace.sm(),
-          Expanded(
-            child: TextField(
-              controller: _searchController,
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-              },
-              decoration: InputDecoration(
-                hintText: 'Search by process name or category...',
-                hintStyle: TKitTextStyles.bodyMedium.copyWith(
-                  color: TKitColors.textMuted,
-                  fontSize: 14,
-                ),
-                border: InputBorder.none,
-                isDense: true,
-                contentPadding: EdgeInsets.zero,
-              ),
-              style: TKitTextStyles.bodyMedium.copyWith(
-                color: TKitColors.textPrimary,
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: _searchController,
+            onChanged: (value) {
+              setState(() {
+                _searchQuery = value;
+              });
+            },
+            decoration: InputDecoration(
+              hintText: 'Search by process name or category...',
+              hintStyle: TKitTextStyles.bodyMedium.copyWith(
+                color: TKitColors.textMuted,
                 fontSize: 14,
               ),
+              border: InputBorder.none,
+              isDense: true,
+              contentPadding: EdgeInsets.zero,
+            ),
+            style: TKitTextStyles.bodyMedium.copyWith(
+              color: TKitColors.textPrimary,
+              fontSize: 14,
             ),
           ),
-          if (_searchQuery.isNotEmpty) ...[
-            const HSpace.sm(),
-            Text(
-              '${_filteredMappings.length} of ${widget.mappings.length}',
-              style: TKitTextStyles.bodySmall.copyWith(
-                color: TKitColors.textMuted,
-                fontSize: 12,
-              ),
-            ),
-            const HSpace.sm(),
-            IconButton(
-              icon: const Icon(Icons.clear, size: 18),
+        ),
+        if (_searchQuery.isNotEmpty) ...[
+          const HSpace.sm(),
+          Text(
+            '${_filteredMappings.length} of ${widget.mappings.length}',
+            style: TKitTextStyles.bodySmall.copyWith(
               color: TKitColors.textMuted,
-              onPressed: () {
-                setState(() {
-                  _searchController.clear();
-                  _searchQuery = '';
-                });
-              },
-              tooltip: 'Clear search',
-              padding: const EdgeInsets.all(4),
-              constraints: const BoxConstraints(
-                minWidth: 24,
-                minHeight: 24,
-              ),
+              fontSize: 12,
             ),
-          ],
+          ),
+          const HSpace.sm(),
+          IconButton(
+            icon: const Icon(Icons.clear, size: 18),
+            color: TKitColors.textMuted,
+            onPressed: () {
+              setState(() {
+                _searchController.clear();
+                _searchQuery = '';
+              });
+            },
+            tooltip: 'Clear search',
+            padding: const EdgeInsets.all(4),
+            constraints: const BoxConstraints(
+              minWidth: 24,
+              minHeight: 24,
+            ),
+          ),
         ],
-      ),
+      ],
     );
   }
 }

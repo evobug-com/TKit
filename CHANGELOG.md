@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Redesigned autoupdate screen
+- Redesigned autoswitch screen
+- Improved design on Mappings screen
+- Removed headings from all screens
 
 ### Fixed
 - Fixed autoupdate (it was running in subprocess and on app exit it closed the updater too)

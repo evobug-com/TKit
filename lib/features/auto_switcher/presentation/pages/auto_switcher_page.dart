@@ -104,7 +104,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                           children: [
                             // Status card - what's happening right now
                             _buildStatusCard(context, status, isMonitoring),
-                            const VSpace.xl(),
+                            const VSpace.sm(),
 
                             // Main control card
                             _buildControlCard(
@@ -193,7 +193,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                 ),
             ],
           ),
-          const VSpace.xl(),
+          const VSpace.md(),
 
           // Current app and category - clean, scannable
           _buildInfoRow(
@@ -201,7 +201,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
             hasProcess ? status!.currentProcess! : 'None',
             hasProcess,
           ),
-          const VSpace.lg(),
+          const VSpace.sm(),
           _buildInfoRow(
             'Category',
             hasCategory ? status!.matchedCategory! : 'None',
@@ -265,29 +265,16 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
             ),
             const VSpace.xxl(),
 
-            // Two actions: Stop monitoring + Manual update
-            Row(
-              children: [
-                Expanded(
-                  child: AccentButton(
-                    onPressed: isLoading ? null : onStop,
-                    text: 'Turn Off',
-                    icon: Icons.pause,
-                    isLoading: isLoading,
-                  ),
-                ),
-                const HSpace.md(),
-                Expanded(
-                  child: PrimaryButton(
-                    onPressed: isLoading ? null : onUpdate,
-                    text: 'Update Now',
-                    icon: Icons.refresh,
-                  ),
-                ),
-              ],
+            // Single action: Turn off
+            AccentButton(
+              onPressed: isLoading ? null : onStop,
+              text: 'Turn Off',
+              icon: Icons.pause,
+              isLoading: isLoading,
+              width: double.infinity,
             ),
             if (hotkey != null && hotkey.isNotEmpty) ...[
-              const VSpace.md(),
+              const VSpace.lg(),
               Center(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
