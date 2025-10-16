@@ -57,7 +57,7 @@ void main() {
         when(
           mockDio.get(any, queryParameters: anyNamed('queryParameters')),
         ).thenAnswer(
-          (_) async => Response(
+          (_) async => Response<Map<String, dynamic>>(
             data: tResponseData,
             statusCode: 200,
             requestOptions: RequestOptions(path: '/search/categories'),
@@ -80,7 +80,7 @@ void main() {
       when(
         mockDio.get(any, queryParameters: anyNamed('queryParameters')),
       ).thenAnswer(
-        (_) async => Response(
+        (_) async => Response<Map<String, dynamic>>(
           data: {'error': 'Bad request'},
           statusCode: 400,
           requestOptions: RequestOptions(path: '/search/categories'),
@@ -151,7 +151,7 @@ void main() {
           data: anyNamed('data'),
         ),
       ).thenAnswer(
-        (_) async => Response(
+        (_) async => Response<Map<String, dynamic>>(
           statusCode: 204,
           requestOptions: RequestOptions(path: '/channels'),
         ),
@@ -173,7 +173,7 @@ void main() {
           data: anyNamed('data'),
         ),
       ).thenAnswer(
-        (_) async => Response(
+        (_) async => Response<Map<String, dynamic>>(
           statusCode: 400,
           requestOptions: RequestOptions(path: '/channels'),
         ),
@@ -195,7 +195,7 @@ void main() {
           data: anyNamed('data'),
         ),
       ).thenAnswer(
-        (_) async => Response(
+        (_) async => Response<Map<String, dynamic>>(
           statusCode: 204,
           requestOptions: RequestOptions(path: '/channels'),
         ),
@@ -232,7 +232,7 @@ void main() {
     test('should return TwitchUserModel when status code is 200', () async {
       // Arrange
       when(mockDio.get(any)).thenAnswer(
-        (_) async => Response(
+        (_) async => Response<Map<String, dynamic>>(
           data: tResponseData,
           statusCode: 200,
           requestOptions: RequestOptions(path: '/users'),
@@ -252,7 +252,7 @@ void main() {
     test('should throw ServerException when no user data returned', () async {
       // Arrange
       when(mockDio.get(any)).thenAnswer(
-        (_) async => Response(
+        (_) async => Response<Map<String, dynamic>>(
           data: {'data': []},
           statusCode: 200,
           requestOptions: RequestOptions(path: '/users'),
@@ -269,7 +269,7 @@ void main() {
     test('should throw ServerException when status code is not 200', () async {
       // Arrange
       when(mockDio.get(any)).thenAnswer(
-        (_) async => Response(
+        (_) async => Response<Map<String, dynamic>>(
           statusCode: 500,
           requestOptions: RequestOptions(path: '/users'),
         ),
@@ -301,7 +301,7 @@ void main() {
       when(
         mockDio.get(any, queryParameters: anyNamed('queryParameters')),
       ).thenAnswer(
-        (_) async => Response(
+        (_) async => Response<Map<String, dynamic>>(
           data: tResponseData,
           statusCode: 200,
           requestOptions: RequestOptions(path: '/games'),
@@ -322,7 +322,7 @@ void main() {
       when(
         mockDio.get(any, queryParameters: anyNamed('queryParameters')),
       ).thenAnswer(
-        (_) async => Response(
+        (_) async => Response<Map<String, dynamic>>(
           data: {'data': []},
           statusCode: 200,
           requestOptions: RequestOptions(path: '/games'),
@@ -341,7 +341,7 @@ void main() {
       when(
         mockDio.get(any, queryParameters: anyNamed('queryParameters')),
       ).thenAnswer(
-        (_) async => Response(
+        (_) async => Response<Map<String, dynamic>>(
           data: tResponseData,
           statusCode: 200,
           requestOptions: RequestOptions(path: '/games'),

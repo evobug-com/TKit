@@ -55,9 +55,17 @@ void main() {
         final result = await repository.searchCategories(tQuery, first: tFirst);
 
         // Assert
-        expect(
-          result,
-          equals(const Right<Failure, List<TwitchCategory>>(tCategories)),
+        expect(result.isRight(), true);
+        result.fold(
+          (_) => fail('Should return Right'),
+          (categories) {
+            expect(categories.length, tCategories.length);
+            for (var i = 0; i < categories.length; i++) {
+              expect(categories[i].id, tCategories[i].id);
+              expect(categories[i].name, tCategories[i].name);
+              expect(categories[i].boxArtUrl, tCategories[i].boxArtUrl);
+            }
+          },
         );
         verify(mockRemoteDataSource.searchCategories(tQuery, first: tFirst));
       },
@@ -152,7 +160,11 @@ void main() {
       final result = await repository.searchCategories(tQuery, first: tFirst);
 
       // Assert
-      expect(result, equals(const Right<Failure, List<TwitchCategory>>([])));
+      expect(result.isRight(), true);
+      result.fold(
+        (_) => fail('Should return Right'),
+        (categories) => expect(categories, isEmpty),
+      );
     });
   });
 
@@ -263,7 +275,15 @@ void main() {
       final result = await repository.getCurrentUser();
 
       // Assert
-      expect(result, equals(const Right<Failure, TwitchUser>(tUser)));
+      expect(result.isRight(), true);
+      result.fold(
+        (_) => fail('Should return Right'),
+        (user) {
+          expect(user.id, tUser.id);
+          expect(user.login, tUser.login);
+          expect(user.displayName, tUser.displayName);
+        },
+      );
       verify(mockRemoteDataSource.getCurrentUser());
     });
 
@@ -281,8 +301,24 @@ void main() {
         final result2 = await repository.getCurrentUser();
 
         // Assert
-        expect(result1, equals(const Right<Failure, TwitchUser>(tUser)));
-        expect(result2, equals(const Right<Failure, TwitchUser>(tUser)));
+        expect(result1.isRight(), true);
+        result1.fold(
+          (_) => fail('Should return Right'),
+          (user) {
+            expect(user.id, tUser.id);
+            expect(user.login, tUser.login);
+            expect(user.displayName, tUser.displayName);
+          },
+        );
+        expect(result2.isRight(), true);
+        result2.fold(
+          (_) => fail('Should return Right'),
+          (user) {
+            expect(user.id, tUser.id);
+            expect(user.login, tUser.login);
+            expect(user.displayName, tUser.displayName);
+          },
+        );
         // Should only call remote data source once
         verify(mockRemoteDataSource.getCurrentUser()).called(1);
       },
@@ -368,7 +404,15 @@ void main() {
         final result = await repository.getCategoryById(tCategoryId);
 
         // Assert
-        expect(result, equals(const Right<Failure, TwitchCategory>(tCategory)));
+        expect(result.isRight(), true);
+        result.fold(
+          (_) => fail('Should return Right'),
+          (category) {
+            expect(category.id, tCategory.id);
+            expect(category.name, tCategory.name);
+            expect(category.boxArtUrl, tCategory.boxArtUrl);
+          },
+        );
         verify(mockRemoteDataSource.getCategoryById(tCategoryId));
       },
     );

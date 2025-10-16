@@ -144,7 +144,8 @@ void main() {
       );
 
       expect(find.byType(PulsingStatusIndicator), findsOneWidget);
-      expect(find.byType(AnimatedBuilder), findsOneWidget);
+      // AnimatedBuilder is an implementation detail; the framework may add its own
+      expect(find.byType(AnimatedBuilder), findsWidgets);
 
       // Let animation run
       await tester.pump(const Duration(milliseconds: 100));

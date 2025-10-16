@@ -76,6 +76,9 @@ void main() {
         invertFooterHeader: false,
         autoSyncMappingsOnStart: true,
         mappingsSyncIntervalHours: 6,
+        enableErrorTracking: true,
+        enablePerformanceMonitoring: true,
+        enableSessionReplay: false,
       );
 
       // Act - Save
@@ -121,6 +124,9 @@ void main() {
         invertFooterHeader: false,
         autoSyncMappingsOnStart: true,
         mappingsSyncIntervalHours: 6,
+        enableErrorTracking: true,
+        enablePerformanceMonitoring: true,
+        enableSessionReplay: false,
       );
 
       // Act - Save with first instance
@@ -166,6 +172,9 @@ void main() {
         invertFooterHeader: false,
         autoSyncMappingsOnStart: true,
         mappingsSyncIntervalHours: 6,
+        enableErrorTracking: true,
+        enablePerformanceMonitoring: true,
+        enableSessionReplay: false,
       );
 
       // Act
@@ -207,6 +216,9 @@ void main() {
         invertFooterHeader: false,
         autoSyncMappingsOnStart: true,
         mappingsSyncIntervalHours: 6,
+        enableErrorTracking: true,
+        enablePerformanceMonitoring: true,
+        enableSessionReplay: false,
       );
       await updateSettingsUseCase(newSettings);
 
@@ -273,6 +285,9 @@ void main() {
           invertFooterHeader: false,
           autoSyncMappingsOnStart: true,
           mappingsSyncIntervalHours: 6,
+          enableErrorTracking: true,
+          enablePerformanceMonitoring: true,
+          enableSessionReplay: false,
         );
 
         // Act
@@ -306,6 +321,9 @@ void main() {
         invertFooterHeader: false,
         autoSyncMappingsOnStart: true,
         mappingsSyncIntervalHours: 6,
+        enableErrorTracking: true,
+        enablePerformanceMonitoring: true,
+        enableSessionReplay: false,
       );
 
       // Act
@@ -335,6 +353,9 @@ void main() {
         invertFooterHeader: false,
         autoSyncMappingsOnStart: true,
         mappingsSyncIntervalHours: 6,
+        enableErrorTracking: true,
+        enablePerformanceMonitoring: true,
+        enableSessionReplay: false,
       );
 
       // Act - Save (involves JSON serialization)

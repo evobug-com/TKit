@@ -38,6 +38,9 @@ void main() {
         invertFooterHeader: false,
         autoSyncMappingsOnStart: true,
         mappingsSyncIntervalHours: 6,
+        enableErrorTracking: true,
+        enablePerformanceMonitoring: true,
+        enableSessionReplay: false,
       );
 
       // Assert

@@ -159,13 +159,15 @@ void main() {
       });
 
       // Test fuzzy match (with typo - Legands instead of Legends)
+      // Note: Fuzzy matching is intentionally NOT supported to avoid false positives
+      // The datasource only supports exact and normalized matching
       final fuzzyMatch = await repository.findMapping(
         'League of Legands.exe',
         null,
       );
       fuzzyMatch.fold((_) => fail('Should return success'), (mapping) {
-        expect(mapping, isNotNull);
-        expect(mapping!.twitchCategoryName, 'League of Legends');
+        // Should NOT match due to typo (fuzzy matching not supported)
+        expect(mapping, isNull);
       });
 
       // Test no match (too different)

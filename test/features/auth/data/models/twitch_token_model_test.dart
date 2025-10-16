@@ -70,7 +70,7 @@ void main() {
         final result = TwitchTokenModel.fromTokenResponse(json);
 
         // Assert
-        expect(result.scopes, ['']);
+        expect(result.scopes, []);
       });
 
       test('should handle null scopes', () {

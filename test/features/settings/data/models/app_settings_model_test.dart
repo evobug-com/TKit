@@ -26,6 +26,9 @@ void main() {
       invertFooterHeader: false,
       autoSyncMappingsOnStart: true,
       mappingsSyncIntervalHours: 6,
+      enableErrorTracking: true,
+      enablePerformanceMonitoring: true,
+      enableSessionReplay: false,
     );
 
     final testJson = {
@@ -42,6 +45,14 @@ void main() {
       'autoStartMonitoring': true,
       'manualUpdateHotkey': null,
       'updateChannel': 'stable',
+      'windowControlsPosition': 'right',
+      'useFramelessWindow': false,
+      'invertFooterHeader': false,
+      'autoSyncMappingsOnStart': true,
+      'mappingsSyncIntervalHours': 6,
+      'enableErrorTracking': true,
+      'enablePerformanceMonitoring': true,
+      'enableSessionReplay': false,
     };
 
     test('should be a subclass of AppSettings', () {
@@ -66,6 +77,9 @@ void main() {
         invertFooterHeader: false,
         autoSyncMappingsOnStart: true,
         mappingsSyncIntervalHours: 6,
+        enableErrorTracking: true,
+        enablePerformanceMonitoring: true,
+        enableSessionReplay: false,
       );
 
       // Act
@@ -130,6 +144,8 @@ void main() {
         'startMinimized': false,
         'autoStartMonitoring': true,
         'updateChannel': 'stable',
+        'windowControlsPosition': 'right',
+        'useFramelessWindow': false,
       };
 
       // Act

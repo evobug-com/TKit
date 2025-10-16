@@ -45,23 +45,25 @@ void main() {
 
     test('should get update history ordered by most recent', () async {
       // Arrange
-      final history1 = UpdateHistoryModel.fromDomain(
-        domain.UpdateHistory.success(
-          processName: 'game1.exe',
-          categoryId: '1',
-          categoryName: 'Game 1',
-        ),
+      final oldTime = DateTime.now().subtract(const Duration(seconds: 1));
+      final newTime = DateTime.now();
+
+      final history1 = UpdateHistoryModel(
+        processName: 'game1.exe',
+        categoryId: '1',
+        categoryName: 'Game 1',
+        success: true,
+        updatedAt: oldTime,
       );
-      final history2 = UpdateHistoryModel.fromDomain(
-        domain.UpdateHistory.success(
-          processName: 'game2.exe',
-          categoryId: '2',
-          categoryName: 'Game 2',
-        ),
+      final history2 = UpdateHistoryModel(
+        processName: 'game2.exe',
+        categoryId: '2',
+        categoryName: 'Game 2',
+        success: true,
+        updatedAt: newTime,
       );
 
       await dataSource.saveUpdateHistory(history1);
-      await Future.delayed(const Duration(milliseconds: 10));
       await dataSource.saveUpdateHistory(history2);
 
       // Act
@@ -75,23 +77,25 @@ void main() {
 
     test('should get latest update history', () async {
       // Arrange
-      final history1 = UpdateHistoryModel.fromDomain(
-        domain.UpdateHistory.success(
-          processName: 'old.exe',
-          categoryId: '1',
-          categoryName: 'Old',
-        ),
+      final oldTime = DateTime.now().subtract(const Duration(seconds: 1));
+      final newTime = DateTime.now();
+
+      final history1 = UpdateHistoryModel(
+        processName: 'old.exe',
+        categoryId: '1',
+        categoryName: 'Old',
+        success: true,
+        updatedAt: oldTime,
       );
-      final history2 = UpdateHistoryModel.fromDomain(
-        domain.UpdateHistory.success(
-          processName: 'new.exe',
-          categoryId: '2',
-          categoryName: 'New',
-        ),
+      final history2 = UpdateHistoryModel(
+        processName: 'new.exe',
+        categoryId: '2',
+        categoryName: 'New',
+        success: true,
+        updatedAt: newTime,
       );
 
       await dataSource.saveUpdateHistory(history1);
-      await Future.delayed(const Duration(milliseconds: 10));
       await dataSource.saveUpdateHistory(history2);
 
       // Act

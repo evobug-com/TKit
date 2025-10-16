@@ -62,6 +62,9 @@ void main() {
         invertFooterHeader: false,
         autoSyncMappingsOnStart: true,
         mappingsSyncIntervalHours: 6,
+        enableErrorTracking: true,
+        enablePerformanceMonitoring: true,
+        enableSessionReplay: false,
       );
       final jsonString = jsonEncode(testSettings.toJson());
 
@@ -105,6 +108,9 @@ void main() {
         invertFooterHeader: false,
         autoSyncMappingsOnStart: true,
         mappingsSyncIntervalHours: 6,
+        enableErrorTracking: true,
+        enablePerformanceMonitoring: true,
+        enableSessionReplay: false,
       );
 
       when(mockPrefs.setString(any, any)).thenAnswer((_) async => true);
@@ -170,6 +176,9 @@ void main() {
         invertFooterHeader: false,
         autoSyncMappingsOnStart: true,
         mappingsSyncIntervalHours: 6,
+        enableErrorTracking: true,
+        enablePerformanceMonitoring: true,
+        enableSessionReplay: false,
       );
       final jsonString = jsonEncode(testSettings.toJson());
       when(mockPrefs.getString(any)).thenReturn(jsonString);
