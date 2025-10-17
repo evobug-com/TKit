@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:window_manager/window_manager.dart';
@@ -157,8 +158,9 @@ void main() async {
 
     logger.info('Initialization complete, launching app...');
 
-    // Check if Sentry should be initialized based on settings
-    final shouldInitializeSentry = await getSettingsUseCase().then(
+    // Check if Sentry should be initialized based on settings and build mode
+    // IMPORTANT: Sentry is disabled in debug mode to prevent debug crashes from polluting production data
+    final shouldInitializeSentry = kReleaseMode && await getSettingsUseCase().then(
       (result) => result.fold(
         (_) => true, // Default to enabled if settings can't be loaded
         (settings) => settings.enableErrorTracking,
@@ -237,7 +239,11 @@ void main() async {
         );
       }
     } else {
-      logger.info('Sentry disabled in settings, skipping initialization');
+      if (!kReleaseMode) {
+        logger.info('Sentry disabled in debug mode');
+      } else {
+        logger.info('Sentry disabled in settings, skipping initialization');
+      }
       runApp(
         UncontrolledProviderScope(container: container, child: const TKitApp()),
       );
