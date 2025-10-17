@@ -2423,5 +2423,61 @@
   "welcomeSentryEnableSessionReplay": "Enable session replay (optional)",
   "@welcomeSentryEnableSessionReplay": {
     "description": "Welcome screen enable session replay label"
+  },
+  "tutorialSkipButton": "Skip Tutorial",
+  "@tutorialSkipButton": {
+    "description": "Button to skip the tutorial"
+  },
+  "tutorialRestartButton": "Show Tutorial",
+  "@tutorialRestartButton": {
+    "description": "Button to restart/show the tutorial again"
+  },
+  "tutorialAutoSwitcherTabTitle": "Auto Switcher",
+  "@tutorialAutoSwitcherTabTitle": {
+    "description": "Tutorial showcase title for Auto Switcher tab"
+  },
+  "tutorialAutoSwitcherTabDescription": "This is your main control center. Click here to monitor and control automatic category switching based on your active application.",
+  "@tutorialAutoSwitcherTabDescription": {
+    "description": "Tutorial showcase description for Auto Switcher tab"
+  },
+  "tutorialMappingsTabTitle": "Mappings",
+  "@tutorialMappingsTabTitle": {
+    "description": "Tutorial showcase title for Mappings tab"
+  },
+  "tutorialMappingsTabDescription": "Manage your game-to-category mappings here. Add custom mappings or use community presets to automatically switch your Twitch category.",
+  "@tutorialMappingsTabDescription": {
+    "description": "Tutorial showcase description for Mappings tab"
+  },
+  "tutorialSettingsTabTitle": "Settings",
+  "@tutorialSettingsTabTitle": {
+    "description": "Tutorial showcase title for Settings tab"
+  },
+  "tutorialSettingsTabDescription": "Customize TKit's behavior, appearance, and configure your Twitch connection.",
+  "@tutorialSettingsTabDescription": {
+    "description": "Tutorial showcase description for Settings tab"
+  },
+  "tutorialAutoSwitcherControlTitle": "Automatic vs Manual Switching",
+  "@tutorialAutoSwitcherControlTitle": {
+    "description": "Title for the Auto Switcher control tutorial"
+  },
+  "tutorialAutoSwitcherControlDescription": "Click the TURN ON button to enable automatic switching when you launch games. Want it to start automatically? Go to Settings and enable 'Start monitoring on app launch'.\n\nAutomatic mode: Hands-free switching for all mapped games.\nManual mode: Use your hotkey for full control when you want to update.",
+  "@tutorialAutoSwitcherControlDescription": {
+    "description": "Description explaining automatic vs manual switcher modes"
+  },
+  "tutorialAutoSwitcherPageTitle": "How Auto Switcher Works",
+  "@tutorialAutoSwitcherPageTitle": {
+    "description": "Tutorial showcase title for Auto Switcher page main content"
+  },
+  "tutorialAutoSwitcherPageDescription": "TKit monitors your active window. When you switch to a game, it automatically updates your Twitch category based on your mappings. Press 'Turn On' to start monitoring.",
+  "@tutorialAutoSwitcherPageDescription": {
+    "description": "Tutorial showcase description for Auto Switcher page main content"
+  },
+  "tutorialMappingsPageTitle": "Managing Mappings",
+  "@tutorialMappingsPageTitle": {
+    "description": "Tutorial showcase title for Mappings page main content"
+  },
+  "tutorialMappingsPageDescription": "Mappings connect applications to Twitch categories. Click 'Add Mapping' to create custom ones, or manage community lists to import verified mappings from other users.",
+  "@tutorialMappingsPageDescription": {
+    "description": "Tutorial showcase description for Mappings page main content"
   }
 }

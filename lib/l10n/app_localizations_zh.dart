@@ -1727,4 +1727,52 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get welcomeSentryEnableSessionReplay => '启用会话回放（可选）';
+
+  @override
+  String get tutorialSkipButton => '跳过教程';
+
+  @override
+  String get tutorialRestartButton => '显示教程';
+
+  @override
+  String get tutorialAutoSwitcherTabTitle => '自动切换器';
+
+  @override
+  String get tutorialAutoSwitcherTabDescription =>
+      '这是您的主控制中心。点击此处可根据您的活动应用程序监控和控制类别的自动切换。';
+
+  @override
+  String get tutorialMappingsTabTitle => '映射';
+
+  @override
+  String get tutorialMappingsTabDescription =>
+      '在此管理您的游戏到类别映射。添加自定义映射或使用社区预设来自动切换您的 Twitch 类别。';
+
+  @override
+  String get tutorialSettingsTabTitle => '设置';
+
+  @override
+  String get tutorialSettingsTabDescription =>
+      '自定义 TKit 的行为、外观，并配置您的 Twitch 连接。';
+
+  @override
+  String get tutorialAutoSwitcherControlTitle => '自动切换与手动切换';
+
+  @override
+  String get tutorialAutoSwitcherControlDescription =>
+      '点击\"开启\"按钮以在启动游戏时启用自动切换。想要它自动启动？前往设置并启用\"应用启动时开始监控\"。\n\n自动模式：为所有已映射的游戏提供免手动切换。\n手动模式：需要时使用您的热键进行完全控制以更新。';
+
+  @override
+  String get tutorialAutoSwitcherPageTitle => '自动切换器的工作原理';
+
+  @override
+  String get tutorialAutoSwitcherPageDescription =>
+      'TKit 监控您的活动窗口。当您切换到游戏时，它会根据您的映射自动更新您的 Twitch 类别。按\"开启\"开始监控。';
+
+  @override
+  String get tutorialMappingsPageTitle => '管理映射';
+
+  @override
+  String get tutorialMappingsPageDescription =>
+      '映射将应用程序连接到 Twitch 类别。点击\"添加映射\"创建自定义映射，或管理社区列表以从其他用户导入已验证的映射。';
 }

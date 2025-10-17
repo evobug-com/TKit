@@ -1834,4 +1834,53 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get welcomeSentryEnableSessionReplay =>
       'Enable session replay (optional)';
+
+  @override
+  String get tutorialSkipButton => 'Skip Tutorial';
+
+  @override
+  String get tutorialRestartButton => 'Show Tutorial';
+
+  @override
+  String get tutorialAutoSwitcherTabTitle => 'Auto Switcher';
+
+  @override
+  String get tutorialAutoSwitcherTabDescription =>
+      'This is your main control center. Click here to monitor and control automatic category switching based on your active application.';
+
+  @override
+  String get tutorialMappingsTabTitle => 'Mappings';
+
+  @override
+  String get tutorialMappingsTabDescription =>
+      'Manage your game-to-category mappings here. Add custom mappings or use community presets to automatically switch your Twitch category.';
+
+  @override
+  String get tutorialSettingsTabTitle => 'Settings';
+
+  @override
+  String get tutorialSettingsTabDescription =>
+      'Customize TKit\'s behavior, appearance, and configure your Twitch connection.';
+
+  @override
+  String get tutorialAutoSwitcherControlTitle =>
+      'Automatic vs Manual Switching';
+
+  @override
+  String get tutorialAutoSwitcherControlDescription =>
+      'Click the TURN ON button to enable automatic switching when you launch games. Want it to start automatically? Go to Settings and enable \'Start monitoring on app launch\'.\n\nAutomatic mode: Hands-free switching for all mapped games.\nManual mode: Use your hotkey for full control when you want to update.';
+
+  @override
+  String get tutorialAutoSwitcherPageTitle => 'How Auto Switcher Works';
+
+  @override
+  String get tutorialAutoSwitcherPageDescription =>
+      'TKit monitors your active window. When you switch to a game, it automatically updates your Twitch category based on your mappings. Press \'Turn On\' to start monitoring.';
+
+  @override
+  String get tutorialMappingsPageTitle => 'Managing Mappings';
+
+  @override
+  String get tutorialMappingsPageDescription =>
+      'Mappings connect applications to Twitch categories. Click \'Add Mapping\' to create custom ones, or manage community lists to import verified mappings from other users.';
 }

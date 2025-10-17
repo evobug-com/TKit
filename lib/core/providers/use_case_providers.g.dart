@@ -105,3 +105,51 @@ final class UpdateLastUsedUseCaseProvider
 
 String _$updateLastUsedUseCaseHash() =>
     r'5871b87476fb368217d4b7776940e49f1fd62d4b';
+
+@ProviderFor(submitMappingUseCase)
+const submitMappingUseCaseProvider = SubmitMappingUseCaseProvider._();
+
+final class SubmitMappingUseCaseProvider
+    extends
+        $FunctionalProvider<
+          SubmitMappingUseCase,
+          SubmitMappingUseCase,
+          SubmitMappingUseCase
+        >
+    with $Provider<SubmitMappingUseCase> {
+  const SubmitMappingUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'submitMappingUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$submitMappingUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<SubmitMappingUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  SubmitMappingUseCase create(Ref ref) {
+    return submitMappingUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SubmitMappingUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SubmitMappingUseCase>(value),
+    );
+  }
+}
+
+String _$submitMappingUseCaseHash() =>
+    r'9f39455179c983e2212008bb2e0d7c28f6ed331e';

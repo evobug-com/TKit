@@ -1856,4 +1856,54 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get welcomeSentryEnableSessionReplay =>
       'Włącz nagrywanie sesji (opcjonalne)';
+
+  @override
+  String get tutorialSkipButton => 'Pomiń samouczek';
+
+  @override
+  String get tutorialRestartButton => 'Pokaż samouczek';
+
+  @override
+  String get tutorialAutoSwitcherTabTitle => 'Automatyczne przełączanie';
+
+  @override
+  String get tutorialAutoSwitcherTabDescription =>
+      'To jest Twoje główne centrum kontroli. Kliknij tutaj, aby monitorować i kontrolować automatyczne przełączanie kategorii na podstawie aktywnej aplikacji.';
+
+  @override
+  String get tutorialMappingsTabTitle => 'Mapowania';
+
+  @override
+  String get tutorialMappingsTabDescription =>
+      'Zarządzaj mapowaniami gier do kategorii. Dodaj niestandardowe mapowania lub użyj preset\'ów społeczności, aby automatycznie przełączać kategorie na Twitchu.';
+
+  @override
+  String get tutorialSettingsTabTitle => 'Ustawienia';
+
+  @override
+  String get tutorialSettingsTabDescription =>
+      'Dostosuj zachowanie i wygląd TKit oraz skonfiguruj połączenie z Twitchem.';
+
+  @override
+  String get tutorialAutoSwitcherControlTitle =>
+      'Przełączanie automatyczne vs manualne';
+
+  @override
+  String get tutorialAutoSwitcherControlDescription =>
+      'Kliknij przycisk WŁĄCZ, aby włączyć automatyczne przełączanie po uruchomieniu gier. Chcesz, aby uruchamiało się automatycznie? Przejdź do Ustawień i włącz \'Rozpocznij monitorowanie przy uruchomieniu aplikacji\'.\n\nTryb automatyczny: Przełączanie bez udziału użytkownika dla wszystkich zmapowanych gier.\nTryb manualny: Użyj skrótu klawiszowego, aby mieć pełną kontrolę, kiedy chcesz zaktualizować.';
+
+  @override
+  String get tutorialAutoSwitcherPageTitle =>
+      'Jak działa automatyczne przełączanie';
+
+  @override
+  String get tutorialAutoSwitcherPageDescription =>
+      'TKit monitoruje aktywne okno. Gdy przełączysz się na grę, automatycznie aktualizuje kategorię na Twitchu na podstawie Twoich mapowań. Naciśnij \'Włącz\', aby rozpocząć monitorowanie.';
+
+  @override
+  String get tutorialMappingsPageTitle => 'Zarządzanie mapowaniami';
+
+  @override
+  String get tutorialMappingsPageDescription =>
+      'Mapowania łączą aplikacje z kategoriami na Twitchu. Kliknij \'Dodaj mapowanie\', aby utworzyć niestandardowe, lub zarządzaj listami społeczności, aby zaimportować zweryfikowane mapowania od innych użytkowników.';
 }

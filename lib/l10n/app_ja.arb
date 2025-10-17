@@ -1437,6 +1437,62 @@
   "@welcomeSentryEnableSessionReplay": {
     "description": "Welcome screen enable session replay label"
   },
+  "tutorialSkipButton": "チュートリアルをスキップ",
+  "@tutorialSkipButton": {
+    "description": "Button to skip the tutorial"
+  },
+  "tutorialRestartButton": "チュートリアルを表示",
+  "@tutorialRestartButton": {
+    "description": "Button to restart/show the tutorial again"
+  },
+  "tutorialAutoSwitcherTabTitle": "自動スイッチャー",
+  "@tutorialAutoSwitcherTabTitle": {
+    "description": "Tutorial showcase title for Auto Switcher tab"
+  },
+  "tutorialAutoSwitcherTabDescription": "ここはメインのコントロールセンターです。アクティブなアプリケーションに基づいて、自動カテゴリー切り替えを監視・制御するには、ここをクリックしてください。",
+  "@tutorialAutoSwitcherTabDescription": {
+    "description": "Tutorial showcase description for Auto Switcher tab"
+  },
+  "tutorialMappingsTabTitle": "マッピング",
+  "@tutorialMappingsTabTitle": {
+    "description": "Tutorial showcase title for Mappings tab"
+  },
+  "tutorialMappingsTabDescription": "ここでゲームとカテゴリーのマッピングを管理します。カスタムマッピングを追加したり、コミュニティプリセットを使用して、Twitchカテゴリーを自動的に切り替えることができます。",
+  "@tutorialMappingsTabDescription": {
+    "description": "Tutorial showcase description for Mappings tab"
+  },
+  "tutorialSettingsTabTitle": "設定",
+  "@tutorialSettingsTabTitle": {
+    "description": "Tutorial showcase title for Settings tab"
+  },
+  "tutorialSettingsTabDescription": "TKitの動作、外観をカスタマイズし、Twitch接続を設定します。",
+  "@tutorialSettingsTabDescription": {
+    "description": "Tutorial showcase description for Settings tab"
+  },
+  "tutorialAutoSwitcherControlTitle": "自動切り替えと手動切り替え",
+  "@tutorialAutoSwitcherControlTitle": {
+    "description": "Title for the Auto Switcher control tutorial"
+  },
+  "tutorialAutoSwitcherControlDescription": "「オンにする」ボタンをクリックして、ゲームを起動したときの自動切り替えを有効にします。自動的に開始したい場合は、設定で「アプリ起動時に監視を開始」を有効にしてください。\n\n自動モード：マッピング済みのすべてのゲームを自動で切り替えます。\n手動モード：更新したいときにホットキーでフルコントロールできます。",
+  "@tutorialAutoSwitcherControlDescription": {
+    "description": "Description explaining automatic vs manual switcher modes"
+  },
+  "tutorialAutoSwitcherPageTitle": "自動スイッチャーの仕組み",
+  "@tutorialAutoSwitcherPageTitle": {
+    "description": "Tutorial showcase title for Auto Switcher page main content"
+  },
+  "tutorialAutoSwitcherPageDescription": "TKitはアクティブなウィンドウを監視します。ゲームに切り替えると、マッピングに基づいてTwitchカテゴリーが自動的に更新されます。「オンにする」を押して監視を開始してください。",
+  "@tutorialAutoSwitcherPageDescription": {
+    "description": "Tutorial showcase description for Auto Switcher page main content"
+  },
+  "tutorialMappingsPageTitle": "マッピングの管理",
+  "@tutorialMappingsPageTitle": {
+    "description": "Tutorial showcase title for Mappings page main content"
+  },
+  "tutorialMappingsPageDescription": "マッピングはアプリケーションとTwitchカテゴリーを接続します。「マッピングを追加」をクリックしてカスタムマッピングを作成するか、コミュニティリストを管理して他のユーザーが検証したマッピングをインポートしてください。",
+  "@tutorialMappingsPageDescription": {
+    "description": "Tutorial showcase description for Mappings page main content"
+  },
   "settingsDebounceTimeDescription": "アプリ変更後にカテゴリを切り替えるまでの待機時間（高速な切り替えを防止）",
   "@settingsDebounceTimeDescription": {
     "description": "Debounce time setting description"

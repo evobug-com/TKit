@@ -155,7 +155,9 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                   if (invertFooterHeader) footer else header,
 
                   // Main content area - full width
-                  Expanded(child: widget.child),
+                  Expanded(
+                    child: widget.child,
+                  ),
 
                   // Minimal footer
                   if (invertFooterHeader) header else footer,
@@ -229,7 +231,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
             if (!isWelcomeScreen)
               Container(width: 1, height: 36, color: TKitColors.border),
 
-            // Navigation tabs (before title)
+            // Navigation tabs
             if (!isWelcomeScreen)
               _buildTab(
                 context: context,
@@ -316,7 +318,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
             if (!isWelcomeScreen)
               Container(width: 1, height: 36, color: TKitColors.border),
 
-            // Navigation tabs - NOT in draggable area (hidden on welcome screen)
+            // Navigation tabs
             if (!isWelcomeScreen)
               _buildTab(
                 context: context,
@@ -467,7 +469,11 @@ class _MainWindowState extends ConsumerState<MainWindow> {
     required bool isSelected,
     required VoidCallback onTap,
   }) {
-    return _TabButton(label: label, isSelected: isSelected, onTap: onTap);
+    return _TabButton(
+      label: label,
+      isSelected: isSelected,
+      onTap: onTap,
+    );
   }
 
   Widget _buildFooter() {
@@ -546,6 +552,33 @@ class _MainWindowState extends ConsumerState<MainWindow> {
             ),
           ),
 
+          // Tutorial restart button (help icon)
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () async {
+                try {
+                  final logger = ref.read(appLoggerProvider);
+                  final tutorialService = await ref.read(tutorialServiceProvider.future);
+                  await tutorialService.resetTutorial();
+                  logger.info('Tutorial reset - forcing AutoSwitcher page reload');
+
+                  // Force a fresh instance of AutoSwitcher page to trigger tutorial
+                  widget.router.replace(const AutoSwitcherRoute());
+                } catch (e) {
+                  final logger = ref.read(appLoggerProvider);
+                  logger.error('Failed to reset tutorial', e);
+                }
+              },
+              child: const Icon(
+                Icons.help_outline,
+                size: 14,
+                color: TKitColors.textMuted,
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+
           // evobug.com link (not draggable - clickable)
           MouseRegion(
             cursor: SystemMouseCursors.click,
@@ -613,6 +646,7 @@ class _TabButton extends StatefulWidget {
   final VoidCallback onTap;
 
   const _TabButton({
+    super.key,
     required this.label,
     required this.isSelected,
     required this.onTap,

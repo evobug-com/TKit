@@ -1437,6 +1437,62 @@
   "@welcomeSentryEnableSessionReplay": {
     "description": "Welcome screen enable session replay label"
   },
+  "tutorialSkipButton": "Pomiń samouczek",
+  "@tutorialSkipButton": {
+    "description": "Button to skip the tutorial"
+  },
+  "tutorialRestartButton": "Pokaż samouczek",
+  "@tutorialRestartButton": {
+    "description": "Button to restart/show the tutorial again"
+  },
+  "tutorialAutoSwitcherTabTitle": "Automatyczne przełączanie",
+  "@tutorialAutoSwitcherTabTitle": {
+    "description": "Tutorial showcase title for Auto Switcher tab"
+  },
+  "tutorialAutoSwitcherTabDescription": "To jest Twoje główne centrum kontroli. Kliknij tutaj, aby monitorować i kontrolować automatyczne przełączanie kategorii na podstawie aktywnej aplikacji.",
+  "@tutorialAutoSwitcherTabDescription": {
+    "description": "Tutorial showcase description for Auto Switcher tab"
+  },
+  "tutorialMappingsTabTitle": "Mapowania",
+  "@tutorialMappingsTabTitle": {
+    "description": "Tutorial showcase title for Mappings tab"
+  },
+  "tutorialMappingsTabDescription": "Zarządzaj mapowaniami gier do kategorii. Dodaj niestandardowe mapowania lub użyj preset'ów społeczności, aby automatycznie przełączać kategorie na Twitchu.",
+  "@tutorialMappingsTabDescription": {
+    "description": "Tutorial showcase description for Mappings tab"
+  },
+  "tutorialSettingsTabTitle": "Ustawienia",
+  "@tutorialSettingsTabTitle": {
+    "description": "Tutorial showcase title for Settings tab"
+  },
+  "tutorialSettingsTabDescription": "Dostosuj zachowanie i wygląd TKit oraz skonfiguruj połączenie z Twitchem.",
+  "@tutorialSettingsTabDescription": {
+    "description": "Tutorial showcase description for Settings tab"
+  },
+  "tutorialAutoSwitcherControlTitle": "Przełączanie automatyczne vs manualne",
+  "@tutorialAutoSwitcherControlTitle": {
+    "description": "Title for the Auto Switcher control tutorial"
+  },
+  "tutorialAutoSwitcherControlDescription": "Kliknij przycisk WŁĄCZ, aby włączyć automatyczne przełączanie po uruchomieniu gier. Chcesz, aby uruchamiało się automatycznie? Przejdź do Ustawień i włącz 'Rozpocznij monitorowanie przy uruchomieniu aplikacji'.\n\nTryb automatyczny: Przełączanie bez udziału użytkownika dla wszystkich zmapowanych gier.\nTryb manualny: Użyj skrótu klawiszowego, aby mieć pełną kontrolę, kiedy chcesz zaktualizować.",
+  "@tutorialAutoSwitcherControlDescription": {
+    "description": "Description explaining automatic vs manual switcher modes"
+  },
+  "tutorialAutoSwitcherPageTitle": "Jak działa automatyczne przełączanie",
+  "@tutorialAutoSwitcherPageTitle": {
+    "description": "Tutorial showcase title for Auto Switcher page main content"
+  },
+  "tutorialAutoSwitcherPageDescription": "TKit monitoruje aktywne okno. Gdy przełączysz się na grę, automatycznie aktualizuje kategorię na Twitchu na podstawie Twoich mapowań. Naciśnij 'Włącz', aby rozpocząć monitorowanie.",
+  "@tutorialAutoSwitcherPageDescription": {
+    "description": "Tutorial showcase description for Auto Switcher page main content"
+  },
+  "tutorialMappingsPageTitle": "Zarządzanie mapowaniami",
+  "@tutorialMappingsPageTitle": {
+    "description": "Tutorial showcase title for Mappings page main content"
+  },
+  "tutorialMappingsPageDescription": "Mapowania łączą aplikacje z kategoriami na Twitchu. Kliknij 'Dodaj mapowanie', aby utworzyć niestandardowe, lub zarządzaj listami społeczności, aby zaimportować zweryfikowane mapowania od innych użytkowników.",
+  "@tutorialMappingsPageDescription": {
+    "description": "Tutorial showcase description for Mappings page main content"
+  },
   "settingsDebounceTimeDescription": "Czas oczekiwania przed przełączeniem kategorii po zmianie aplikacji (zapobiega szybkiemu przełączaniu)",
   "@settingsDebounceTimeDescription": {
     "description": "Debounce time setting description"

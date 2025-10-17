@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:tkit/core/providers/providers.dart';
+import 'package:tkit/core/providers/use_case_providers.dart';
 import 'package:tkit/core/config/app_config.dart';
 import 'package:tkit/core/routing/app_router.dart';
 import 'package:tkit/core/services/locale_provider.dart';
@@ -13,6 +14,8 @@ import 'package:tkit/features/auto_switcher/data/repositories/auto_switcher_repo
 import 'package:tkit/features/auto_switcher/presentation/providers/auto_switcher_providers.dart';
 import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
 import 'package:tkit/features/category_mapping/presentation/dialogs/unknown_game_dialog.dart';
+import 'package:tkit/features/category_mapping/presentation/providers/category_mapping_providers.dart';
+import 'package:tkit/features/mapping_lists/presentation/providers/mapping_list_providers.dart';
 import 'package:tkit/features/settings/domain/entities/update_channel.dart';
 import 'package:tkit/features/settings/presentation/providers/settings_providers.dart';
 import 'package:tkit/features/twitch_api/domain/entities/twitch_category.dart';
@@ -265,6 +268,8 @@ class TKitApp extends ConsumerStatefulWidget {
 class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
   late final AppRouter _appRouter;
   StreamSubscription<dynamic>? _authSubscription;
+  StreamSubscription<dynamic>? _settingsSubscription;
+  Timer? _periodicSyncTimer;
   var _initialized = false;
 
   @override
@@ -308,6 +313,8 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
   @override
   void dispose() {
     _authSubscription?.cancel();
+    _settingsSubscription?.cancel();
+    _periodicSyncTimer?.cancel();
     windowManager.removeListener(this);
     super.dispose();
   }
@@ -411,15 +418,54 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
     if (state is Authenticated) {
       // Wire up notification click handler
       final notificationService = ref.read(notificationServiceProvider);
+      final logger = ref.read(appLoggerProvider);
+      final windowService = ref.read(windowServiceProvider);
+
       notificationService.onMissingCategoryClick = ({
         required String processName,
         String? executablePath,
       }) async {
-        await _showUnknownGameDialog(
+        logger.info('Notification clicked for: $processName');
+
+        // Bring window to foreground first
+        try {
+          await windowService.showWindow();
+          logger.debug('Window brought to foreground from notification');
+          // Small delay to ensure window is ready
+          await Future<void>.delayed(const Duration(milliseconds: 100));
+        } catch (e) {
+          logger.warning('Failed to bring window to foreground: $e');
+        }
+
+        // Show dialog and get the mapping
+        final mapping = await _showUnknownGameDialog(
           processName: processName,
           executablePath: executablePath,
           windowTitle: null,
         );
+
+        // Save the mapping if user selected a category
+        if (mapping != null) {
+          try {
+            final saveMappingUseCase = ref.read(saveMappingUseCaseProvider);
+            final saveResult = await saveMappingUseCase(mapping);
+
+            saveResult.fold(
+              (failure) => logger.error('Failed to save mapping: ${failure.message}'),
+              (_) {
+                logger.info('Mapping saved successfully: $processName -> ${mapping.twitchCategoryName}');
+
+                // Refresh the mappings list in the UI after a short delay
+                Future.delayed(const Duration(milliseconds: 500), () {
+                  ref.read(categoryMappingsProvider.notifier).loadMappings();
+                  logger.debug('Mappings list refreshed after save');
+                });
+              },
+            );
+          } catch (e) {
+            logger.error('Failed to save mapping from notification', e);
+          }
+        }
       };
 
       // Wire up unknown game dialog callback
@@ -440,6 +486,90 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
           );
         };
       }
+
+      // Initialize periodic mapping list sync
+      unawaited(_initializePeriodicListSync());
+    } else {
+      // User logged out - cancel periodic sync
+      _periodicSyncTimer?.cancel();
+      _settingsSubscription?.cancel();
+    }
+  }
+
+  /// Initialize periodic mapping list sync based on settings
+  Future<void> _initializePeriodicListSync() async {
+    final logger = ref.read(appLoggerProvider);
+
+    try {
+      final mappingListRepository = ref.read(mappingListRepositoryProvider);
+      final syncListUseCase = ref.read(syncListUseCaseProvider);
+      final getSettingsUseCase = await ref.read(getSettingsUseCaseProvider.future);
+      final watchSettingsUseCase = await ref.read(watchSettingsUseCaseProvider.future);
+
+      // Function to schedule the sync timer
+      void scheduleSyncTimer(int intervalHours) {
+        // Cancel existing timer
+        _periodicSyncTimer?.cancel();
+
+        if (intervalHours <= 0) {
+          logger.info('Periodic mapping list sync disabled (interval: 0)');
+          return;
+        }
+
+        final duration = Duration(hours: intervalHours);
+        logger.info('Scheduling mapping list sync every ${intervalHours}h');
+
+        _periodicSyncTimer = Timer.periodic(duration, (_) async {
+          logger.info('Periodic sync triggered for mapping lists');
+
+          // Get all enabled lists
+          final listsResult = await mappingListRepository.getAllLists();
+          await listsResult.fold(
+            (failure) {
+              logger.warning('Failed to get mapping lists for periodic sync: ${failure.message}');
+            },
+            (lists) async {
+              final enabledLists = lists.where((list) => list.isEnabled && list.shouldSync).toList();
+
+              if (enabledLists.isEmpty) {
+                logger.debug('No enabled lists need syncing');
+                return;
+              }
+
+              logger.info('Syncing ${enabledLists.length} enabled list(s)...');
+
+              for (final list in enabledLists) {
+                final syncResult = await syncListUseCase(list.id);
+                syncResult.fold(
+                  (failure) {
+                    logger.warning('Periodic sync failed for "${list.name}": ${failure.message}');
+                  },
+                  (_) {
+                    logger.info('Periodic sync completed for: ${list.name}');
+                  },
+                );
+              }
+            },
+          );
+        });
+      }
+
+      // Watch settings for changes to sync interval
+      _settingsSubscription?.cancel();
+      _settingsSubscription = watchSettingsUseCase().listen((settings) {
+        scheduleSyncTimer(settings.mappingsSyncIntervalHours);
+      });
+
+      // Initialize with current settings
+      final settingsResult = await getSettingsUseCase();
+      settingsResult.fold(
+        (failure) => logger.warning('Could not get settings for sync scheduler'),
+        (settings) => scheduleSyncTimer(settings.mappingsSyncIntervalHours),
+      );
+
+      logger.info('Periodic mapping list sync initialized');
+    } catch (e) {
+      logger.error('Failed to initialize periodic sync', e);
     }
   }
 
@@ -466,8 +596,64 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
     if (result != null) {
       final category = result['category'] as TwitchCategory?;
       if (category != null) {
-        final now = DateTime.now();
+        final logger = ref.read(appLoggerProvider);
+        final contributeToCommunity = result['contributeToCommunity'] as bool? ?? false;
+        final isEnabled = result['isEnabled'] as bool? ?? true;
         final normalizedPath = result['normalizedInstallPath'] as String?;
+        final listId = result['listId'] as String?;
+
+        logger.info(
+          'User selected category: ${category.name} (ID: ${category.id}) for process: $processName',
+        );
+
+        // Submit to community if requested
+        if (contributeToCommunity) {
+          try {
+            // Normalize process name: remove .exe extension for cross-platform compatibility
+            final normalizedProcessName = processName.toLowerCase().replaceAll('.exe', '');
+
+            // Use the submission URL from the user's selected list
+            final submissionUrl = result['submissionUrl'] as String?;
+
+            if (submissionUrl != null) {
+              logger.debug('Using submission URL from user-selected list: $submissionUrl');
+              final submitMappingUseCase = ref.read(submitMappingUseCaseProvider);
+              final submitResult = await submitMappingUseCase(
+                submissionUrl: submissionUrl,
+                processName: normalizedProcessName,
+                twitchCategoryId: category.id,
+                twitchCategoryName: category.name,
+                windowTitle: windowTitle,
+                normalizedInstallPath: normalizedPath,
+              );
+
+              submitResult.fold(
+                (failure) {
+                  logger.error('Failed to submit mapping: ${failure.message}');
+                },
+                (submissionResult) {
+                  final isVerification = submissionResult['isVerification'] as bool? ?? false;
+                  final issueUrl = submissionResult['issueUrl'] as String?;
+
+                  logger.info(
+                    isVerification
+                        ? 'Verified existing mapping: $processName'
+                        : 'Submitted new mapping: $processName',
+                  );
+                  if (issueUrl != null) {
+                    logger.debug('Submission URL: $issueUrl');
+                  }
+                },
+              );
+            } else {
+              logger.warning('No submission URL available, skipping community submission');
+            }
+          } catch (e) {
+            logger.error('Failed to submit mapping to community', e);
+          }
+        }
+
+        final now = DateTime.now();
 
         // Create and return a CategoryMapping with all required fields
         return CategoryMapping(
@@ -480,8 +666,9 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
           lastApiFetch: now,
           cacheExpiresAt: now.add(const Duration(hours: 24)),
           manualOverride: true, // User-created mappings are manual overrides
-          listId: result['listId'] as String? ?? 'my-custom-mappings',
-          isEnabled: result['isEnabled'] as bool? ?? true,
+          listId: listId ?? 'my-custom-mappings',
+          isEnabled: isEnabled,
+          pendingSubmission: contributeToCommunity,
         );
       }
     }
@@ -507,12 +694,18 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
       locale: locale,
       routerConfig: _appRouter.config(),
       builder: (context, child) {
-        return UpdateNotificationWidget(
-          navigatorKey: _appRouter.navigatorKey,
-          child: MainWindow(
-            router: _appRouter,
-            child: child ?? const SizedBox.shrink(),
-          ),
+        return Overlay(
+          initialEntries: [
+            OverlayEntry(
+              builder: (context) => UpdateNotificationWidget(
+                navigatorKey: _appRouter.navigatorKey,
+                child: MainWindow(
+                  router: _appRouter,
+                  child: child ?? const SizedBox.shrink(),
+                ),
+              ),
+            ),
+          ],
         );
       },
     );

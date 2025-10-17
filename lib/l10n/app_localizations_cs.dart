@@ -1847,4 +1847,54 @@ class AppLocalizationsCs extends AppLocalizations {
   @override
   String get welcomeSentryEnableSessionReplay =>
       'Povolit záznam relace (volitelné)';
+
+  @override
+  String get tutorialSkipButton => 'Přeskočit tutoriál';
+
+  @override
+  String get tutorialRestartButton => 'Zobrazit tutoriál';
+
+  @override
+  String get tutorialAutoSwitcherTabTitle => 'Automatický přepínač';
+
+  @override
+  String get tutorialAutoSwitcherTabDescription =>
+      'Toto je vaše hlavní řídicí centrum. Klikněte sem pro sledování a ovládání automatického přepínání kategorií na základě vaší aktivní aplikace.';
+
+  @override
+  String get tutorialMappingsTabTitle => 'Mapování';
+
+  @override
+  String get tutorialMappingsTabDescription =>
+      'Zde můžete spravovat mapování her na kategorie. Přidávejte vlastní mapování nebo používejte přednastavení od komunity pro automatické přepínání vaší kategorie na Twitchi.';
+
+  @override
+  String get tutorialSettingsTabTitle => 'Nastavení';
+
+  @override
+  String get tutorialSettingsTabDescription =>
+      'Přizpůsobte chování TKitu, vzhled a nakonfigurujte připojení k Twitchi.';
+
+  @override
+  String get tutorialAutoSwitcherControlTitle =>
+      'Automatické vs manuální přepínání';
+
+  @override
+  String get tutorialAutoSwitcherControlDescription =>
+      'Klikněte na tlačítko ZAPNOUT pro aktivaci automatického přepínání při spuštění her. Chcete, aby se spouštělo automaticky? Jděte do Nastavení a povolte \'Spustit monitorování při spuštění aplikace\'.\n\nAutomatický režim: Přepínání bez zásahu pro všechny namapované hry.\nManuální režim: Použijte klávesovou zkratku pro plnou kontrolu, když chcete aktualizovat.';
+
+  @override
+  String get tutorialAutoSwitcherPageTitle =>
+      'Jak funguje automatický přepínač';
+
+  @override
+  String get tutorialAutoSwitcherPageDescription =>
+      'TKit sleduje vaše aktivní okno. Když přepnete na hru, automaticky aktualizuje vaši kategorii na Twitchi na základě vašich mapování. Stiskněte \'Zapnout\' pro spuštění monitorování.';
+
+  @override
+  String get tutorialMappingsPageTitle => 'Správa mapování';
+
+  @override
+  String get tutorialMappingsPageDescription =>
+      'Mapování propojují aplikace s kategoriemi na Twitchi. Klikněte na \'Přidat mapování\' pro vytvoření vlastních, nebo spravujte komunitní seznamy pro import ověřených mapování od ostatních uživatelů.';
 }

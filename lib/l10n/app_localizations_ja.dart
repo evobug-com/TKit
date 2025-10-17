@@ -1755,4 +1755,52 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get welcomeSentryEnableSessionReplay => 'セッションリプレイを有効にする（オプション）';
+
+  @override
+  String get tutorialSkipButton => 'チュートリアルをスキップ';
+
+  @override
+  String get tutorialRestartButton => 'チュートリアルを表示';
+
+  @override
+  String get tutorialAutoSwitcherTabTitle => '自動スイッチャー';
+
+  @override
+  String get tutorialAutoSwitcherTabDescription =>
+      'ここはメインのコントロールセンターです。アクティブなアプリケーションに基づいて、自動カテゴリー切り替えを監視・制御するには、ここをクリックしてください。';
+
+  @override
+  String get tutorialMappingsTabTitle => 'マッピング';
+
+  @override
+  String get tutorialMappingsTabDescription =>
+      'ここでゲームとカテゴリーのマッピングを管理します。カスタムマッピングを追加したり、コミュニティプリセットを使用して、Twitchカテゴリーを自動的に切り替えることができます。';
+
+  @override
+  String get tutorialSettingsTabTitle => '設定';
+
+  @override
+  String get tutorialSettingsTabDescription =>
+      'TKitの動作、外観をカスタマイズし、Twitch接続を設定します。';
+
+  @override
+  String get tutorialAutoSwitcherControlTitle => '自動切り替えと手動切り替え';
+
+  @override
+  String get tutorialAutoSwitcherControlDescription =>
+      '「オンにする」ボタンをクリックして、ゲームを起動したときの自動切り替えを有効にします。自動的に開始したい場合は、設定で「アプリ起動時に監視を開始」を有効にしてください。\n\n自動モード：マッピング済みのすべてのゲームを自動で切り替えます。\n手動モード：更新したいときにホットキーでフルコントロールできます。';
+
+  @override
+  String get tutorialAutoSwitcherPageTitle => '自動スイッチャーの仕組み';
+
+  @override
+  String get tutorialAutoSwitcherPageDescription =>
+      'TKitはアクティブなウィンドウを監視します。ゲームに切り替えると、マッピングに基づいてTwitchカテゴリーが自動的に更新されます。「オンにする」を押して監視を開始してください。';
+
+  @override
+  String get tutorialMappingsPageTitle => 'マッピングの管理';
+
+  @override
+  String get tutorialMappingsPageDescription =>
+      'マッピングはアプリケーションとTwitchカテゴリーを接続します。「マッピングを追加」をクリックしてカスタムマッピングを作成するか、コミュニティリストを管理して他のユーザーが検証したマッピングをインポートしてください。';
 }

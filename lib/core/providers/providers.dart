@@ -8,6 +8,7 @@ import 'package:tkit/core/services/hotkey_service.dart';
 import 'package:tkit/core/services/language_service.dart';
 import 'package:tkit/core/services/notification_service.dart';
 import 'package:tkit/core/services/system_tray_service.dart';
+import 'package:tkit/core/services/tutorial_service.dart';
 import 'package:tkit/core/services/updater/github_update_service.dart';
 import 'package:tkit/core/utils/app_logger.dart';
 import 'package:tkit/features/settings/presentation/providers/settings_providers.dart';
@@ -139,6 +140,13 @@ Future<HotkeyService> hotkeyService(Ref ref) async {
     service.dispose();
   });
   return service;
+}
+
+/// Provides TutorialService
+@Riverpod(keepAlive: true)
+Future<TutorialService> tutorialService(Ref ref) async {
+  final prefs = await ref.watch(sharedPreferencesProvider.future);
+  return TutorialService(prefs);
 }
 
 // Convenience aliases for commonly used names

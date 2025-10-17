@@ -1437,6 +1437,62 @@
   "@welcomeSentryEnableSessionReplay": {
     "description": "Welcome screen enable session replay label"
   },
+  "tutorialSkipButton": "Pular Tutorial",
+  "@tutorialSkipButton": {
+    "description": "Button to skip the tutorial"
+  },
+  "tutorialRestartButton": "Mostrar Tutorial",
+  "@tutorialRestartButton": {
+    "description": "Button to restart/show the tutorial again"
+  },
+  "tutorialAutoSwitcherTabTitle": "Alternador Automático",
+  "@tutorialAutoSwitcherTabTitle": {
+    "description": "Tutorial showcase title for Auto Switcher tab"
+  },
+  "tutorialAutoSwitcherTabDescription": "Este é o seu centro de controle principal. Clique aqui para monitorar e controlar a alternância automática de categorias com base na sua aplicação ativa.",
+  "@tutorialAutoSwitcherTabDescription": {
+    "description": "Tutorial showcase description for Auto Switcher tab"
+  },
+  "tutorialMappingsTabTitle": "Mapeamentos",
+  "@tutorialMappingsTabTitle": {
+    "description": "Tutorial showcase title for Mappings tab"
+  },
+  "tutorialMappingsTabDescription": "Gerencie seus mapeamentos de jogo para categoria aqui. Adicione mapeamentos personalizados ou use predefinições da comunidade para alternar automaticamente sua categoria da Twitch.",
+  "@tutorialMappingsTabDescription": {
+    "description": "Tutorial showcase description for Mappings tab"
+  },
+  "tutorialSettingsTabTitle": "Configurações",
+  "@tutorialSettingsTabTitle": {
+    "description": "Tutorial showcase title for Settings tab"
+  },
+  "tutorialSettingsTabDescription": "Personalize o comportamento e aparência do TKit, e configure sua conexão com a Twitch.",
+  "@tutorialSettingsTabDescription": {
+    "description": "Tutorial showcase description for Settings tab"
+  },
+  "tutorialAutoSwitcherControlTitle": "Alternância Automática vs Manual",
+  "@tutorialAutoSwitcherControlTitle": {
+    "description": "Title for the Auto Switcher control tutorial"
+  },
+  "tutorialAutoSwitcherControlDescription": "Clique no botão LIGAR para ativar a alternância automática quando você iniciar jogos. Quer que inicie automaticamente? Vá para Configurações e ative 'Iniciar monitoramento ao abrir o aplicativo'.\n\nModo automático: Alternância sem intervenção para todos os jogos mapeados.\nModo manual: Use sua tecla de atalho para controle total quando quiser atualizar.",
+  "@tutorialAutoSwitcherControlDescription": {
+    "description": "Description explaining automatic vs manual switcher modes"
+  },
+  "tutorialAutoSwitcherPageTitle": "Como Funciona o Alternador Automático",
+  "@tutorialAutoSwitcherPageTitle": {
+    "description": "Tutorial showcase title for Auto Switcher page main content"
+  },
+  "tutorialAutoSwitcherPageDescription": "O TKit monitora sua janela ativa. Quando você alterna para um jogo, ele atualiza automaticamente sua categoria da Twitch com base nos seus mapeamentos. Pressione 'Ligar' para começar a monitorar.",
+  "@tutorialAutoSwitcherPageDescription": {
+    "description": "Tutorial showcase description for Auto Switcher page main content"
+  },
+  "tutorialMappingsPageTitle": "Gerenciando Mapeamentos",
+  "@tutorialMappingsPageTitle": {
+    "description": "Tutorial showcase title for Mappings page main content"
+  },
+  "tutorialMappingsPageDescription": "Mapeamentos conectam aplicações a categorias da Twitch. Clique em 'Adicionar Mapeamento' para criar personalizados, ou gerencie listas da comunidade para importar mapeamentos verificados de outros usuários.",
+  "@tutorialMappingsPageDescription": {
+    "description": "Tutorial showcase description for Mappings page main content"
+  },
   "settingsDebounceTimeDescription": "Tempo de espera antes de alternar a categoria após mudança de aplicativo (evita alternâncias rápidas)",
   "@settingsDebounceTimeDescription": {
     "description": "Debounce time setting description"

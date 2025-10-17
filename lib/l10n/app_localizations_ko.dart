@@ -1756,4 +1756,52 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get welcomeSentryEnableSessionReplay => '세션 재생 활성화 (선택사항)';
+
+  @override
+  String get tutorialSkipButton => '튜토리얼 건너뛰기';
+
+  @override
+  String get tutorialRestartButton => '튜토리얼 보기';
+
+  @override
+  String get tutorialAutoSwitcherTabTitle => '자동 전환';
+
+  @override
+  String get tutorialAutoSwitcherTabDescription =>
+      '메인 컨트롤 센터입니다. 여기를 클릭하면 활성 애플리케이션에 따라 카테고리가 자동으로 전환되는 것을 모니터링하고 제어할 수 있습니다.';
+
+  @override
+  String get tutorialMappingsTabTitle => '매핑';
+
+  @override
+  String get tutorialMappingsTabDescription =>
+      '게임과 카테고리 매핑을 관리합니다. 사용자 지정 매핑을 추가하거나 커뮤니티 프리셋을 사용하여 Twitch 카테고리를 자동으로 전환할 수 있습니다.';
+
+  @override
+  String get tutorialSettingsTabTitle => '설정';
+
+  @override
+  String get tutorialSettingsTabDescription =>
+      'TKit의 동작, 외관을 사용자 지정하고 Twitch 연결을 구성합니다.';
+
+  @override
+  String get tutorialAutoSwitcherControlTitle => '자동 vs 수동 전환';
+
+  @override
+  String get tutorialAutoSwitcherControlDescription =>
+      '켜기 버튼을 클릭하면 게임 실행 시 자동 전환이 활성화됩니다. 자동으로 시작하고 싶으신가요? 설정으로 이동하여 \'앱 실행 시 모니터링 시작\'을 활성화하세요.\n\n자동 모드: 모든 매핑된 게임에 대해 자동 전환됩니다.\n수동 모드: 원하는 때에 업데이트하려면 단축키를 사용하세요.';
+
+  @override
+  String get tutorialAutoSwitcherPageTitle => '자동 전환 작동 방식';
+
+  @override
+  String get tutorialAutoSwitcherPageDescription =>
+      'TKit은 활성 창을 모니터링합니다. 게임으로 전환하면 매핑에 따라 Twitch 카테고리가 자동으로 업데이트됩니다. 모니터링을 시작하려면 \'켜기\'를 누르세요.';
+
+  @override
+  String get tutorialMappingsPageTitle => '매핑 관리';
+
+  @override
+  String get tutorialMappingsPageDescription =>
+      '매핑은 애플리케이션과 Twitch 카테고리를 연결합니다. \'매핑 추가\'를 클릭하여 사용자 지정 매핑을 만들거나 커뮤니티 목록을 관리하여 다른 사용자가 검증한 매핑을 가져올 수 있습니다.';
 }

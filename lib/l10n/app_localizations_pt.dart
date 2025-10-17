@@ -1857,4 +1857,54 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get welcomeSentryEnableSessionReplay =>
       'Ativar repetição de sessão (opcional)';
+
+  @override
+  String get tutorialSkipButton => 'Pular Tutorial';
+
+  @override
+  String get tutorialRestartButton => 'Mostrar Tutorial';
+
+  @override
+  String get tutorialAutoSwitcherTabTitle => 'Alternador Automático';
+
+  @override
+  String get tutorialAutoSwitcherTabDescription =>
+      'Este é o seu centro de controle principal. Clique aqui para monitorar e controlar a alternância automática de categorias com base na sua aplicação ativa.';
+
+  @override
+  String get tutorialMappingsTabTitle => 'Mapeamentos';
+
+  @override
+  String get tutorialMappingsTabDescription =>
+      'Gerencie seus mapeamentos de jogo para categoria aqui. Adicione mapeamentos personalizados ou use predefinições da comunidade para alternar automaticamente sua categoria da Twitch.';
+
+  @override
+  String get tutorialSettingsTabTitle => 'Configurações';
+
+  @override
+  String get tutorialSettingsTabDescription =>
+      'Personalize o comportamento e aparência do TKit, e configure sua conexão com a Twitch.';
+
+  @override
+  String get tutorialAutoSwitcherControlTitle =>
+      'Alternância Automática vs Manual';
+
+  @override
+  String get tutorialAutoSwitcherControlDescription =>
+      'Clique no botão LIGAR para ativar a alternância automática quando você iniciar jogos. Quer que inicie automaticamente? Vá para Configurações e ative \'Iniciar monitoramento ao abrir o aplicativo\'.\n\nModo automático: Alternância sem intervenção para todos os jogos mapeados.\nModo manual: Use sua tecla de atalho para controle total quando quiser atualizar.';
+
+  @override
+  String get tutorialAutoSwitcherPageTitle =>
+      'Como Funciona o Alternador Automático';
+
+  @override
+  String get tutorialAutoSwitcherPageDescription =>
+      'O TKit monitora sua janela ativa. Quando você alterna para um jogo, ele atualiza automaticamente sua categoria da Twitch com base nos seus mapeamentos. Pressione \'Ligar\' para começar a monitorar.';
+
+  @override
+  String get tutorialMappingsPageTitle => 'Gerenciando Mapeamentos';
+
+  @override
+  String get tutorialMappingsPageDescription =>
+      'Mapeamentos conectam aplicações a categorias da Twitch. Clique em \'Adicionar Mapeamento\' para criar personalizados, ou gerencie listas da comunidade para importar mapeamentos verificados de outros usuários.';
 }

@@ -1866,4 +1866,54 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get welcomeSentryEnableSessionReplay =>
       'Sitzungsaufzeichnung aktivieren (optional)';
+
+  @override
+  String get tutorialSkipButton => 'Tutorial überspringen';
+
+  @override
+  String get tutorialRestartButton => 'Tutorial anzeigen';
+
+  @override
+  String get tutorialAutoSwitcherTabTitle => 'Auto-Umschalter';
+
+  @override
+  String get tutorialAutoSwitcherTabDescription =>
+      'Dies ist Ihre zentrale Steuerzentrale. Klicken Sie hier, um die automatische Kategorieumschaltung basierend auf Ihrer aktiven Anwendung zu überwachen und zu steuern.';
+
+  @override
+  String get tutorialMappingsTabTitle => 'Zuordnungen';
+
+  @override
+  String get tutorialMappingsTabDescription =>
+      'Verwalten Sie hier Ihre Spiel-zu-Kategorie-Zuordnungen. Fügen Sie benutzerdefinierte Zuordnungen hinzu oder verwenden Sie Community-Voreinstellungen, um Ihre Twitch-Kategorie automatisch zu wechseln.';
+
+  @override
+  String get tutorialSettingsTabTitle => 'Einstellungen';
+
+  @override
+  String get tutorialSettingsTabDescription =>
+      'Passen Sie das Verhalten und Aussehen von TKit an und konfigurieren Sie Ihre Twitch-Verbindung.';
+
+  @override
+  String get tutorialAutoSwitcherControlTitle =>
+      'Automatische vs. manuelle Umschaltung';
+
+  @override
+  String get tutorialAutoSwitcherControlDescription =>
+      'Klicken Sie auf die Schaltfläche EINSCHALTEN, um die automatische Umschaltung zu aktivieren, wenn Sie Spiele starten. Möchten Sie, dass es automatisch startet? Gehen Sie zu Einstellungen und aktivieren Sie \'Überwachung beim App-Start starten\'.\n\nAutomatischer Modus: Freihändiges Umschalten für alle zugeordneten Spiele.\nManueller Modus: Verwenden Sie Ihren Hotkey für volle Kontrolle, wenn Sie aktualisieren möchten.';
+
+  @override
+  String get tutorialAutoSwitcherPageTitle =>
+      'Wie der Auto-Umschalter funktioniert';
+
+  @override
+  String get tutorialAutoSwitcherPageDescription =>
+      'TKit überwacht Ihr aktives Fenster. Wenn Sie zu einem Spiel wechseln, aktualisiert es automatisch Ihre Twitch-Kategorie basierend auf Ihren Zuordnungen. Drücken Sie \'Einschalten\', um die Überwachung zu starten.';
+
+  @override
+  String get tutorialMappingsPageTitle => 'Zuordnungen verwalten';
+
+  @override
+  String get tutorialMappingsPageDescription =>
+      'Zuordnungen verbinden Anwendungen mit Twitch-Kategorien. Klicken Sie auf \'Zuordnung hinzufügen\', um benutzerdefinierte zu erstellen, oder verwalten Sie Community-Listen, um verifizierte Zuordnungen von anderen Benutzern zu importieren.';
 }

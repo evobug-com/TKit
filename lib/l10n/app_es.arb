@@ -1577,6 +1577,62 @@
   "@welcomeSentryEnableSessionReplay": {
     "description": "Welcome screen enable session replay label"
   },
+  "tutorialSkipButton": "Omitir Tutorial",
+  "@tutorialSkipButton": {
+    "description": "Button to skip the tutorial"
+  },
+  "tutorialRestartButton": "Mostrar Tutorial",
+  "@tutorialRestartButton": {
+    "description": "Button to restart/show the tutorial again"
+  },
+  "tutorialAutoSwitcherTabTitle": "Cambio Automático",
+  "@tutorialAutoSwitcherTabTitle": {
+    "description": "Tutorial showcase title for Auto Switcher tab"
+  },
+  "tutorialAutoSwitcherTabDescription": "Este es tu centro de control principal. Haz clic aquí para monitorear y controlar el cambio automático de categoría según tu aplicación activa.",
+  "@tutorialAutoSwitcherTabDescription": {
+    "description": "Tutorial showcase description for Auto Switcher tab"
+  },
+  "tutorialMappingsTabTitle": "Mapeos",
+  "@tutorialMappingsTabTitle": {
+    "description": "Tutorial showcase title for Mappings tab"
+  },
+  "tutorialMappingsTabDescription": "Gestiona tus mapeos de juego a categoría aquí. Añade mapeos personalizados o usa preajustes de la comunidad para cambiar automáticamente tu categoría de Twitch.",
+  "@tutorialMappingsTabDescription": {
+    "description": "Tutorial showcase description for Mappings tab"
+  },
+  "tutorialSettingsTabTitle": "Configuración",
+  "@tutorialSettingsTabTitle": {
+    "description": "Tutorial showcase title for Settings tab"
+  },
+  "tutorialSettingsTabDescription": "Personaliza el comportamiento y apariencia de TKit, y configura tu conexión de Twitch.",
+  "@tutorialSettingsTabDescription": {
+    "description": "Tutorial showcase description for Settings tab"
+  },
+  "tutorialAutoSwitcherControlTitle": "Cambio Automático vs Manual",
+  "@tutorialAutoSwitcherControlTitle": {
+    "description": "Title for the Auto Switcher control tutorial"
+  },
+  "tutorialAutoSwitcherControlDescription": "Haz clic en el botón ACTIVAR para habilitar el cambio automático cuando inicies juegos. ¿Quieres que inicie automáticamente? Ve a Configuración y habilita 'Iniciar monitoreo al abrir la aplicación'.\n\nModo automático: Cambio sin intervención para todos los juegos mapeados.\nModo manual: Usa tu atajo de teclado para tener control total cuando quieras actualizar.",
+  "@tutorialAutoSwitcherControlDescription": {
+    "description": "Description explaining automatic vs manual switcher modes"
+  },
+  "tutorialAutoSwitcherPageTitle": "Cómo Funciona el Cambio Automático",
+  "@tutorialAutoSwitcherPageTitle": {
+    "description": "Tutorial showcase title for Auto Switcher page main content"
+  },
+  "tutorialAutoSwitcherPageDescription": "TKit monitorea tu ventana activa. Cuando cambias a un juego, actualiza automáticamente tu categoría de Twitch según tus mapeos. Presiona 'Activar' para comenzar a monitorear.",
+  "@tutorialAutoSwitcherPageDescription": {
+    "description": "Tutorial showcase description for Auto Switcher page main content"
+  },
+  "tutorialMappingsPageTitle": "Gestión de Mapeos",
+  "@tutorialMappingsPageTitle": {
+    "description": "Tutorial showcase title for Mappings page main content"
+  },
+  "tutorialMappingsPageDescription": "Los mapeos conectan aplicaciones con categorías de Twitch. Haz clic en 'Añadir Mapeo' para crear personalizados, o gestiona listas de la comunidad para importar mapeos verificados de otros usuarios.",
+  "@tutorialMappingsPageDescription": {
+    "description": "Tutorial showcase description for Mappings page main content"
+  },
   "settingsDebounceTimeDescription": "Tiempo de espera antes de cambiar la categoría después del cambio de aplicación (evita cambios rápidos)",
   "@settingsDebounceTimeDescription": {
     "description": "Debounce time setting description"

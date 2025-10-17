@@ -1859,4 +1859,53 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get welcomeSentryEnableSessionReplay =>
       'Habilitar reproducción de sesión (opcional)';
+
+  @override
+  String get tutorialSkipButton => 'Omitir Tutorial';
+
+  @override
+  String get tutorialRestartButton => 'Mostrar Tutorial';
+
+  @override
+  String get tutorialAutoSwitcherTabTitle => 'Cambio Automático';
+
+  @override
+  String get tutorialAutoSwitcherTabDescription =>
+      'Este es tu centro de control principal. Haz clic aquí para monitorear y controlar el cambio automático de categoría según tu aplicación activa.';
+
+  @override
+  String get tutorialMappingsTabTitle => 'Mapeos';
+
+  @override
+  String get tutorialMappingsTabDescription =>
+      'Gestiona tus mapeos de juego a categoría aquí. Añade mapeos personalizados o usa preajustes de la comunidad para cambiar automáticamente tu categoría de Twitch.';
+
+  @override
+  String get tutorialSettingsTabTitle => 'Configuración';
+
+  @override
+  String get tutorialSettingsTabDescription =>
+      'Personaliza el comportamiento y apariencia de TKit, y configura tu conexión de Twitch.';
+
+  @override
+  String get tutorialAutoSwitcherControlTitle => 'Cambio Automático vs Manual';
+
+  @override
+  String get tutorialAutoSwitcherControlDescription =>
+      'Haz clic en el botón ACTIVAR para habilitar el cambio automático cuando inicies juegos. ¿Quieres que inicie automáticamente? Ve a Configuración y habilita \'Iniciar monitoreo al abrir la aplicación\'.\n\nModo automático: Cambio sin intervención para todos los juegos mapeados.\nModo manual: Usa tu atajo de teclado para tener control total cuando quieras actualizar.';
+
+  @override
+  String get tutorialAutoSwitcherPageTitle =>
+      'Cómo Funciona el Cambio Automático';
+
+  @override
+  String get tutorialAutoSwitcherPageDescription =>
+      'TKit monitorea tu ventana activa. Cuando cambias a un juego, actualiza automáticamente tu categoría de Twitch según tus mapeos. Presiona \'Activar\' para comenzar a monitorear.';
+
+  @override
+  String get tutorialMappingsPageTitle => 'Gestión de Mapeos';
+
+  @override
+  String get tutorialMappingsPageDescription =>
+      'Los mapeos conectan aplicaciones con categorías de Twitch. Haz clic en \'Añadir Mapeo\' para crear personalizados, o gestiona listas de la comunidad para importar mapeos verificados de otros usuarios.';
 }

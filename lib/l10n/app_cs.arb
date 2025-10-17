@@ -1577,6 +1577,62 @@
   "@welcomeSentryEnableSessionReplay": {
     "description": "Welcome screen enable session replay label"
   },
+  "tutorialSkipButton": "Přeskočit tutoriál",
+  "@tutorialSkipButton": {
+    "description": "Button to skip the tutorial"
+  },
+  "tutorialRestartButton": "Zobrazit tutoriál",
+  "@tutorialRestartButton": {
+    "description": "Button to restart/show the tutorial again"
+  },
+  "tutorialAutoSwitcherTabTitle": "Automatický přepínač",
+  "@tutorialAutoSwitcherTabTitle": {
+    "description": "Tutorial showcase title for Auto Switcher tab"
+  },
+  "tutorialAutoSwitcherTabDescription": "Toto je vaše hlavní řídicí centrum. Klikněte sem pro sledování a ovládání automatického přepínání kategorií na základě vaší aktivní aplikace.",
+  "@tutorialAutoSwitcherTabDescription": {
+    "description": "Tutorial showcase description for Auto Switcher tab"
+  },
+  "tutorialMappingsTabTitle": "Mapování",
+  "@tutorialMappingsTabTitle": {
+    "description": "Tutorial showcase title for Mappings tab"
+  },
+  "tutorialMappingsTabDescription": "Zde můžete spravovat mapování her na kategorie. Přidávejte vlastní mapování nebo používejte přednastavení od komunity pro automatické přepínání vaší kategorie na Twitchi.",
+  "@tutorialMappingsTabDescription": {
+    "description": "Tutorial showcase description for Mappings tab"
+  },
+  "tutorialSettingsTabTitle": "Nastavení",
+  "@tutorialSettingsTabTitle": {
+    "description": "Tutorial showcase title for Settings tab"
+  },
+  "tutorialSettingsTabDescription": "Přizpůsobte chování TKitu, vzhled a nakonfigurujte připojení k Twitchi.",
+  "@tutorialSettingsTabDescription": {
+    "description": "Tutorial showcase description for Settings tab"
+  },
+  "tutorialAutoSwitcherControlTitle": "Automatické vs manuální přepínání",
+  "@tutorialAutoSwitcherControlTitle": {
+    "description": "Title for the Auto Switcher control tutorial"
+  },
+  "tutorialAutoSwitcherControlDescription": "Klikněte na tlačítko ZAPNOUT pro aktivaci automatického přepínání při spuštění her. Chcete, aby se spouštělo automaticky? Jděte do Nastavení a povolte 'Spustit monitorování při spuštění aplikace'.\n\nAutomatický režim: Přepínání bez zásahu pro všechny namapované hry.\nManuální režim: Použijte klávesovou zkratku pro plnou kontrolu, když chcete aktualizovat.",
+  "@tutorialAutoSwitcherControlDescription": {
+    "description": "Description explaining automatic vs manual switcher modes"
+  },
+  "tutorialAutoSwitcherPageTitle": "Jak funguje automatický přepínač",
+  "@tutorialAutoSwitcherPageTitle": {
+    "description": "Tutorial showcase title for Auto Switcher page main content"
+  },
+  "tutorialAutoSwitcherPageDescription": "TKit sleduje vaše aktivní okno. Když přepnete na hru, automaticky aktualizuje vaši kategorii na Twitchi na základě vašich mapování. Stiskněte 'Zapnout' pro spuštění monitorování.",
+  "@tutorialAutoSwitcherPageDescription": {
+    "description": "Tutorial showcase description for Auto Switcher page main content"
+  },
+  "tutorialMappingsPageTitle": "Správa mapování",
+  "@tutorialMappingsPageTitle": {
+    "description": "Tutorial showcase title for Mappings page main content"
+  },
+  "tutorialMappingsPageDescription": "Mapování propojují aplikace s kategoriemi na Twitchi. Klikněte na 'Přidat mapování' pro vytvoření vlastních, nebo spravujte komunitní seznamy pro import ověřených mapování od ostatních uživatelů.",
+  "@tutorialMappingsPageDescription": {
+    "description": "Tutorial showcase description for Mappings page main content"
+  },
   "settingsDebounceTimeDescription": "Čekací doba před přepnutím kategorie po změně aplikace (zabraňuje rychlému přepínání)",
   "@settingsDebounceTimeDescription": {
     "description": "Debounce time setting description"

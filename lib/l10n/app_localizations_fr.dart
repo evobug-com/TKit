@@ -1870,4 +1870,54 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get welcomeSentryEnableSessionReplay =>
       'Activer la relecture de session (facultatif)';
+
+  @override
+  String get tutorialSkipButton => 'Passer le tutoriel';
+
+  @override
+  String get tutorialRestartButton => 'Afficher le tutoriel';
+
+  @override
+  String get tutorialAutoSwitcherTabTitle => 'Changement automatique';
+
+  @override
+  String get tutorialAutoSwitcherTabDescription =>
+      'Ceci est votre centre de contrôle principal. Cliquez ici pour surveiller et contrôler le changement automatique de catégorie en fonction de votre application active.';
+
+  @override
+  String get tutorialMappingsTabTitle => 'Associations';
+
+  @override
+  String get tutorialMappingsTabDescription =>
+      'Gérez vos associations jeu-catégorie ici. Ajoutez des associations personnalisées ou utilisez des préconfigurations communautaires pour changer automatiquement votre catégorie Twitch.';
+
+  @override
+  String get tutorialSettingsTabTitle => 'Paramètres';
+
+  @override
+  String get tutorialSettingsTabDescription =>
+      'Personnalisez le comportement et l\'apparence de TKit, et configurez votre connexion Twitch.';
+
+  @override
+  String get tutorialAutoSwitcherControlTitle =>
+      'Changement automatique vs manuel';
+
+  @override
+  String get tutorialAutoSwitcherControlDescription =>
+      'Cliquez sur le bouton ACTIVER pour activer le changement automatique lorsque vous lancez des jeux. Vous voulez qu\'il démarre automatiquement ? Allez dans Paramètres et activez \'Démarrer la surveillance au lancement de l\'application\'.\n\nMode automatique : Changement mains libres pour tous les jeux associés.\nMode manuel : Utilisez votre raccourci clavier pour un contrôle total lorsque vous souhaitez mettre à jour.';
+
+  @override
+  String get tutorialAutoSwitcherPageTitle =>
+      'Comment fonctionne le changement automatique';
+
+  @override
+  String get tutorialAutoSwitcherPageDescription =>
+      'TKit surveille votre fenêtre active. Lorsque vous passez à un jeu, il met automatiquement à jour votre catégorie Twitch en fonction de vos associations. Appuyez sur \'Activer\' pour commencer la surveillance.';
+
+  @override
+  String get tutorialMappingsPageTitle => 'Gestion des associations';
+
+  @override
+  String get tutorialMappingsPageDescription =>
+      'Les associations connectent les applications aux catégories Twitch. Cliquez sur \'Ajouter une association\' pour en créer de personnalisées, ou gérez les listes communautaires pour importer des associations vérifiées d\'autres utilisateurs.';
 }

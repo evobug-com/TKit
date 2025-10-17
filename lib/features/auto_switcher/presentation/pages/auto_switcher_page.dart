@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/spacing.dart';
@@ -12,6 +13,7 @@ import 'package:tkit/shared/widgets/feedback/toast.dart';
 import 'package:tkit/shared/widgets/buttons/primary_button.dart';
 import 'package:tkit/shared/widgets/buttons/accent_button.dart';
 import 'package:tkit/shared/widgets/hotkey_display.dart';
+import 'package:tkit/core/providers/providers.dart';
 import 'package:tkit/features/settings/presentation/providers/settings_providers.dart';
 import 'package:tkit/features/settings/presentation/states/settings_state.dart';
 import 'package:tkit/features/auto_switcher/domain/entities/orchestration_status.dart';
@@ -33,6 +35,9 @@ class AutoSwitcherPage extends ConsumerStatefulWidget {
 }
 
 class _AutoSwitcherPageState extends ConsumerState<AutoSwitcherPage> {
+  TutorialCoachMark? _tutorialCoachMark;
+  final GlobalKey _controlCardKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -42,17 +47,148 @@ class _AutoSwitcherPageState extends ConsumerState<AutoSwitcherPage> {
       if (ref.read(settingsProvider) is SettingsInitial) {
         settingsNotifier.loadSettings();
       }
+
+      // Check and show tutorial
+      _checkAndShowTutorial();
+    });
+  }
+
+  Future<void> _checkAndShowTutorial() async {
+    try {
+      final tutorialService = await ref.read(tutorialServiceProvider.future);
+      final isCompleted = await tutorialService.isTutorialCompleted();
+
+      if (!isCompleted && mounted) {
+        // Wait a bit for widgets to render
+        await Future<void>.delayed(const Duration(milliseconds: 500));
+        if (mounted) {
+          _showTutorial();
+        }
+      }
+    } catch (e) {
+      final logger = ref.read(appLoggerProvider);
+      logger.warning('Failed to check tutorial status: $e');
+    }
+  }
+
+  void _showTutorial() {
+    final l10n = AppLocalizations.of(context)!;
+    final logger = ref.read(appLoggerProvider);
+
+    final targets = <TargetFocus>[
+      TargetFocus(
+        identify: "autoSwitcherControl",
+        keyTarget: _controlCardKey,
+        alignSkip: Alignment.topRight,
+        shape: ShapeLightFocus.RRect,
+        radius: 8,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return Container(
+                margin: const EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: TKitColors.surface,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: TKitColors.accentBright,
+                    width: 2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: TKitColors.accentBright.withOpacity(0.3),
+                      blurRadius: 20,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.lightbulb_outline,
+                          color: TKitColors.accentBright,
+                          size: 24,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            l10n.tutorialAutoSwitcherControlTitle,
+                            style: TKitTextStyles.heading3.copyWith(
+                              color: TKitColors.accentBright,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      l10n.tutorialAutoSwitcherControlDescription,
+                      style: TKitTextStyles.bodyMedium.copyWith(
+                        color: TKitColors.textPrimary,
+                        height: 1.6,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    ];
+
+    _tutorialCoachMark = TutorialCoachMark(
+      targets: targets,
+      colorShadow: Colors.black,
+      opacityShadow: 0.8,
+      paddingFocus: 10,
+      onFinish: () async {
+        logger.info('Auto switcher tutorial completed');
+        try {
+          final tutorialService = await ref.read(tutorialServiceProvider.future);
+          await tutorialService.completeTutorial();
+        } catch (e) {
+          logger.warning('Failed to mark tutorial as completed: $e');
+        }
+      },
+      onSkip: () {
+        logger.info('Auto switcher tutorial skipped');
+        // Mark tutorial as completed asynchronously (fire and forget)
+        ref.read(tutorialServiceProvider.future).then((tutorialService) {
+          tutorialService.completeTutorial();
+        }).catchError((e) {
+          logger.warning('Failed to mark tutorial as completed: $e');
+        });
+        return true;
+      },
+    );
+
+    // Wait for next frame to ensure context is valid
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _tutorialCoachMark?.show(context: context);
+        logger.info('Auto switcher tutorial shown');
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return const _AutoSwitcherPageContent();
+    return _AutoSwitcherPageContent(controlCardKey: _controlCardKey);
   }
 }
 
 class _AutoSwitcherPageContent extends ConsumerWidget {
-  const _AutoSwitcherPageContent();
+  final GlobalKey? controlCardKey;
+
+  const _AutoSwitcherPageContent({this.controlCardKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -118,22 +254,25 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                             ),
                             const VSpace.sm(),
 
-                            // Main control card
-                            _buildControlCard(
-                              context,
-                              l10n,
-                              isMonitoring: isMonitoring,
-                              isLoading: isLoading,
-                              hotkey: manualUpdateHotkey,
-                              onStart: () => ref
-                                  .read(autoSwitcherProvider.notifier)
-                                  .startMonitoring(),
-                              onStop: () => ref
-                                  .read(autoSwitcherProvider.notifier)
-                                  .stopMonitoring(),
-                              onUpdate: () => ref
-                                  .read(autoSwitcherProvider.notifier)
-                                  .manualUpdate(),
+                            // Main control card with tutorial key
+                            Container(
+                              key: controlCardKey,
+                              child: _buildControlCard(
+                                context,
+                                l10n,
+                                isMonitoring: isMonitoring,
+                                isLoading: isLoading,
+                                hotkey: manualUpdateHotkey,
+                                onStart: () => ref
+                                    .read(autoSwitcherProvider.notifier)
+                                    .startMonitoring(),
+                                onStop: () => ref
+                                    .read(autoSwitcherProvider.notifier)
+                                    .stopMonitoring(),
+                                onUpdate: () => ref
+                                    .read(autoSwitcherProvider.notifier)
+                                    .manualUpdate(),
+                              ),
                             ),
                           ],
                         ),

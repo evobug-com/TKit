@@ -3337,6 +3337,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enable session replay (optional)'**
   String get welcomeSentryEnableSessionReplay;
+
+  /// Button to skip the tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Skip Tutorial'**
+  String get tutorialSkipButton;
+
+  /// Button to restart/show the tutorial again
+  ///
+  /// In en, this message translates to:
+  /// **'Show Tutorial'**
+  String get tutorialRestartButton;
+
+  /// Tutorial showcase title for Auto Switcher tab
+  ///
+  /// In en, this message translates to:
+  /// **'Auto Switcher'**
+  String get tutorialAutoSwitcherTabTitle;
+
+  /// Tutorial showcase description for Auto Switcher tab
+  ///
+  /// In en, this message translates to:
+  /// **'This is your main control center. Click here to monitor and control automatic category switching based on your active application.'**
+  String get tutorialAutoSwitcherTabDescription;
+
+  /// Tutorial showcase title for Mappings tab
+  ///
+  /// In en, this message translates to:
+  /// **'Mappings'**
+  String get tutorialMappingsTabTitle;
+
+  /// Tutorial showcase description for Mappings tab
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your game-to-category mappings here. Add custom mappings or use community presets to automatically switch your Twitch category.'**
+  String get tutorialMappingsTabDescription;
+
+  /// Tutorial showcase title for Settings tab
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get tutorialSettingsTabTitle;
+
+  /// Tutorial showcase description for Settings tab
+  ///
+  /// In en, this message translates to:
+  /// **'Customize TKit\'s behavior, appearance, and configure your Twitch connection.'**
+  String get tutorialSettingsTabDescription;
+
+  /// Title for the Auto Switcher control tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic vs Manual Switching'**
+  String get tutorialAutoSwitcherControlTitle;
+
+  /// Description explaining automatic vs manual switcher modes
+  ///
+  /// In en, this message translates to:
+  /// **'Click the TURN ON button to enable automatic switching when you launch games. Want it to start automatically? Go to Settings and enable \'Start monitoring on app launch\'.\n\nAutomatic mode: Hands-free switching for all mapped games.\nManual mode: Use your hotkey for full control when you want to update.'**
+  String get tutorialAutoSwitcherControlDescription;
+
+  /// Tutorial showcase title for Auto Switcher page main content
+  ///
+  /// In en, this message translates to:
+  /// **'How Auto Switcher Works'**
+  String get tutorialAutoSwitcherPageTitle;
+
+  /// Tutorial showcase description for Auto Switcher page main content
+  ///
+  /// In en, this message translates to:
+  /// **'TKit monitors your active window. When you switch to a game, it automatically updates your Twitch category based on your mappings. Press \'Turn On\' to start monitoring.'**
+  String get tutorialAutoSwitcherPageDescription;
+
+  /// Tutorial showcase title for Mappings page main content
+  ///
+  /// In en, this message translates to:
+  /// **'Managing Mappings'**
+  String get tutorialMappingsPageTitle;
+
+  /// Tutorial showcase description for Mappings page main content
+  ///
+  /// In en, this message translates to:
+  /// **'Mappings connect applications to Twitch categories. Click \'Add Mapping\' to create custom ones, or manage community lists to import verified mappings from other users.'**
+  String get tutorialMappingsPageDescription;
 }
 
 class _AppLocalizationsDelegate

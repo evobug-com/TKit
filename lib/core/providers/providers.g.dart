@@ -632,3 +632,47 @@ final class HotkeyServiceProvider
 }
 
 String _$hotkeyServiceHash() => r'928e56386df23d251f6b7e2b31cb161798a3541e';
+
+/// Provides TutorialService
+
+@ProviderFor(tutorialService)
+const tutorialServiceProvider = TutorialServiceProvider._();
+
+/// Provides TutorialService
+
+final class TutorialServiceProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<TutorialService>,
+          TutorialService,
+          FutureOr<TutorialService>
+        >
+    with $FutureModifier<TutorialService>, $FutureProvider<TutorialService> {
+  /// Provides TutorialService
+  const TutorialServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'tutorialServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$tutorialServiceHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<TutorialService> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<TutorialService> create(Ref ref) {
+    return tutorialService(ref);
+  }
+}
+
+String _$tutorialServiceHash() => r'a70214eb2843922dd8e4a910112f9c0b9a64b4d0';
