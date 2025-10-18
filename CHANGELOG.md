@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### TKit
 
+## [0.0.1-dev.7] - 2025-10-18
+
+### TKit
+
 #### Added
 - Sentry error tracking and performance monitoring
 - Tutorial screens for first-time users
@@ -199,7 +203,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **System Tray**: Minimize to tray, quick access to features
 - **Auto Updates**: Check for and install updates from GitHub releases
 
-[Unreleased]: https://github.com/evobug-com/TKit/compare/v0.0.1-dev.6...HEAD
+[Unreleased]: https://github.com/evobug-com/TKit/compare/v0.0.1-dev.7...HEAD
+[0.0.1-dev.7]: https://github.com/evobug-com/TKit/releases/tag/v0.0.1-dev.7
 [0.0.1-dev.6]: https://github.com/evobug-com/TKit/releases/tag/v0.0.1-dev.6
 [0.0.1-dev.5]: https://github.com/evobug-com/TKit/releases/tag/v0.0.1-dev.5
 [0.0.1-dev.4]: https://github.com/evobug-com/TKit/releases/tag/v0.0.1-dev.4

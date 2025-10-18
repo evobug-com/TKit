@@ -6,7 +6,7 @@
 
 **Automatically update your Twitch category based on what you're doing**
 
-[![Latest Release](https://img.shields.io/github/v/release/evobug-com/TKit?label=Stable&color=brightgreen&style=flat-square)](https://github.com/evobug-com/TKit/releases/latest)
+[![Latest Release](https://img.shields.io/github/v/release/evobug-com/TKit?label=Stable&color=brightgreen&style=flat-square)](https://github.com/evobug-com/TKit/releases)
 [![Latest Pre-release](https://img.shields.io/github/v/release/evobug-com/TKit?include_prereleases&label=Pre-release&color=orange&style=flat-square)](https://github.com/evobug-com/TKit/releases)
 [![Downloads](https://img.shields.io/github/downloads/evobug-com/TKit/total?style=flat-square&color=blue)](https://github.com/evobug-com/TKit/releases)
 [![License](https://img.shields.io/github/license/evobug-com/TKit?style=flat-square)](LICENSE)
@@ -59,7 +59,9 @@ TKit is a Windows desktop application that **automatically switches your Twitch 
 - 🔧 Custom install location
 - ✅ Automatic updates
 
-[**→ Download EXE**](https://github.com/evobug-com/TKit/releases/latest/download/TKit-Setup.exe)
+[**→ Download from Releases**](https://github.com/evobug-com/TKit/releases)
+
+> 💡 Select the latest pre-release and download `TKit-Setup.exe`
 
 </td>
 </tr>
