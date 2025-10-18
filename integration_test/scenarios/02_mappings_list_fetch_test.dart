@@ -47,9 +47,7 @@ void main() {
           'processName': 'HelloWorld.exe',
           'twitchCategoryId': '999',
           'twitchCategoryName': 'Hello World Game',
-          'normalizedInstallPaths': [
-            'C:\\Program Files\\HelloWorld',
-          ],
+          'normalizedInstallPaths': ['C:\\Program Files\\HelloWorld'],
         },
         {
           'processName': 'TestGame.exe',
@@ -84,290 +82,298 @@ void main() {
     };
 
     setUp(() {
-      mockAuthDio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 5),
-      ));
-      mockApiDio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 5),
-      ));
+      mockAuthDio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 5),
+        ),
+      );
+      mockApiDio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 5),
+        ),
+      );
 
       authBackend = MockBackend(mockAuthDio);
       apiBackend = MockBackend(mockApiDio);
     });
 
-    testWidgets(
-      '2.1.1 Fetches and displays official games and programs lists',
-      (tester) async {
-        // Mock the list fetch endpoints
-        authBackend
-            .onGet(
-                'https://raw.githubusercontent.com/test/tkit-official-games/main/mappings.json')
-            .reply(200, mockOfficialGamesListData);
+    testWidgets('2.1.1 Fetches and displays official games and programs lists', (
+      tester,
+    ) async {
+      // Mock the list fetch endpoints
+      authBackend
+          .onGet(
+            'https://raw.githubusercontent.com/test/tkit-official-games/main/mappings.json',
+          )
+          .reply(200, mockOfficialGamesListData);
 
-        authBackend
-            .onGet(
-                'https://raw.githubusercontent.com/test/tkit-official-programs/main/mappings.json')
-            .reply(200, mockOfficialProgramsListData);
+      authBackend
+          .onGet(
+            'https://raw.githubusercontent.com/test/tkit-official-programs/main/mappings.json',
+          )
+          .reply(200, mockOfficialProgramsListData);
 
-        // Mock Twitch API
-        apiBackend
-            .onGet('/users')
-            .reply(200, MockResponses.twitchUserData());
+      // Mock Twitch API
+      apiBackend.onGet('/users').reply(200, MockResponses.twitchUserData());
 
-        final appRouter = AppRouter();
-        final container = ProviderContainer(
-          overrides: [
-            authDioProvider.overrideWithValue(mockAuthDio),
-            apiDioProvider.overrideWithValue(mockApiDio),
-            appLoggerProvider.overrideWithValue(AppLogger()),
-          ],
-        );
+      final appRouter = AppRouter();
+      final container = ProviderContainer(
+        overrides: [
+          authDioProvider.overrideWithValue(mockAuthDio),
+          apiDioProvider.overrideWithValue(mockApiDio),
+          appLoggerProvider.overrideWithValue(AppLogger()),
+        ],
+      );
 
-        await tester.pumpWidget(
-          UncontrolledProviderScope(
-            container: container,
-            child: MaterialApp.router(
-              theme: AppTheme.darkTheme,
-              routerConfig: appRouter.config(),
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: AppLocalizations.supportedLocales,
-              builder: (context, child) => MainWindow(
-                child: child ?? const SizedBox.shrink(),
-                router: appRouter,
-              ),
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp.router(
+            theme: AppTheme.darkTheme,
+            routerConfig: appRouter.config(),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            builder: (context, child) => MainWindow(
+              child: child ?? const SizedBox.shrink(),
+              router: appRouter,
             ),
           ),
-        );
+        ),
+      );
 
-        await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
 
-        // Navigate to Mappings page
-        await navigateToPage(tester, 'Mappings');
-        debugPrint('✓ Navigated to Mappings page');
+      // Navigate to Mappings page
+      await navigateToPage(tester, 'Mappings');
+      debugPrint('✓ Navigated to Mappings page');
 
-        // Wait for lists to load
-        await tester.pumpAndSettle(const Duration(seconds: 2));
+      // Wait for lists to load
+      await tester.pumpAndSettle(const Duration(seconds: 2));
 
-        // Verify Official Games List is displayed
+      // Verify Official Games List is displayed
+      expect(
+        find.text('Official Games List'),
+        findsOneWidget,
+        reason: 'Official Games List should be visible',
+      );
+      debugPrint('✓ Official Games List displayed');
+
+      // Verify Official Programs List is displayed
+      expect(
+        find.text('Official Programs List'),
+        findsOneWidget,
+        reason: 'Official Programs List should be visible',
+      );
+      debugPrint('✓ Official Programs List displayed');
+
+      // Verify mapping counts are shown
+      // expect(find.text('2 mappings'), findsOneWidget); // Games list
+      // expect(find.text('1 mappings'), findsOneWidget); // Programs list
+      debugPrint('✓ Mapping counts visible');
+
+      // Verify list descriptions
+      expect(
+        find.textContaining('Curated list'),
+        findsWidgets,
+        reason: 'List descriptions should be visible',
+      );
+      debugPrint('✓ List descriptions displayed');
+
+      // Verify lists are enabled by default
+      // Look for enabled toggle/switch
+      // expect(find.byType(Switch), findsWidgets);
+      debugPrint('✓ List enabled states visible');
+
+      debugPrint('\n=== Test Summary ===');
+      debugPrint('✓ Mappings page accessible');
+      debugPrint('✓ Official lists fetched from mock API');
+      debugPrint('✓ Lists displayed with correct data');
+      debugPrint('✓ Mapping counts shown');
+      debugPrint('✓ Descriptions visible');
+    });
+
+    testWidgets('2.1.2 Displays individual mappings from lists', (
+      tester,
+    ) async {
+      // Same setup as above
+      authBackend
+          .onGet(
+            'https://raw.githubusercontent.com/test/tkit-official-games/main/mappings.json',
+          )
+          .reply(200, mockOfficialGamesListData);
+
+      apiBackend.onGet('/users').reply(200, MockResponses.twitchUserData());
+
+      final appRouter = AppRouter();
+      final container = ProviderContainer(
+        overrides: [
+          authDioProvider.overrideWithValue(mockAuthDio),
+          apiDioProvider.overrideWithValue(mockApiDio),
+          appLoggerProvider.overrideWithValue(AppLogger()),
+        ],
+      );
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp.router(
+            theme: AppTheme.darkTheme,
+            routerConfig: appRouter.config(),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            builder: (context, child) => MainWindow(
+              child: child ?? const SizedBox.shrink(),
+              router: appRouter,
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+      await navigateToPage(tester, 'Mappings');
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+
+      // Try to expand the Official Games List to view individual mappings
+      // Look for the list card/tile
+      final listTile = find.text('Official Games List');
+
+      if (listTile.evaluate().isNotEmpty) {
+        // Try to tap to expand (if list is collapsible)
+        await tapAndSettle(tester, listTile.first);
+        await tester.pumpAndSettle(const Duration(seconds: 1));
+        debugPrint('✓ Attempted to expand list');
+      }
+
+      // Verify individual mappings are shown
+      // These might already be visible or visible after expansion
+      final helloWorldMapping = find.textContaining('HelloWorld.exe');
+      final testGameMapping = find.textContaining('TestGame.exe');
+
+      if (helloWorldMapping.evaluate().isNotEmpty) {
+        debugPrint('✓ HelloWorld.exe mapping visible');
         expect(
-          find.text('Official Games List'),
-          findsOneWidget,
-          reason: 'Official Games List should be visible',
-        );
-        debugPrint('✓ Official Games List displayed');
-
-        // Verify Official Programs List is displayed
-        expect(
-          find.text('Official Programs List'),
-          findsOneWidget,
-          reason: 'Official Programs List should be visible',
-        );
-        debugPrint('✓ Official Programs List displayed');
-
-        // Verify mapping counts are shown
-        // expect(find.text('2 mappings'), findsOneWidget); // Games list
-        // expect(find.text('1 mappings'), findsOneWidget); // Programs list
-        debugPrint('✓ Mapping counts visible');
-
-        // Verify list descriptions
-        expect(
-          find.textContaining('Curated list'),
+          find.textContaining('Hello World Game'),
           findsWidgets,
-          reason: 'List descriptions should be visible',
+          reason: 'Should show Hello World Game category',
         );
-        debugPrint('✓ List descriptions displayed');
-
-        // Verify lists are enabled by default
-        // Look for enabled toggle/switch
-        // expect(find.byType(Switch), findsWidgets);
-        debugPrint('✓ List enabled states visible');
-
-        debugPrint('\n=== Test Summary ===');
-        debugPrint('✓ Mappings page accessible');
-        debugPrint('✓ Official lists fetched from mock API');
-        debugPrint('✓ Lists displayed with correct data');
-        debugPrint('✓ Mapping counts shown');
-        debugPrint('✓ Descriptions visible');
-      },
-    );
-
-    testWidgets(
-      '2.1.2 Displays individual mappings from lists',
-      (tester) async {
-        // Same setup as above
-        authBackend
-            .onGet(
-                'https://raw.githubusercontent.com/test/tkit-official-games/main/mappings.json')
-            .reply(200, mockOfficialGamesListData);
-
-        apiBackend
-            .onGet('/users')
-            .reply(200, MockResponses.twitchUserData());
-
-        final appRouter = AppRouter();
-        final container = ProviderContainer(
-          overrides: [
-            authDioProvider.overrideWithValue(mockAuthDio),
-            apiDioProvider.overrideWithValue(mockApiDio),
-            appLoggerProvider.overrideWithValue(AppLogger()),
-          ],
+        debugPrint('✓ Hello World Game category visible');
+      } else {
+        debugPrint(
+          '! HelloWorld.exe mapping not visible - list may need expansion UI',
         );
+      }
 
-        await tester.pumpWidget(
-          UncontrolledProviderScope(
-            container: container,
-            child: MaterialApp.router(
-              theme: AppTheme.darkTheme,
-              routerConfig: appRouter.config(),
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: AppLocalizations.supportedLocales,
-              builder: (context, child) => MainWindow(
-                child: child ?? const SizedBox.shrink(),
-                router: appRouter,
-              ),
+      if (testGameMapping.evaluate().isNotEmpty) {
+        debugPrint('✓ TestGame.exe mapping visible');
+        expect(
+          find.textContaining('Test Game'),
+          findsWidgets,
+          reason: 'Should show Test Game category',
+        );
+        debugPrint('✓ Test Game category visible');
+      } else {
+        debugPrint(
+          '! TestGame.exe mapping not visible - list may need expansion UI',
+        );
+      }
+
+      debugPrint('\n=== Test Summary ===');
+      debugPrint('✓ List display verified');
+      debugPrint('Individual mappings visibility depends on UI implementation');
+    });
+
+    testWidgets('2.1.3 Handles fetch errors gracefully', (tester) async {
+      // Mock a failed fetch
+      authBackend
+          .onGet(
+            'https://raw.githubusercontent.com/test/tkit-official-games/main/mappings.json',
+          )
+          .replyError(500, MockResponses.error('Server error'));
+
+      apiBackend.onGet('/users').reply(200, MockResponses.twitchUserData());
+
+      final appRouter = AppRouter();
+      final container = ProviderContainer(
+        overrides: [
+          authDioProvider.overrideWithValue(mockAuthDio),
+          apiDioProvider.overrideWithValue(mockApiDio),
+          appLoggerProvider.overrideWithValue(AppLogger()),
+        ],
+      );
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp.router(
+            theme: AppTheme.darkTheme,
+            routerConfig: appRouter.config(),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            builder: (context, child) => MainWindow(
+              child: child ?? const SizedBox.shrink(),
+              router: appRouter,
             ),
           ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+      await navigateToPage(tester, 'Mappings');
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+
+      // Verify error state is shown
+      // Look for error indicators
+      final errorText = find.textContaining(
+        RegExp(r'Error|Failed|Unable', caseSensitive: false),
+      );
+      final errorIcon = find.byIcon(Icons.error);
+      final errorOutlineIcon = find.byIcon(Icons.error_outline);
+
+      if (errorText.evaluate().isNotEmpty) {
+        debugPrint('✓ Error message displayed');
+      } else {
+        debugPrint(
+          '! Error message not found - error handling may need UI updates',
         );
+      }
 
-        await tester.pumpAndSettle();
-        await navigateToPage(tester, 'Mappings');
-        await tester.pumpAndSettle(const Duration(seconds: 2));
+      if (errorIcon.evaluate().isNotEmpty ||
+          errorOutlineIcon.evaluate().isNotEmpty) {
+        debugPrint('✓ Error icon displayed');
+      } else {
+        debugPrint('! Error icon not found');
+      }
 
-        // Try to expand the Official Games List to view individual mappings
-        // Look for the list card/tile
-        final listTile = find.text('Official Games List');
+      // Verify list doesn't appear in error state
+      final listName = find.text('Official Games List');
+      if (listName.evaluate().isEmpty) {
+        debugPrint('✓ Failed list not displayed');
+      } else {
+        debugPrint('! List appears despite fetch error - may be cached data');
+      }
 
-        if (listTile.evaluate().isNotEmpty) {
-          // Try to tap to expand (if list is collapsible)
-          await tapAndSettle(tester, listTile.first);
-          await tester.pumpAndSettle(const Duration(seconds: 1));
-          debugPrint('✓ Attempted to expand list');
-        }
-
-        // Verify individual mappings are shown
-        // These might already be visible or visible after expansion
-        final helloWorldMapping = find.textContaining('HelloWorld.exe');
-        final testGameMapping = find.textContaining('TestGame.exe');
-
-        if (helloWorldMapping.evaluate().isNotEmpty) {
-          debugPrint('✓ HelloWorld.exe mapping visible');
-          expect(
-            find.textContaining('Hello World Game'),
-            findsWidgets,
-            reason: 'Should show Hello World Game category',
-          );
-          debugPrint('✓ Hello World Game category visible');
-        } else {
-          debugPrint('! HelloWorld.exe mapping not visible - list may need expansion UI');
-        }
-
-        if (testGameMapping.evaluate().isNotEmpty) {
-          debugPrint('✓ TestGame.exe mapping visible');
-          expect(
-            find.textContaining('Test Game'),
-            findsWidgets,
-            reason: 'Should show Test Game category',
-          );
-          debugPrint('✓ Test Game category visible');
-        } else {
-          debugPrint('! TestGame.exe mapping not visible - list may need expansion UI');
-        }
-
-        debugPrint('\n=== Test Summary ===');
-        debugPrint('✓ List display verified');
-        debugPrint('Individual mappings visibility depends on UI implementation');
-      },
-    );
-
-    testWidgets(
-      '2.1.3 Handles fetch errors gracefully',
-      (tester) async {
-        // Mock a failed fetch
-        authBackend
-            .onGet(
-                'https://raw.githubusercontent.com/test/tkit-official-games/main/mappings.json')
-            .replyError(500, MockResponses.error('Server error'));
-
-        apiBackend
-            .onGet('/users')
-            .reply(200, MockResponses.twitchUserData());
-
-        final appRouter = AppRouter();
-        final container = ProviderContainer(
-          overrides: [
-            authDioProvider.overrideWithValue(mockAuthDio),
-            apiDioProvider.overrideWithValue(mockApiDio),
-            appLoggerProvider.overrideWithValue(AppLogger()),
-          ],
-        );
-
-        await tester.pumpWidget(
-          UncontrolledProviderScope(
-            container: container,
-            child: MaterialApp.router(
-              theme: AppTheme.darkTheme,
-              routerConfig: appRouter.config(),
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: AppLocalizations.supportedLocales,
-              builder: (context, child) => MainWindow(
-                child: child ?? const SizedBox.shrink(),
-                router: appRouter,
-              ),
-            ),
-          ),
-        );
-
-        await tester.pumpAndSettle();
-        await navigateToPage(tester, 'Mappings');
-        await tester.pumpAndSettle(const Duration(seconds: 3));
-
-        // Verify error state is shown
-        // Look for error indicators
-        final errorText = find.textContaining(RegExp(r'Error|Failed|Unable', caseSensitive: false));
-        final errorIcon = find.byIcon(Icons.error);
-        final errorOutlineIcon = find.byIcon(Icons.error_outline);
-
-        if (errorText.evaluate().isNotEmpty) {
-          debugPrint('✓ Error message displayed');
-        } else {
-          debugPrint('! Error message not found - error handling may need UI updates');
-        }
-
-        if (errorIcon.evaluate().isNotEmpty || errorOutlineIcon.evaluate().isNotEmpty) {
-          debugPrint('✓ Error icon displayed');
-        } else {
-          debugPrint('! Error icon not found');
-        }
-
-        // Verify list doesn't appear in error state
-        final listName = find.text('Official Games List');
-        if (listName.evaluate().isEmpty) {
-          debugPrint('✓ Failed list not displayed');
-        } else {
-          debugPrint('! List appears despite fetch error - may be cached data');
-        }
-
-        debugPrint('\n=== Test Summary ===');
-        debugPrint('✓ Error scenario tested');
-        debugPrint('Error UI verification depends on error handling implementation');
-      },
-    );
+      debugPrint('\n=== Test Summary ===');
+      debugPrint('✓ Error scenario tested');
+      debugPrint(
+        'Error UI verification depends on error handling implementation',
+      );
+    });
   });
 }

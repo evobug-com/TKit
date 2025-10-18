@@ -28,10 +28,7 @@ Future<void> waitForWidget(
     await Future<void>.delayed(pollInterval);
   }
 
-  throw TimeoutException(
-    'Widget not found after $timeout',
-    timeout,
-  );
+  throw TimeoutException('Widget not found after $timeout', timeout);
 }
 
 /// Helper to wait for a dialog to appear
@@ -40,11 +37,7 @@ Future<void> waitForDialog(
   Type dialogType, {
   Duration timeout = const Duration(seconds: 10),
 }) async {
-  await waitForWidget(
-    tester,
-    find.byType(dialogType),
-    timeout: timeout,
-  );
+  await waitForWidget(tester, find.byType(dialogType), timeout: timeout);
 }
 
 /// Helper to wait for text to appear
@@ -53,11 +46,7 @@ Future<void> waitForText(
   String text, {
   Duration timeout = const Duration(seconds: 10),
 }) async {
-  await waitForWidget(
-    tester,
-    find.text(text),
-    timeout: timeout,
-  );
+  await waitForWidget(tester, find.text(text), timeout: timeout);
 }
 
 /// Helper to verify dialog is shown
@@ -127,44 +116,49 @@ Future<void> setupUnknownGameCallback(
   AppRouter appRouter,
 ) async {
   // Wait for repository to be ready and cast to implementation
-  final repository = await container.read(autoSwitcherRepositoryProvider.future) as AutoSwitcherRepositoryImpl;
+  final repository =
+      await container.read(autoSwitcherRepositoryProvider.future)
+          as AutoSwitcherRepositoryImpl;
 
   // Set up the callback to show the dialog
-  repository.unknownGameCallback = ({
-    required String processName,
-    String? executablePath,
-    String? windowTitle,
-  }) async {
-    final navigatorContext = appRouter.navigatorKey.currentContext;
-    if (navigatorContext == null) {
-      return null;
-    }
+  repository.unknownGameCallback =
+      ({
+        required String processName,
+        String? executablePath,
+        String? windowTitle,
+      }) async {
+        final navigatorContext = appRouter.navigatorKey.currentContext;
+        if (navigatorContext == null) {
+          return null;
+        }
 
-    final result = await showDialog<Map<String, dynamic>>(
-      context: navigatorContext,
-      barrierDismissible: false,
-      builder: (context) => UnknownGameDialog(
-        processName: processName,
-        executablePath: executablePath,
-        windowTitle: windowTitle,
-      ),
-    );
+        final result = await showDialog<Map<String, dynamic>>(
+          context: navigatorContext,
+          barrierDismissible: false,
+          builder: (context) => UnknownGameDialog(
+            processName: processName,
+            executablePath: executablePath,
+            windowTitle: windowTitle,
+          ),
+        );
 
-    if (result == null) {
-      return null;
-    }
+        if (result == null) {
+          return null;
+        }
 
-    // Return the mapping from the dialog result
-    final now = DateTime.now();
-    return CategoryMapping(
-      processName: processName,
-      twitchCategoryId: result['categoryId'] as String,
-      twitchCategoryName: result['categoryName'] as String,
-      normalizedInstallPaths: executablePath != null ? [executablePath] : const [],
-      createdAt: now,
-      lastApiFetch: now,
-      cacheExpiresAt: now.add(const Duration(hours: 24)),
-      manualOverride: true,
-    );
-  };
+        // Return the mapping from the dialog result
+        final now = DateTime.now();
+        return CategoryMapping(
+          processName: processName,
+          twitchCategoryId: result['categoryId'] as String,
+          twitchCategoryName: result['categoryName'] as String,
+          normalizedInstallPaths: executablePath != null
+              ? [executablePath]
+              : const [],
+          createdAt: now,
+          lastApiFetch: now,
+          cacheExpiresAt: now.add(const Duration(hours: 24)),
+          manualOverride: true,
+        );
+      };
 }

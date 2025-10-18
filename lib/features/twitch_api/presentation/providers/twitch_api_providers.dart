@@ -38,13 +38,10 @@ ITwitchApiRepository twitchApiRepository(Ref ref) {
     try {
       // Use the auth repository to refresh the token
       final result = await authRepository.refreshToken();
-      return result.fold(
-        (failure) {
-          logger.error('Token refresh failed: ${failure.message}');
-          return null;
-        },
-        (token) => token.accessToken,
-      );
+      return result.fold((failure) {
+        logger.error('Token refresh failed: ${failure.message}');
+        return null;
+      }, (token) => token.accessToken);
     } catch (e) {
       logger.error('Failed to refresh token', e);
       return null;

@@ -157,9 +157,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                   if (invertFooterHeader) footer else header,
 
                   // Main content area - full width
-                  Expanded(
-                    child: widget.child,
-                  ),
+                  Expanded(child: widget.child),
 
                   // Minimal footer
                   if (invertFooterHeader) header else footer,
@@ -569,9 +567,13 @@ class _MainWindowState extends ConsumerState<MainWindow> {
               onTap: () async {
                 try {
                   final logger = ref.read(appLoggerProvider);
-                  final tutorialService = await ref.read(tutorialServiceProvider.future);
+                  final tutorialService = await ref.read(
+                    tutorialServiceProvider.future,
+                  );
                   await tutorialService.resetTutorial();
-                  logger.info('Tutorial reset - forcing AutoSwitcher page reload');
+                  logger.info(
+                    'Tutorial reset - forcing AutoSwitcher page reload',
+                  );
 
                   // Force a fresh instance of AutoSwitcher page to trigger tutorial
                   unawaited(widget.router.replace(const AutoSwitcherRoute()));

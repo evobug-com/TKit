@@ -73,27 +73,43 @@ class MockBackendRequest {
       case 'GET':
         _adapter.onGet(
           _path,
-          (server) => server.reply(statusCode, data, delay: const Duration(milliseconds: 100)),
+          (server) => server.reply(
+            statusCode,
+            data,
+            delay: const Duration(milliseconds: 100),
+          ),
           queryParameters: _queryParameters,
         );
       case 'POST':
         _adapter.onPost(
           _path,
-          (server) => server.reply(statusCode, data, delay: const Duration(milliseconds: 100)),
+          (server) => server.reply(
+            statusCode,
+            data,
+            delay: const Duration(milliseconds: 100),
+          ),
           queryParameters: _queryParameters,
           data: _requestData,
         );
       case 'PATCH':
         _adapter.onPatch(
           _path,
-          (server) => server.reply(statusCode, data, delay: const Duration(milliseconds: 100)),
+          (server) => server.reply(
+            statusCode,
+            data,
+            delay: const Duration(milliseconds: 100),
+          ),
           queryParameters: _queryParameters,
           data: _requestData,
         );
       case 'DELETE':
         _adapter.onDelete(
           _path,
-          (server) => server.reply(statusCode, data, delay: const Duration(milliseconds: 100)),
+          (server) => server.reply(
+            statusCode,
+            data,
+            delay: const Duration(milliseconds: 100),
+          ),
           queryParameters: _queryParameters,
         );
     }
@@ -174,13 +190,21 @@ class MockResponses {
   }
 
   /// Twitch category search results
-  static Map<String, dynamic> twitchSearchCategories(List<Map<String, String>> categories) {
+  static Map<String, dynamic> twitchSearchCategories(
+    List<Map<String, String>> categories,
+  ) {
     return {
-      'data': categories.map((cat) => {
-        'id': cat['id'],
-        'name': cat['name'],
-        'box_art_url': cat['box_art_url'] ?? 'https://static-cdn.jtvnw.net/ttv-boxart/{width}x{height}.jpg',
-      }).toList(),
+      'data': categories
+          .map(
+            (cat) => {
+              'id': cat['id'],
+              'name': cat['name'],
+              'box_art_url':
+                  cat['box_art_url'] ??
+                  'https://static-cdn.jtvnw.net/ttv-boxart/{width}x{height}.jpg',
+            },
+          )
+          .toList(),
     };
   }
 
@@ -214,7 +238,8 @@ class MockResponses {
         {
           'id': id,
           'name': name,
-          'box_art_url': 'https://static-cdn.jtvnw.net/ttv-boxart/{width}x{height}.jpg',
+          'box_art_url':
+              'https://static-cdn.jtvnw.net/ttv-boxart/{width}x{height}.jpg',
         },
       ],
     };
@@ -222,10 +247,6 @@ class MockResponses {
 
   /// Error response
   static Map<String, dynamic> error(String message, {int status = 400}) {
-    return {
-      'error': message,
-      'status': status,
-      'message': message,
-    };
+    return {'error': message, 'status': status, 'message': message};
   }
 }

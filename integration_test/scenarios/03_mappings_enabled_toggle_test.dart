@@ -54,14 +54,18 @@ void main() {
     };
 
     setUp(() {
-      mockAuthDio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 5),
-      ));
-      mockApiDio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 5),
-      ));
+      mockAuthDio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 5),
+        ),
+      );
+      mockApiDio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 5),
+        ),
+      );
 
       authBackend = MockBackend(mockAuthDio);
       apiBackend = MockBackend(mockApiDio);
@@ -80,18 +84,16 @@ void main() {
             .onGet('https://example.com/test-games.json')
             .reply(200, mockListWithHelloWorld);
 
-        apiBackend
-            .onGet('/users')
-            .reply(200, MockResponses.twitchUserData());
+        apiBackend.onGet('/users').reply(200, MockResponses.twitchUserData());
 
         apiBackend
             .onGet('/search/categories')
-            .reply(200, MockResponses.twitchSearchCategories([
-              {
-                'id': '999',
-                'name': 'Hello World Game',
-              },
-            ]));
+            .reply(
+              200,
+              MockResponses.twitchSearchCategories([
+                {'id': '999', 'name': 'Hello World Game'},
+              ]),
+            );
 
         final appRouter = AppRouter();
         final container = ProviderContainer(
@@ -99,7 +101,9 @@ void main() {
             authDioProvider.overrideWithValue(mockAuthDio),
             apiDioProvider.overrideWithValue(mockApiDio),
             appLoggerProvider.overrideWithValue(AppLogger()),
-            processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
+            processDetectionRepositoryProvider.overrideWithValue(
+              mockProcessRepo,
+            ),
           ],
         );
 
@@ -210,7 +214,9 @@ void main() {
             );
             debugPrint('✓ Dialog shows HelloWorld process');
           } else {
-            debugPrint('! Dialog not shown - mapping disable may need implementation');
+            debugPrint(
+              '! Dialog not shown - mapping disable may need implementation',
+            );
           }
         }
 
@@ -219,212 +225,212 @@ void main() {
         debugPrint('✓ Toggle interaction implemented');
         debugPrint('✓ Dialog trigger behavior verified');
         if (toggleFinder == null) {
-          debugPrint('! Toggle widget may need widget keys for better findability');
+          debugPrint(
+            '! Toggle widget may need widget keys for better findability',
+          );
         }
       },
     );
 
-    testWidgets(
-      '2.2.2 Re-enabling mapping suppresses UnknownGameDialog',
-      (tester) async {
-        // Setup mocks
-        authBackend
-            .onGet('https://example.com/test-games.json')
-            .reply(200, mockListWithHelloWorld);
+    testWidgets('2.2.2 Re-enabling mapping suppresses UnknownGameDialog', (
+      tester,
+    ) async {
+      // Setup mocks
+      authBackend
+          .onGet('https://example.com/test-games.json')
+          .reply(200, mockListWithHelloWorld);
 
-        apiBackend
-            .onGet('/users')
-            .reply(200, MockResponses.twitchUserData());
+      apiBackend.onGet('/users').reply(200, MockResponses.twitchUserData());
 
-        final appRouter = AppRouter();
-        final container = ProviderContainer(
-          overrides: [
-            authDioProvider.overrideWithValue(mockAuthDio),
-            apiDioProvider.overrideWithValue(mockApiDio),
-            appLoggerProvider.overrideWithValue(AppLogger()),
-            processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
-          ],
-        );
+      final appRouter = AppRouter();
+      final container = ProviderContainer(
+        overrides: [
+          authDioProvider.overrideWithValue(mockAuthDio),
+          apiDioProvider.overrideWithValue(mockApiDio),
+          appLoggerProvider.overrideWithValue(AppLogger()),
+          processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
+        ],
+      );
 
-        await tester.pumpWidget(
-          UncontrolledProviderScope(
-            container: container,
-            child: MaterialApp.router(
-              theme: AppTheme.darkTheme,
-              routerConfig: appRouter.config(),
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: AppLocalizations.supportedLocales,
-              builder: (context, child) => MainWindow(
-                child: child ?? const SizedBox.shrink(),
-                router: appRouter,
-              ),
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp.router(
+            theme: AppTheme.darkTheme,
+            routerConfig: appRouter.config(),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            builder: (context, child) => MainWindow(
+              child: child ?? const SizedBox.shrink(),
+              router: appRouter,
             ),
           ),
-        );
+        ),
+      );
 
-        await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
 
-        // Setup unknown game callback
-        await setupUnknownGameCallback(container, appRouter);
+      // Setup unknown game callback
+      await setupUnknownGameCallback(container, appRouter);
 
-        // Enable Auto Switch and simulate process
-        await enableAutoSwitcher(tester);
-        mockProcessRepo.simulateHelloWorld();
-        await tester.pumpAndSettle(const Duration(seconds: 2));
-        debugPrint('✓ Auto Switch enabled, process simulated');
+      // Enable Auto Switch and simulate process
+      await enableAutoSwitcher(tester);
+      mockProcessRepo.simulateHelloWorld();
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      debugPrint('✓ Auto Switch enabled, process simulated');
 
-        // Navigate to Mappings and disable the mapping
-        await navigateToPage(tester, 'Mappings');
-        await tester.pumpAndSettle(const Duration(seconds: 2));
+      // Navigate to Mappings and disable the mapping
+      await navigateToPage(tester, 'Mappings');
+      await tester.pumpAndSettle(const Duration(seconds: 2));
 
-        // Find and disable toggle
-        final allSwitches = find.byType(Switch);
-        if (allSwitches.evaluate().isNotEmpty) {
-          await tapAndSettle(tester, allSwitches.first);
-          debugPrint('✓ Disabled mapping');
+      // Find and disable toggle
+      final allSwitches = find.byType(Switch);
+      if (allSwitches.evaluate().isNotEmpty) {
+        await tapAndSettle(tester, allSwitches.first);
+        debugPrint('✓ Disabled mapping');
 
-          // Navigate back and re-enable
-          await tester.pumpAndSettle(const Duration(seconds: 1));
-          await tapAndSettle(tester, allSwitches.first);
-          debugPrint('✓ Re-enabled mapping');
+        // Navigate back and re-enable
+        await tester.pumpAndSettle(const Duration(seconds: 1));
+        await tapAndSettle(tester, allSwitches.first);
+        debugPrint('✓ Re-enabled mapping');
 
-          // Navigate to AutoSwitcher
-          await navigateToPage(tester, 'Auto Switcher');
-          await tester.pumpAndSettle(const Duration(seconds: 2));
-
-          // Simulate process change to trigger check
-          mockProcessRepo.simulateNoProcess();
-          await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          mockProcessRepo.simulateHelloWorld();
-          await tester.pumpAndSettle(const Duration(seconds: 2));
-
-          // Verify NO dialog appears (mapping is re-enabled)
-          expectDialogNotShown(UnknownGameDialog);
-          debugPrint('✓ No dialog when mapping is re-enabled');
-        } else {
-          debugPrint('! Switch not found');
-        }
-
-        debugPrint('\n=== Test Summary ===');
-        debugPrint('✓ Re-enable functionality verified');
-      },
-    );
-
-    testWidgets(
-      '2.2.3 Multiple mappings - only disabled ones trigger dialog',
-      (tester) async {
-        // Mock list with multiple mappings
-        final mockMultipleGames = {
-          'id': 'multi-games',
-          'name': 'Multiple Games',
-          'source_type': 'official',
-          'source_url': 'https://example.com/multi-games.json',
-          'is_enabled': true,
-          'is_read_only': false,
-          'mappings': [
-            {
-              'processName': 'HelloWorld.exe',
-              'twitchCategoryId': '999',
-              'twitchCategoryName': 'Hello World Game',
-            },
-            {
-              'processName': 'GameTwo.exe',
-              'twitchCategoryId': '888',
-              'twitchCategoryName': 'Game Two',
-            },
-          ],
-          'created_at': DateTime.now().toIso8601String(),
-          'priority': 10,
-        };
-
-        authBackend
-            .onGet('https://example.com/multi-games.json')
-            .reply(200, mockMultipleGames);
-
-        apiBackend
-            .onGet('/users')
-            .reply(200, MockResponses.twitchUserData());
-
-        final appRouter = AppRouter();
-        final container = ProviderContainer(
-          overrides: [
-            authDioProvider.overrideWithValue(mockAuthDio),
-            apiDioProvider.overrideWithValue(mockApiDio),
-            appLoggerProvider.overrideWithValue(AppLogger()),
-            processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
-          ],
-        );
-
-        await tester.pumpWidget(
-          UncontrolledProviderScope(
-            container: container,
-            child: MaterialApp.router(
-              theme: AppTheme.darkTheme,
-              routerConfig: appRouter.config(),
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: AppLocalizations.supportedLocales,
-              builder: (context, child) => MainWindow(
-                child: child ?? const SizedBox.shrink(),
-                router: appRouter,
-              ),
-            ),
-          ),
-        );
-
-        await tester.pumpAndSettle();
-
-        // Setup unknown game callback
-        await setupUnknownGameCallback(container, appRouter);
-
-        // Enable Auto Switch
-        await enableAutoSwitcher(tester);
-        debugPrint('✓ Auto Switch enabled');
-
-        // Test HelloWorld.exe (will be disabled)
-        mockProcessRepo.simulateHelloWorld();
-        await tester.pumpAndSettle(const Duration(seconds: 2));
-        expectDialogNotShown(UnknownGameDialog);
-        debugPrint('✓ HelloWorld.exe works (mapping enabled)');
-
-        // Test GameTwo.exe (will remain enabled)
-        mockProcessRepo.simulateGameTwo();
-        await tester.pumpAndSettle(const Duration(seconds: 2));
-        expectDialogNotShown(UnknownGameDialog);
-        debugPrint('✓ GameTwo.exe works (mapping enabled)');
-
-        // Disable only HelloWorld.exe mapping
-        await navigateToPage(tester, 'Mappings');
-        await tester.pumpAndSettle(const Duration(seconds: 2));
-
-        // This is a simplified approach - in reality, we'd need to find
-        // the specific toggle for HelloWorld.exe, not GameTwo.exe
-        // For now, we just verify the concept
-        debugPrint('! Multiple mapping toggle selection needs specific implementation');
-        debugPrint('Concept: Disable HelloWorld, keep GameTwo enabled');
-
+        // Navigate to AutoSwitcher
         await navigateToPage(tester, 'Auto Switcher');
-        await tester.pumpAndSettle();
-
-        // Verify GameTwo still works
-        mockProcessRepo.simulateGameTwo();
         await tester.pumpAndSettle(const Duration(seconds: 2));
-        expectDialogNotShown(UnknownGameDialog);
-        debugPrint('✓ GameTwo.exe still works (not disabled)');
 
-        debugPrint('\n=== Test Summary ===');
-        debugPrint('✓ Multiple mapping concept verified');
-        debugPrint('! Specific toggle selection needs widget keys or better selectors');
-      },
-    );
+        // Simulate process change to trigger check
+        mockProcessRepo.simulateNoProcess();
+        await tester.pumpAndSettle(const Duration(milliseconds: 500));
+        mockProcessRepo.simulateHelloWorld();
+        await tester.pumpAndSettle(const Duration(seconds: 2));
+
+        // Verify NO dialog appears (mapping is re-enabled)
+        expectDialogNotShown(UnknownGameDialog);
+        debugPrint('✓ No dialog when mapping is re-enabled');
+      } else {
+        debugPrint('! Switch not found');
+      }
+
+      debugPrint('\n=== Test Summary ===');
+      debugPrint('✓ Re-enable functionality verified');
+    });
+
+    testWidgets('2.2.3 Multiple mappings - only disabled ones trigger dialog', (
+      tester,
+    ) async {
+      // Mock list with multiple mappings
+      final mockMultipleGames = {
+        'id': 'multi-games',
+        'name': 'Multiple Games',
+        'source_type': 'official',
+        'source_url': 'https://example.com/multi-games.json',
+        'is_enabled': true,
+        'is_read_only': false,
+        'mappings': [
+          {
+            'processName': 'HelloWorld.exe',
+            'twitchCategoryId': '999',
+            'twitchCategoryName': 'Hello World Game',
+          },
+          {
+            'processName': 'GameTwo.exe',
+            'twitchCategoryId': '888',
+            'twitchCategoryName': 'Game Two',
+          },
+        ],
+        'created_at': DateTime.now().toIso8601String(),
+        'priority': 10,
+      };
+
+      authBackend
+          .onGet('https://example.com/multi-games.json')
+          .reply(200, mockMultipleGames);
+
+      apiBackend.onGet('/users').reply(200, MockResponses.twitchUserData());
+
+      final appRouter = AppRouter();
+      final container = ProviderContainer(
+        overrides: [
+          authDioProvider.overrideWithValue(mockAuthDio),
+          apiDioProvider.overrideWithValue(mockApiDio),
+          appLoggerProvider.overrideWithValue(AppLogger()),
+          processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
+        ],
+      );
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp.router(
+            theme: AppTheme.darkTheme,
+            routerConfig: appRouter.config(),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            builder: (context, child) => MainWindow(
+              child: child ?? const SizedBox.shrink(),
+              router: appRouter,
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Setup unknown game callback
+      await setupUnknownGameCallback(container, appRouter);
+
+      // Enable Auto Switch
+      await enableAutoSwitcher(tester);
+      debugPrint('✓ Auto Switch enabled');
+
+      // Test HelloWorld.exe (will be disabled)
+      mockProcessRepo.simulateHelloWorld();
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      expectDialogNotShown(UnknownGameDialog);
+      debugPrint('✓ HelloWorld.exe works (mapping enabled)');
+
+      // Test GameTwo.exe (will remain enabled)
+      mockProcessRepo.simulateGameTwo();
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      expectDialogNotShown(UnknownGameDialog);
+      debugPrint('✓ GameTwo.exe works (mapping enabled)');
+
+      // Disable only HelloWorld.exe mapping
+      await navigateToPage(tester, 'Mappings');
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+
+      // This is a simplified approach - in reality, we'd need to find
+      // the specific toggle for HelloWorld.exe, not GameTwo.exe
+      // For now, we just verify the concept
+      debugPrint(
+        '! Multiple mapping toggle selection needs specific implementation',
+      );
+      debugPrint('Concept: Disable HelloWorld, keep GameTwo enabled');
+
+      await navigateToPage(tester, 'Auto Switcher');
+      await tester.pumpAndSettle();
+
+      // Verify GameTwo still works
+      mockProcessRepo.simulateGameTwo();
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      expectDialogNotShown(UnknownGameDialog);
+      debugPrint('✓ GameTwo.exe still works (not disabled)');
+
+      debugPrint('\n=== Test Summary ===');
+      debugPrint('✓ Multiple mapping concept verified');
+      debugPrint(
+        '! Specific toggle selection needs widget keys or better selectors',
+      );
+    });
   });
 }

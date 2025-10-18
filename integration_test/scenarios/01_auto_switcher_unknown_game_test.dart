@@ -42,14 +42,18 @@ void main() {
     late MockProcessDetectionRepository mockProcessRepo;
 
     setUp(() {
-      mockAuthDio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 5),
-      ));
-      mockApiDio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 5),
-      ));
+      mockAuthDio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 5),
+        ),
+      );
+      mockApiDio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 5),
+        ),
+      );
 
       authBackend = MockBackend(mockAuthDio);
       apiBackend = MockBackend(mockApiDio);
@@ -66,22 +70,28 @@ void main() {
         // Setup mock responses for Twitch API
         apiBackend
             .onGet('/users')
-            .reply(200, MockResponses.twitchUserData(
-              id: 'test_user_123',
-              login: 'teststreamer',
-              displayName: 'Test Streamer',
-            ));
+            .reply(
+              200,
+              MockResponses.twitchUserData(
+                id: 'test_user_123',
+                login: 'teststreamer',
+                displayName: 'Test Streamer',
+              ),
+            );
 
         apiBackend
             .onGet('/search/categories')
             .withQueryParameters({'query': 'Hello World', 'first': 20})
-            .reply(200, MockResponses.twitchSearchCategories([
-              {
-                'id': '999',
-                'name': 'Hello World Game',
-                'box_art_url': 'https://example.com/box-art.jpg',
-              },
-            ]));
+            .reply(
+              200,
+              MockResponses.twitchSearchCategories([
+                {
+                  'id': '999',
+                  'name': 'Hello World Game',
+                  'box_art_url': 'https://example.com/box-art.jpg',
+                },
+              ]),
+            );
 
         // Create app with mocked providers
         final appRouter = AppRouter();
@@ -90,7 +100,9 @@ void main() {
             authDioProvider.overrideWithValue(mockAuthDio),
             apiDioProvider.overrideWithValue(mockApiDio),
             appLoggerProvider.overrideWithValue(AppLogger()),
-            processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
+            processDetectionRepositoryProvider.overrideWithValue(
+              mockProcessRepo,
+            ),
           ],
         );
 
@@ -159,7 +171,11 @@ void main() {
         debugPrint('✓ Simulated HelloWorld.exe 3 times');
 
         // Step 5: Wait for UnknownGameDialog to appear
-        await waitForDialog(tester, UnknownGameDialog, timeout: const Duration(seconds: 15));
+        await waitForDialog(
+          tester,
+          UnknownGameDialog,
+          timeout: const Duration(seconds: 15),
+        );
         expectDialogShown(UnknownGameDialog);
         debugPrint('✓ UnknownGameDialog appeared after 3 detections');
 
@@ -203,235 +219,258 @@ void main() {
       },
     );
 
-    testWidgets(
-      '1.2 User can select category in UnknownGameDialog',
-      (tester) async {
-        // Setup mock responses
-        apiBackend
-            .onGet('/users')
-            .reply(200, MockResponses.twitchUserData(
+    testWidgets('1.2 User can select category in UnknownGameDialog', (
+      tester,
+    ) async {
+      // Setup mock responses
+      apiBackend
+          .onGet('/users')
+          .reply(
+            200,
+            MockResponses.twitchUserData(
               id: 'test_user_123',
               login: 'teststreamer',
               displayName: 'Test Streamer',
-            ));
+            ),
+          );
 
-        apiBackend
-            .onGet('/search/categories')
-            .withQueryParameters({'query': 'Hello', 'first': 20})
-            .reply(200, MockResponses.twitchSearchCategories([
+      apiBackend
+          .onGet('/search/categories')
+          .withQueryParameters({'query': 'Hello', 'first': 20})
+          .reply(
+            200,
+            MockResponses.twitchSearchCategories([
               {
                 'id': '999',
                 'name': 'Hello World Game',
                 'box_art_url': 'https://example.com/box-art.jpg',
               },
-            ]));
+            ]),
+          );
 
-        final appRouter = AppRouter();
-        final container = ProviderContainer(
-          overrides: [
-            authDioProvider.overrideWithValue(mockAuthDio),
-            apiDioProvider.overrideWithValue(mockApiDio),
-            appLoggerProvider.overrideWithValue(AppLogger()),
-            processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
-          ],
-        );
+      final appRouter = AppRouter();
+      final container = ProviderContainer(
+        overrides: [
+          authDioProvider.overrideWithValue(mockAuthDio),
+          apiDioProvider.overrideWithValue(mockApiDio),
+          appLoggerProvider.overrideWithValue(AppLogger()),
+          processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
+        ],
+      );
 
-        await tester.pumpWidget(
-          UncontrolledProviderScope(
-            container: container,
-            child: MaterialApp.router(
-              theme: AppTheme.darkTheme,
-              routerConfig: appRouter.config(),
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: AppLocalizations.supportedLocales,
-              builder: (context, child) => MainWindow(
-                child: child ?? const SizedBox.shrink(),
-                router: appRouter,
-              ),
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp.router(
+            theme: AppTheme.darkTheme,
+            routerConfig: appRouter.config(),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            builder: (context, child) => MainWindow(
+              child: child ?? const SizedBox.shrink(),
+              router: appRouter,
             ),
           ),
-        );
+        ),
+      );
 
-        await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
 
-        // Setup unknown game callback
-        await setupUnknownGameCallback(container, appRouter);
+      // Setup unknown game callback
+      await setupUnknownGameCallback(container, appRouter);
 
-        // Step 1: Enable Auto Switch
-        await enableAutoSwitcher(tester);
-        debugPrint('✓ Auto Switch enabled');
+      // Step 1: Enable Auto Switch
+      await enableAutoSwitcher(tester);
+      debugPrint('✓ Auto Switch enabled');
 
-        // Step 2: Simulate HelloWorld.exe 3 times to trigger dialog
-        for (int i = 0; i < 3; i++) {
-          mockProcessRepo.simulateNoProcess();
-          await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          mockProcessRepo.simulateHelloWorld();
-          await tester.pumpAndSettle(const Duration(milliseconds: 500));
-        }
+      // Step 2: Simulate HelloWorld.exe 3 times to trigger dialog
+      for (int i = 0; i < 3; i++) {
+        mockProcessRepo.simulateNoProcess();
+        await tester.pumpAndSettle(const Duration(milliseconds: 500));
+        mockProcessRepo.simulateHelloWorld();
+        await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      }
 
-        // Step 3: Wait for dialog
-        await waitForDialog(tester, UnknownGameDialog, timeout: const Duration(seconds: 15));
-        debugPrint('✓ UnknownGameDialog appeared');
+      // Step 3: Wait for dialog
+      await waitForDialog(
+        tester,
+        UnknownGameDialog,
+        timeout: const Duration(seconds: 15),
+      );
+      debugPrint('✓ UnknownGameDialog appeared');
 
-        // Step 4: Search for category
-        final searchField = find.descendant(
-          of: find.byType(UnknownGameDialog),
-          matching: find.byType(TextField),
-        ).first;
+      // Step 4: Search for category
+      final searchField = find
+          .descendant(
+            of: find.byType(UnknownGameDialog),
+            matching: find.byType(TextField),
+          )
+          .first;
 
-        await tester.enterText(searchField, 'Hello');
-        await tester.pumpAndSettle(const Duration(seconds: 2));
-        debugPrint('✓ Entered search text');
+      await tester.enterText(searchField, 'Hello');
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      debugPrint('✓ Entered search text');
 
-        // Step 5: Select category from results
-        final categoryTile = find.descendant(
-          of: find.byType(UnknownGameDialog),
-          matching: find.textContaining('Hello World Game'),
-        );
+      // Step 5: Select category from results
+      final categoryTile = find.descendant(
+        of: find.byType(UnknownGameDialog),
+        matching: find.textContaining('Hello World Game'),
+      );
 
-        if (categoryTile.evaluate().isNotEmpty) {
-          await tapAndSettle(tester, categoryTile.first);
-          debugPrint('✓ Selected category');
-        } else {
-          debugPrint('! Category tile not found - may need to adjust finder');
-        }
+      if (categoryTile.evaluate().isNotEmpty) {
+        await tapAndSettle(tester, categoryTile.first);
+        debugPrint('✓ Selected category');
+      } else {
+        debugPrint('! Category tile not found - may need to adjust finder');
+      }
 
-        // Step 6: Click Next button (if dialog has steps)
-        final nextButton = find.descendant(
-          of: find.byType(UnknownGameDialog),
-          matching: find.textContaining(RegExp(r'Next|Continue', caseSensitive: false)),
-        );
+      // Step 6: Click Next button (if dialog has steps)
+      final nextButton = find.descendant(
+        of: find.byType(UnknownGameDialog),
+        matching: find.textContaining(
+          RegExp(r'Next|Continue', caseSensitive: false),
+        ),
+      );
 
-        if (nextButton.evaluate().isNotEmpty) {
-          await tapAndSettle(tester, nextButton.first);
-          debugPrint('✓ Clicked Next button');
-        }
+      if (nextButton.evaluate().isNotEmpty) {
+        await tapAndSettle(tester, nextButton.first);
+        debugPrint('✓ Clicked Next button');
+      }
 
-        // Step 7: Select destination list (if required)
-        // Look for list selection or Save button
-        final saveButton = find.descendant(
-          of: find.byType(UnknownGameDialog),
-          matching: find.textContaining(RegExp(r'Save|Confirm', caseSensitive: false)),
-        );
+      // Step 7: Select destination list (if required)
+      // Look for list selection or Save button
+      final saveButton = find.descendant(
+        of: find.byType(UnknownGameDialog),
+        matching: find.textContaining(
+          RegExp(r'Save|Confirm', caseSensitive: false),
+        ),
+      );
 
-        if (saveButton.evaluate().isNotEmpty) {
-          await tapAndSettle(tester, saveButton.first);
-          debugPrint('✓ Clicked Save button');
-        }
+      if (saveButton.evaluate().isNotEmpty) {
+        await tapAndSettle(tester, saveButton.first);
+        debugPrint('✓ Clicked Save button');
+      }
 
-        // Step 8: Verify dialog closed
-        await tester.pumpAndSettle(const Duration(seconds: 2));
-        expectDialogNotShown(UnknownGameDialog);
-        debugPrint('✓ Dialog closed after saving');
+      // Step 8: Verify dialog closed
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      expectDialogNotShown(UnknownGameDialog);
+      debugPrint('✓ Dialog closed after saving');
 
-        // Step 9: Verify category is now displayed
-        expect(
-          find.textContaining('Hello World Game'),
-          findsWidgets,
-          reason: 'Selected category should be displayed',
-        );
-        debugPrint('✓ Category now shows "Hello World Game"');
+      // Step 9: Verify category is now displayed
+      expect(
+        find.textContaining('Hello World Game'),
+        findsWidgets,
+        reason: 'Selected category should be displayed',
+      );
+      debugPrint('✓ Category now shows "Hello World Game"');
 
-        debugPrint('\n=== Test Summary ===');
-        debugPrint('✓ Dialog interaction completed');
-        debugPrint('✓ Category selected and mapping saved');
-      },
-    );
+      debugPrint('\n=== Test Summary ===');
+      debugPrint('✓ Dialog interaction completed');
+      debugPrint('✓ Category selected and mapping saved');
+    });
 
-    testWidgets(
-      '1.3 User can ignore process in UnknownGameDialog',
-      (tester) async {
-        // Setup mock responses
-        apiBackend
-            .onGet('/users')
-            .reply(200, MockResponses.twitchUserData(
+    testWidgets('1.3 User can ignore process in UnknownGameDialog', (
+      tester,
+    ) async {
+      // Setup mock responses
+      apiBackend
+          .onGet('/users')
+          .reply(
+            200,
+            MockResponses.twitchUserData(
               id: 'test_user_123',
               login: 'teststreamer',
               displayName: 'Test Streamer',
-            ));
+            ),
+          );
 
-        final appRouter = AppRouter();
-        final container = ProviderContainer(
-          overrides: [
-            authDioProvider.overrideWithValue(mockAuthDio),
-            apiDioProvider.overrideWithValue(mockApiDio),
-            appLoggerProvider.overrideWithValue(AppLogger()),
-            processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
-          ],
-        );
+      final appRouter = AppRouter();
+      final container = ProviderContainer(
+        overrides: [
+          authDioProvider.overrideWithValue(mockAuthDio),
+          apiDioProvider.overrideWithValue(mockApiDio),
+          appLoggerProvider.overrideWithValue(AppLogger()),
+          processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
+        ],
+      );
 
-        await tester.pumpWidget(
-          UncontrolledProviderScope(
-            container: container,
-            child: MaterialApp.router(
-              theme: AppTheme.darkTheme,
-              routerConfig: appRouter.config(),
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: AppLocalizations.supportedLocales,
-              builder: (context, child) => MainWindow(
-                child: child ?? const SizedBox.shrink(),
-                router: appRouter,
-              ),
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp.router(
+            theme: AppTheme.darkTheme,
+            routerConfig: appRouter.config(),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            builder: (context, child) => MainWindow(
+              child: child ?? const SizedBox.shrink(),
+              router: appRouter,
             ),
           ),
-        );
+        ),
+      );
 
-        await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
 
-        // Setup unknown game callback
-        await setupUnknownGameCallback(container, appRouter);
+      // Setup unknown game callback
+      await setupUnknownGameCallback(container, appRouter);
 
-        // Step 1: Enable Auto Switch
-        await enableAutoSwitcher(tester);
-        debugPrint('✓ Auto Switch enabled');
+      // Step 1: Enable Auto Switch
+      await enableAutoSwitcher(tester);
+      debugPrint('✓ Auto Switch enabled');
 
-        // Step 2: Simulate HelloWorld.exe 3 times to trigger dialog
-        for (int i = 0; i < 3; i++) {
-          mockProcessRepo.simulateNoProcess();
-          await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          mockProcessRepo.simulateHelloWorld();
-          await tester.pumpAndSettle(const Duration(milliseconds: 500));
-        }
+      // Step 2: Simulate HelloWorld.exe 3 times to trigger dialog
+      for (int i = 0; i < 3; i++) {
+        mockProcessRepo.simulateNoProcess();
+        await tester.pumpAndSettle(const Duration(milliseconds: 500));
+        mockProcessRepo.simulateHelloWorld();
+        await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      }
 
-        // Step 3: Wait for dialog
-        await waitForDialog(tester, UnknownGameDialog, timeout: const Duration(seconds: 15));
-        debugPrint('✓ UnknownGameDialog appeared');
+      // Step 3: Wait for dialog
+      await waitForDialog(
+        tester,
+        UnknownGameDialog,
+        timeout: const Duration(seconds: 15),
+      );
+      debugPrint('✓ UnknownGameDialog appeared');
 
-        // Step 4: Close the dialog (for now, ignore functionality needs more implementation)
-        // Try to find a close button
-        final closeButton = find.descendant(
-          of: find.byType(UnknownGameDialog),
-          matching: find.byIcon(Icons.close),
-        );
+      // Step 4: Close the dialog (for now, ignore functionality needs more implementation)
+      // Try to find a close button
+      final closeButton = find.descendant(
+        of: find.byType(UnknownGameDialog),
+        matching: find.byIcon(Icons.close),
+      );
 
-        if (closeButton.evaluate().isNotEmpty) {
-          await tapAndSettle(tester, closeButton.first);
-          debugPrint('✓ Closed dialog with close button');
-        } else {
-          // Try pressing Escape key to close dialog
-          await tester.sendKeyEvent(LogicalKeyboardKey.escape);
-          await tester.pumpAndSettle(const Duration(seconds: 1));
-          debugPrint('✓ Attempted to close dialog with Escape key');
-        }
+      if (closeButton.evaluate().isNotEmpty) {
+        await tapAndSettle(tester, closeButton.first);
+        debugPrint('✓ Closed dialog with close button');
+      } else {
+        // Try pressing Escape key to close dialog
+        await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+        await tester.pumpAndSettle(const Duration(seconds: 1));
+        debugPrint('✓ Attempted to close dialog with Escape key');
+      }
 
-        // Step 5: For this test, we'll verify the dialog mechanism works
-        // The full ignore flow requires more UI interaction that needs to be implemented
-        debugPrint('Note: Full ignore workflow requires additional UI implementation');
+      // Step 5: For this test, we'll verify the dialog mechanism works
+      // The full ignore flow requires more UI interaction that needs to be implemented
+      debugPrint(
+        'Note: Full ignore workflow requires additional UI implementation',
+      );
 
-        debugPrint('\n=== Test Summary ===');
-        debugPrint('✓ Ignore functionality verified');
-        debugPrint('✓ Ignored process does not trigger dialog again');
-      },
-    );
+      debugPrint('\n=== Test Summary ===');
+      debugPrint('✓ Ignore functionality verified');
+      debugPrint('✓ Ignored process does not trigger dialog again');
+    });
   });
 }

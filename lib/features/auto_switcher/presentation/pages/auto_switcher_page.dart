@@ -92,10 +92,7 @@ class _AutoSwitcherPageState extends ConsumerState<AutoSwitcherPage> {
                 decoration: BoxDecoration(
                   color: TKitColors.surface,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: TKitColors.accentBright,
-                    width: 2,
-                  ),
+                  border: Border.all(color: TKitColors.accentBright, width: 2),
                   boxShadow: [
                     BoxShadow(
                       color: TKitColors.accentBright.withValues(alpha: 0.3),
@@ -152,7 +149,9 @@ class _AutoSwitcherPageState extends ConsumerState<AutoSwitcherPage> {
       onFinish: () async {
         logger.info('Auto switcher tutorial completed');
         try {
-          final tutorialService = await ref.read(tutorialServiceProvider.future);
+          final tutorialService = await ref.read(
+            tutorialServiceProvider.future,
+          );
           await tutorialService.completeTutorial();
         } catch (e) {
           logger.warning('Failed to mark tutorial as completed: $e');
@@ -161,11 +160,14 @@ class _AutoSwitcherPageState extends ConsumerState<AutoSwitcherPage> {
       onSkip: () {
         logger.info('Auto switcher tutorial skipped');
         // Mark tutorial as completed asynchronously (fire and forget)
-        ref.read(tutorialServiceProvider.future).then((tutorialService) {
-          tutorialService.completeTutorial();
-        }).catchError((e) {
-          logger.warning('Failed to mark tutorial as completed: $e');
-        });
+        ref
+            .read(tutorialServiceProvider.future)
+            .then((tutorialService) {
+              tutorialService.completeTutorial();
+            })
+            .catchError((e) {
+              logger.warning('Failed to mark tutorial as completed: $e');
+            });
         return true;
       },
     );
@@ -197,22 +199,22 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
     final autoSwitcherAsync = ref.watch(autoSwitcherProvider);
 
     // Listen for state changes to show toasts (only fires when state changes, not on rebuilds)
-    ref.listen<AsyncValue<AutoSwitcherState>>(
-      autoSwitcherProvider,
-      (previous, next) {
-        next.whenData((state) {
-          // Show toast for errors
-          if (state is UpdateError) {
-            Toast.error(context, state.errorMessage);
-          }
+    ref.listen<AsyncValue<AutoSwitcherState>>(autoSwitcherProvider, (
+      previous,
+      next,
+    ) {
+      next.whenData((state) {
+        // Show toast for errors
+        if (state is UpdateError) {
+          Toast.error(context, state.errorMessage);
+        }
 
-          // Show success message
-          if (state is UpdateSuccess && state.message != null) {
-            Toast.success(context, state.message!);
-          }
-        });
-      },
-    );
+        // Show success message
+        if (state is UpdateSuccess && state.message != null) {
+          Toast.success(context, state.message!);
+        }
+      });
+    });
 
     // Extract hotkey from settings
     String? manualUpdateHotkey;
@@ -233,7 +235,6 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
             Expanded(
               child: autoSwitcherAsync.when(
                 data: (state) {
-
                   final status = _getStatusFromState(state);
                   final isMonitoring = _isMonitoringActive(state);
                   final isLoading = state is AutoSwitcherLoading;
@@ -378,8 +379,8 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
     final Key? valueKey = label.contains('App') || label.contains('app')
         ? const Key('active-app-value')
         : label.contains('Category') || label.contains('category')
-            ? const Key('category-value')
-            : null;
+        ? const Key('category-value')
+        : null;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.baseline,

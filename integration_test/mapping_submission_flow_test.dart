@@ -29,47 +29,65 @@ void main() {
 
     setUp(() {
       // Create Dio instances with mock adapters
-      mockAuthDio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 5),
-      ));
-      mockApiDio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 5),
-      ));
+      mockAuthDio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 5),
+        ),
+      );
+      mockApiDio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 5),
+        ),
+      );
 
       // Wrap with MockBackend
       authBackend = MockBackend(mockAuthDio);
       apiBackend = MockBackend(mockApiDio);
     });
 
-    testWidgets('successfully submits mapping with mock backend', (tester) async {
+    testWidgets('successfully submits mapping with mock backend', (
+      tester,
+    ) async {
       // Define mock responses
       authBackend
-          .onPost('https://tkit-community-mapping-submission.jan-andrle.workers.dev/')
-          .reply(200, MockResponses.mappingSubmissionSuccess(
-            prUrl: 'https://github.com/evobug/tkit-community-mapping/pull/42',
-            prNumber: 42,
-          ));
+          .onPost(
+            'https://tkit-community-mapping-submission.jan-andrle.workers.dev/',
+          )
+          .reply(
+            200,
+            MockResponses.mappingSubmissionSuccess(
+              prUrl: 'https://github.com/evobug/tkit-community-mapping/pull/42',
+              prNumber: 42,
+            ),
+          );
 
       apiBackend
           .onGet('/search/categories')
           .withQueryParameters({'query': 'League of Legends', 'first': 20})
-          .reply(200, MockResponses.twitchSearchCategories([
-            {
-              'id': '21779',
-              'name': 'League of Legends',
-              'box_art_url': 'https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-{width}x{height}.jpg',
-            },
-          ]));
+          .reply(
+            200,
+            MockResponses.twitchSearchCategories([
+              {
+                'id': '21779',
+                'name': 'League of Legends',
+                'box_art_url':
+                    'https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-{width}x{height}.jpg',
+              },
+            ]),
+          );
 
       apiBackend
           .onGet('/users')
-          .reply(200, MockResponses.twitchUserData(
-            id: 'mock_user_123',
-            login: 'teststreamer',
-            displayName: 'Test Streamer',
-          ));
+          .reply(
+            200,
+            MockResponses.twitchUserData(
+              id: 'mock_user_123',
+              login: 'teststreamer',
+              displayName: 'Test Streamer',
+            ),
+          );
 
       // Create app with overridden providers
       final appRouter = AppRouter();
@@ -115,8 +133,13 @@ void main() {
     testWidgets('handles backend errors gracefully', (tester) async {
       // Define error response
       authBackend
-          .onPost('https://tkit-community-mapping-submission.jan-andrle.workers.dev/')
-          .replyError(500, MockResponses.error('Internal server error', status: 500));
+          .onPost(
+            'https://tkit-community-mapping-submission.jan-andrle.workers.dev/',
+          )
+          .replyError(
+            500,
+            MockResponses.error('Internal server error', status: 500),
+          );
 
       final appRouter = AppRouter();
       final container = ProviderContainer(
@@ -150,7 +173,9 @@ void main() {
     testWidgets('handles network timeout', (tester) async {
       // Define timeout response
       authBackend
-          .onPost('https://tkit-community-mapping-submission.jan-andrle.workers.dev/')
+          .onPost(
+            'https://tkit-community-mapping-submission.jan-andrle.workers.dev/',
+          )
           .replyTimeout();
 
       final appRouter = AppRouter();

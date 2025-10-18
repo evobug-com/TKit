@@ -59,14 +59,18 @@ void main() {
     };
 
     setUp(() {
-      mockAuthDio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 5),
-      ));
-      mockApiDio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 5),
-      ));
+      mockAuthDio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 5),
+        ),
+      );
+      mockApiDio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 5),
+        ),
+      );
 
       authBackend = MockBackend(mockAuthDio);
       apiBackend = MockBackend(mockApiDio);
@@ -85,18 +89,16 @@ void main() {
             .onGet('https://example.com/test-games-collection.json')
             .reply(200, mockTestGamesList);
 
-        apiBackend
-            .onGet('/users')
-            .reply(200, MockResponses.twitchUserData());
+        apiBackend.onGet('/users').reply(200, MockResponses.twitchUserData());
 
         apiBackend
             .onGet('/search/categories')
-            .reply(200, MockResponses.twitchSearchCategories([
-              {
-                'id': '999',
-                'name': 'Hello World Game',
-              },
-            ]));
+            .reply(
+              200,
+              MockResponses.twitchSearchCategories([
+                {'id': '999', 'name': 'Hello World Game'},
+              ]),
+            );
 
         final appRouter = AppRouter();
         final container = ProviderContainer(
@@ -104,7 +106,9 @@ void main() {
             authDioProvider.overrideWithValue(mockAuthDio),
             apiDioProvider.overrideWithValue(mockApiDio),
             appLoggerProvider.overrideWithValue(AppLogger()),
-            processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
+            processDetectionRepositoryProvider.overrideWithValue(
+              mockProcessRepo,
+            ),
           ],
         );
 
@@ -199,7 +203,9 @@ void main() {
           );
           debugPrint('✓ Dialog shows HelloWorld process');
         } else {
-          debugPrint('! Dialog not shown - list disable may need implementation');
+          debugPrint(
+            '! Dialog not shown - list disable may need implementation',
+          );
         }
 
         debugPrint('\n=== Test Summary ===');
@@ -209,206 +215,202 @@ void main() {
       },
     );
 
-    testWidgets(
-      '2.3.2 Re-enabling list suppresses UnknownGameDialog',
-      (tester) async {
-        // Setup mocks
-        authBackend
-            .onGet('https://example.com/test-games-collection.json')
-            .reply(200, mockTestGamesList);
+    testWidgets('2.3.2 Re-enabling list suppresses UnknownGameDialog', (
+      tester,
+    ) async {
+      // Setup mocks
+      authBackend
+          .onGet('https://example.com/test-games-collection.json')
+          .reply(200, mockTestGamesList);
 
-        apiBackend
-            .onGet('/users')
-            .reply(200, MockResponses.twitchUserData());
+      apiBackend.onGet('/users').reply(200, MockResponses.twitchUserData());
 
-        final appRouter = AppRouter();
-        final container = ProviderContainer(
-          overrides: [
-            authDioProvider.overrideWithValue(mockAuthDio),
-            apiDioProvider.overrideWithValue(mockApiDio),
-            appLoggerProvider.overrideWithValue(AppLogger()),
-            processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
-          ],
-        );
+      final appRouter = AppRouter();
+      final container = ProviderContainer(
+        overrides: [
+          authDioProvider.overrideWithValue(mockAuthDio),
+          apiDioProvider.overrideWithValue(mockApiDio),
+          appLoggerProvider.overrideWithValue(AppLogger()),
+          processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
+        ],
+      );
 
-        await tester.pumpWidget(
-          UncontrolledProviderScope(
-            container: container,
-            child: MaterialApp.router(
-              theme: AppTheme.darkTheme,
-              routerConfig: appRouter.config(),
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: AppLocalizations.supportedLocales,
-              builder: (context, child) => MainWindow(
-                child: child ?? const SizedBox.shrink(),
-                router: appRouter,
-              ),
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp.router(
+            theme: AppTheme.darkTheme,
+            routerConfig: appRouter.config(),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            builder: (context, child) => MainWindow(
+              child: child ?? const SizedBox.shrink(),
+              router: appRouter,
             ),
           ),
-        );
+        ),
+      );
 
-        await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
 
-        // Setup unknown game callback
-        await setupUnknownGameCallback(container, appRouter);
+      // Setup unknown game callback
+      await setupUnknownGameCallback(container, appRouter);
 
-        // Enable Auto Switch and simulate process
-        await enableAutoSwitcher(tester);
-        mockProcessRepo.simulateHelloWorld();
+      // Enable Auto Switch and simulate process
+      await enableAutoSwitcher(tester);
+      mockProcessRepo.simulateHelloWorld();
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      debugPrint('✓ Auto Switch enabled, process simulated');
+
+      // Navigate to Mappings and disable the list
+      await navigateToPage(tester, 'Mappings');
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+
+      // Disable list
+      final allSwitches = find.byType(Switch);
+      if (allSwitches.evaluate().isNotEmpty) {
+        await tapAndSettle(tester, allSwitches.first);
+        debugPrint('✓ Disabled list');
+
+        // Re-enable list
+        await tester.pumpAndSettle(const Duration(seconds: 1));
+        await tapAndSettle(tester, allSwitches.first);
+        debugPrint('✓ Re-enabled list');
+
+        // Navigate to AutoSwitcher
+        await navigateToPage(tester, 'Auto Switcher');
         await tester.pumpAndSettle(const Duration(seconds: 2));
-        debugPrint('✓ Auto Switch enabled, process simulated');
 
-        // Navigate to Mappings and disable the list
-        await navigateToPage(tester, 'Mappings');
-        await tester.pumpAndSettle(const Duration(seconds: 2));
-
-        // Disable list
-        final allSwitches = find.byType(Switch);
-        if (allSwitches.evaluate().isNotEmpty) {
-          await tapAndSettle(tester, allSwitches.first);
-          debugPrint('✓ Disabled list');
-
-          // Re-enable list
-          await tester.pumpAndSettle(const Duration(seconds: 1));
-          await tapAndSettle(tester, allSwitches.first);
-          debugPrint('✓ Re-enabled list');
-
-          // Navigate to AutoSwitcher
-          await navigateToPage(tester, 'Auto Switcher');
-          await tester.pumpAndSettle(const Duration(seconds: 2));
-
-          // Simulate process change
-          mockProcessRepo.simulateNoProcess();
-          await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          mockProcessRepo.simulateHelloWorld();
-          await tester.pumpAndSettle(const Duration(seconds: 2));
-
-          // Verify NO dialog (list is re-enabled)
-          expectDialogNotShown(UnknownGameDialog);
-          debugPrint('✓ No dialog when list is re-enabled');
-        } else {
-          debugPrint('! Switch not found');
-        }
-
-        debugPrint('\n=== Test Summary ===');
-        debugPrint('✓ Re-enable list functionality verified');
-      },
-    );
-
-    testWidgets(
-      '2.3.3 Disabled list does not affect other enabled lists',
-      (tester) async {
-        // Mock two lists with the same process
-        final mockList1 = {
-          'id': 'list-1',
-          'name': 'List One',
-          'source_type': 'official',
-          'source_url': 'https://example.com/list1.json',
-          'is_enabled': true,
-          'is_read_only': false,
-          'mappings': [
-            {
-              'processName': 'HelloWorld.exe',
-              'twitchCategoryId': '999',
-              'twitchCategoryName': 'Hello World Game',
-            },
-          ],
-          'created_at': DateTime.now().toIso8601String(),
-          'priority': 10,
-        };
-
-        final mockList2 = {
-          'id': 'list-2',
-          'name': 'List Two',
-          'source_type': 'official',
-          'source_url': 'https://example.com/list2.json',
-          'is_enabled': true,
-          'is_read_only': false,
-          'mappings': [
-            {
-              'processName': 'HelloWorld.exe',
-              'twitchCategoryId': '999',
-              'twitchCategoryName': 'Hello World Game',
-            },
-          ],
-          'created_at': DateTime.now().toIso8601String(),
-          'priority': 20,
-        };
-
-        authBackend
-            .onGet('https://example.com/list1.json')
-            .reply(200, mockList1);
-
-        authBackend
-            .onGet('https://example.com/list2.json')
-            .reply(200, mockList2);
-
-        apiBackend
-            .onGet('/users')
-            .reply(200, MockResponses.twitchUserData());
-
-        final appRouter = AppRouter();
-        final container = ProviderContainer(
-          overrides: [
-            authDioProvider.overrideWithValue(mockAuthDio),
-            apiDioProvider.overrideWithValue(mockApiDio),
-            appLoggerProvider.overrideWithValue(AppLogger()),
-            processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
-          ],
-        );
-
-        await tester.pumpWidget(
-          UncontrolledProviderScope(
-            container: container,
-            child: MaterialApp.router(
-              theme: AppTheme.darkTheme,
-              routerConfig: appRouter.config(),
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: AppLocalizations.supportedLocales,
-              builder: (context, child) => MainWindow(
-                child: child ?? const SizedBox.shrink(),
-                router: appRouter,
-              ),
-            ),
-          ),
-        );
-
-        await tester.pumpAndSettle();
-
-        // Setup unknown game callback
-        await setupUnknownGameCallback(container, appRouter);
-
-        // Enable Auto Switch and simulate process
-        await enableAutoSwitcher(tester);
+        // Simulate process change
+        mockProcessRepo.simulateNoProcess();
+        await tester.pumpAndSettle(const Duration(milliseconds: 500));
         mockProcessRepo.simulateHelloWorld();
         await tester.pumpAndSettle(const Duration(seconds: 2));
 
-        // Verify no dialog (both lists enabled)
+        // Verify NO dialog (list is re-enabled)
         expectDialogNotShown(UnknownGameDialog);
-        debugPrint('✓ No dialog with both lists enabled');
+        debugPrint('✓ No dialog when list is re-enabled');
+      } else {
+        debugPrint('! Switch not found');
+      }
 
-        // Disable one list (concept test - finding specific list needs implementation)
-        debugPrint('! Disabling specific list needs widget keys or better selectors');
-        debugPrint('Concept: Even if List One is disabled, List Two still has the mapping');
+      debugPrint('\n=== Test Summary ===');
+      debugPrint('✓ Re-enable list functionality verified');
+    });
 
-        // Process should still resolve to mapping from List Two
-        debugPrint('✓ Concept verified: Multiple lists provide redundancy');
+    testWidgets('2.3.3 Disabled list does not affect other enabled lists', (
+      tester,
+    ) async {
+      // Mock two lists with the same process
+      final mockList1 = {
+        'id': 'list-1',
+        'name': 'List One',
+        'source_type': 'official',
+        'source_url': 'https://example.com/list1.json',
+        'is_enabled': true,
+        'is_read_only': false,
+        'mappings': [
+          {
+            'processName': 'HelloWorld.exe',
+            'twitchCategoryId': '999',
+            'twitchCategoryName': 'Hello World Game',
+          },
+        ],
+        'created_at': DateTime.now().toIso8601String(),
+        'priority': 10,
+      };
 
-        debugPrint('\n=== Test Summary ===');
-        debugPrint('✓ Multiple list concept verified');
-        debugPrint('! Specific list selection needs better widget identification');
-      },
-    );
+      final mockList2 = {
+        'id': 'list-2',
+        'name': 'List Two',
+        'source_type': 'official',
+        'source_url': 'https://example.com/list2.json',
+        'is_enabled': true,
+        'is_read_only': false,
+        'mappings': [
+          {
+            'processName': 'HelloWorld.exe',
+            'twitchCategoryId': '999',
+            'twitchCategoryName': 'Hello World Game',
+          },
+        ],
+        'created_at': DateTime.now().toIso8601String(),
+        'priority': 20,
+      };
+
+      authBackend.onGet('https://example.com/list1.json').reply(200, mockList1);
+
+      authBackend.onGet('https://example.com/list2.json').reply(200, mockList2);
+
+      apiBackend.onGet('/users').reply(200, MockResponses.twitchUserData());
+
+      final appRouter = AppRouter();
+      final container = ProviderContainer(
+        overrides: [
+          authDioProvider.overrideWithValue(mockAuthDio),
+          apiDioProvider.overrideWithValue(mockApiDio),
+          appLoggerProvider.overrideWithValue(AppLogger()),
+          processDetectionRepositoryProvider.overrideWithValue(mockProcessRepo),
+        ],
+      );
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp.router(
+            theme: AppTheme.darkTheme,
+            routerConfig: appRouter.config(),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            builder: (context, child) => MainWindow(
+              child: child ?? const SizedBox.shrink(),
+              router: appRouter,
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Setup unknown game callback
+      await setupUnknownGameCallback(container, appRouter);
+
+      // Enable Auto Switch and simulate process
+      await enableAutoSwitcher(tester);
+      mockProcessRepo.simulateHelloWorld();
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+
+      // Verify no dialog (both lists enabled)
+      expectDialogNotShown(UnknownGameDialog);
+      debugPrint('✓ No dialog with both lists enabled');
+
+      // Disable one list (concept test - finding specific list needs implementation)
+      debugPrint(
+        '! Disabling specific list needs widget keys or better selectors',
+      );
+      debugPrint(
+        'Concept: Even if List One is disabled, List Two still has the mapping',
+      );
+
+      // Process should still resolve to mapping from List Two
+      debugPrint('✓ Concept verified: Multiple lists provide redundancy');
+
+      debugPrint('\n=== Test Summary ===');
+      debugPrint('✓ Multiple list concept verified');
+      debugPrint(
+        '! Specific list selection needs better widget identification',
+      );
+    });
 
     testWidgets(
       '2.3.4 Disabling all lists containing a process triggers dialog',
@@ -417,8 +419,12 @@ void main() {
         // Or if you disable all lists that contain the process
 
         debugPrint('✓ This scenario is covered by test 2.3.1');
-        debugPrint('✓ When all lists containing a process are disabled, dialog appears');
-        debugPrint('✓ Concept: Dialog appears when no enabled list has the mapping');
+        debugPrint(
+          '✓ When all lists containing a process are disabled, dialog appears',
+        );
+        debugPrint(
+          '✓ Concept: Dialog appears when no enabled list has the mapping',
+        );
       },
     );
   });

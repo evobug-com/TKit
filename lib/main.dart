@@ -163,12 +163,14 @@ void main() async {
 
     // Check if Sentry should be initialized based on settings and build mode
     // IMPORTANT: Sentry is disabled in debug mode to prevent debug crashes from polluting production data
-    final shouldInitializeSentry = kReleaseMode && await getSettingsUseCase().then(
-      (result) => result.fold(
-        (_) => true, // Default to enabled if settings can't be loaded
-        (settings) => settings.enableErrorTracking,
-      ),
-    );
+    final shouldInitializeSentry =
+        kReleaseMode &&
+        await getSettingsUseCase().then(
+          (result) => result.fold(
+            (_) => true, // Default to enabled if settings can't be loaded
+            (settings) => settings.enableErrorTracking,
+          ),
+        );
 
     // Run app with Riverpod and conditionally initialize Sentry
     if (shouldInitializeSentry) {
@@ -421,52 +423,56 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
       final logger = ref.read(appLoggerProvider);
       final windowService = ref.read(windowServiceProvider);
 
-      notificationService.onMissingCategoryClick = ({
-        required String processName,
-        String? executablePath,
-      }) async {
-        logger.info('Notification clicked for: $processName');
+      notificationService.onMissingCategoryClick =
+          ({required String processName, String? executablePath}) async {
+            logger.info('Notification clicked for: $processName');
 
-        // Bring window to foreground first
-        try {
-          await windowService.showWindow();
-          logger.debug('Window brought to foreground from notification');
-          // Small delay to ensure window is ready
-          await Future<void>.delayed(const Duration(milliseconds: 100));
-        } catch (e) {
-          logger.warning('Failed to bring window to foreground: $e');
-        }
+            // Bring window to foreground first
+            try {
+              await windowService.showWindow();
+              logger.debug('Window brought to foreground from notification');
+              // Small delay to ensure window is ready
+              await Future<void>.delayed(const Duration(milliseconds: 100));
+            } catch (e) {
+              logger.warning('Failed to bring window to foreground: $e');
+            }
 
-        // Show dialog and get the mapping
-        final mapping = await _showUnknownGameDialog(
-          processName: processName,
-          executablePath: executablePath,
-          windowTitle: null,
-        );
-
-        // Save the mapping if user selected a category
-        if (mapping != null) {
-          try {
-            final saveMappingUseCase = ref.read(saveMappingUseCaseProvider);
-            final saveResult = await saveMappingUseCase(mapping);
-
-            saveResult.fold(
-              (failure) => logger.error('Failed to save mapping: ${failure.message}'),
-              (_) {
-                logger.info('Mapping saved successfully: $processName -> ${mapping.twitchCategoryName}');
-
-                // Refresh the mappings list in the UI after a short delay
-                Future.delayed(const Duration(milliseconds: 500), () {
-                  ref.read(categoryMappingsProvider.notifier).loadMappings();
-                  logger.debug('Mappings list refreshed after save');
-                });
-              },
+            // Show dialog and get the mapping
+            final mapping = await _showUnknownGameDialog(
+              processName: processName,
+              executablePath: executablePath,
+              windowTitle: null,
             );
-          } catch (e) {
-            logger.error('Failed to save mapping from notification', e);
-          }
-        }
-      };
+
+            // Save the mapping if user selected a category
+            if (mapping != null) {
+              try {
+                final saveMappingUseCase = ref.read(saveMappingUseCaseProvider);
+                final saveResult = await saveMappingUseCase(mapping);
+
+                saveResult.fold(
+                  (failure) => logger.error(
+                    'Failed to save mapping: ${failure.message}',
+                  ),
+                  (_) {
+                    logger.info(
+                      'Mapping saved successfully: $processName -> ${mapping.twitchCategoryName}',
+                    );
+
+                    // Refresh the mappings list in the UI after a short delay
+                    Future.delayed(const Duration(milliseconds: 500), () {
+                      ref
+                          .read(categoryMappingsProvider.notifier)
+                          .loadMappings();
+                      logger.debug('Mappings list refreshed after save');
+                    });
+                  },
+                );
+              } catch (e) {
+                logger.error('Failed to save mapping from notification', e);
+              }
+            }
+          };
 
       // Wire up unknown game dialog callback
       final autoSwitcherRepo = await ref.read(
@@ -474,17 +480,18 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
       );
       // Cast to implementation to access unknownGameCallback
       if (autoSwitcherRepo is AutoSwitcherRepositoryImpl) {
-        autoSwitcherRepo.unknownGameCallback = ({
-          required String processName,
-          String? executablePath,
-          String? windowTitle,
-        }) async {
-          return await _showUnknownGameDialog(
-            processName: processName,
-            executablePath: executablePath,
-            windowTitle: windowTitle,
-          );
-        };
+        autoSwitcherRepo.unknownGameCallback =
+            ({
+              required String processName,
+              String? executablePath,
+              String? windowTitle,
+            }) async {
+              return await _showUnknownGameDialog(
+                processName: processName,
+                executablePath: executablePath,
+                windowTitle: windowTitle,
+              );
+            };
       }
 
       // Initialize periodic mapping list sync
@@ -503,8 +510,12 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
     try {
       final mappingListRepository = ref.read(mappingListRepositoryProvider);
       final syncListUseCase = ref.read(syncListUseCaseProvider);
-      final getSettingsUseCase = await ref.read(getSettingsUseCaseProvider.future);
-      final watchSettingsUseCase = await ref.read(watchSettingsUseCaseProvider.future);
+      final getSettingsUseCase = await ref.read(
+        getSettingsUseCaseProvider.future,
+      );
+      final watchSettingsUseCase = await ref.read(
+        watchSettingsUseCaseProvider.future,
+      );
 
       // Function to schedule the sync timer
       void scheduleSyncTimer(int intervalHours) {
@@ -526,10 +537,14 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
           final listsResult = await mappingListRepository.getAllLists();
           await listsResult.fold(
             (failure) {
-              logger.warning('Failed to get mapping lists for periodic sync: ${failure.message}');
+              logger.warning(
+                'Failed to get mapping lists for periodic sync: ${failure.message}',
+              );
             },
             (lists) async {
-              final enabledLists = lists.where((list) => list.isEnabled && list.shouldSync).toList();
+              final enabledLists = lists
+                  .where((list) => list.isEnabled && list.shouldSync)
+                  .toList();
 
               if (enabledLists.isEmpty) {
                 logger.debug('No enabled lists need syncing');
@@ -542,7 +557,9 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
                 final syncResult = await syncListUseCase(list.id);
                 syncResult.fold(
                   (failure) {
-                    logger.warning('Periodic sync failed for "${list.name}": ${failure.message}');
+                    logger.warning(
+                      'Periodic sync failed for "${list.name}": ${failure.message}',
+                    );
                   },
                   (_) {
                     logger.info('Periodic sync completed for: ${list.name}');
@@ -563,7 +580,8 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
       // Initialize with current settings
       final settingsResult = await getSettingsUseCase();
       settingsResult.fold(
-        (failure) => logger.warning('Could not get settings for sync scheduler'),
+        (failure) =>
+            logger.warning('Could not get settings for sync scheduler'),
         (settings) => scheduleSyncTimer(settings.mappingsSyncIntervalHours),
       );
 
@@ -597,7 +615,8 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
       final category = result['category'] as TwitchCategory?;
       if (category != null) {
         final logger = ref.read(appLoggerProvider);
-        final contributeToCommunity = result['contributeToCommunity'] as bool? ?? false;
+        final contributeToCommunity =
+            result['contributeToCommunity'] as bool? ?? false;
         final isEnabled = result['isEnabled'] as bool? ?? true;
         final normalizedPath = result['normalizedInstallPath'] as String?;
         final listId = result['listId'] as String?;
@@ -610,14 +629,21 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
         if (contributeToCommunity) {
           try {
             // Normalize process name: remove .exe extension for cross-platform compatibility
-            final normalizedProcessName = processName.toLowerCase().replaceAll('.exe', '');
+            final normalizedProcessName = processName.toLowerCase().replaceAll(
+              '.exe',
+              '',
+            );
 
             // Use the submission URL from the user's selected list
             final submissionUrl = result['submissionUrl'] as String?;
 
             if (submissionUrl != null) {
-              logger.debug('Using submission URL from user-selected list: $submissionUrl');
-              final submitMappingUseCase = ref.read(submitMappingUseCaseProvider);
+              logger.debug(
+                'Using submission URL from user-selected list: $submissionUrl',
+              );
+              final submitMappingUseCase = ref.read(
+                submitMappingUseCaseProvider,
+              );
               final submitResult = await submitMappingUseCase(
                 submissionUrl: submissionUrl,
                 processName: normalizedProcessName,
@@ -632,7 +658,8 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
                   logger.error('Failed to submit mapping: ${failure.message}');
                 },
                 (submissionResult) {
-                  final isVerification = submissionResult['isVerification'] as bool? ?? false;
+                  final isVerification =
+                      submissionResult['isVerification'] as bool? ?? false;
                   final issueUrl = submissionResult['issueUrl'] as String?;
 
                   logger.info(
@@ -646,7 +673,9 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
                 },
               );
             } else {
-              logger.warning('No submission URL available, skipping community submission');
+              logger.warning(
+                'No submission URL available, skipping community submission',
+              );
             }
           } catch (e) {
             logger.error('Failed to submit mapping to community', e);
@@ -659,7 +688,9 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
         return CategoryMapping(
           processName: processName,
           executablePath: executablePath,
-          normalizedInstallPaths: normalizedPath != null ? [normalizedPath] : [],
+          normalizedInstallPaths: normalizedPath != null
+              ? [normalizedPath]
+              : [],
           twitchCategoryId: category.id,
           twitchCategoryName: category.name,
           createdAt: now,

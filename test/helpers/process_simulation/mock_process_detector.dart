@@ -11,7 +11,8 @@ class MockProcessDetector {
   Stream<ProcessInfo?> get processStream => _processController.stream;
 
   /// Simulate a process being focused
-  void simulateProcess(String processName, {
+  void simulateProcess(
+    String processName, {
     String? executablePath,
     String? windowTitle,
   }) {
