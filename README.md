@@ -44,17 +44,17 @@ TKit is a Windows desktop application that **automatically switches your Twitch 
 <tr>
 <td width="50%">
 
-**MSIX Package** (Recommended)
-- ⚡ Fast installation (no UAC prompts)
-- 🔒 Runs in secure sandbox
-- ✅ Automatic updates
+**MSIX Package** ~~(Recommended)~~
+> ⚠️ **Temporarily Unavailable**
+> Skip MSIX installation due to invalid certificate.
+> This will be resolved in a future update.
 
-[**→ Download MSIX**](https://github.com/evobug-com/TKit/releases/latest/download/TKit.msix)
+~~[→ Download MSIX](https://github.com/evobug-com/TKit/releases/latest/download/TKit.msix)~~
 
 </td>
 <td width="50%">
 
-**EXE Installer** (Traditional)
+**EXE Installer** (Recommended)
 - 📦 Portable installation
 - 🔧 Custom install location
 - ✅ Automatic updates
@@ -81,17 +81,13 @@ Want to test new features before they're stable?
 <details>
 <summary><b>Which installer should I choose?</b></summary>
 
-**Choose MSIX if:**
-- You want the fastest installation experience
-- You prefer automatic security and sandboxing
-- You're on Windows 10 (1809) or later
+> ⚠️ **Note**: MSIX installer is temporarily unavailable due to certificate issues. Please use the EXE installer.
 
-**Choose EXE if:**
-- You need a custom installation directory
-- You want portable installation
-- You're on an older Windows version
-
-Both installers provide automatic updates through TKit.
+**EXE Installer:**
+- Works on all supported Windows versions
+- Custom installation directory option
+- Portable installation
+- Automatic updates through TKit
 
 </details>
 
