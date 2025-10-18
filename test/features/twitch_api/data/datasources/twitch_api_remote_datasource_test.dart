@@ -27,7 +27,7 @@ void main() {
     dataSource = TwitchApiRemoteDataSource(mockDio, mockLogger);
 
     // Setup token provider
-    dataSource.setTokenProvider(() => 'mock_access_token');
+    dataSource.setTokenProvider(() async => 'mock_access_token');
   });
 
   group('searchCategories', () {
