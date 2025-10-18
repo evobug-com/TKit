@@ -165,7 +165,7 @@ class _AutoSwitcherPageState extends ConsumerState<AutoSwitcherPage> {
             .then((tutorialService) {
               tutorialService.completeTutorial();
             })
-            .catchError((e) {
+            .catchError((Object e) {
               logger.warning('Failed to mark tutorial as completed: $e');
             });
         return true;
