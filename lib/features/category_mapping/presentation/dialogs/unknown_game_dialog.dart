@@ -439,6 +439,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
             children: [
               Expanded(
                 child: SearchField(
+                  key: const Key('unknown-game-dialog-search-field'),
                   controller: _searchController,
                   hintText: l10n.unknownGameDialogSearchHint,
                   autofocus: true,
@@ -1738,6 +1739,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
         children: [
           if (_currentStep > 0)
             AccentButton(
+              key: const Key('unknown-game-dialog-back-button'),
               text: l10n.unknownGameDialogBack,
               onPressed: () => setState(() => _currentStep--),
               width: 120,
@@ -1745,6 +1747,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
           if (_currentStep > 0) const HSpace.md(),
           if (_currentStep < 2)
             PrimaryButton(
+              key: const Key('unknown-game-dialog-next-button'),
               text: _currentStep == 1 && !shouldShowConfirmStep
                   ? l10n.unknownGameDialogSave
                   : l10n.unknownGameDialogNext,
@@ -1765,6 +1768,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
             )
           else
             PrimaryButton(
+              key: const Key('unknown-game-dialog-save-button'),
               text: l10n.unknownGameDialogSave,
               icon: Icons.check,
               onPressed: _handleSave,

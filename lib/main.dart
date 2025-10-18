@@ -492,7 +492,7 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
     } else {
       // User logged out - cancel periodic sync
       _periodicSyncTimer?.cancel();
-      _settingsSubscription?.cancel();
+      unawaited(_settingsSubscription?.cancel());
     }
   }
 
@@ -555,7 +555,7 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
       }
 
       // Watch settings for changes to sync interval
-      _settingsSubscription?.cancel();
+      await _settingsSubscription?.cancel();
       _settingsSubscription = watchSettingsUseCase().listen((settings) {
         scheduleSyncTimer(settings.mappingsSyncIntervalHours);
       });

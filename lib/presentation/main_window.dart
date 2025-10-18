@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -234,6 +236,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
             // Navigation tabs
             if (!isWelcomeScreen)
               _buildTab(
+                key: const Key('nav-tab-auto-switcher'),
                 context: context,
                 label: l10n.mainWindowNavAutoSwitcher,
                 isSelected: currentRouteName == AutoSwitcherRoute.name,
@@ -243,6 +246,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
               ),
             if (!isWelcomeScreen)
               _buildTab(
+                key: const Key('nav-tab-mappings'),
                 context: context,
                 label: l10n.mainWindowNavMappings,
                 isSelected: currentRouteName == CategoryMappingEditorRoute.name,
@@ -255,6 +259,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
               ),
             if (!isWelcomeScreen)
               _buildTab(
+                key: const Key('nav-tab-settings'),
                 context: context,
                 label: l10n.mainWindowNavSettings,
                 isSelected: currentRouteName == SettingsRoute.name,
@@ -321,6 +326,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
             // Navigation tabs
             if (!isWelcomeScreen)
               _buildTab(
+                key: const Key('nav-tab-auto-switcher'),
                 context: context,
                 label: l10n.mainWindowNavAutoSwitcher,
                 isSelected: currentRouteName == AutoSwitcherRoute.name,
@@ -330,6 +336,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
               ),
             if (!isWelcomeScreen)
               _buildTab(
+                key: const Key('nav-tab-mappings'),
                 context: context,
                 label: l10n.mainWindowNavMappings,
                 isSelected: currentRouteName == CategoryMappingEditorRoute.name,
@@ -342,6 +349,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
               ),
             if (!isWelcomeScreen)
               _buildTab(
+                key: const Key('nav-tab-settings'),
                 context: context,
                 label: l10n.mainWindowNavSettings,
                 isSelected: currentRouteName == SettingsRoute.name,
@@ -468,8 +476,10 @@ class _MainWindowState extends ConsumerState<MainWindow> {
     required String label,
     required bool isSelected,
     required VoidCallback onTap,
+    Key? key,
   }) {
     return _TabButton(
+      key: key,
       label: label,
       isSelected: isSelected,
       onTap: onTap,
@@ -564,7 +574,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                   logger.info('Tutorial reset - forcing AutoSwitcher page reload');
 
                   // Force a fresh instance of AutoSwitcher page to trigger tutorial
-                  widget.router.replace(const AutoSwitcherRoute());
+                  unawaited(widget.router.replace(const AutoSwitcherRoute()));
                 } catch (e) {
                   final logger = ref.read(appLoggerProvider);
                   logger.error('Failed to reset tutorial', e);

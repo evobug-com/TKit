@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Added
 - Sentry error tracking and performance monitoring
+- Tutorial screens for first-time users
 
 #### Changed
 - Redesigned autoupdate screen

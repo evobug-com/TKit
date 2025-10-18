@@ -98,7 +98,7 @@ class _AutoSwitcherPageState extends ConsumerState<AutoSwitcherPage> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: TKitColors.accentBright.withOpacity(0.3),
+                      color: TKitColors.accentBright.withValues(alpha: 0.3),
                       blurRadius: 20,
                       spreadRadius: 2,
                     ),
@@ -110,7 +110,7 @@ class _AutoSwitcherPageState extends ConsumerState<AutoSwitcherPage> {
                   children: [
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.lightbulb_outline,
                           color: TKitColors.accentBright,
                           size: 24,
@@ -374,6 +374,13 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
   }
 
   Widget _buildInfoRow(String label, String value, bool isActive) {
+    // Determine key based on label
+    final Key? valueKey = label.contains('App') || label.contains('app')
+        ? const Key('active-app-value')
+        : label.contains('Category') || label.contains('category')
+            ? const Key('category-value')
+            : null;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
@@ -391,6 +398,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
         Expanded(
           child: Text(
             value,
+            key: valueKey,
             style: TKitTextStyles.bodyMedium.copyWith(
               color: isActive ? TKitColors.textPrimary : TKitColors.textMuted,
               fontWeight: isActive ? FontWeight.w500 : FontWeight.normal,
@@ -429,6 +437,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
 
             // Single action: Turn off
             AccentButton(
+              key: const Key('auto-switcher-turn-off-button'),
               onPressed: isLoading ? null : onStop,
               text: l10n.autoSwitcherButtonTurnOff,
               icon: Icons.pause,
@@ -486,6 +495,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
 
             // Single primary action when inactive
             PrimaryButton(
+              key: const Key('auto-switcher-turn-on-button'),
               onPressed: isLoading ? null : onStart,
               text: l10n.autoSwitcherButtonTurnOn,
               icon: Icons.play_arrow,
