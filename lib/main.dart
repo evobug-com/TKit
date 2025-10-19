@@ -223,9 +223,6 @@ void main() async {
             options.tracesSampleRate = sentryConfig.performanceMonitoring
                 ? 0.1
                 : 0.0;
-            options.profilesSampleRate = sentryConfig.performanceMonitoring
-                ? 0.1
-                : 0.0;
 
             // Note: Session replay configuration will be added when available in Sentry Flutter SDK
             // The setting is available in UI but not yet functional until SDK support is added
