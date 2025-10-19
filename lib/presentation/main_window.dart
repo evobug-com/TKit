@@ -24,6 +24,7 @@ import 'package:tkit/features/settings/domain/entities/window_controls_position.
 import 'package:tkit/features/settings/domain/entities/update_channel.dart';
 import 'package:tkit/shared/widgets/badges/channel_badge.dart';
 import 'package:tkit/presentation/widgets/version_status_indicator.dart';
+import 'package:tkit/presentation/widgets/whats_new_dialog.dart';
 
 /// Main application window with custom chrome
 class MainWindow extends ConsumerStatefulWidget {
@@ -44,6 +45,53 @@ class _MainWindowState extends ConsumerState<MainWindow> {
     super.initState();
     // Subscribe to router changes (StackRouter extends ChangeNotifier)
     widget.router.addListener(_onRouteChanged);
+
+    // Check if we should show what's new dialog
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAndShowWhatsNew();
+    });
+  }
+
+  Future<void> _checkAndShowWhatsNew() async {
+    try {
+      final whatsNewService = ref.read(whatsNewServiceProvider);
+      final shouldShow = await whatsNewService.shouldShowWhatsNew(AppConfig.appVersion);
+
+      if (!shouldShow || !mounted) {
+        return;
+      }
+
+      // Fetch changelog for current version
+      final updateInfo = await whatsNewService.getChangelogForVersion(AppConfig.appVersion);
+
+      if (updateInfo == null || !mounted) {
+        // No changelog found, mark as seen anyway
+        await whatsNewService.markVersionAsSeen(AppConfig.appVersion);
+        return;
+      }
+
+      // Show what's new dialog
+      if (mounted) {
+        final navigatorContext = widget.router.navigatorKey.currentContext;
+        if (navigatorContext != null) {
+          await showDialog<void>(
+            context: navigatorContext,
+            barrierDismissible: false,
+            builder: (context) => WhatsNewDialog(
+              updateInfo: updateInfo,
+              onClose: () {
+                Navigator.of(context).pop();
+                // Mark this version as seen
+                whatsNewService.markVersionAsSeen(AppConfig.appVersion);
+              },
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      // Silently fail - don't block app if whats new fails
+      debugPrint('Failed to show what\'s new: $e');
+    }
   }
 
   @override

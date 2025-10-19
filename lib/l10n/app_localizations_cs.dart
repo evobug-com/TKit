@@ -1020,6 +1020,20 @@ class AppLocalizationsCs extends AppLocalizations {
       'Nejnovější funkce. Očekávejte chyby a nestabilitu.';
 
   @override
+  String whatsNewWelcome(String version) {
+    return 'Welcome to TKit $version!';
+  }
+
+  @override
+  String get whatsNewSubtitle => 'Here\'s what\'s new in this update';
+
+  @override
+  String get whatsNewTag => 'NEW';
+
+  @override
+  String get whatsNewGotIt => 'Got it, thanks!';
+
+  @override
   String get fallbackBehaviorDoNothing => 'Nedělat nic';
 
   @override

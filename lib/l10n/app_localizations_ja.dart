@@ -958,6 +958,20 @@ class AppLocalizationsJa extends AppLocalizations {
   String get updateChannelDevDesc => '最先端機能。バグと不安定性が予想されます。';
 
   @override
+  String whatsNewWelcome(String version) {
+    return 'Welcome to TKit $version!';
+  }
+
+  @override
+  String get whatsNewSubtitle => 'Here\'s what\'s new in this update';
+
+  @override
+  String get whatsNewTag => 'NEW';
+
+  @override
+  String get whatsNewGotIt => 'Got it, thanks!';
+
+  @override
   String get fallbackBehaviorDoNothing => '何もしない';
 
   @override

@@ -10,6 +10,7 @@ import 'package:tkit/core/services/notification_service.dart';
 import 'package:tkit/core/services/system_tray_service.dart';
 import 'package:tkit/core/services/tutorial_service.dart';
 import 'package:tkit/core/services/updater/github_update_service.dart';
+import 'package:tkit/core/services/whats_new_service.dart';
 import 'package:tkit/core/utils/app_logger.dart';
 import 'package:tkit/features/settings/presentation/providers/settings_providers.dart';
 
@@ -109,6 +110,14 @@ GitHubUpdateService githubUpdateService(Ref ref) {
   final authDio = ref.watch(authDioProvider);
   final logger = ref.watch(appLoggerProvider);
   return GitHubUpdateService(authDio, logger);
+}
+
+/// Provides WhatsNewService
+@Riverpod(keepAlive: true)
+WhatsNewService whatsNewService(Ref ref) {
+  final logger = ref.watch(appLoggerProvider);
+  final updateService = ref.watch(githubUpdateServiceProvider);
+  return WhatsNewService(logger, updateService);
 }
 
 /// Provides NotificationService

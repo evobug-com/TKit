@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Added
 - Automatic start of auto-update on app launch (if enabled in settings)
+- What's new dialog on app start showing latest changes
 
 ## [0.0.1-dev.7] - 2025-10-18
 

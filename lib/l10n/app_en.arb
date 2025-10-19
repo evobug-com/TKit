@@ -1261,6 +1261,27 @@
   "@updateChannelDevDesc": {
     "description": "Development update channel description"
   },
+  "whatsNewWelcome": "Welcome to TKit {version}!",
+  "@whatsNewWelcome": {
+    "description": "What's new dialog title",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "whatsNewSubtitle": "Here's what's new in this update",
+  "@whatsNewSubtitle": {
+    "description": "What's new dialog subtitle"
+  },
+  "whatsNewTag": "NEW",
+  "@whatsNewTag": {
+    "description": "What's new tag label"
+  },
+  "whatsNewGotIt": "Got it, thanks!",
+  "@whatsNewGotIt": {
+    "description": "What's new dialog confirmation button"
+  },
   "fallbackBehaviorDoNothing": "Do Nothing",
   "@fallbackBehaviorDoNothing": {
     "description": "Do nothing fallback behavior option"

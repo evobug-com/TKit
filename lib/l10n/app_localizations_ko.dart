@@ -958,6 +958,20 @@ class AppLocalizationsKo extends AppLocalizations {
   String get updateChannelDevDesc => '최신 기능. 버그와 불안정성이 예상됩니다.';
 
   @override
+  String whatsNewWelcome(String version) {
+    return 'Welcome to TKit $version!';
+  }
+
+  @override
+  String get whatsNewSubtitle => 'Here\'s what\'s new in this update';
+
+  @override
+  String get whatsNewTag => 'NEW';
+
+  @override
+  String get whatsNewGotIt => 'Got it, thanks!';
+
+  @override
   String get fallbackBehaviorDoNothing => '아무 작업도 안 함';
 
   @override

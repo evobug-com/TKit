@@ -941,6 +941,20 @@ class AppLocalizationsZh extends AppLocalizations {
   String get updateChannelDevDesc => '最前沿功能。预计会有错误和不稳定性。';
 
   @override
+  String whatsNewWelcome(String version) {
+    return 'Welcome to TKit $version!';
+  }
+
+  @override
+  String get whatsNewSubtitle => 'Here\'s what\'s new in this update';
+
+  @override
+  String get whatsNewTag => 'NEW';
+
+  @override
+  String get whatsNewGotIt => 'Got it, thanks!';
+
+  @override
   String get fallbackBehaviorDoNothing => '不执行任何操作';
 
   @override

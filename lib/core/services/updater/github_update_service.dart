@@ -100,6 +100,42 @@ class GitHubUpdateService {
     }
   }
 
+  /// Fetch all releases from GitHub
+  /// Returns a list of release data from GitHub API
+  Future<List<dynamic>> fetchAllReleases() async {
+    try {
+      final url =
+          'https://api.github.com/repos/${AppConfig.githubOwner}/${AppConfig.githubRepo}/releases';
+
+      final response = await _dio.get<dynamic>(
+        url,
+        options: Options(
+          headers: {
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return response.data as List;
+      }
+
+      _logger.warning('Failed to fetch releases: ${response.statusCode}');
+      return [];
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        _logger.debug('No releases found on GitHub yet');
+        return [];
+      }
+      _logger.error('Failed to fetch releases', e);
+      return [];
+    } catch (e, stackTrace) {
+      _logger.error('Failed to fetch releases', e, stackTrace);
+      return [];
+    }
+  }
+
   /// Check for updates from GitHub Releases
   /// [channel] specifies which update channel to check (stable, beta, dev, etc.)
   Future<UpdateInfo?> checkForUpdates({

@@ -1025,6 +1025,20 @@ class AppLocalizationsEs extends AppLocalizations {
       'Características de última generación. Espere errores e inestabilidad.';
 
   @override
+  String whatsNewWelcome(String version) {
+    return 'Welcome to TKit $version!';
+  }
+
+  @override
+  String get whatsNewSubtitle => 'Here\'s what\'s new in this update';
+
+  @override
+  String get whatsNewTag => 'NEW';
+
+  @override
+  String get whatsNewGotIt => 'Got it, thanks!';
+
+  @override
   String get fallbackBehaviorDoNothing => 'No hacer nada';
 
   @override

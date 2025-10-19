@@ -1032,6 +1032,20 @@ class AppLocalizationsDe extends AppLocalizations {
       'Neueste Funktionen. Erwarten Sie Fehler und Instabilität.';
 
   @override
+  String whatsNewWelcome(String version) {
+    return 'Welcome to TKit $version!';
+  }
+
+  @override
+  String get whatsNewSubtitle => 'Here\'s what\'s new in this update';
+
+  @override
+  String get whatsNewTag => 'NEW';
+
+  @override
+  String get whatsNewGotIt => 'Got it, thanks!';
+
+  @override
   String get fallbackBehaviorDoNothing => 'Nichts tun';
 
   @override

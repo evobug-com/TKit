@@ -1926,6 +1926,30 @@ abstract class AppLocalizations {
   /// **'Bleeding edge features. Expect bugs and instability.'**
   String get updateChannelDevDesc;
 
+  /// What's new dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to TKit {version}!'**
+  String whatsNewWelcome(String version);
+
+  /// What's new dialog subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Here\'s what\'s new in this update'**
+  String get whatsNewSubtitle;
+
+  /// What's new tag label
+  ///
+  /// In en, this message translates to:
+  /// **'NEW'**
+  String get whatsNewTag;
+
+  /// What's new dialog confirmation button
+  ///
+  /// In en, this message translates to:
+  /// **'Got it, thanks!'**
+  String get whatsNewGotIt;
+
   /// Do nothing fallback behavior option
   ///
   /// In en, this message translates to:

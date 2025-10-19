@@ -1024,6 +1024,20 @@ class AppLocalizationsPl extends AppLocalizations {
       'Najnowsze funkcje. Spodziewaj się błędów i niestabilności.';
 
   @override
+  String whatsNewWelcome(String version) {
+    return 'Welcome to TKit $version!';
+  }
+
+  @override
+  String get whatsNewSubtitle => 'Here\'s what\'s new in this update';
+
+  @override
+  String get whatsNewTag => 'NEW';
+
+  @override
+  String get whatsNewGotIt => 'Got it, thanks!';
+
+  @override
   String get fallbackBehaviorDoNothing => 'Nie rób nic';
 
   @override

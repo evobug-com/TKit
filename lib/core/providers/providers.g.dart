@@ -490,6 +490,53 @@ final class GithubUpdateServiceProvider
 String _$githubUpdateServiceHash() =>
     r'e653fb512f8b7b553251d8f78adc0e003588f832';
 
+/// Provides WhatsNewService
+
+@ProviderFor(whatsNewService)
+const whatsNewServiceProvider = WhatsNewServiceProvider._();
+
+/// Provides WhatsNewService
+
+final class WhatsNewServiceProvider
+    extends
+        $FunctionalProvider<WhatsNewService, WhatsNewService, WhatsNewService>
+    with $Provider<WhatsNewService> {
+  /// Provides WhatsNewService
+  const WhatsNewServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'whatsNewServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$whatsNewServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<WhatsNewService> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  WhatsNewService create(Ref ref) {
+    return whatsNewService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(WhatsNewService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<WhatsNewService>(value),
+    );
+  }
+}
+
+String _$whatsNewServiceHash() => r'4796983f8f85b2d3efd32d80dd0ce5c56b7897f2';
+
 /// Provides NotificationService
 
 @ProviderFor(notificationService)
