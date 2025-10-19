@@ -49,10 +49,10 @@ class MappingSubmissionDataSource {
       bodyText.writeln('```json');
 
       // Build the JSON object
-      // Convert "-1" string to -1 number for ignored processes to match tkit-community-mapping format
+      // Keep twitchCategoryId as string for consistency (app expects strings)
       final mappingJson = <String, dynamic>{
         'processName': processName,
-        'twitchCategoryId': twitchCategoryId == '-1' ? -1 : twitchCategoryId,
+        'twitchCategoryId': twitchCategoryId,
         'twitchCategoryName': twitchCategoryName,
       };
 
