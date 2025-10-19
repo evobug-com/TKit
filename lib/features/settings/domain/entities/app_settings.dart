@@ -54,6 +54,12 @@ class AppSettings extends Equatable {
   /// Update channel preference (stable, rc, beta, dev)
   final UpdateChannel updateChannel;
 
+  /// Automatically check for updates on app launch
+  final bool autoCheckForUpdates;
+
+  /// Automatically install updates when downloaded (shows notification before install)
+  final bool autoInstallUpdates;
+
   /// Window controls position (left, center, right)
   final WindowControlsPosition windowControlsPosition;
 
@@ -93,6 +99,8 @@ class AppSettings extends Equatable {
     required this.autoStartMonitoring,
     this.manualUpdateHotkey,
     required this.updateChannel,
+    required this.autoCheckForUpdates,
+    required this.autoInstallUpdates,
     required this.windowControlsPosition,
     required this.useFramelessWindow,
     required this.invertFooterHeader,
@@ -120,6 +128,8 @@ class AppSettings extends Equatable {
       autoStartMonitoring: false,
       manualUpdateHotkey: 'alt+shift+f1',
       updateChannel: _detectChannelFromVersion(appVersion),
+      autoCheckForUpdates: true, // Check for updates on launch by default
+      autoInstallUpdates: false, // Require user confirmation by default
       windowControlsPosition: WindowControlsPosition.right,
       useFramelessWindow: false,
       invertFooterHeader: false,
@@ -171,6 +181,8 @@ class AppSettings extends Equatable {
     bool? autoStartMonitoring,
     Object? manualUpdateHotkey = _undefined,
     UpdateChannel? updateChannel,
+    bool? autoCheckForUpdates,
+    bool? autoInstallUpdates,
     WindowControlsPosition? windowControlsPosition,
     bool? useFramelessWindow,
     bool? invertFooterHeader,
@@ -201,6 +213,8 @@ class AppSettings extends Equatable {
           ? this.manualUpdateHotkey
           : manualUpdateHotkey as String?,
       updateChannel: updateChannel ?? this.updateChannel,
+      autoCheckForUpdates: autoCheckForUpdates ?? this.autoCheckForUpdates,
+      autoInstallUpdates: autoInstallUpdates ?? this.autoInstallUpdates,
       windowControlsPosition:
           windowControlsPosition ?? this.windowControlsPosition,
       useFramelessWindow: useFramelessWindow ?? this.useFramelessWindow,
@@ -254,6 +268,8 @@ class AppSettings extends Equatable {
     autoStartMonitoring,
     manualUpdateHotkey,
     updateChannel,
+    autoCheckForUpdates,
+    autoInstallUpdates,
     windowControlsPosition,
     useFramelessWindow,
     invertFooterHeader,

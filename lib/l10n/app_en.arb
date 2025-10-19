@@ -1213,6 +1213,22 @@
       }
     }
   },
+  "settingsAutoCheckForUpdatesLabel": "Auto-check for updates",
+  "@settingsAutoCheckForUpdatesLabel": {
+    "description": "Auto-check for updates setting label"
+  },
+  "settingsAutoCheckForUpdatesSubtitle": "Automatically check for new updates when the application starts",
+  "@settingsAutoCheckForUpdatesSubtitle": {
+    "description": "Auto-check for updates setting description"
+  },
+  "settingsAutoInstallUpdatesLabel": "Auto-install updates",
+  "@settingsAutoInstallUpdatesLabel": {
+    "description": "Auto-install updates setting label"
+  },
+  "settingsAutoInstallUpdatesSubtitle": "Automatically download and install updates when available (shows update dialog, then installs)",
+  "@settingsAutoInstallUpdatesSubtitle": {
+    "description": "Auto-install updates setting description"
+  },
   "updateChannelStable": "Stable",
   "@updateChannelStable": {
     "description": "Stable update channel name"

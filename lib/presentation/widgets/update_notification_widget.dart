@@ -7,6 +7,7 @@ import 'package:tkit/core/services/updater/models/update_info.dart';
 import 'package:tkit/core/services/updater/models/download_progress.dart';
 import 'package:tkit/core/utils/app_logger.dart';
 import 'package:tkit/core/providers/providers.dart';
+import 'package:tkit/features/settings/presentation/providers/settings_providers.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/theme/spacing.dart';
@@ -242,6 +243,7 @@ class _UpdateNotificationWidgetState
         });
 
         // Show dialog immediately if not ignored
+        // Auto-download will be triggered from the dialog if auto-install is enabled
         if (shouldShow) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted && !_showDialog && _currentUpdate != null) {
@@ -354,29 +356,117 @@ class _UpdateDialog extends UpdateDialog {
 
 class _UpdateDialogState extends ConsumerState<UpdateDialog> {
   DownloadProgress? _progress;
+  late final AppLogger _logger;
 
   @override
   void initState() {
     super.initState();
 
+    _logger = ref.read(appLoggerProvider);
+
     // Check if update is already downloaded
     final service = ref.read(githubUpdateServiceProvider);
     if (service.isUpdateDownloaded) {
+      _logger.info('[UpdateDialog] Update already downloaded');
       _progress = DownloadProgress(
         status: DownloadStatus.completed,
         bytesReceived: widget.updateInfo.fileSize,
         totalBytes: widget.updateInfo.fileSize,
       );
+
+      // If already downloaded, check if we should auto-install
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final getSettingsUseCase = await ref.read(
+          getSettingsUseCaseProvider.future,
+        );
+        final result = await getSettingsUseCase();
+
+        await result.fold(
+          (_) async {
+            _logger.warning('[UpdateDialog] Failed to load settings for auto-install (already downloaded)');
+          },
+          (settings) async {
+            _logger.info('[UpdateDialog] Auto-install setting (already downloaded): ${settings.autoInstallUpdates}');
+            if (settings.autoInstallUpdates && service.downloadedFile != null) {
+              _logger.info('[UpdateDialog] Starting auto-install (update was already downloaded)...');
+              // Wait a moment to let UI update
+              await Future<void>.delayed(const Duration(milliseconds: 500));
+
+              // Auto-install the update
+              await service.installUpdate(service.downloadedFile!);
+            } else if (!settings.autoInstallUpdates) {
+              _logger.info('[UpdateDialog] Auto-install disabled, waiting for user action');
+            }
+          },
+        );
+      });
     }
 
     // Listen to download progress stream
-    service.downloadProgress.listen((progress) {
+    service.downloadProgress.listen((progress) async {
       if (mounted) {
         setState(() {
           _progress = progress;
         });
+
+        // Auto-install when download completes if enabled in settings
+        if (progress.status == DownloadStatus.completed) {
+          _logger.info('[UpdateDialog] Download completed, checking auto-install settings');
+          final getSettingsUseCase = await ref.read(
+            getSettingsUseCaseProvider.future,
+          );
+          final result = await getSettingsUseCase();
+
+          await result.fold(
+            (_) async {
+              _logger.warning('[UpdateDialog] Failed to load settings for auto-install');
+            },
+            (settings) async {
+              _logger.info('[UpdateDialog] Auto-install setting: ${settings.autoInstallUpdates}');
+              if (settings.autoInstallUpdates && service.downloadedFile != null) {
+                _logger.info('[UpdateDialog] Starting auto-install...');
+                // Wait a moment to let UI update
+                await Future<void>.delayed(const Duration(milliseconds: 500));
+
+                // Auto-install the update
+                await service.installUpdate(service.downloadedFile!);
+              } else if (!settings.autoInstallUpdates) {
+                _logger.info('[UpdateDialog] Auto-install disabled, waiting for user action');
+              } else {
+                _logger.warning('[UpdateDialog] Downloaded file not found');
+              }
+            },
+          );
+        }
       }
     });
+
+    // Auto-start download if auto-install is enabled and update not already downloaded
+    if (!service.isUpdateDownloaded) {
+      _logger.info('[UpdateDialog] Checking auto-download settings...');
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final getSettingsUseCase = await ref.read(
+          getSettingsUseCaseProvider.future,
+        );
+        final result = await getSettingsUseCase();
+
+        await result.fold(
+          (_) async {
+            _logger.warning('[UpdateDialog] Failed to load settings for auto-download');
+          },
+          (settings) async {
+            _logger.info('[UpdateDialog] Auto-install setting: ${settings.autoInstallUpdates}');
+            if (settings.autoInstallUpdates) {
+              _logger.info('[UpdateDialog] Starting auto-download...');
+              // Auto-download when dialog opens
+              await service.downloadUpdate(widget.updateInfo);
+            } else {
+              _logger.info('[UpdateDialog] Auto-install disabled, waiting for user to click download');
+            }
+          },
+        );
+      });
+    }
   }
 
   // Default handlers if not provided

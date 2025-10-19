@@ -147,17 +147,33 @@ void main() async {
     });
     await updateService.initialize();
 
-    // Check for updates on startup
-    logger.info('Checking for app updates...');
-    final updateChannel = await getSettingsUseCase().then(
+    // Check for updates on startup if enabled in settings
+    final updateSettings = await getSettingsUseCase().then(
       (result) => result.fold(
-        (_) => UpdateChannel.stable,
-        (settings) => settings.updateChannel,
+        (_) => (
+          channel: UpdateChannel.stable,
+          autoCheck: true,
+          autoInstall: false,
+        ),
+        (settings) => (
+          channel: settings.updateChannel,
+          autoCheck: settings.autoCheckForUpdates,
+          autoInstall: settings.autoInstallUpdates,
+        ),
       ),
     );
-    unawaited(
-      updateService.checkForUpdates(silent: true, channel: updateChannel),
-    );
+
+    if (updateSettings.autoCheck) {
+      logger.info('Auto-check enabled, checking for app updates...');
+      unawaited(
+        updateService.checkForUpdates(
+          silent: true,
+          channel: updateSettings.channel,
+        ),
+      );
+    } else {
+      logger.info('Auto-check disabled, skipping update check');
+    }
 
     logger.info('Initialization complete, launching app...');
 

@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### TKit
 
+#### Added
+- Automatic start of auto-update on app launch (if enabled in settings)
+
 ## [0.0.1-dev.7] - 2025-10-18
 
 ### TKit

@@ -1854,6 +1854,30 @@ abstract class AppLocalizations {
   /// **'Update channel changed to {channel}. Checking for updates...'**
   String settingsUpdateChannelChanged(String channel);
 
+  /// Auto-check for updates setting label
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-check for updates'**
+  String get settingsAutoCheckForUpdatesLabel;
+
+  /// Auto-check for updates setting description
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically check for new updates when the application starts'**
+  String get settingsAutoCheckForUpdatesSubtitle;
+
+  /// Auto-install updates setting label
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-install updates'**
+  String get settingsAutoInstallUpdatesLabel;
+
+  /// Auto-install updates setting description
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically download and install updates when available (shows update dialog, then installs)'**
+  String get settingsAutoInstallUpdatesSubtitle;
+
   /// Stable update channel name
   ///
   /// In en, this message translates to:

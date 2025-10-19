@@ -983,6 +983,20 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get settingsAutoCheckForUpdatesLabel => 'Auto-check for updates';
+
+  @override
+  String get settingsAutoCheckForUpdatesSubtitle =>
+      'Automatically check for new updates when the application starts';
+
+  @override
+  String get settingsAutoInstallUpdatesLabel => 'Auto-install updates';
+
+  @override
+  String get settingsAutoInstallUpdatesSubtitle =>
+      'Automatically download and install updates when available (shows update dialog, then installs)';
+
+  @override
   String get updateChannelStable => 'Estable';
 
   @override

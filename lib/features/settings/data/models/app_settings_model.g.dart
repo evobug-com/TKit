@@ -37,6 +37,8 @@ AppSettingsModel _$AppSettingsModelFromJson(Map<String, dynamic> json) =>
       enablePerformanceMonitoring:
           json['enablePerformanceMonitoring'] as bool? ?? true,
       enableSessionReplay: json['enableSessionReplay'] as bool? ?? false,
+      autoCheckForUpdates: json['autoCheckForUpdates'] as bool? ?? true,
+      autoInstallUpdates: json['autoInstallUpdates'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$AppSettingsModelToJson(AppSettingsModel instance) =>
@@ -63,6 +65,8 @@ Map<String, dynamic> _$AppSettingsModelToJson(AppSettingsModel instance) =>
       'enableErrorTracking': instance.enableErrorTracking,
       'enablePerformanceMonitoring': instance.enablePerformanceMonitoring,
       'enableSessionReplay': instance.enableSessionReplay,
+      'autoCheckForUpdates': instance.autoCheckForUpdates,
+      'autoInstallUpdates': instance.autoInstallUpdates,
     };
 
 const _$FallbackBehaviorEnumMap = {

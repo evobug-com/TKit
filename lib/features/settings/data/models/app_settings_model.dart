@@ -40,6 +40,16 @@ class AppSettingsModel extends AppSettings {
   // ignore: overridden_fields
   final bool enableSessionReplay;
 
+  @JsonKey(defaultValue: true)
+  @override
+  // ignore: overridden_fields
+  final bool autoCheckForUpdates;
+
+  @JsonKey(defaultValue: false)
+  @override
+  // ignore: overridden_fields
+  final bool autoInstallUpdates;
+
   const AppSettingsModel({
     required super.scanIntervalSeconds,
     required super.debounceSeconds,
@@ -62,6 +72,8 @@ class AppSettingsModel extends AppSettings {
     required this.enableErrorTracking,
     required this.enablePerformanceMonitoring,
     required this.enableSessionReplay,
+    required this.autoCheckForUpdates,
+    required this.autoInstallUpdates,
   }) : super(
          invertFooterHeader: invertFooterHeader,
          autoSyncMappingsOnStart: autoSyncMappingsOnStart,
@@ -69,6 +81,8 @@ class AppSettingsModel extends AppSettings {
          enableErrorTracking: enableErrorTracking,
          enablePerformanceMonitoring: enablePerformanceMonitoring,
          enableSessionReplay: enableSessionReplay,
+         autoCheckForUpdates: autoCheckForUpdates,
+         autoInstallUpdates: autoInstallUpdates,
        );
 
   /// Create from domain entity
@@ -95,6 +109,8 @@ class AppSettingsModel extends AppSettings {
       enableErrorTracking: settings.enableErrorTracking,
       enablePerformanceMonitoring: settings.enablePerformanceMonitoring,
       enableSessionReplay: settings.enableSessionReplay,
+      autoCheckForUpdates: settings.autoCheckForUpdates,
+      autoInstallUpdates: settings.autoInstallUpdates,
     );
   }
 
@@ -129,6 +145,8 @@ class AppSettingsModel extends AppSettings {
       enableErrorTracking: enableErrorTracking,
       enablePerformanceMonitoring: enablePerformanceMonitoring,
       enableSessionReplay: enableSessionReplay,
+      autoCheckForUpdates: autoCheckForUpdates,
+      autoInstallUpdates: autoInstallUpdates,
     );
   }
 

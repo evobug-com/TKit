@@ -261,7 +261,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                             _buildKeyboardTab(settings, l10n),
                             _buildThemeTab(settings, l10n),
                             _buildTwitchTab(l10n),
-                            _buildAdvancedTab(l10n),
+                            _buildAdvancedTab(settings, l10n),
                           ],
                         ),
 
@@ -838,7 +838,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
     );
   }
 
-  Widget _buildAdvancedTab(AppLocalizations l10n) {
+  Widget _buildAdvancedTab(AppSettings settings, AppLocalizations l10n) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(TKitSpacing.pagePadding),
       child: Column(
@@ -897,6 +897,28 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
 
                       Toast.success(context, successMessage);
                     }
+                  },
+                ),
+                const VSpace.md(),
+                SettingsCheckbox(
+                  label: l10n.settingsAutoCheckForUpdatesLabel,
+                  subtitle: l10n.settingsAutoCheckForUpdatesSubtitle,
+                  value: settings.autoCheckForUpdates,
+                  onChanged: (value) {
+                    _updateSettings(
+                      settings.copyWith(autoCheckForUpdates: value ?? true),
+                    );
+                  },
+                ),
+                const VSpace.sm(),
+                SettingsCheckbox(
+                  label: l10n.settingsAutoInstallUpdatesLabel,
+                  subtitle: l10n.settingsAutoInstallUpdatesSubtitle,
+                  value: settings.autoInstallUpdates,
+                  onChanged: (value) {
+                    _updateSettings(
+                      settings.copyWith(autoInstallUpdates: value ?? false),
+                    );
                   },
                 ),
               ],
