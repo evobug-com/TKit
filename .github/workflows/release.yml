@@ -104,35 +104,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-          cache-key: flutter-${{ runner.os }}
-          cache-path: ${{ runner.tool_cache }}/flutter
-
-      - name: Cache pub dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ${{ env.LOCALAPPDATA }}\Pub\Cache
-            .dart_tool
-          key: pub-${{ runner.os }}-${{ hashFiles('pubspec.lock') }}
-          restore-keys: |
-            pub-${{ runner.os }}-
-
-      - name: Get dependencies
-        run: flutter pub get
-
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: windows-build
           path: build/windows/x64/runner/Release
 
-      - name: Create MSIX package
-        run: dart run msix:create
+      - name: Create MSIX package with native tools
+        shell: pwsh
+        run: |
+          .\windows\package-msix.ps1 -Version "${{ needs.build-windows.outputs.version }}"
 
       - name: Rename MSIX file
         shell: bash
