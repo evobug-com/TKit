@@ -19,6 +19,11 @@ import 'package:tkit/features/settings/presentation/states/settings_state.dart';
 import 'package:tkit/features/auto_switcher/domain/entities/orchestration_status.dart';
 import 'package:tkit/features/auto_switcher/presentation/providers/auto_switcher_providers.dart';
 import 'package:tkit/features/auto_switcher/presentation/states/auto_switcher_state.dart';
+import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
+import 'package:tkit/features/category_mapping/domain/usecases/find_mapping_usecase.dart';
+import 'package:tkit/features/category_mapping/presentation/dialogs/unknown_game_dialog.dart';
+import 'package:tkit/features/category_mapping/presentation/providers/category_mapping_providers.dart';
+import 'package:tkit/features/twitch_api/domain/entities/twitch_category.dart';
 
 /// Auto Switcher Page
 ///
@@ -252,6 +257,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                               l10n,
                               status,
                               isMonitoring,
+                              ref,
                             ),
                             const VSpace.sm(),
 
@@ -315,6 +321,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
     AppLocalizations l10n,
     OrchestrationStatus? status,
     bool isMonitoring,
+    WidgetRef ref,
   ) {
     final hasProcess = status?.currentProcess != null;
     final hasCategory = status?.matchedCategory != null;
@@ -362,6 +369,9 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
             l10n.autoSwitcherLabelActiveApp,
             hasProcess ? status!.currentProcess! : l10n.autoSwitcherValueNone,
             hasProcess,
+            trailing: hasProcess && status != null
+                ? _buildAddMappingButton(context, status.currentProcess!, ref)
+                : null,
           ),
           const VSpace.sm(),
           _buildInfoRow(
@@ -374,7 +384,12 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
     );
   }
 
-  Widget _buildInfoRow(String label, String value, bool isActive) {
+  Widget _buildInfoRow(
+    String label,
+    String value,
+    bool isActive, {
+    Widget? trailing,
+  }) {
     // Determine key based on label
     final Key? valueKey = label.contains('App') || label.contains('app')
         ? const Key('active-app-value')
@@ -407,8 +422,137 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ),
+        if (trailing != null) ...[
+          const HSpace.sm(),
+          trailing,
+        ],
       ],
     );
+  }
+
+  /// Builds the add mapping button - only shows if process has no mapping
+  Widget? _buildAddMappingButton(
+    BuildContext context,
+    String processName,
+    WidgetRef ref,
+  ) {
+    // Check if mapping exists for this process
+    final findMappingUseCase = ref.read(findMappingUseCaseProvider);
+
+    return FutureBuilder<bool>(
+      future: _hasMapping(processName, findMappingUseCase),
+      builder: (context, snapshot) {
+        // Only show button if no mapping exists
+        if (snapshot.hasData && !snapshot.data!) {
+          return IconButton(
+            icon: const Icon(Icons.add_circle_outline),
+            iconSize: 18,
+            color: TKitColors.accent,
+            splashRadius: 16,
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            tooltip: 'Add category mapping',
+            onPressed: () => _showAddMappingDialog(context, processName, ref),
+          );
+        }
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
+  /// Check if a mapping exists for the given process
+  Future<bool> _hasMapping(
+    String processName,
+    FindMappingUseCase findMappingUseCase,
+  ) async {
+    final result = await findMappingUseCase(
+      processName: processName,
+      executablePath: null,
+    );
+
+    return result.fold(
+      (_) => false, // Error - assume no mapping
+      (CategoryMapping? mapping) => mapping != null && mapping.isEnabled,
+    );
+  }
+
+  /// Show dialog to add mapping for unknown process
+  Future<void> _showAddMappingDialog(
+    BuildContext context,
+    String processName,
+    WidgetRef ref,
+  ) async {
+    final result = await showDialog<Map<String, dynamic>>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => UnknownGameDialog(
+        processName: processName,
+        executablePath: null,
+        windowTitle: null,
+      ),
+    );
+
+    if (result != null) {
+      final category = result['category'] as TwitchCategory?;
+      if (category != null) {
+        final logger = ref.read(appLoggerProvider);
+        final isEnabled = result['isEnabled'] as bool? ?? true;
+        final normalizedPath = result['normalizedInstallPath'] as String?;
+        final listId = result['listId'] as String?;
+
+        final now = DateTime.now();
+        final mapping = CategoryMapping(
+          processName: processName,
+          executablePath: null,
+          normalizedInstallPaths: normalizedPath != null
+              ? [normalizedPath]
+              : [],
+          twitchCategoryId: category.id,
+          twitchCategoryName: category.name,
+          createdAt: now,
+          lastApiFetch: now,
+          cacheExpiresAt: now.add(const Duration(hours: 24)),
+          manualOverride: true,
+          listId: listId ?? 'my-custom-mappings',
+          isEnabled: isEnabled,
+          pendingSubmission: result['contributeToCommunity'] as bool? ?? false,
+        );
+
+        try {
+          final saveMappingUseCase = ref.read(saveMappingUseCaseProvider);
+          final saveResult = await saveMappingUseCase(mapping);
+
+          saveResult.fold(
+            (failure) {
+              logger.error('Failed to save mapping: ${failure.message}');
+              if (context.mounted) {
+                Toast.error(context, 'Failed to save mapping');
+              }
+            },
+            (_) {
+              logger.info(
+                'Mapping saved: $processName -> ${mapping.twitchCategoryName}',
+              );
+              if (context.mounted) {
+                Toast.success(
+                  context,
+                  'Mapping added for $processName',
+                );
+              }
+              // Refresh mappings list
+              Future.delayed(const Duration(milliseconds: 500), () {
+                ref.read(categoryMappingsProvider.notifier).loadMappings();
+              });
+            },
+          );
+        } catch (e) {
+          logger.error('Failed to save mapping', e);
+          if (context.mounted) {
+            Toast.error(context, 'Failed to save mapping');
+          }
+        }
+      }
+    }
   }
 
   /// Main control card - follows ChatGPT's "max 2 actions" rule

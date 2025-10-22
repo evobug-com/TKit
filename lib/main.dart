@@ -10,7 +10,8 @@ import 'package:tkit/core/routing/app_router.dart';
 import 'package:tkit/core/services/locale_provider.dart';
 import 'package:tkit/features/auth/presentation/states/auth_state.dart';
 import 'package:tkit/features/auth/presentation/providers/auth_providers.dart';
-import 'package:tkit/features/auto_switcher/data/repositories/auto_switcher_repository_impl.dart';
+// Removed unused import: AutoSwitcherRepositoryImpl (callback registration is commented out)
+// import 'package:tkit/features/auto_switcher/data/repositories/auto_switcher_repository_impl.dart';
 import 'package:tkit/features/auto_switcher/presentation/providers/auto_switcher_providers.dart';
 import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
 import 'package:tkit/features/category_mapping/presentation/dialogs/unknown_game_dialog.dart';
@@ -286,6 +287,7 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
   StreamSubscription<dynamic>? _settingsSubscription;
   Timer? _periodicSyncTimer;
   var _initialized = false;
+  var _unknownGameDialogOpen = false;
 
   @override
   void initState() {
@@ -487,11 +489,15 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
             }
           };
 
-      // Wire up unknown game dialog callback
+      // NOTE: unknownGameCallback is intentionally NOT registered here.
+      // We want to show notifications instead of auto-opening dialogs.
+      // The dialog will be opened when user clicks the notification (see onMissingCategoryClick above).
+      //
+      // If you want to re-enable auto-opening dialogs, uncomment the code below:
+      /*
       final autoSwitcherRepo = await ref.read(
         autoSwitcherRepositoryProvider.future,
       );
-      // Cast to implementation to access unknownGameCallback
       if (autoSwitcherRepo is AutoSwitcherRepositoryImpl) {
         autoSwitcherRepo.unknownGameCallback =
             ({
@@ -506,6 +512,7 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
               );
             };
       }
+      */
 
       // Initialize periodic mapping list sync
       unawaited(_initializePeriodicListSync());
@@ -609,21 +616,48 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
     String? executablePath,
     String? windowTitle,
   }) async {
+    // Singleton guard: prevent opening multiple dialogs
+    if (_unknownGameDialogOpen) {
+      final logger = ref.read(appLoggerProvider);
+      logger.debug(
+        'Unknown game dialog already open, ignoring request for: $processName',
+      );
+      return null;
+    }
+
     final navigatorContext = _appRouter.navigatorKey.currentContext;
     if (navigatorContext == null) {
       return null;
     }
 
-    final result = await showDialog<Map<String, dynamic>>(
-      context: navigatorContext,
-      barrierDismissible: false,
-      builder: (context) => UnknownGameDialog(
-        processName: processName,
-        executablePath: executablePath,
-        windowTitle: windowTitle,
-      ),
-    );
+    _unknownGameDialogOpen = true;
+    final logger = ref.read(appLoggerProvider);
+    logger.debug('Opening unknown game dialog for: $processName');
 
+    try {
+      final result = await showDialog<Map<String, dynamic>>(
+        context: navigatorContext,
+        barrierDismissible: false,
+        builder: (context) => UnknownGameDialog(
+          processName: processName,
+          executablePath: executablePath,
+          windowTitle: windowTitle,
+        ),
+      );
+
+      return _processDialogResult(result, processName, executablePath, windowTitle);
+    } finally {
+      _unknownGameDialogOpen = false;
+      logger.debug('Unknown game dialog closed for: $processName');
+    }
+  }
+
+  Future<CategoryMapping?> _processDialogResult(
+    Map<String, dynamic>? result,
+    String processName,
+    String? executablePath,
+    String? windowTitle,
+  ) async {
     if (result != null) {
       final category = result['category'] as TwitchCategory?;
       if (category != null) {

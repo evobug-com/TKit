@@ -54,6 +54,9 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
   AppSettings? _currentSettings;
   String? _lastProcessedCategoryId;
 
+  // Track which unknown processes we've already notified about (to prevent spam)
+  final Set<String> _notifiedUnknownProcesses = {};
+
   AutoSwitcherRepositoryImpl(
     this._watchProcessChanges,
     this._getFocusedProcess,
@@ -253,6 +256,10 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
     _monitoringSubscription = null;
     _currentStatus = OrchestrationStatus.idle();
     _statusController.add(_currentStatus);
+
+    // Clear notification tracking when monitoring stops
+    _notifiedUnknownProcesses.clear();
+    _logger.debug('[AutoSwitcher] Cleared notified unknown processes tracking');
   }
 
   @override
@@ -519,6 +526,12 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
           // Mark as resolved
           await _unknownProcessDataSource.markAsResolved(processName);
 
+          // Remove from notified set since user has now mapped it
+          _notifiedUnknownProcesses.remove(processName);
+          _logger.debug(
+            '[AutoSwitcher] Removed $processName from notified set (user mapped it)',
+          );
+
           // Check if mapping is enabled before updating Twitch
           if (!mapping.isEnabled) {
             _logger.debug(
@@ -555,11 +568,22 @@ class AutoSwitcherRepositoryImpl implements IAutoSwitcherRepository {
     }
 
     // Show notification if enabled and callback not available/failed
+    // Only notify once per process to avoid spamming
     final settings = _currentSettings ?? AppSettings.defaults();
-    if (settings.notifyOnMissingCategory) {
+    if (settings.notifyOnMissingCategory &&
+        !_notifiedUnknownProcesses.contains(processName)) {
       await _notificationService.showMissingCategoryNotification(
         processName: processName,
         executablePath: executablePath,
+      );
+      // Mark as notified to prevent spam
+      _notifiedUnknownProcesses.add(processName);
+      _logger.debug(
+        '[AutoSwitcher] Notified about unknown process: $processName',
+      );
+    } else if (_notifiedUnknownProcesses.contains(processName)) {
+      _logger.debug(
+        '[AutoSwitcher] Already notified about: $processName, skipping notification',
       );
     }
 
