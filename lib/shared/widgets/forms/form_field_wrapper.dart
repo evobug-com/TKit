@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Form field wrapper with consistent label, help text, and error styling
 class FormFieldWrapper extends StatelessWidget {
@@ -36,7 +37,7 @@ class FormFieldWrapper extends StatelessWidget {
               ),
             ),
             if (required) ...[
-              const SizedBox(width: 4),
+              const HSpace.xs(),
               Text(
                 '*',
                 style: TKitTextStyles.labelSmall.copyWith(

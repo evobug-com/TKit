@@ -33,8 +33,6 @@ TKit is a Windows desktop application that **automatically switches your Twitch 
 - **🌍 Multi-language Support** - 10 languages: English, Czech, Polish, Spanish, French, German, Portuguese, Japanese, Korean, Chinese
 - **🔔 Desktop Notifications** - Optional alerts when categories change
 - **⚙️ Configurable Behavior** - Scan intervals, debounce delays, fallback actions
-- **📊 Update History** - Track all category changes with timestamps
-- **🪟 System Tray Integration** - Runs quietly in the background
 
 ## 📥 Installation
 
@@ -142,6 +140,7 @@ Control automatic category switching:
 
 - **Start/Stop Monitoring** - Toggle automatic switching
 - **Manual Update** - Force update to current window's category
+- **Quick Mapping** - Click the plus (+) button next to your active application to instantly create a mapping for the current process
 - **View History** - See all category changes with timestamps
 
 <div align="center">

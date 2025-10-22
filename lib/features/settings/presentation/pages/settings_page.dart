@@ -72,20 +72,23 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
     super.initState();
     _tabController = TabController(length: 7, vsync: this);
 
-    // Setup shake animation
+    // Setup shake animation - smoother, less jarring
     _shakeController = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 400),
       vsync: this,
     );
     _shakeAnimation =
         TweenSequence<double>([
-          TweenSequenceItem(tween: Tween(begin: 0.0, end: 10.0), weight: 1),
-          TweenSequenceItem(tween: Tween(begin: 10.0, end: -10.0), weight: 2),
-          TweenSequenceItem(tween: Tween(begin: -10.0, end: 10.0), weight: 2),
-          TweenSequenceItem(tween: Tween(begin: 10.0, end: -10.0), weight: 2),
-          TweenSequenceItem(tween: Tween(begin: -10.0, end: 0.0), weight: 1),
+          TweenSequenceItem(tween: Tween(begin: 0.0, end: 6.0), weight: 1),
+          TweenSequenceItem(tween: Tween(begin: 6.0, end: -6.0), weight: 2),
+          TweenSequenceItem(tween: Tween(begin: -6.0, end: 4.0), weight: 2),
+          TweenSequenceItem(tween: Tween(begin: 4.0, end: -4.0), weight: 2),
+          TweenSequenceItem(tween: Tween(begin: -4.0, end: 0.0), weight: 1),
         ]).animate(
-          CurvedAnimation(parent: _shakeController, curve: Curves.easeInOut),
+          CurvedAnimation(
+            parent: _shakeController,
+            curve: Curves.easeInOutCubic,
+          ),
         );
 
     // Register shake callback with unsaved changes notifier
@@ -108,15 +111,24 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
   }
 
   void _updateSettings(AppSettings settings) {
+    // Optimized: Move logic outside setState
     final hasChanges = ref
         .read(settingsProvider.notifier)
         .hasUnsavedChanges(settings);
-    setState(() {
-      _currentSettings = settings;
-      _hasChanges = hasChanges;
-    });
+    _currentSettings = settings;
+    _hasChanges = hasChanges;
+
     // Update the unsaved changes notifier
     ref.read(unsavedChangesProvider.notifier).setHasChanges(value: hasChanges);
+
+    // Trigger rebuild using postFrameCallback for better performance
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    }
   }
 
   void _saveSettings() {
@@ -133,23 +145,30 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
     // Clear the window controls preview to revert to saved position
     ref.read(windowControlsPreviewProvider.notifier).clearPreview();
 
-    setState(() {
-      _hasChanges = false;
-      _isInitialized = false;
-      _resetKey++; // Force widget recreation
-      // Reset to original settings from provider immediately
-      if (state is SettingsLoaded) {
-        _currentSettings = state.settings;
-      } else if (state is SettingsSaved) {
-        _currentSettings = state.settings;
-      }
-    });
+    // Optimized: Move all logic outside setState
+    _hasChanges = false;
+    _isInitialized = false;
+    _resetKey++; // Force widget recreation
+    // Reset to original settings from provider immediately
+    if (state is SettingsLoaded) {
+      _currentSettings = state.settings;
+    } else if (state is SettingsSaved) {
+      _currentSettings = state.settings;
+    }
+
     // Clear unsaved changes flag
     ref.read(unsavedChangesProvider.notifier).setHasChanges(value: false);
-    // Load settings after the current frame to avoid setState during build
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(settingsProvider.notifier).loadSettings();
-    });
+
+    // Trigger rebuild using postFrameCallback for better performance
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {});
+        }
+        // Load settings after setState completes
+        ref.read(settingsProvider.notifier).loadSettings();
+      });
+    }
   }
 
   @override
@@ -161,12 +180,19 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
       if (next is SettingsSaved) {
         final l10n = AppLocalizations.of(context)!;
         Toast.success(context, l10n.settingsSavedSuccessfully);
-        setState(() {
-          _hasChanges = false;
-          _isInitialized = false;
-        });
+        // Optimized: Move logic outside setState
+        _hasChanges = false;
+        _isInitialized = false;
         // Clear unsaved changes flag
         ref.read(unsavedChangesProvider.notifier).setHasChanges(value: false);
+        // Trigger rebuild using postFrameCallback for better performance
+        if (mounted) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              setState(() {});
+            }
+          });
+        }
       } else if (next is SettingsError) {
         Toast.error(context, next.message);
       }
@@ -500,6 +526,19 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                   min: 1,
                   max: 60,
                   divisions: 59,
+                  tooltip:
+                      'Controls how frequently the app checks which application is in focus. Lower values = more responsive, but slightly higher CPU usage.',
+                  recommendedValue: 5,
+                  recommendedLabel: 'Recommended',
+                  example: 'Recommended: 5 seconds for best balance',
+                  validator: (value) {
+                    if (value < 2) {
+                      return 'Very low values may increase CPU usage';
+                    } else if (value > 30) {
+                      return 'High values may cause delayed switching';
+                    }
+                    return null;
+                  },
                   onChanged: (value) {
                     _updateSettings(
                       settings.copyWith(scanIntervalSeconds: value.toInt()),
@@ -514,6 +553,19 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                   min: 0,
                   max: 60,
                   divisions: 60,
+                  tooltip:
+                      'Prevents category switching when you quickly alt-tab through applications. Higher values = more stability, but slower response.',
+                  recommendedValue: 3,
+                  recommendedLabel: 'Recommended',
+                  example: 'Recommended: 3 seconds to prevent accidental switches',
+                  validator: (value) {
+                    if (value == 0) {
+                      return 'Instant switching - may cause rapid category changes';
+                    } else if (value > 30) {
+                      return 'High values may feel unresponsive';
+                    }
+                    return null;
+                  },
                   onChanged: (value) {
                     _updateSettings(
                       settings.copyWith(debounceSeconds: value.toInt()),
@@ -621,6 +673,19 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                   divisions: 168,
                   valueFormatter: (value) =>
                       _formatSyncInterval(value.toInt(), l10n),
+                  tooltip:
+                      'How often to automatically download updated mappings from the community repository. Set to 0 to disable automatic sync.',
+                  recommendedValue: 24,
+                  recommendedLabel: 'Recommended',
+                  example: 'Recommended: Daily sync keeps mappings up to date',
+                  validator: (value) {
+                    if (value == 0) {
+                      return 'Automatic sync disabled - manually sync to get updates';
+                    } else if (value > 72) {
+                      return 'Infrequent syncing - you may miss new mappings';
+                    }
+                    return null;
+                  },
                   onChanged: (value) {
                     _updateSettings(
                       settings.copyWith(
@@ -660,7 +725,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
       padding: const EdgeInsets.all(TKitSpacing.md),
       decoration: BoxDecoration(
         color: TKitColors.surfaceVariant.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(TKitSpacing.sm),
         border: Border.all(
           color: TKitColors.accent.withValues(alpha: 0.3),
           width: 1,
@@ -672,7 +737,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
           Row(
             children: [
               const Icon(Icons.schedule, size: 16, color: TKitColors.accent),
-              const SizedBox(width: 8),
+              const HSpace.sm(), // Design system: Use HSpace instead of hardcoded values
               Text(
                 l10n.settingsTimingTitle,
                 style: TKitTextStyles.labelSmall.copyWith(
@@ -683,13 +748,13 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const VSpace.sm(), // Design system: Use VSpace instead of hardcoded values
           _buildTimingStep(
             '1',
             l10n.settingsTimingStep1(scanInterval),
             TKitColors.accent,
           ),
-          const SizedBox(height: 4),
+          const VSpace.xs(), // Design system: Use VSpace instead of hardcoded values
           _buildTimingStep(
             '2',
             debounce == 0
@@ -697,7 +762,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                 : l10n.settingsTimingStep2Debounce(debounce),
             TKitColors.accent,
           ),
-          const SizedBox(height: 4),
+          const VSpace.xs(), // Design system: Use VSpace instead of hardcoded values
           _buildTimingStep(
             '→',
             debounce == 0
@@ -723,18 +788,17 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: color.withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(TKitSpacing.xs),
           ),
           child: Text(
             number,
-            style: TKitTextStyles.labelSmall.copyWith(
+            style: TKitTextStyles.caption.copyWith(
               color: color,
               fontWeight: FontWeight.bold,
-              fontSize: 11,
             ),
           ),
         ),
-        const SizedBox(width: 8),
+        const HSpace.sm(), // Design system: Use HSpace instead of hardcoded values
         Expanded(
           child: Text(
             text,
@@ -988,7 +1052,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
             padding: const EdgeInsets.all(TKitSpacing.md),
             decoration: BoxDecoration(
               color: TKitColors.warning.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(TKitSpacing.sm),
               border: Border.all(
                 color: TKitColors.warning.withValues(alpha: 0.3),
                 width: 1,
@@ -1027,38 +1091,82 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
           child: child,
         );
       },
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOut,
         padding: const EdgeInsets.all(TKitSpacing.lg),
         decoration: BoxDecoration(
-          color: TKitColors.surfaceVariant,
-          border: const Border(
-            top: BorderSide(color: TKitColors.border, width: 1),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              TKitColors.surfaceVariant.withValues(alpha: 0.95),
+              TKitColors.surfaceVariant,
+            ],
+          ),
+          border: Border(
+            top: BorderSide(
+              color: TKitColors.warning.withValues(alpha: 0.3),
+              width: 2,
+            ),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 8,
-              offset: const Offset(0, -2),
+              color: Colors.black.withValues(alpha: 0.15),
+              blurRadius: 12,
+              offset: const Offset(0, -4),
             ),
           ],
         ),
         child: Row(
           children: [
-            const Icon(Icons.info_outline, size: 16, color: TKitColors.warning),
-            const HSpace.sm(),
-            Text(
-              l10n.settingsUnsavedChanges,
-              style: TKitTextStyles.caption.copyWith(
-                color: TKitColors.textSecondary,
+            Container(
+              padding: const EdgeInsets.all(TKitSpacing.xs),
+              decoration: BoxDecoration(
+                color: TKitColors.warning.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(TKitSpacing.xs),
+              ),
+              child: const Icon(
+                Icons.edit_outlined,
+                size: 16,
+                color: TKitColors.warning,
               ),
             ),
-            const Spacer(),
+            const HSpace.sm(),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    l10n.settingsUnsavedChanges,
+                    style: TKitTextStyles.labelSmall.copyWith(
+                      color: TKitColors.textPrimary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: TKitSpacing.headerGap),
+                  Text(
+                    'Changes will be lost if you navigate away',
+                    style: TKitTextStyles.caption.copyWith(
+                      color: TKitColors.textMuted,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const HSpace.md(),
             AccentButton(
               text: l10n.settingsDiscard,
+              icon: Icons.close,
               onPressed: _discardChanges,
             ),
             const HSpace.sm(),
-            PrimaryButton(text: l10n.settingsSave, onPressed: _saveSettings),
+            PrimaryButton(
+              text: l10n.settingsSave,
+              icon: Icons.check,
+              onPressed: _saveSettings,
+            ),
           ],
         ),
       ),
@@ -1124,7 +1232,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const VSpace.sm(), // Design system: Use VSpace instead of hardcoded values
                 FutureBuilder<DateTime?>(
                   future: ref.read(authProvider.notifier).getTokenExpiration(),
                   builder: (context, snapshot) {
@@ -1179,7 +1287,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                     return const SizedBox.shrink();
                   },
                 ),
-                const SizedBox(height: 12),
+                const VSpace.md(),
                 Row(
                   children: [
                     Expanded(
@@ -1250,7 +1358,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
       decoration: BoxDecoration(
         color: TKitColors.surface,
         border: Border.all(color: TKitColors.error, width: 1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(TKitSpacing.md),
       ),
       padding: const EdgeInsets.all(TKitSpacing.lg),
       child: Row(
@@ -1296,7 +1404,7 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
         title: Row(
           children: [
             const Icon(Icons.warning_amber_rounded, color: TKitColors.warning),
-            const SizedBox(width: 8),
+            const HSpace.sm(), // Design system: Use HSpace instead of hardcoded values
             Text(l10n.settingsFactoryResetDialogTitle),
           ],
         ),

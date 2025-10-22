@@ -57,7 +57,7 @@ class DataListItem extends StatelessWidget {
                       ),
                     ),
                     if (subtitle != null) ...[
-                      const SizedBox(height: 2),
+                      const SizedBox(height: TKitSpacing.headerGap),
                       Text(
                         subtitle!,
                         style: TKitTextStyles.bodySmall.copyWith(

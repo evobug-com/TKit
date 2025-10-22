@@ -29,6 +29,8 @@ void main() {
       enableErrorTracking: true,
       enablePerformanceMonitoring: true,
       enableSessionReplay: false,
+      autoCheckForUpdates: true,
+      autoInstallUpdates: false,
     );
 
     final testJson = {
@@ -53,6 +55,8 @@ void main() {
       'enableErrorTracking': true,
       'enablePerformanceMonitoring': true,
       'enableSessionReplay': false,
+      'autoCheckForUpdates': true,
+      'autoInstallUpdates': false,
     };
 
     test('should be a subclass of AppSettings', () {
@@ -80,6 +84,8 @@ void main() {
         enableErrorTracking: true,
         enablePerformanceMonitoring: true,
         enableSessionReplay: false,
+        autoCheckForUpdates: true,
+        autoInstallUpdates: false,
       );
 
       // Act

@@ -205,7 +205,7 @@ class StatusDashboard extends StatelessWidget {
             padding: const EdgeInsets.all(TKitSpacing.sm),
             decoration: BoxDecoration(
               color: _getOrchestrationStateColor().withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(TKitSpacing.xs),
             ),
             child: UpdateStatusIndicator(
               status: _getOrchestrationStatusIndicator(),

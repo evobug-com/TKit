@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// TreeView - Hierarchical data display with expansion/collapse
 class TreeView<T> extends StatelessWidget {
@@ -116,9 +117,9 @@ class _TreeNodeState<T> extends State<TreeNode<T>> {
                     color: TKitColors.textSecondary,
                   )
                 else
-                  const SizedBox(width: 16),
+                  const HSpace.md(),
 
-                const SizedBox(width: TKitSpacing.xs),
+                const HSpace.xs(),
 
                 // Node icon
                 if (widget.data.icon != null) ...[

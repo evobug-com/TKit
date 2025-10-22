@@ -513,7 +513,7 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
                     );
 
                     // Refresh the mappings list in the UI after a short delay
-                    Future.delayed(const Duration(milliseconds: 500), () {
+                    Future<void>.delayed(const Duration(milliseconds: 500), () {
                       ref
                           .read(categoryMappingsProvider.notifier)
                           .loadMappings();

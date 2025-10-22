@@ -84,7 +84,7 @@ class TKitDropdownMenu<T> extends StatelessWidget {
                           ),
                         ),
                         if (item.subtitle != null) ...[
-                          const SizedBox(height: 2),
+                          const SizedBox(height: TKitSpacing.headerGap),
                           Text(
                             item.subtitle!,
                             style: TKitTextStyles.caption.copyWith(

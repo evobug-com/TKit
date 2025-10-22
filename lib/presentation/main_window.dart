@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:auto_route/auto_route.dart';
@@ -71,12 +72,13 @@ class _MainWindowState extends ConsumerState<MainWindow> {
       }
 
       // Show what's new dialog
-      if (mounted) {
-        final navigatorContext = widget.router.navigatorKey.currentContext;
-        if (navigatorContext != null) {
-          await showDialog<void>(
-            context: navigatorContext,
-            barrierDismissible: false,
+      // Get navigator context before async operations
+      final navigatorContext = widget.router.navigatorKey.currentContext;
+      if (mounted && navigatorContext != null) {
+        await showDialog<void>(
+          // ignore: use_build_context_synchronously
+          context: navigatorContext,
+          barrierDismissible: false,
             builder: (context) => WhatsNewDialog(
               updateInfo: updateInfo,
               onClose: () {
@@ -85,8 +87,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                 whatsNewService.markVersionAsSeen(AppConfig.appVersion);
               },
             ),
-          );
-        }
+        );
       }
     } catch (e) {
       // Silently fail - don't block app if whats new fails
@@ -102,9 +103,14 @@ class _MainWindowState extends ConsumerState<MainWindow> {
   }
 
   void _onRouteChanged() {
-    // Rebuild when route changes
+    // Optimized: No logic inside setState, just trigger rebuild
+    // Using postFrameCallback to avoid rebuilding during another build
     if (mounted) {
-      setState(() {});
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {});
+        }
+      });
     }
   }
 
@@ -142,12 +148,19 @@ class _MainWindowState extends ConsumerState<MainWindow> {
     if (_isLogScreenOpen) {
       // Close the log screen
       Navigator.of(navigatorContext).pop();
-      setState(() {
-        _isLogScreenOpen = false;
-      });
+      // Optimized: Move state change outside setState
+      _isLogScreenOpen = false;
+      if (mounted) {
+        setState(() {});
+      }
     } else {
       // Open the log screen
       final logger = ref.read(appLoggerProvider);
+      // Optimized: Update state before setState
+      _isLogScreenOpen = true;
+      if (mounted) {
+        setState(() {});
+      }
       Navigator.of(navigatorContext)
           .push<void>(
             MaterialPageRoute<void>(
@@ -156,13 +169,12 @@ class _MainWindowState extends ConsumerState<MainWindow> {
           )
           .then((_) {
             // Reset flag when screen is closed by other means (back button, etc)
-            setState(() {
-              _isLogScreenOpen = false;
-            });
+            // Optimized: Move state change outside setState
+            _isLogScreenOpen = false;
+            if (mounted) {
+              setState(() {});
+            }
           });
-      setState(() {
-        _isLogScreenOpen = true;
-      });
     }
   }
 
@@ -216,7 +228,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
             // Apply border radius if frameless mode is enabled
             if (useFrameless) {
               return ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
+                borderRadius: BorderRadius.circular(TKitSpacing.sm),
                 child: scaffold,
               );
             }
@@ -325,12 +337,11 @@ class _MainWindowState extends ConsumerState<MainWindow> {
               },
               child: DragToMoveArea(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.md),
                   child: Text(
                     AppConfig.appName.toUpperCase(),
-                    style: TKitTextStyles.heading4.copyWith(
+                    style: TKitTextStyles.labelSmall.copyWith( // Design system: Use labelSmall for small UI text
                       letterSpacing: 1.8,
-                      fontSize: 10,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -352,12 +363,11 @@ class _MainWindowState extends ConsumerState<MainWindow> {
               },
               child: DragToMoveArea(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.md),
                   child: Text(
                     AppConfig.appName.toUpperCase(),
-                    style: TKitTextStyles.heading4.copyWith(
+                    style: TKitTextStyles.labelSmall.copyWith( // Design system: Use labelSmall for small UI text
                       letterSpacing: 1.8,
-                      fontSize: 10,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -565,7 +575,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                           ? TKitColors.success
                           : TKitColors.textDisabled,
                     ),
-                    const SizedBox(width: 6),
+                    const HSpace.xs(), // Design system: Use HSpace instead of hardcoded values
                     Container(
                       width: 5,
                       height: 5,
@@ -576,14 +586,13 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                         shape: BoxShape.circle,
                       ),
                     ),
-                    const SizedBox(width: 6),
+                    const HSpace.xs(), // Design system: Use HSpace instead of hardcoded values
                     Text(
                       isAuthenticated
                           ? l10n.mainWindowStatusConnected
                           : l10n.mainWindowStatusDisconnected,
-                      style: TKitTextStyles.bodySmall.copyWith(
+                      style: TKitTextStyles.caption.copyWith( // Design system: Use caption for small text
                         color: TKitColors.textMuted,
-                        fontSize: 9,
                       ),
                     ),
                   ],
@@ -637,7 +646,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const HSpace.md(), // Design system: Use HSpace instead of hardcoded values
 
           // evobug.com link (not draggable - clickable)
           MouseRegion(
@@ -651,15 +660,14 @@ class _MainWindowState extends ConsumerState<MainWindow> {
               },
               child: Text(
                 'evobug.com',
-                style: TKitTextStyles.caption.copyWith(
-                  fontSize: 11,
+                style: TKitTextStyles.labelSmall.copyWith( // Design system: Use labelSmall for UI labels
                   color: TKitColors.info,
                   decoration: TextDecoration.underline,
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          const HSpace.lg(), // Design system: Use HSpace instead of hardcoded values
 
           // Version info (draggable)
           GestureDetector(
@@ -676,16 +684,15 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                 children: [
                   Text(
                     'v${AppConfig.appVersion}',
-                    style: TKitTextStyles.caption.copyWith(
-                      fontSize: 11,
+                    style: TKitTextStyles.labelSmall.copyWith( // Design system: Use labelSmall for UI labels
                       color: TKitColors.textDisabled,
                     ),
                   ),
-                  const SizedBox(width: 6),
+                  const HSpace.xs(), // Design system: Use HSpace instead of hardcoded values
                   ChannelBadge(
                     channel: _getChannelFromVersion(AppConfig.appVersion),
                   ),
-                  const SizedBox(width: 6),
+                  const HSpace.xs(), // Design system: Use HSpace instead of hardcoded values
                   VersionStatusIndicator(
                     navigatorKey: widget.router.navigatorKey,
                   ),
@@ -719,17 +726,29 @@ class _TabButton extends StatefulWidget {
 class _TabButtonState extends State<_TabButton> {
   var _isHovered = false;
 
+  // Optimized: Move logic outside setState for hover state changes
+  void _setHovered(bool value) {
+    _isHovered = value;
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
+      onEnter: (_) => _setHovered(true),
+      onExit: (_) => _setHovered(false),
       child: GestureDetector(
         onTap: widget.onTap,
         child: Container(
           height: 36,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.lg),
           decoration: BoxDecoration(
             color: widget.isSelected
                 ? TKitColors
@@ -747,13 +766,12 @@ class _TabButtonState extends State<_TabButton> {
           child: Center(
             child: Text(
               widget.label.toUpperCase(),
-              style: TKitTextStyles.bodySmall.copyWith(
+              style: TKitTextStyles.labelSmall.copyWith( // Design system: Use labelSmall for small UI text
                 color: widget.isSelected
                     ? TKitColors.textPrimary
                     : (_isHovered
                           ? TKitColors.textSecondary
                           : TKitColors.textMuted),
-                fontSize: 10,
                 fontWeight: widget.isSelected
                     ? FontWeight.w600
                     : FontWeight.w500,
@@ -786,12 +804,24 @@ class _WindowButton extends StatefulWidget {
 class _WindowButtonState extends State<_WindowButton> {
   var _isHovered = false;
 
+  // Optimized: Move logic outside setState for hover state changes
+  void _setHovered(bool value) {
+    _isHovered = value;
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
+      onEnter: (_) => _setHovered(true),
+      onExit: (_) => _setHovered(false),
       child: GestureDetector(
         onTap: widget.onTap,
         child: Container(

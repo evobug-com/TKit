@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Status badge types
 enum StatusBadgeType {
@@ -96,7 +97,7 @@ class StatusBadge extends StatelessWidget {
               borderRadius: BorderRadius.circular(0), // Sharp corners
             ),
           ),
-          if (label != null) const SizedBox(width: TKitSpacing.xs),
+          if (label != null) const HSpace.xs(),
         ],
         if (label != null)
           Text(
@@ -117,7 +118,10 @@ class StatusBadge extends StatelessWidget {
 
     // Full badge with border and background
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: const EdgeInsets.symmetric(
+        horizontal: TKitSpacing.sm,
+        vertical: TKitSpacing.xs,
+      ),
       decoration: BoxDecoration(
         color: _backgroundColor,
         border: Border.all(color: _color, width: 1),
@@ -232,7 +236,7 @@ class _PulsingStatusBadgeState extends State<PulsingStatusBadge>
       children: [
         dot,
         if (widget.label != null) ...[
-          const SizedBox(width: TKitSpacing.xs),
+          const HSpace.xs(),
           Text(
             widget.label!,
             style: TKitTextStyles.labelSmall.copyWith(
@@ -252,7 +256,10 @@ class _PulsingStatusBadgeState extends State<PulsingStatusBadge>
 
     // Full badge with border and background
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: const EdgeInsets.symmetric(
+        horizontal: TKitSpacing.sm,
+        vertical: TKitSpacing.xs,
+      ),
       decoration: BoxDecoration(
         color: _backgroundColor,
         border: Border.all(color: _color, width: 1),

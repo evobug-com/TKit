@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:tkit/l10n/app_localizations.dart';
+import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/widgets/hotkey_display.dart';
 import 'package:tkit/shared/widgets/buttons/accent_button.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Widget for recording and displaying keyboard shortcuts
 class HotkeyInput extends StatefulWidget {
@@ -28,15 +32,27 @@ class _HotkeyInputState extends State<HotkeyInput> {
   var _isRecording = false;
 
   void _startRecording() {
-    setState(() {
-      _isRecording = true;
-    });
+    // Optimized: Move logic outside setState
+    _isRecording = true;
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    }
   }
 
   void _stopRecording() {
-    setState(() {
-      _isRecording = false;
-    });
+    // Optimized: Move logic outside setState
+    _isRecording = false;
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    }
   }
 
   void _handleHotKeyRecorded(HotKey hotKey) {
@@ -288,38 +304,32 @@ class _HotkeyInputState extends State<HotkeyInput> {
                 children: [
                   Text(
                     widget.label,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TKitTextStyles.labelMedium, // Design system: Use TKitTextStyles
                   ),
                   if (widget.description != null) ...[
-                    const SizedBox(height: 2),
+                    const VSpace.xs(),
                     Text(
                       widget.description!,
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.6,
-                        ),
+                      style: TKitTextStyles.caption.copyWith( // Design system: Use TKitTextStyles
+                        color: TKitColors.textMuted,
                       ),
                     ),
                   ],
                 ],
               ),
             ),
-            const SizedBox(width: 12),
+            const HSpace.md(), // Design system: Use HSpace instead of hardcoded values
 
             // Display current or recording state
             if (_isRecording) ...[
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
+                  horizontal: TKitSpacing.md,
+                  vertical: TKitSpacing.sm,
                 ),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(TKitSpacing.xs),
                   border: Border.all(
                     color: theme.colorScheme.primary,
                     width: 2,
@@ -332,7 +342,7 @@ class _HotkeyInputState extends State<HotkeyInput> {
                   ),
                 ),
               ),
-              const SizedBox(width: 6),
+              const HSpace.xs(), // Design system: Use HSpace instead of hardcoded values
               IconButton(
                 icon: const Icon(Icons.close, size: 18),
                 tooltip: AppLocalizations.of(context)!.hotkeyInputCancel,
@@ -343,13 +353,13 @@ class _HotkeyInputState extends State<HotkeyInput> {
             ] else if (widget.currentHotkey != null &&
                 widget.currentHotkey!.isNotEmpty) ...[
               HotkeyDisplay(hotkeyString: widget.currentHotkey!),
-              const SizedBox(width: 6),
+              const HSpace.xs(), // Design system: Use HSpace instead of hardcoded values
               AccentButton(
                 text: AppLocalizations.of(context)!.hotkeyInputChange,
                 onPressed: _startRecording,
                 width: 80,
               ),
-              const SizedBox(width: 4),
+              const HSpace.xs(), // Design system: Use HSpace instead of hardcoded values
               IconButton(
                 icon: const Icon(Icons.clear, size: 18),
                 tooltip: AppLocalizations.of(context)!.hotkeyInputClearHotkey,

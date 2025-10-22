@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Minimal loading indicator (spinner)
 class LoadingIndicator extends StatelessWidget {
@@ -47,7 +49,7 @@ class LoadingIndicatorWithText extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         LoadingIndicator(size: size, color: color),
-        const SizedBox(height: 12),
+        const VSpace.md(),
         Text(
           text,
           style: TKitTextStyles.bodyMedium.copyWith(
@@ -71,11 +73,11 @@ class LoadingOverlay extends StatelessWidget {
       color: TKitColors.overlay,
       child: Center(
         child: Container(
-          padding: const EdgeInsets.all(32),
+          padding: const EdgeInsets.all(TKitSpacing.xxl),
           decoration: BoxDecoration(
             color: TKitColors.surface,
             border: Border.all(color: TKitColors.border, width: 1),
-            borderRadius: BorderRadius.circular(0), // Sharp corners
+            borderRadius: BorderRadius.circular(TKitSpacing.xs), // Minimal rounded corners
           ),
           child: message != null
               ? LoadingIndicatorWithText(text: message!)

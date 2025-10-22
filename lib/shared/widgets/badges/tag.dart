@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Tag variant types
 enum TKitTagVariant {
@@ -106,7 +107,7 @@ class TKitTag extends StatelessWidget {
       children: [
         if (icon != null) ...[
           Icon(icon, size: 12, color: _textColor),
-          const SizedBox(width: TKitSpacing.xs),
+          const HSpace.xs(),
         ],
         Text(
           label,
@@ -117,7 +118,7 @@ class TKitTag extends StatelessWidget {
           ),
         ),
         if (removable) ...[
-          const SizedBox(width: TKitSpacing.xs),
+          const HSpace.xs(),
           GestureDetector(
             onTap: onRemove,
             child: Icon(Icons.close, size: 12, color: _textColor),
@@ -182,7 +183,7 @@ class TKitTagGroup extends StatelessWidget {
       children: [
         for (int i = 0; i < tags.length; i++) ...[
           tags[i],
-          if (i < tags.length - 1) SizedBox(width: spacing),
+          if (i < tags.length - 1) HSpace(spacing),
         ],
       ],
     );

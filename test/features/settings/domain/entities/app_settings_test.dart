@@ -41,6 +41,8 @@ void main() {
         enableErrorTracking: true,
         enablePerformanceMonitoring: true,
         enableSessionReplay: false,
+        autoCheckForUpdates: true,
+        autoInstallUpdates: false,
       );
 
       // Assert

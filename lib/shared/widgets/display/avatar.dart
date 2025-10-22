@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
 
 /// Avatar size options
 enum AvatarSize {
@@ -11,16 +13,16 @@ enum AvatarSize {
   final double size;
   const AvatarSize(this.size);
 
-  double get fontSize {
+  TextStyle get textStyle {
     switch (this) {
       case AvatarSize.small:
-        return 11;
+        return TKitTextStyles.bodySmall;
       case AvatarSize.medium:
-        return 13;
+        return TKitTextStyles.bodyMedium;
       case AvatarSize.large:
-        return 16;
+        return TKitTextStyles.bodyLarge;
       case AvatarSize.xlarge:
-        return 20;
+        return TKitTextStyles.heading3;
     }
   }
 }
@@ -105,12 +107,17 @@ class Avatar extends StatelessWidget {
       height: size.size,
       decoration: BoxDecoration(
         color: backgroundColor ?? TKitColors.surfaceVariant,
-        border: Border.all(color: TKitColors.border, width: 1),
+        border: Border.all(
+          color: TKitColors.border,
+          width: TKitSpacing.unit / 4,
+        ),
       ),
       child: imageUrl != null && imageUrl!.isNotEmpty
           ? Image.network(
               imageUrl!,
               fit: BoxFit.cover,
+              cacheWidth: (size.size * 2).toInt(), // 2x for retina displays
+              filterQuality: FilterQuality.medium,
               errorBuilder: (context, error, stackTrace) {
                 return _buildInitials();
               },
@@ -129,8 +136,7 @@ class Avatar extends StatelessWidget {
     return Center(
       child: Text(
         _getInitials(),
-        style: TextStyle(
-          fontSize: size.fontSize,
+        style: size.textStyle.copyWith(
           fontWeight: FontWeight.w600,
           color: textColor ?? TKitColors.textPrimary,
           height: 1.0,
@@ -166,7 +172,9 @@ class AvatarGroup extends StatelessWidget {
           final avatar = entry.value;
 
           return Padding(
-            padding: EdgeInsets.only(left: index > 0 ? overlap : 0),
+            padding: EdgeInsets.only(
+              left: index > 0 ? overlap : 0,
+            ),
             child: avatar,
           );
         }),

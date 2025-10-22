@@ -174,6 +174,8 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
                   Image.network(
                     _selectedCategory!.boxArtUrl!,
                     fit: BoxFit.cover,
+                    cacheWidth: 104, // 52 * 2 for retina
+                    filterQuality: FilterQuality.low,
                     errorBuilder: (context, error, stackTrace) {
                       return const Icon(
                         Icons.videogame_asset,
@@ -187,7 +189,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
                     _selectedCategory!.getBoxArtUrl(width: 156, height: 210) ??
                         '',
                     fit: BoxFit.cover,
-                    filterQuality: FilterQuality.high,
+                    cacheWidth: 156,
+                    cacheHeight: 210,
+                    filterQuality: FilterQuality.medium,
                     errorBuilder: (context, error, stackTrace) {
                       return const SizedBox.shrink();
                     },
@@ -361,7 +365,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
                   Container(
                     width: 2,
                     height: 40,
-                    margin: const EdgeInsets.symmetric(vertical: 4),
+                    margin: const EdgeInsets.symmetric(vertical: TKitSpacing.xs),
                     color: isCompleted ? TKitColors.success : TKitColors.border,
                   ),
               ],
@@ -402,7 +406,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
             ),
           ],
         ),
-        if (showConnector) const SizedBox(height: 4),
+        if (showConnector) const VSpace.xs(),
       ],
     );
   }
@@ -644,6 +648,8 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
                             Image.network(
                               category.boxArtUrl!,
                               fit: BoxFit.cover,
+                              cacheWidth: 100,
+                              filterQuality: FilterQuality.low,
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
                                   color: TKitColors.surfaceVariant,
@@ -662,7 +668,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
                               category.getBoxArtUrl(width: 600, height: 800) ??
                                   '',
                               fit: BoxFit.cover,
-                              filterQuality: FilterQuality.high,
+                              cacheWidth: 400, // Downsample from 600 to 400
+                              cacheHeight: 533, // Maintain aspect ratio
+                              filterQuality: FilterQuality.medium,
                               errorBuilder: (context, error, stackTrace) {
                                 return const SizedBox.shrink();
                               },
@@ -698,7 +706,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
                           top: TKitSpacing.xs,
                           right: TKitSpacing.xs,
                           child: Container(
-                            padding: const EdgeInsets.all(4),
+                            padding: const EdgeInsets.all(TKitSpacing.xs),
                             decoration: BoxDecoration(
                               color: TKitColors.accent,
                               shape: BoxShape.circle,
@@ -852,6 +860,8 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
                           Image.network(
                             category.boxArtUrl!,
                             fit: BoxFit.cover,
+                            cacheWidth: 80, // 40 * 2 for retina
+                            filterQuality: FilterQuality.low,
                             errorBuilder: (context, error, stackTrace) {
                               return const Icon(
                                 Icons.videogame_asset,
@@ -865,7 +875,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
                             category.getBoxArtUrl(width: 120, height: 160) ??
                                 '',
                             fit: BoxFit.cover,
-                            filterQuality: FilterQuality.high,
+                            cacheWidth: 120,
+                            cacheHeight: 160,
+                            filterQuality: FilterQuality.medium,
                             errorBuilder: (context, error, stackTrace) {
                               return const SizedBox.shrink();
                             },
@@ -1233,13 +1245,13 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
                                 size: 9,
                                 color: TKitColors.accent,
                               ),
-                              const SizedBox(width: 2),
+                              const HSpace.xs(),
                               const Icon(
                                 Icons.arrow_forward,
                                 size: 8,
                                 color: TKitColors.accent,
                               ),
-                              const SizedBox(width: 2),
+                              const HSpace.xs(),
                               const Icon(
                                 Icons.check_circle,
                                 size: 9,
@@ -1353,6 +1365,8 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
                           Image.network(
                             _selectedCategory!.boxArtUrl!,
                             fit: BoxFit.cover,
+                            cacheWidth: 120, // 60 * 2 for retina
+                            filterQuality: FilterQuality.low,
                             errorBuilder: (_, _, _) =>
                                 const Icon(Icons.videogame_asset),
                           ),
@@ -1363,6 +1377,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
                                 ) ??
                                 '',
                             fit: BoxFit.cover,
+                            cacheWidth: 180,
+                            cacheHeight: 240,
+                            filterQuality: FilterQuality.medium,
                             errorBuilder: (_, _, _) => const SizedBox.shrink(),
                             loadingBuilder: (_, child, progress) {
                               if (progress == null) {
@@ -1712,7 +1729,7 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
 
   Widget _buildWorkflowArrow() {
     return const Padding(
-      padding: EdgeInsets.only(left: 10),
+      padding: EdgeInsets.only(left: TKitSpacing.sm),
       child: Icon(Icons.arrow_downward, size: 14, color: TKitColors.textMuted),
     );
   }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
 
 /// Widget that displays a keyboard shortcut in a visually appealing way
 ///
@@ -38,13 +40,12 @@ class HotkeyDisplay extends StatelessWidget {
           ),
           if (i < keys.length - 1)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
+              padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xs),
               child: Text(
                 '+',
-                style: TextStyle(
+                style: TKitTextStyles.labelMedium.copyWith(
                   fontSize: fontSize,
                   color: textColor,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
@@ -148,10 +149,13 @@ class _KeyCap extends StatelessWidget {
 
     return Container(
       constraints: BoxConstraints(minWidth: size, minHeight: size),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      padding: const EdgeInsets.symmetric(
+        horizontal: TKitSpacing.sm,
+        vertical: TKitSpacing.xs + 2,
+      ),
       decoration: BoxDecoration(
         color: effectiveKeyColor,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(TKitSpacing.xs),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.3),
           width: 1,
@@ -166,11 +170,9 @@ class _KeyCap extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(
+        style: TKitTextStyles.labelMedium.copyWith(
           fontSize: fontSize,
-          fontWeight: FontWeight.w600,
           color: effectiveTextColor,
-          letterSpacing: 0.5,
         ),
         textAlign: TextAlign.center,
       ),

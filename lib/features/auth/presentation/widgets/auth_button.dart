@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Primary authentication button widget
 /// Styled with Twitch purple branding
@@ -32,7 +34,7 @@ class AuthButton extends StatelessWidget {
           disabledForegroundColor: TKitColors.textSecondary,
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
           elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xxl, vertical: TKitSpacing.md),
         ),
         child: isLoading
             ? const SizedBox(
@@ -48,7 +50,7 @@ class AuthButton extends StatelessWidget {
                 children: [
                   if (icon != null) ...[
                     Icon(icon, size: 20),
-                    const SizedBox(width: 12),
+                    const HSpace.md(),
                   ],
                   Text(text, style: TKitTextStyles.button),
                 ],

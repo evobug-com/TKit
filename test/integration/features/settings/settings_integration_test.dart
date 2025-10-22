@@ -79,6 +79,8 @@ void main() {
         enableErrorTracking: true,
         enablePerformanceMonitoring: true,
         enableSessionReplay: false,
+        autoCheckForUpdates: true,
+        autoInstallUpdates: false,
       );
 
       // Act - Save
@@ -127,6 +129,8 @@ void main() {
         enableErrorTracking: true,
         enablePerformanceMonitoring: true,
         enableSessionReplay: false,
+        autoCheckForUpdates: true,
+        autoInstallUpdates: false,
       );
 
       // Act - Save with first instance
@@ -175,6 +179,8 @@ void main() {
         enableErrorTracking: true,
         enablePerformanceMonitoring: true,
         enableSessionReplay: false,
+        autoCheckForUpdates: true,
+        autoInstallUpdates: false,
       );
 
       // Act
@@ -219,6 +225,8 @@ void main() {
         enableErrorTracking: true,
         enablePerformanceMonitoring: true,
         enableSessionReplay: false,
+        autoCheckForUpdates: true,
+        autoInstallUpdates: false,
       );
       await updateSettingsUseCase(newSettings);
 
@@ -288,6 +296,8 @@ void main() {
           enableErrorTracking: true,
           enablePerformanceMonitoring: true,
           enableSessionReplay: false,
+          autoCheckForUpdates: true,
+          autoInstallUpdates: false,
         );
 
         // Act
@@ -324,6 +334,8 @@ void main() {
         enableErrorTracking: true,
         enablePerformanceMonitoring: true,
         enableSessionReplay: false,
+        autoCheckForUpdates: true,
+        autoInstallUpdates: false,
       );
 
       // Act
@@ -356,6 +368,8 @@ void main() {
         enableErrorTracking: true,
         enablePerformanceMonitoring: true,
         enableSessionReplay: false,
+        autoCheckForUpdates: true,
+        autoInstallUpdates: false,
       );
 
       // Act - Save (involves JSON serialization)

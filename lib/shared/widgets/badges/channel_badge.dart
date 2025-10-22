@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/features/settings/domain/entities/update_channel.dart';
 import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 
 /// Badge widget that displays the update channel (Alpha/Beta/RC)
@@ -48,10 +49,10 @@ class ChannelBadge extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.sm, vertical: TKitSpacing.xs),
       decoration: BoxDecoration(
         border: Border.all(color: _badgeColor, width: 1),
-        borderRadius: BorderRadius.circular(2),
+        borderRadius: BorderRadius.circular(TKitSpacing.xs),
       ),
       child: Text(
         text,

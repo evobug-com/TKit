@@ -133,7 +133,7 @@ Widget _buildUnorderedList(BuildContext context, Widget child, dynamic config) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
-            padding: EdgeInsets.only(top: 6, right: TKitSpacing.md),
+            padding: EdgeInsets.only(top: TKitSpacing.xs, right: TKitSpacing.md),
             child: Icon(
               Icons.check_circle,
               size: 14,
@@ -173,7 +173,7 @@ Widget _buildOrderedList(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 4, right: TKitSpacing.md),
+            padding: const EdgeInsets.only(top: TKitSpacing.xs, right: TKitSpacing.md),
             child: TKitBadge(text: no, variant: TKitBadgeVariant.info),
           ),
           Expanded(
@@ -597,7 +597,7 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                               const VSpace.sm(),
                               LinearProgressIndicator(
                                 value: progress.progress,
-                                minHeight: 6,
+                                minHeight: TKitSpacing.xs,
                                 backgroundColor: TKitColors.surfaceVariant,
                                 color: TKitColors.accent,
                               ),
@@ -834,6 +834,8 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                             : ListView.separated(
                                 itemCount:
                                     widget.updateInfo.versionChangelogs.length,
+                                // Performance: No state preservation needed for changelog entries
+                                addAutomaticKeepAlives: false,
                                 separatorBuilder: (context, index) =>
                                     const Padding(
                                       padding: EdgeInsets.symmetric(
@@ -856,14 +858,15 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                                         children: [
                                           Container(
                                             padding: const EdgeInsets.symmetric(
-                                              horizontal: 6,
-                                              vertical: 2,
+                                              horizontal: TKitSpacing.xs,
+                                              vertical: TKitSpacing.xs / 2,
                                             ),
                                             decoration: BoxDecoration(
                                               color: TKitColors.surfaceVariant,
                                               border: Border.all(
                                                 color: TKitColors.border,
                                               ),
+                                              borderRadius: BorderRadius.circular(TKitSpacing.xs),
                                             ),
                                             child: Text(
                                               changelog.version,

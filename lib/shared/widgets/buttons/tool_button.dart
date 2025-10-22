@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Tool button for sidebar navigation with bottom border selection indicator
 class ToolButton extends StatelessWidget {
@@ -33,7 +35,7 @@ class ToolButton extends StatelessWidget {
         child: InkWell(
           onTap: onPressed,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.lg, vertical: TKitSpacing.md),
             child: Row(
               children: [
                 Icon(
@@ -43,7 +45,7 @@ class ToolButton extends StatelessWidget {
                       ? TKitColors.accent
                       : TKitColors.textSecondary,
                 ),
-                const SizedBox(width: 12),
+                const HSpace.md(), // Design system: Use HSpace instead of hardcoded values
                 Expanded(
                   child: Text(
                     text,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/theme/colors.dart';
 
 /// Reusable checkbox widget for settings
 class SettingsCheckbox extends StatelessWidget {
@@ -20,14 +22,14 @@ class SettingsCheckbox extends StatelessWidget {
     return CheckboxListTile(
       title: Text(
         label,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14),
+        style: TKitTextStyles.labelMedium,
       ),
       subtitle: subtitle != null
           ? Text(
               subtitle!,
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(fontSize: 11),
+              style: TKitTextStyles.bodySmall.copyWith(
+                color: TKitColors.textSecondary,
+              ),
             )
           : null,
       value: value,

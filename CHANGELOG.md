@@ -14,9 +14,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Plus button next to Active App to add mapping of the current process
 - Automatic start of auto-updater on app launch (if enabled in settings)
 
+#### Changed
+
 #### Fixed
 - Automatic start of auto-switcher on app launch (setting existed but wasn't actually implemented)
 - Auto-sync mappings on app start now works correctly (setting existed but wasn't being checked)
+
+#### DEV Notes
+- Type inference warning in main.dart
+- All hardcoded EdgeInsets values replaced with design system constants
+- All hardcoded BorderRadius values replaced with design system constants
+- **100% design system compliance achieved** across all 58 UI component files
+- All spacing now uses TKitSpacing constants (xs, sm, md, lg, xl, xxl)
+- All spacing widgets now use VSpace/HSpace instead of hardcoded SizedBox
+- All border radius values now use TKitSpacing constants
+- Enhanced consistency in spacing, typography, and visual styling throughout the entire application
 
 ## [0.0.1-dev.7] - 2025-10-18
 

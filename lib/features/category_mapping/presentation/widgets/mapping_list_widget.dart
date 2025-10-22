@@ -69,41 +69,69 @@ class _MappingListWidgetState extends State<MappingListWidget> {
   }
 
   void _invertSelection() {
-    setState(() {
-      // Invert only the visible (filtered) mappings
-      final visibleIds = _filteredMappings.map((m) => m.id!).toSet();
-      final currentSelection = Set<int>.from(_selectedIds);
+    // Optimized: Move logic outside setState
+    // Invert only the visible (filtered) mappings
+    final visibleIds = _filteredMappings.map((m) => m.id!).toSet();
+    final currentSelection = Set<int>.from(_selectedIds);
 
-      // Remove visible selected items
-      _selectedIds.removeWhere((id) => visibleIds.contains(id));
+    // Remove visible selected items
+    _selectedIds.removeWhere((id) => visibleIds.contains(id));
 
-      // Add visible unselected items
-      _selectedIds.addAll(visibleIds.difference(currentSelection));
-    });
+    // Add visible unselected items
+    _selectedIds.addAll(visibleIds.difference(currentSelection));
+
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    }
   }
 
   void _toggleSelection(int id) {
-    setState(() {
-      if (_selectedIds.contains(id)) {
-        _selectedIds.remove(id);
-      } else {
-        _selectedIds.add(id);
-      }
-    });
+    // Optimized: Move logic outside setState
+    if (_selectedIds.contains(id)) {
+      _selectedIds.remove(id);
+    } else {
+      _selectedIds.add(id);
+    }
+
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    }
   }
 
   void _clearSelection() {
-    setState(() {
-      _selectedIds.clear();
-    });
+    // Optimized: Move logic outside setState
+    _selectedIds.clear();
+
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    }
   }
 
   void _clearUndo() {
-    setState(() {
-      _lastAction = null;
-      _deletedMappings = null;
-      _previousEnabledStates = null;
-    });
+    // Optimized: Move logic outside setState
+    _lastAction = null;
+    _deletedMappings = null;
+    _previousEnabledStates = null;
+
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    }
   }
 
   List<CategoryMapping> get _selectedMappings {
@@ -275,7 +303,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                             onTap: widget.onSourceTap != null
                                 ? () => widget.onSourceTap!(mapping.listId)
                                 : null,
-                            borderRadius: BorderRadius.circular(2),
+                            borderRadius: BorderRadius.circular(TKitSpacing.xs),
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: TKitSpacing.sm,
@@ -390,7 +418,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
       decoration: BoxDecoration(
         color: TKitColors.accent.withValues(alpha: 0.1),
         border: Border.all(color: TKitColors.accent.withValues(alpha: 0.3)),
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(TKitSpacing.xs),
       ),
       child: Row(
         children: [
@@ -488,15 +516,23 @@ class _MappingListWidgetState extends State<MappingListWidget> {
           if (widget.onBulkToggleEnabled != null)
             ElevatedButton.icon(
               onPressed: () {
+                // Optimized: Move logic outside setState
                 // Save current state for undo
-                setState(() {
-                  _previousEnabledStates = {
-                    for (final mapping in _selectedMappings)
-                      mapping.id!: mapping.isEnabled,
-                  };
-                  _lastAction = l10n.mappingListActionEnable;
-                  _deletedMappings = null;
-                });
+                _previousEnabledStates = {
+                  for (final mapping in _selectedMappings)
+                    mapping.id!: mapping.isEnabled,
+                };
+                _lastAction = l10n.mappingListActionEnable;
+                _deletedMappings = null;
+
+                if (mounted) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (mounted) {
+                      setState(() {});
+                    }
+                  });
+                }
+
                 widget.onBulkToggleEnabled!(
                   _selectedIds.toList(),
                   enabled: true,
@@ -524,15 +560,23 @@ class _MappingListWidgetState extends State<MappingListWidget> {
           if (widget.onBulkToggleEnabled != null)
             ElevatedButton.icon(
               onPressed: () {
+                // Optimized: Move logic outside setState
                 // Save current state for undo
-                setState(() {
-                  _previousEnabledStates = {
-                    for (final mapping in _selectedMappings)
-                      mapping.id!: mapping.isEnabled,
-                  };
-                  _lastAction = l10n.mappingListActionDisable;
-                  _deletedMappings = null;
-                });
+                _previousEnabledStates = {
+                  for (final mapping in _selectedMappings)
+                    mapping.id!: mapping.isEnabled,
+                };
+                _lastAction = l10n.mappingListActionDisable;
+                _deletedMappings = null;
+
+                if (mounted) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (mounted) {
+                      setState(() {});
+                    }
+                  });
+                }
+
                 widget.onBulkToggleEnabled!(
                   _selectedIds.toList(),
                   enabled: false,
@@ -566,12 +610,20 @@ class _MappingListWidgetState extends State<MappingListWidget> {
                 onPressed: _hasReadOnlySelection
                     ? null
                     : () {
+                        // Optimized: Move logic outside setState
                         // Save deleted mappings for undo
-                        setState(() {
-                          _deletedMappings = List.from(_selectedMappings);
-                          _lastAction = l10n.mappingListActionDelete;
-                          _previousEnabledStates = null;
-                        });
+                        _deletedMappings = List.from(_selectedMappings);
+                        _lastAction = l10n.mappingListActionDelete;
+                        _previousEnabledStates = null;
+
+                        if (mounted) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (mounted) {
+                              setState(() {});
+                            }
+                          });
+                        }
+
                         widget.onBulkDelete!(_selectedIds.toList());
                         _clearSelection();
                       },
@@ -612,9 +664,15 @@ class _MappingListWidgetState extends State<MappingListWidget> {
           child: TextField(
             controller: _searchController,
             onChanged: (value) {
-              setState(() {
-                _searchQuery = value;
-              });
+              // Optimized: Move logic outside setState
+              _searchQuery = value;
+              if (mounted) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (mounted) {
+                    setState(() {});
+                  }
+                });
+              }
             },
             decoration: InputDecoration(
               hintText: l10n.mappingListSearchHint,
@@ -655,7 +713,7 @@ class _MappingListWidgetState extends State<MappingListWidget> {
               });
             },
             tooltip: l10n.mappingListTooltipClearSearch,
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(TKitSpacing.xs), // Design system: Use TKitSpacing
             constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
           ),
         ],

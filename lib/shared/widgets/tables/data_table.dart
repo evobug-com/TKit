@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Column definition for TKitDataTable
 class TKitTableColumn<T> {
@@ -271,7 +272,7 @@ class TKitTableHeader<T> extends StatelessWidget {
           // Selection checkbox
           if (selectable) ...[
             SizedBox(
-              width: 40,
+              width: TKitSpacing.xl * 2,
               child: Checkbox(
                 value: allSelected,
                 onChanged: onSelectAll != null
@@ -310,14 +311,14 @@ class TKitTableHeader<T> extends StatelessWidget {
                     ),
                   ),
                   if (column.sortable) ...[
-                    const SizedBox(width: 4),
+                    const HSpace.xs(),
                     Icon(
                       isSorted
                           ? (sortDirection == TKitSortDirection.ascending
                                 ? Icons.arrow_upward
                                 : Icons.arrow_downward)
                           : Icons.unfold_more,
-                      size: 12,
+                      size: TKitSpacing.md,
                       color: isSorted
                           ? TKitColors.textPrimary
                           : TKitColors.textMuted,
@@ -394,7 +395,7 @@ class _TKitTableRowState<T> extends State<TKitTableRow<T>> {
                 // Selection checkbox
                 if (widget.selectable) ...[
                   SizedBox(
-                    width: 40,
+                    width: TKitSpacing.xl * 2,
                     child: Checkbox(
                       value: widget.selected,
                       onChanged: widget.onSelectionChanged != null

@@ -42,7 +42,7 @@ class WhatsNewDialog extends StatelessWidget {
                     padding: const EdgeInsets.all(TKitSpacing.sm),
                     decoration: BoxDecoration(
                       color: TKitColors.accent.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(TKitSpacing.xs),
                     ),
                     child: const Icon(
                       Icons.celebration_rounded,
@@ -76,7 +76,7 @@ class WhatsNewDialog extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: TKitColors.success.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(TKitSpacing.xs),
                     ),
                     child: Text(
                       l10n.whatsNewTag,
@@ -101,7 +101,7 @@ class WhatsNewDialog extends StatelessWidget {
                       padding: const EdgeInsets.all(TKitSpacing.md),
                       decoration: BoxDecoration(
                         color: TKitColors.surfaceVariant.withValues(alpha: 0.5),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(TKitSpacing.xs),
                       ),
                       child: GptMarkdown(
                         updateInfo.releaseNotes,

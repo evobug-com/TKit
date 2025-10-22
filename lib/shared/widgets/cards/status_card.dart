@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Status card for displaying orchestration state and information
 class StatusCard extends StatelessWidget {
@@ -34,10 +36,10 @@ class StatusCard extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: padding ?? const EdgeInsets.all(16),
+            padding: padding ?? const EdgeInsets.all(TKitSpacing.lg), // Design system: Use TKitSpacing
             child: Row(
               children: [
-                if (leading != null) ...[leading!, const SizedBox(width: 12)],
+                if (leading != null) ...[leading!, const HSpace.md()],
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +47,7 @@ class StatusCard extends StatelessWidget {
                     children: [
                       Text(title, style: TKitTextStyles.labelLarge),
                       if (subtitle != null) ...[
-                        const SizedBox(height: 4),
+                        const VSpace.xs(),
                         Text(
                           subtitle!,
                           style: TKitTextStyles.bodySmall.copyWith(
@@ -56,7 +58,7 @@ class StatusCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (trailing != null) ...[const SizedBox(width: 12), trailing!],
+                if (trailing != null) ...[const HSpace.md(), trailing!],
               ],
             ),
           ),

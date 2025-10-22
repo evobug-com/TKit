@@ -216,7 +216,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
                           color: _currentStep == index
                               ? TKitColors.accent
                               : TKitColors.border,
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(TKitSpacing.xs),
                         ),
                       ),
                     );

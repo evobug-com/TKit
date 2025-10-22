@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:tray_manager/tray_manager.dart';
@@ -35,12 +36,39 @@ class SystemTrayService with TrayListener {
       // Add listener
       trayManager.addListener(this);
 
-      // Set tray icon
-      await trayManager.setIcon(
-        Platform.isWindows
-            ? 'Assets/Icon512x512.ico'
-            : 'Assets/Icon512x512.png',
-      );
+      // Set tray icon with retry logic for transient failures
+      var retryCount = 0;
+      const maxRetries = 3;
+      Exception? lastError;
+
+      while (retryCount < maxRetries) {
+        try {
+          await trayManager.setIcon(
+            Platform.isWindows
+                ? 'Assets/Icon512x512.ico'
+                : 'Assets/Icon512x512.png',
+          ).timeout(
+            const Duration(seconds: 5),
+            onTimeout: () => throw TimeoutException(
+              'Tray icon setup timed out',
+            ),
+          );
+          break; // Success, exit retry loop
+        } catch (e) {
+          lastError = e is Exception ? e : Exception(e.toString());
+          retryCount++;
+          if (retryCount < maxRetries) {
+            _logger.warning(
+              'Failed to set tray icon (attempt $retryCount/$maxRetries), retrying...',
+            );
+            await Future<void>.delayed(Duration(milliseconds: 500 * retryCount));
+          }
+        }
+      }
+
+      if (retryCount == maxRetries && lastError != null) {
+        throw lastError;
+      }
 
       // Build context menu
       final menu = Menu(
@@ -52,36 +80,80 @@ class SystemTrayService with TrayListener {
       );
 
       // Set context menu
-      await trayManager.setContextMenu(menu);
+      await trayManager.setContextMenu(menu).timeout(
+        const Duration(seconds: 3),
+        onTimeout: () => throw TimeoutException('Context menu setup timed out'),
+      );
 
       // Set tooltip
-      await trayManager.setToolTip(tooltip);
+      await trayManager.setToolTip(tooltip).timeout(
+        const Duration(seconds: 3),
+        onTimeout: () => throw TimeoutException('Tooltip setup timed out'),
+      );
 
       _isInitialized = true;
+      _logger.info('System tray initialized successfully');
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error(
+        'Timeout during system tray initialization: ${e.message}',
+        e,
+        stackTrace,
+      );
+      // Don't rethrow - tray is not critical for app functionality
+    } on FileSystemException catch (e, stackTrace) {
+      _logger.error(
+        'File system error during tray initialization (icon not found?): ${e.message}',
+        e,
+        stackTrace,
+      );
     } catch (e, stackTrace) {
-      _logger.error('Failed to initialize system tray', e, stackTrace);
+      _logger.error(
+        'Unexpected error during system tray initialization',
+        e,
+        stackTrace,
+      );
       // Don't rethrow - tray is not critical for app functionality
     }
   }
 
   @override
   void onTrayIconMouseDown() {
-    _onShow?.call();
+    try {
+      _onShow?.call();
+    } catch (e, stackTrace) {
+      _logger.error('Error handling tray icon click', e, stackTrace);
+    }
   }
 
   @override
   void onTrayIconRightMouseDown() {
-    trayManager.popUpContextMenu();
+    try {
+      trayManager.popUpContextMenu();
+    } catch (e, stackTrace) {
+      _logger.error('Error showing tray context menu', e, stackTrace);
+    }
   }
 
   /// Update tray icon tooltip
   Future<void> updateTooltip(String tooltip) async {
     if (!_isInitialized) {
+      _logger.debug('System tray not initialized, skipping tooltip update');
       return;
     }
 
     try {
-      await trayManager.setToolTip(tooltip);
+      await trayManager.setToolTip(tooltip).timeout(
+        const Duration(seconds: 3),
+        onTimeout: () {
+          _logger.warning('Timeout updating tray tooltip');
+        },
+      );
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error(
+        'Timeout updating tray tooltip: ${e.message}',
+        e,
+        stackTrace,
+      );
     } catch (e, stackTrace) {
       _logger.error('Failed to update tray tooltip', e, stackTrace);
     }
@@ -95,11 +167,24 @@ class SystemTrayService with TrayListener {
 
     try {
       trayManager.removeListener(this);
-      await trayManager.destroy();
-      _isInitialized = false;
+      await trayManager.destroy().timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          _logger.warning('Timeout disposing system tray');
+        },
+      );
       _logger.info('System tray disposed');
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error(
+        'Timeout during system tray disposal: ${e.message}',
+        e,
+        stackTrace,
+      );
     } catch (e, stackTrace) {
       _logger.error('Failed to dispose system tray', e, stackTrace);
+    } finally {
+      // Always mark as not initialized, even if disposal failed
+      _isInitialized = false;
     }
   }
 }
@@ -113,9 +198,31 @@ class WindowService with WindowListener {
 
   /// Initialize window service
   Future<void> initialize() async {
-    windowManager.addListener(this);
-    // Prevent window from closing immediately - trigger onWindowClose instead
-    await windowManager.setPreventClose(true);
+    try {
+      windowManager.addListener(this);
+      // Prevent window from closing immediately - trigger onWindowClose instead
+      await windowManager.setPreventClose(true).timeout(
+        const Duration(seconds: 3),
+        onTimeout: () {
+          _logger.warning('Timeout setting prevent close for window');
+        },
+      );
+      _logger.info('Window service initialized');
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error(
+        'Timeout during window service initialization',
+        e,
+        stackTrace,
+      );
+    } catch (e, stackTrace) {
+      _logger.error(
+        'Failed to initialize window service',
+        e,
+        stackTrace,
+      );
+      // Rethrow as window service is critical
+      rethrow;
+    }
   }
 
   /// Check if force exit has been requested (bypasses close-to-tray)
@@ -123,17 +230,45 @@ class WindowService with WindowListener {
 
   /// Request a forced exit that bypasses close-to-tray behavior
   Future<void> forceExit() async {
-    _logger.info('Force exit requested - bypassing close-to-tray');
-    _forceExitRequested = true;
-    await windowManager.close();
+    try {
+      _logger.info('Force exit requested - bypassing close-to-tray');
+      _forceExitRequested = true;
+      await windowManager.close().timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          _logger.warning('Timeout during force exit, window may not close');
+        },
+      );
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error('Timeout during force exit', e, stackTrace);
+      // Still try to exit even if window close times out
+      _forceExitRequested = true;
+    } catch (e, stackTrace) {
+      _logger.error('Error during force exit', e, stackTrace);
+      // Still mark as requested even if close fails
+      _forceExitRequested = true;
+      rethrow;
+    }
   }
 
   /// Show the main window
   Future<void> showWindow() async {
     try {
-      await windowManager.show();
-      await windowManager.focus();
-      _logger.debug('Window shown');
+      await windowManager.show().timeout(
+        const Duration(seconds: 3),
+        onTimeout: () {
+          _logger.warning('Timeout showing window');
+        },
+      );
+      await windowManager.focus().timeout(
+        const Duration(seconds: 2),
+        onTimeout: () {
+          _logger.warning('Timeout focusing window');
+        },
+      );
+      _logger.debug('Window shown and focused');
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error('Timeout while showing window', e, stackTrace);
     } catch (e, stackTrace) {
       _logger.error('Failed to show window', e, stackTrace);
     }
@@ -142,8 +277,15 @@ class WindowService with WindowListener {
   /// Hide the main window
   Future<void> hideWindow() async {
     try {
-      await windowManager.hide();
+      await windowManager.hide().timeout(
+        const Duration(seconds: 3),
+        onTimeout: () {
+          _logger.warning('Timeout hiding window');
+        },
+      );
       _logger.debug('Window hidden');
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error('Timeout while hiding window', e, stackTrace);
     } catch (e, stackTrace) {
       _logger.error('Failed to hide window', e, stackTrace);
     }
@@ -152,12 +294,22 @@ class WindowService with WindowListener {
   /// Toggle window visibility
   Future<void> toggleWindow() async {
     try {
-      final isVisible = await windowManager.isVisible();
+      final isVisible = await windowManager.isVisible().timeout(
+        const Duration(seconds: 2),
+        onTimeout: () {
+          _logger.warning('Timeout checking window visibility, assuming hidden');
+          return false;
+        },
+      );
       if (isVisible) {
         await hideWindow();
       } else {
         await showWindow();
       }
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error('Timeout while toggling window', e, stackTrace);
+      // Fallback: try to show the window
+      await showWindow();
     } catch (e, stackTrace) {
       _logger.error('Failed to toggle window', e, stackTrace);
     }
@@ -177,7 +329,11 @@ class WindowService with WindowListener {
 
   /// Dispose window service
   Future<void> dispose() async {
-    windowManager.removeListener(this);
-    _logger.info('Window service disposed');
+    try {
+      windowManager.removeListener(this);
+      _logger.info('Window service disposed');
+    } catch (e, stackTrace) {
+      _logger.error('Error disposing window service', e, stackTrace);
+    }
   }
 }

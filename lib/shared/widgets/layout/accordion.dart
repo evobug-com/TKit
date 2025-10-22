@@ -150,7 +150,7 @@ class _AccordionItemState extends State<AccordionItem> {
                       children: [
                         Text(widget.title, style: TKitTextStyles.labelMedium),
                         if (widget.subtitle != null) ...[
-                          const SizedBox(height: 2),
+                          const SizedBox(height: TKitSpacing.headerGap),
                           Text(
                             widget.subtitle!,
                             style: TKitTextStyles.bodySmall,

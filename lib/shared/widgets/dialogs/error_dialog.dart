@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/widgets/buttons/primary_button.dart';
 import 'package:tkit/shared/widgets/indicators/status_indicator.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Error dialog for displaying error messages
 class ErrorDialog extends StatelessWidget {
@@ -37,7 +39,7 @@ class ErrorDialog extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 480, minWidth: 360),
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(TKitSpacing.xxl), // Design system: Use TKitSpacing
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,11 +48,11 @@ class ErrorDialog extends StatelessWidget {
               Row(
                 children: [
                   const StatusIndicator(status: StatusType.error, size: 12),
-                  const SizedBox(width: 12),
+                  const HSpace.md(), // Design system: Use HSpace instead of hardcoded values
                   Expanded(child: Text(title, style: TKitTextStyles.heading3)),
                 ],
               ),
-              const SizedBox(height: 16),
+              const VSpace.lg(), // Design system: Use VSpace instead of hardcoded values
 
               // Message
               Text(
@@ -62,9 +64,9 @@ class ErrorDialog extends StatelessWidget {
 
               // Details (optional)
               if (details != null) ...[
-                const SizedBox(height: 16),
+                const VSpace.lg(), // Design system: Use VSpace instead of hardcoded values
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(TKitSpacing.md), // Design system: Use TKitSpacing
                   decoration: BoxDecoration(
                     color: TKitColors.surfaceVariant,
                     border: Border.all(color: TKitColors.border, width: 1),
@@ -80,7 +82,7 @@ class ErrorDialog extends StatelessWidget {
                 ),
               ],
 
-              const SizedBox(height: 24),
+              const VSpace.xxl(), // Design system: Use VSpace instead of hardcoded values
 
               // Action
               Align(

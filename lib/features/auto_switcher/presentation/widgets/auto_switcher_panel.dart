@@ -46,7 +46,7 @@ class AutoSwitcherPanel extends StatelessWidget {
                 padding: const EdgeInsets.all(TKitSpacing.sm),
                 decoration: BoxDecoration(
                   color: TKitColors.accent.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(TKitSpacing.xs),
                 ),
                 child: const Icon(
                   Icons.auto_awesome,
@@ -65,7 +65,7 @@ class AutoSwitcherPanel extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    const VSpace.xs(), // Design system: Use VSpace instead of hardcoded values
                     Text(
                       'Automatically changes your category based on what app you\'re using',
                       style: TKitTextStyles.caption.copyWith(
@@ -197,10 +197,10 @@ class AutoSwitcherPanel extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.all(6),
+                padding: const EdgeInsets.all(TKitSpacing.xs), // Design system: Use TKitSpacing
                 decoration: BoxDecoration(
                   color: TKitColors.accent.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(TKitSpacing.xs),
                 ),
                 child: const Icon(
                   Icons.bolt,
@@ -327,7 +327,7 @@ class AutoSwitcherPanel extends StatelessWidget {
                         color: TKitColors.textMuted,
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    const VSpace.xs(), // Design system: Use VSpace instead of hardcoded values
                     Text(
                       hasProcess ? status!.currentProcess! : 'None detected',
                       style: TKitTextStyles.bodyMedium.copyWith(
@@ -362,7 +362,7 @@ class AutoSwitcherPanel extends StatelessWidget {
                         color: TKitColors.textMuted,
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    const VSpace.xs(), // Design system: Use VSpace instead of hardcoded values
                     Text(
                       hasCategory ? status!.matchedCategory! : 'None set',
                       style: TKitTextStyles.bodyMedium.copyWith(

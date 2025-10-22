@@ -5,7 +5,7 @@ This guide covers the technical details for developers who want to build, modify
 ## Tech Stack
 
 - **Flutter** (Windows) - Cross-platform UI framework
-- **Provider** - State management
+- **Riverpod** (with hooks) - State management with code generation
 - **Drift** - SQLite database for persistent storage
 - **Dio** - HTTP client for Twitch API integration
 - **flutter_secure_storage** - Secure token storage
@@ -201,91 +201,145 @@ class CategoryMappingLocalDataSource {
 ```
 
 #### 3. Presentation Layer (UI)
-- **Pages**: Full-screen views
+- **Pages**: Full-screen views (using auto_route)
 - **Widgets**: Reusable UI components
-- **Providers**: State management using Provider package
+- **Providers**: State management using Riverpod with code generation
+- **Notifiers**: AsyncNotifier for async state management
 
 Example:
 ```dart
-class CategoryMappingProvider extends ChangeNotifier {
-  final GetMappingsUseCase getMappingsUseCase;
+@riverpod
+class CategoryMappings extends _$CategoryMappings {
+  @override
+  Future<List<CategoryMapping>> build() async {
+    final getMappingsUseCase = ref.read(getAllMappingsUseCaseProvider);
+    final result = await getMappingsUseCase();
 
-  List<CategoryMapping> _mappings = [];
-  List<CategoryMapping> get mappings => _mappings;
+    return result.fold(
+      (failure) => throw failure,
+      (mappings) => mappings,
+    );
+  }
 
-  Future<void> loadMappings() async {
-    _mappings = await getMappingsUseCase();
-    notifyListeners();
+  Future<void> refresh() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final getMappingsUseCase = ref.read(getAllMappingsUseCaseProvider);
+      final result = await getMappingsUseCase();
+
+      return result.fold(
+        (failure) => throw failure,
+        (mappings) => mappings,
+      );
+    });
   }
 }
 ```
 
 ### Dependency Injection
 
-TKit uses **manual dependency injection** with **Provider** for state management. All dependencies are manually created and wired together in `main.dart`:
+TKit uses **Riverpod** with **code generation** (`riverpod_generator`) for dependency injection and state management. All dependencies are declared as providers in dedicated provider files:
 
 ```dart
-void main() async {
-  // 1. Create core dependencies (singletons)
-  final database = AppDatabase();
+// Core providers in lib/core/providers/providers.dart
+@Riverpod(keepAlive: true)
+AppDatabase database(Ref ref) {
+  return AppDatabase();
+}
+
+@Riverpod(keepAlive: true)
+Dio dio(Ref ref) {
   final dio = Dio();
-  final secureStorage = const FlutterSecureStorage();
-  final sharedPreferences = await SharedPreferences.getInstance();
+  // Configure interceptors, etc.
+  return dio;
+}
 
-  // 2. Create data sources
-  final tokenLocalDataSource = TokenLocalDataSource(secureStorage);
-  final categoryMappingLocalDataSource = CategoryMappingLocalDataSource(database);
+// Repository providers
+@Riverpod(keepAlive: true)
+Future<ICategoryMappingRepository> categoryMappingRepository(Ref ref) async {
+  final database = ref.watch(databaseProvider);
+  final localDataSource = CategoryMappingLocalDataSource(database);
+  final memoryCache = MemoryCache();
 
-  // 3. Create repositories
-  final authRepository = AuthRepositoryImpl(
-    twitchAuthRemoteDataSource,
-    tokenLocalDataSource,
-  );
-
-  final categoryMappingRepository = CategoryMappingRepositoryImpl(
-    categoryMappingLocalDataSource,
+  return CategoryMappingRepositoryImpl(
+    localDataSource,
     memoryCache,
   );
+}
 
-  // 4. Create use cases
-  final getAllMappingsUseCase = GetAllMappingsUseCase(categoryMappingRepository);
+// Use case providers
+@Riverpod(keepAlive: true)
+Future<GetAllMappingsUseCase> getAllMappingsUseCase(Ref ref) async {
+  final repository = await ref.watch(categoryMappingRepositoryProvider.future);
+  return GetAllMappingsUseCase(repository);
+}
 
-  // 5. Create providers
-  final categoryMappingProvider = CategoryMappingProvider(
-    getAllMappingsUseCase: getAllMappingsUseCase,
-    findMappingUseCase: findMappingUseCase,
-    saveMappingUseCase: saveMappingUseCase,
-    deleteMappingUseCase: deleteMappingUseCase,
-  );
+// State notifier providers
+@riverpod
+class CategoryMappings extends _$CategoryMappings {
+  @override
+  Future<List<CategoryMapping>> build() async {
+    final getMappingsUseCase = await ref.read(getAllMappingsUseCaseProvider.future);
+    final result = await getMappingsUseCase();
 
-  // 6. Provide all dependencies via MultiProvider
-  runApp(
-    MultiProvider(
-      providers: [
-        Provider<AppDatabase>.value(value: database),
-        Provider<ICategoryMappingRepository>.value(value: categoryMappingRepository),
-        Provider<GetAllMappingsUseCase>.value(value: getAllMappingsUseCase),
-        ChangeNotifierProvider<CategoryMappingProvider>.value(value: categoryMappingProvider),
-      ],
-      child: const TKitApp(),
-    ),
-  );
+    return result.fold(
+      (failure) => throw failure,
+      (mappings) => mappings,
+    );
+  }
 }
 ```
 
-**Benefits of manual DI:**
-- Compile-time safety (no service locator lookups)
-- Explicit dependency graph (easy to understand)
-- Better IDE support and navigation
-- No hidden dependencies
+**Benefits of Riverpod with code generation:**
+- Compile-time safety with generated code
+- Automatic dependency disposal
+- Better IDE support and autocomplete
+- No runtime errors from typos
+- Built-in async support with `AsyncValue`
+- Automatic caching and invalidation
+- Family and autoDispose modifiers
 
 ### State Management
 
-TKit uses **Provider** for state management:
+TKit uses **Riverpod** with **hooks_riverpod** for state management:
 
-- **ChangeNotifier**: For complex state (providers)
-- **StreamProvider**: For reactive streams (database queries)
+- **AsyncNotifier**: For async state management with loading/error states
+- **Notifier**: For synchronous state management
+- **StreamProvider**: For reactive streams (database queries, process detection)
 - **FutureProvider**: For async data loading
+- **ConsumerWidget**: For widgets that read providers
+- **ConsumerStatefulWidget**: For stateful widgets with provider access
+- **flutter_hooks**: For local state management (useState, useEffect, etc.)
+
+**Key patterns:**
+```dart
+// Reading providers in widgets
+class MyWidget extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mappingsAsync = ref.watch(categoryMappingsProvider);
+
+    return mappingsAsync.when(
+      data: (mappings) => ListView(children: mappings.map(...)),
+      loading: () => CircularProgressIndicator(),
+      error: (error, stack) => Text('Error: $error'),
+    );
+  }
+}
+
+// Modifying state
+ref.read(categoryMappingsProvider.notifier).refresh();
+
+// Listening to changes
+ref.listen<AsyncValue<List<CategoryMapping>>>(
+  categoryMappingsProvider,
+  (previous, next) {
+    next.whenData((mappings) {
+      // React to state changes
+    });
+  },
+);
+```
 
 ### Database
 
@@ -421,12 +475,12 @@ lib/features/my_feature/
 2. Define domain layer (entities, repository interfaces, use cases)
 3. Implement data layer (data sources, repository implementations)
 4. Build presentation layer (UI, providers)
-5. Wire up dependencies manually in `main.dart`:
-   - Create data sources with required dependencies
-   - Create repository with data sources
-   - Create use cases with repositories
-   - Create provider with use cases
-   - Add all to MultiProvider
+5. Create Riverpod providers in appropriate provider files:
+   - Add datasource providers in `lib/core/providers/datasource_providers.dart`
+   - Add repository providers in feature-specific provider files
+   - Add use case providers in `lib/core/providers/use_case_providers.dart`
+   - Add state notifier providers for UI state management
+   - Run `dart run build_runner build` to generate provider code
 6. Add routes in `lib/core/routing/app_router.dart`
 
 ### Adding a Database Table
@@ -524,10 +578,12 @@ Logs are written to:
 ## Performance Tips
 
 1. **Use const constructors** wherever possible
-2. **Avoid rebuilds** with proper Provider usage
+2. **Avoid rebuilds** with proper Riverpod usage (use `select` for granular watching)
 3. **Database indexes** for frequently queried columns
 4. **Debounce rapid events** (process changes, API calls)
 5. **Lazy load** heavy resources
+6. **Use `keepAlive: true`** for providers that should persist across rebuilds
+7. **Dispose properly** with `autoDispose` for temporary providers
 
 ## Code Style
 
@@ -540,7 +596,9 @@ Logs are written to:
 ## Resources
 
 - [Flutter Documentation](https://flutter.dev/docs)
-- [Provider Documentation](https://pub.dev/packages/provider)
+- [Riverpod Documentation](https://riverpod.dev/)
+- [Riverpod Generator](https://pub.dev/packages/riverpod_generator)
+- [Flutter Hooks](https://pub.dev/packages/flutter_hooks)
 - [Drift Documentation](https://drift.simonbinder.eu/)
 - [Twitch API Documentation](https://dev.twitch.tv/docs/api/)
 - [Clean Architecture Guide](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)

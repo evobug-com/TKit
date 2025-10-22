@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/theme/colors.dart';
 
 /// Reusable dropdown widget for settings
 class SettingsDropdown<T> extends StatelessWidget {
@@ -29,19 +31,14 @@ class SettingsDropdown<T> extends StatelessWidget {
       children: [
         Text(
           label,
-          style: Theme.of(
-            context,
-          ).textTheme.titleMedium?.copyWith(fontSize: 14),
+          style: TKitTextStyles.labelMedium,
         ),
         if (description != null) ...[
           const SizedBox(height: TKitSpacing.headerGap),
           Text(
             description!,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              fontSize: 11,
-              color: Theme.of(
-                context,
-              ).colorScheme.onSurface.withValues(alpha: 0.6),
+            style: TKitTextStyles.bodySmall.copyWith(
+              color: TKitColors.textSecondary,
             ),
           ),
         ],

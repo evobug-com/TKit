@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:flutter/services.dart';
 import 'package:local_notifier/local_notifier.dart';
 import 'package:tkit/core/utils/app_logger.dart';
 
@@ -29,8 +31,25 @@ class NotificationService {
       );
       _isInitialized = true;
       _logger.info('Notification service initialized');
+    } on PlatformException catch (e, stackTrace) {
+      _logger.error(
+        'Platform error during notification service initialization: ${e.message}',
+        e,
+        stackTrace,
+      );
+      // Don't rethrow - notifications are not critical for app functionality
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error(
+        'Timeout during notification service initialization',
+        e,
+        stackTrace,
+      );
     } catch (e, stackTrace) {
-      _logger.error('Failed to initialize notification service', e, stackTrace);
+      _logger.error(
+        'Unexpected error during notification service initialization',
+        e,
+        stackTrace,
+      );
     }
   }
 
@@ -62,9 +81,20 @@ class NotificationService {
             await onMissingCategoryClick!(
               processName: processName,
               executablePath: executablePath,
+            ).timeout(
+              const Duration(seconds: 10),
+              onTimeout: () {
+                _logger.warning(
+                  'Notification click handler timed out for: $processName',
+                );
+              },
             );
           } catch (e, stackTrace) {
-            _logger.error('Failed to handle notification click', e, stackTrace);
+            _logger.error(
+              'Failed to handle notification click for: $processName',
+              e,
+              stackTrace,
+            );
           }
         } else {
           _logger.warning('No notification click handler registered');
@@ -80,10 +110,17 @@ class NotificationService {
             await onMissingCategoryClick!(
               processName: processName,
               executablePath: executablePath,
+            ).timeout(
+              const Duration(seconds: 10),
+              onTimeout: () {
+                _logger.warning(
+                  'Notification action handler timed out for: $processName',
+                );
+              },
             );
           } catch (e, stackTrace) {
             _logger.error(
-              'Failed to handle notification action',
+              'Failed to handle notification action for: $processName',
               e,
               stackTrace,
             );
@@ -95,8 +132,18 @@ class NotificationService {
 
       await notification.show();
       _logger.info('Showed missing category notification for: $processName');
+    } on PlatformException catch (e, stackTrace) {
+      _logger.error(
+        'Platform error showing notification for: $processName - ${e.message}',
+        e,
+        stackTrace,
+      );
     } catch (e, stackTrace) {
-      _logger.error('Failed to show notification', e, stackTrace);
+      _logger.error(
+        'Failed to show notification for: $processName',
+        e,
+        stackTrace,
+      );
     }
   }
 
@@ -106,6 +153,9 @@ class NotificationService {
     required String categoryName,
   }) async {
     if (!_isInitialized) {
+      _logger.debug(
+        'Notification service not initialized, skipping category update notification',
+      );
       return;
     }
 
@@ -116,9 +166,19 @@ class NotificationService {
       );
 
       await notification.show();
-      _logger.info('Showed category update notification');
+      _logger.info('Showed category update notification: $categoryName');
+    } on PlatformException catch (e, stackTrace) {
+      _logger.error(
+        'Platform error showing category update notification: ${e.message}',
+        e,
+        stackTrace,
+      );
     } catch (e, stackTrace) {
-      _logger.error('Failed to show notification', e, stackTrace);
+      _logger.error(
+        'Failed to show category update notification',
+        e,
+        stackTrace,
+      );
     }
   }
 
@@ -128,6 +188,9 @@ class NotificationService {
     required String message,
   }) async {
     if (!_isInitialized) {
+      _logger.debug(
+        'Notification service not initialized, skipping error notification: $title',
+      );
       return;
     }
 
@@ -136,8 +199,18 @@ class NotificationService {
 
       await notification.show();
       _logger.info('Showed error notification: $title');
+    } on PlatformException catch (e, stackTrace) {
+      _logger.error(
+        'Platform error showing error notification "$title": ${e.message}',
+        e,
+        stackTrace,
+      );
     } catch (e, stackTrace) {
-      _logger.error('Failed to show notification', e, stackTrace);
+      _logger.error(
+        'Failed to show error notification "$title"',
+        e,
+        stackTrace,
+      );
     }
   }
 

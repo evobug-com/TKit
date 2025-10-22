@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Custom dropdown that supports multi-line items without overflow issues
 class CustomDropdown<T> extends StatelessWidget {
@@ -31,7 +33,7 @@ class CustomDropdown<T> extends StatelessWidget {
           ).textTheme.titleMedium?.copyWith(fontSize: 14),
         ),
         if (description != null) ...[
-          const SizedBox(height: 2),
+          const VSpace.xs(),
           Text(
             description!,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -42,15 +44,15 @@ class CustomDropdown<T> extends StatelessWidget {
             ),
           ),
         ],
-        const SizedBox(height: 6),
+        const VSpace.sm(),
         InkWell(
           onTap: () => _showDropdownDialog(context),
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(TKitSpacing.xs),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.md, vertical: TKitSpacing.md),
             decoration: BoxDecoration(
               border: Border.all(color: Theme.of(context).colorScheme.outline),
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(TKitSpacing.xs),
             ),
             child: Row(
               children: [
@@ -65,7 +67,7 @@ class CustomDropdown<T> extends StatelessWidget {
                         ).textTheme.bodyLarge?.copyWith(fontSize: 14),
                       ),
                       if (selectedItem.subtitle != null) ...[
-                        const SizedBox(height: 2),
+                        const VSpace.xs(),
                         Text(
                           selectedItem.subtitle!,
                           style: Theme.of(context).textTheme.bodySmall
@@ -82,7 +84,7 @@ class CustomDropdown<T> extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(width: 8),
+                const HSpace.sm(),
                 Icon(
                   Icons.arrow_drop_down,
                   size: 20,
@@ -108,7 +110,7 @@ class CustomDropdown<T> extends StatelessWidget {
               children: [
                 // Header
                 Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(TKitSpacing.md),
                   child: Row(
                     children: [
                       Expanded(
@@ -142,7 +144,7 @@ class CustomDropdown<T> extends StatelessWidget {
                           Navigator.of(context).pop();
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(TKitSpacing.md),
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? Theme.of(context).colorScheme.primaryContainer
@@ -168,7 +170,7 @@ class CustomDropdown<T> extends StatelessWidget {
                                           ),
                                     ),
                                     if (item.subtitle != null) ...[
-                                      const SizedBox(height: 3),
+                                      const VSpace.xs(),
                                       Text(
                                         item.subtitle!,
                                         style: Theme.of(context)
@@ -187,7 +189,7 @@ class CustomDropdown<T> extends StatelessWidget {
                                 ),
                               ),
                               if (isSelected) ...[
-                                const SizedBox(width: 8),
+                                const HSpace.sm(),
                                 Icon(
                                   Icons.check,
                                   size: 20,

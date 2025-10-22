@@ -34,8 +34,7 @@ class StatItem extends StatelessWidget {
           children: [
             Text(
               label.toUpperCase(),
-              style: TKitTextStyles.labelSmall.copyWith(
-                fontSize: 10,
+              style: TKitTextStyles.caption.copyWith(
                 color: TKitColors.textMuted,
                 letterSpacing: 1.0,
               ),
@@ -43,8 +42,8 @@ class StatItem extends StatelessWidget {
             const SizedBox(height: TKitSpacing.headerGap),
             Text(
               value,
-              style: TKitTextStyles.heading2.copyWith(
-                fontSize: 18,
+              style: TKitTextStyles.bodyLarge.copyWith(
+                fontWeight: FontWeight.w600,
                 color: valueColor ?? TKitColors.accent,
               ),
             ),

@@ -45,7 +45,7 @@ class Breadcrumb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final displayItems = _getDisplayItems();
-    final fontSize = compact ? 11.0 : 13.0;
+    final textStyle = compact ? TKitTextStyles.caption : TKitTextStyles.bodySmall;
 
     return Row(
       children: [
@@ -62,7 +62,7 @@ class Breadcrumb extends StatelessWidget {
           _BreadcrumbItemWidget(
             item: displayItems[i],
             isLast: i == displayItems.length - 1,
-            fontSize: fontSize,
+            textStyle: textStyle,
           ),
         ],
       ],
@@ -74,18 +74,17 @@ class Breadcrumb extends StatelessWidget {
 class _BreadcrumbItemWidget extends StatelessWidget {
   final BreadcrumbItem item;
   final bool isLast;
-  final double fontSize;
+  final TextStyle textStyle;
 
   const _BreadcrumbItemWidget({
     required this.item,
     required this.isLast,
-    required this.fontSize,
+    required this.textStyle,
   });
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TKitTextStyles.bodyMedium.copyWith(
-      fontSize: fontSize,
+    final effectiveTextStyle = textStyle.copyWith(
       color: isLast ? TKitColors.textPrimary : TKitColors.textSecondary,
     );
 
@@ -95,7 +94,7 @@ class _BreadcrumbItemWidget extends StatelessWidget {
         if (item.icon != null) ...[
           Icon(
             item.icon,
-            size: fontSize + 2,
+            size: 16,
             color: isLast ? TKitColors.textPrimary : TKitColors.textSecondary,
           ),
           const SizedBox(width: TKitSpacing.xs),
@@ -103,7 +102,7 @@ class _BreadcrumbItemWidget extends StatelessWidget {
         Flexible(
           child: Text(
             item.label,
-            style: textStyle,
+            style: effectiveTextStyle,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
@@ -114,7 +113,7 @@ class _BreadcrumbItemWidget extends StatelessWidget {
     if (item.onTap != null && !isLast) {
       return InkWell(
         onTap: item.onTap,
-        borderRadius: BorderRadius.circular(2),
+        borderRadius: BorderRadius.circular(TKitSpacing.xs),
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: TKitSpacing.xs,
@@ -159,7 +158,11 @@ class BreadcrumbCollapsed extends StatelessWidget {
 
     return Row(
       children: [
-        _BreadcrumbItemWidget(item: first, isLast: false, fontSize: 13.0),
+        _BreadcrumbItemWidget(
+          item: first,
+          isLast: false,
+          textStyle: TKitTextStyles.bodySmall,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xs),
           child: Icon(separator, size: 14, color: TKitColors.textMuted),
@@ -199,7 +202,11 @@ class BreadcrumbCollapsed extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xs),
           child: Icon(separator, size: 14, color: TKitColors.textMuted),
         ),
-        _BreadcrumbItemWidget(item: last, isLast: true, fontSize: 13.0),
+        _BreadcrumbItemWidget(
+          item: last,
+          isLast: true,
+          textStyle: TKitTextStyles.bodySmall,
+        ),
       ],
     );
   }

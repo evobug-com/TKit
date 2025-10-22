@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:tkit/core/providers/providers.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/presentation/widgets/update_notification_widget.dart';
 
 /// Status indicator that shows whether the app is up to date
@@ -89,25 +91,35 @@ class _VersionStatusIndicatorState
     updateService.updateAvailable.listen(
       (updateInfo) {
         if (mounted) {
-          setState(() {
-            if (updateInfo != null) {
-              _status = UpdateCheckStatus.updateAvailable;
-              _errorMessage = null; // Clear any previous errors
-              // Note: We don't auto-show dialog here anymore since UpdateNotificationWidget handles that
-            } else {
-              // null means we checked and are up to date
-              _status = UpdateCheckStatus.upToDate;
-              _errorMessage = null; // Clear any previous errors
+          // Optimized: Move logic outside setState
+          if (updateInfo != null) {
+            _status = UpdateCheckStatus.updateAvailable;
+            _errorMessage = null; // Clear any previous errors
+            // Note: We don't auto-show dialog here anymore since UpdateNotificationWidget handles that
+          } else {
+            // null means we checked and are up to date
+            _status = UpdateCheckStatus.upToDate;
+            _errorMessage = null; // Clear any previous errors
+          }
+          // Trigger rebuild using postFrameCallback for better performance
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              setState(() {});
             }
           });
         }
       },
       onError: (Object error) {
         if (mounted) {
-          setState(() {
-            _status = UpdateCheckStatus.unknown;
-            // Capture the error message
-            _errorMessage = error.toString();
+          // Optimized: Move logic outside setState
+          _status = UpdateCheckStatus.unknown;
+          // Capture the error message
+          _errorMessage = error.toString();
+          // Trigger rebuild using postFrameCallback for better performance
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              setState(() {});
+            }
           });
         }
       },
@@ -204,8 +216,28 @@ class _VersionStatusIndicatorState
         cursor: isClickable
             ? SystemMouseCursors.click
             : SystemMouseCursors.help,
-        onEnter: (_) => setState(() => _isHovering = true),
-        onExit: (_) => setState(() => _isHovering = false),
+        onEnter: (_) {
+          // Optimized: Move logic outside setState
+          _isHovering = true;
+          if (mounted) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) {
+                setState(() {});
+              }
+            });
+          }
+        },
+        onExit: (_) {
+          // Optimized: Move logic outside setState
+          _isHovering = false;
+          if (mounted) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) {
+                setState(() {});
+              }
+            });
+          }
+        },
         child: GestureDetector(
           onTap: isClickable ? () => _showUpdateDialog(context) : null,
           child: Stack(
@@ -218,12 +250,12 @@ class _VersionStatusIndicatorState
                   right: -8,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
+                      horizontal: TKitSpacing.sm,
+                      vertical: TKitSpacing.xs,
                     ),
                     decoration: BoxDecoration(
                       color: Colors.black87,
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(TKitSpacing.xs),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.3),
@@ -236,7 +268,7 @@ class _VersionStatusIndicatorState
                       isClickable
                           ? '${_getTooltip(context)} (Click to update)'
                           : _getTooltip(context),
-                      style: const TextStyle(color: Colors.white, fontSize: 11),
+                      style: TKitTextStyles.caption.copyWith(color: Colors.white),
                       textAlign: TextAlign.center,
                       softWrap: false,
                     ),

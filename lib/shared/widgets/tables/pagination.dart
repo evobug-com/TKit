@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/theme/spacing.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Pagination component for navigating pages of data
 class Pagination extends StatefulWidget {
@@ -155,7 +156,7 @@ class _PaginationState extends State<Pagination> {
                 ),
               ),
 
-              const SizedBox(width: TKitSpacing.xs),
+              const HSpace.xs(),
 
               // Previous page button
               _PaginationButton(
@@ -172,7 +173,7 @@ class _PaginationState extends State<Pagination> {
                 ),
               ),
 
-              const SizedBox(width: TKitSpacing.xs),
+              const HSpace.xs(),
 
               // Page number buttons
               ..._getPageNumbers().map((page) {
@@ -191,7 +192,7 @@ class _PaginationState extends State<Pagination> {
                 }
 
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xs / 2),
                   child: _PaginationButton(
                     onPressed: page != widget.currentPage
                         ? () => widget.onPageChanged(page)
@@ -213,7 +214,7 @@ class _PaginationState extends State<Pagination> {
                 );
               }),
 
-              const SizedBox(width: TKitSpacing.xs),
+              const HSpace.xs(),
 
               // Next page button
               _PaginationButton(
@@ -230,7 +231,7 @@ class _PaginationState extends State<Pagination> {
                 ),
               ),
 
-              const SizedBox(width: TKitSpacing.xs),
+              const HSpace.xs(),
 
               // Last page button
               _PaginationButton(
@@ -260,7 +261,7 @@ class _PaginationState extends State<Pagination> {
                     color: TKitColors.textSecondary,
                   ),
                 ),
-                const SizedBox(width: TKitSpacing.sm),
+                const HSpace.sm(),
                 SizedBox(
                   width: 60,
                   height: buttonSize,
@@ -276,10 +277,7 @@ class _PaginationState extends State<Pagination> {
                       hintStyle: TKitTextStyles.bodySmall.copyWith(
                         color: TKitColors.textMuted,
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: TKitSpacing.xs,
-                        vertical: TKitSpacing.xs,
-                      ),
+                      contentPadding: const EdgeInsets.all(TKitSpacing.xs),
                       border: const OutlineInputBorder(
                         borderSide: BorderSide(color: TKitColors.border),
                         borderRadius: BorderRadius.zero,
@@ -297,7 +295,7 @@ class _PaginationState extends State<Pagination> {
                     onSubmitted: (_) => _handleJumpToPage(),
                   ),
                 ),
-                const SizedBox(width: TKitSpacing.xs),
+                const HSpace.xs(),
                 _PaginationButton(
                   onPressed: _handleJumpToPage,
                   size: buttonSize,

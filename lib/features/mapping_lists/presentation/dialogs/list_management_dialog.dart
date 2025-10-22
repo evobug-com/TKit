@@ -99,10 +99,12 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
     return ListView.builder(
       padding: const EdgeInsets.all(TKitSpacing.pagePadding),
       itemCount: state.lists.length,
+      // Performance: No state preservation needed for simple list tiles
+      addAutomaticKeepAlives: false,
       itemBuilder: (context, index) {
         final list = state.lists[index];
         return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.only(bottom: TKitSpacing.md),
           child: _buildListTile(l10n, list, state),
         );
       },
@@ -118,7 +120,7 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
 
     return IslandVariant.standard(
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(TKitSpacing.md),
         child: Row(
           children: [
             // Checkbox for enabled/disabled
@@ -257,10 +259,11 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xs + 2, vertical: 2),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         border: Border.all(color: color.withValues(alpha: 0.3)),
+        borderRadius: BorderRadius.circular(TKitSpacing.xs),
       ),
       child: Text(
         label,
@@ -275,10 +278,11 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
 
   Widget _buildReadOnlyBadge(AppLocalizations l10n) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xs + 2, vertical: 2),
       decoration: BoxDecoration(
         color: TKitColors.textMuted.withValues(alpha: 0.1),
         border: Border.all(color: TKitColors.textMuted.withValues(alpha: 0.3)),
+        borderRadius: BorderRadius.circular(TKitSpacing.xs),
       ),
       child: Text(
         l10n.listManagementBadgeReadOnly,

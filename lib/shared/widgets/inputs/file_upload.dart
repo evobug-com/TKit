@@ -168,7 +168,7 @@ class _FileUploadFieldState extends State<FileUploadField> {
             ),
           ),
           if (widget.allowedExtensions != null) ...[
-            const SizedBox(height: 2),
+            const SizedBox(height: TKitSpacing.headerGap),
             Text(
               'Allowed: ${widget.allowedExtensions!.join(", ")}',
               style: TKitTextStyles.bodySmall.copyWith(
@@ -206,7 +206,7 @@ class _FileUploadFieldState extends State<FileUploadField> {
                   style: TKitTextStyles.bodyMedium,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: TKitSpacing.headerGap),
                 Text(_getFileSize(), style: TKitTextStyles.bodySmall),
               ],
             ),

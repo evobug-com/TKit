@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 
 /// Badge variant types
@@ -83,17 +84,19 @@ class TKitBadge extends StatelessWidget {
 
     // Full badge with text
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: const EdgeInsets.symmetric(
+        horizontal: (TKitSpacing.xs + TKitSpacing.sm) / 2, // 6.0
+        vertical: TKitSpacing.xs / 2, // 2.0
+      ),
       decoration: BoxDecoration(
         color: _backgroundColor,
         border: Border.all(color: _color, width: 1),
-        borderRadius: BorderRadius.circular(0), // Sharp corners
+        borderRadius: BorderRadius.circular(0), // Sharp corners (intentional)
       ),
       child: Text(
         text!,
         style: TKitTextStyles.caption.copyWith(
           color: _color,
-          fontSize: 10,
           fontWeight: FontWeight.w600,
           letterSpacing: 0.5,
           height: 1.0,

@@ -65,6 +65,8 @@ void main() {
         enableErrorTracking: true,
         enablePerformanceMonitoring: true,
         enableSessionReplay: false,
+        autoCheckForUpdates: true,
+        autoInstallUpdates: false,
       );
       final jsonString = jsonEncode(testSettings.toJson());
 
@@ -111,6 +113,8 @@ void main() {
         enableErrorTracking: true,
         enablePerformanceMonitoring: true,
         enableSessionReplay: false,
+        autoCheckForUpdates: true,
+        autoInstallUpdates: false,
       );
 
       when(mockPrefs.setString(any, any)).thenAnswer((_) async => true);
@@ -179,6 +183,8 @@ void main() {
         enableErrorTracking: true,
         enablePerformanceMonitoring: true,
         enableSessionReplay: false,
+        autoCheckForUpdates: true,
+        autoInstallUpdates: false,
       );
       final jsonString = jsonEncode(testSettings.toJson());
       when(mockPrefs.getString(any)).thenReturn(jsonString);

@@ -37,24 +37,56 @@ class HotkeyService {
           (defaultTargetPlatform == TargetPlatform.windows ||
               defaultTargetPlatform == TargetPlatform.linux ||
               defaultTargetPlatform == TargetPlatform.macOS)) {
-        await hotKeyManager.unregisterAll();
+        try {
+          await hotKeyManager.unregisterAll().timeout(
+            const Duration(seconds: 5),
+            onTimeout: () {
+              _logger.warning('Timeout unregistering all hotkeys');
+            },
+          );
+        } on PlatformException catch (e) {
+          _logger.warning(
+            'Platform error unregistering hotkeys: ${e.message}',
+          );
+          // Continue initialization even if unregister fails
+        } on TimeoutException catch (e) {
+          _logger.warning('Timeout unregistering hotkeys: ${e.message}');
+        }
+      } else {
+        _logger.info('Hotkeys not supported on this platform, skipping');
+        return;
       }
 
-      // Load initial settings and register hotkey
-      final initialSettings = await _getSettings();
-      initialSettings.fold(
-        (failure) {
-          _logger.warning(
-            'Failed to load initial settings for hotkeys: ${failure.message}',
-          );
-        },
-        (settings) {
-          final hotkeyString = settings.manualUpdateHotkey;
-          if (hotkeyString != null && hotkeyString.isNotEmpty) {
-            _registerManualUpdateHotkey(hotkeyString);
-          }
-        },
-      );
+      // Load initial settings and register hotkey with timeout
+      try {
+        final initialSettings = await _getSettings().timeout(
+          const Duration(seconds: 5),
+          onTimeout: () {
+            _logger.warning('Timeout loading initial settings for hotkeys');
+            throw TimeoutException('Settings load timeout');
+          },
+        );
+        initialSettings.fold(
+          (failure) {
+            _logger.warning(
+              'Failed to load initial settings for hotkeys: ${failure.message}',
+            );
+          },
+          (settings) {
+            final hotkeyString = settings.manualUpdateHotkey;
+            if (hotkeyString != null && hotkeyString.isNotEmpty) {
+              _registerManualUpdateHotkey(hotkeyString);
+            }
+          },
+        );
+      } on TimeoutException catch (e, stackTrace) {
+        _logger.error(
+          'Timeout loading initial settings for hotkeys',
+          e,
+          stackTrace,
+        );
+        // Continue without initial hotkey
+      }
 
       // Watch settings for changes
       final settingsStream = _watchSettings();
@@ -67,14 +99,31 @@ class HotkeyService {
             _unregisterManualUpdateHotkey();
           }
         },
-        onError: (Object error) {
-          _logger.error('Failed to watch settings for hotkeys', error);
+        onError: (Object error, StackTrace stackTrace) {
+          _logger.error(
+            'Error in settings stream for hotkeys',
+            error,
+            stackTrace,
+          );
         },
+        cancelOnError: false, // Keep listening even if there's an error
       );
 
       _logger.info('Hotkey service initialized successfully');
+    } on PlatformException catch (e, stackTrace) {
+      _logger.error(
+        'Platform error initializing hotkey service: ${e.message}',
+        e,
+        stackTrace,
+      );
+      // Don't rethrow - hotkeys are not critical for app functionality
     } catch (e, stackTrace) {
-      _logger.error('Failed to initialize hotkey service', e, stackTrace);
+      _logger.error(
+        'Unexpected error initializing hotkey service',
+        e,
+        stackTrace,
+      );
+      // Don't rethrow - hotkeys are not critical for app functionality
     }
   }
 
@@ -100,17 +149,78 @@ class HotkeyService {
         return;
       }
 
-      // Register the hotkey
-      await hotKeyManager.register(
-        hotKey,
-        keyDownHandler: (hotKey) {
-          _logger.info('Manual update hotkey pressed');
-          _ref.read(autoSwitcherProvider.notifier).manualUpdate();
-        },
-      );
+      // Register the hotkey with timeout and retry logic
+      var retryCount = 0;
+      const maxRetries = 2;
+      Exception? lastError;
 
-      _currentManualUpdateHotkey = hotKey;
-      _logger.info('Registered manual update hotkey: $hotkeyString');
+      while (retryCount <= maxRetries) {
+        try {
+          await hotKeyManager.register(
+            hotKey,
+            keyDownHandler: (hotKey) {
+              try {
+                _logger.info('Manual update hotkey pressed');
+                _ref.read(autoSwitcherProvider.notifier).manualUpdate();
+              } catch (e, stackTrace) {
+                _logger.error(
+                  'Error handling manual update hotkey press',
+                  e,
+                  stackTrace,
+                );
+              }
+            },
+          ).timeout(
+            const Duration(seconds: 5),
+            onTimeout: () {
+              throw TimeoutException('Hotkey registration timed out');
+            },
+          );
+
+          _currentManualUpdateHotkey = hotKey;
+          _logger.info('Registered manual update hotkey: $hotkeyString');
+          return; // Success
+        } on PlatformException catch (e) {
+          lastError = e;
+          if (e.code == 'HOT_KEY_ALREADY_REGISTERED') {
+            _logger.error(
+              'Hotkey "$hotkeyString" is already registered by another application',
+              e,
+            );
+            return; // Don't retry for this specific error
+          }
+          retryCount++;
+        } on TimeoutException catch (e) {
+          lastError = e;
+          retryCount++;
+        } catch (e) {
+          lastError = e is Exception ? e : Exception(e.toString());
+          retryCount++;
+        }
+
+        if (retryCount <= maxRetries) {
+          _logger.warning(
+            'Failed to register hotkey (attempt $retryCount/$maxRetries), retrying...',
+          );
+          await Future<void>.delayed(Duration(milliseconds: 200 * retryCount));
+        }
+      }
+
+      if (lastError != null) {
+        throw lastError;
+      }
+    } on PlatformException catch (e, stackTrace) {
+      _logger.error(
+        'Platform error registering hotkey "$hotkeyString": ${e.message}',
+        e,
+        stackTrace,
+      );
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error(
+        'Timeout registering hotkey "$hotkeyString"',
+        e,
+        stackTrace,
+      );
     } catch (e, stackTrace) {
       _logger.error(
         'Failed to register manual update hotkey: $hotkeyString',
@@ -124,15 +234,34 @@ class HotkeyService {
   Future<void> _unregisterManualUpdateHotkey() async {
     if (_currentManualUpdateHotkey != null) {
       try {
-        await hotKeyManager.unregister(_currentManualUpdateHotkey!);
+        await hotKeyManager.unregister(_currentManualUpdateHotkey!).timeout(
+          const Duration(seconds: 3),
+          onTimeout: () {
+            _logger.warning('Timeout unregistering manual update hotkey');
+          },
+        );
         _logger.info('Unregistered manual update hotkey');
-        _currentManualUpdateHotkey = null;
+      } on PlatformException catch (e, stackTrace) {
+        _logger.error(
+          'Platform error unregistering hotkey: ${e.message}',
+          e,
+          stackTrace,
+        );
+      } on TimeoutException catch (e, stackTrace) {
+        _logger.error(
+          'Timeout unregistering manual update hotkey',
+          e,
+          stackTrace,
+        );
       } catch (e, stackTrace) {
         _logger.error(
           'Failed to unregister manual update hotkey',
           e,
           stackTrace,
         );
+      } finally {
+        // Always clear the reference, even if unregister fails
+        _currentManualUpdateHotkey = null;
       }
     }
   }
@@ -313,8 +442,13 @@ class HotkeyService {
   }
 
   /// Dispose resources
-  void dispose() {
-    _settingsSubscription?.cancel();
-    _unregisterManualUpdateHotkey();
+  Future<void> dispose() async {
+    try {
+      await _settingsSubscription?.cancel();
+      await _unregisterManualUpdateHotkey();
+      _logger.info('Hotkey service disposed');
+    } catch (e, stackTrace) {
+      _logger.error('Error disposing hotkey service', e, stackTrace);
+    }
   }
 }

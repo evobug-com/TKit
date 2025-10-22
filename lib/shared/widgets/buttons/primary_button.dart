@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Primary action button with Twitch purple background
 class PrimaryButton extends StatelessWidget {
@@ -38,14 +40,14 @@ class PrimaryButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(0), // Sharp corners
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+          padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.lg, vertical: 0),
           minimumSize: const Size(0, 32),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
         child: isLoading
             ? const SizedBox(
-                width: 14,
-                height: 14,
+                width: TKitSpacing.md + 2,
+                height: TKitSpacing.md + 2,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
                   valueColor: AlwaysStoppedAnimation<Color>(
@@ -58,8 +60,8 @@ class PrimaryButton extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (icon != null) ...[
-                    Icon(icon, size: 14),
-                    const SizedBox(width: 6),
+                    Icon(icon, size: TKitSpacing.md + 2),
+                    const HSpace.xs(), // Design system: Use HSpace instead of hardcoded values
                   ],
                   Flexible(
                     child: Text(

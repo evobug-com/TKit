@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// SplitButtonAction - Action item for the dropdown menu
 class SplitButtonAction {
@@ -97,7 +98,7 @@ class _SplitButtonState extends State<SplitButton> {
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.zero,
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+              padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.lg, vertical: 0),
               minimumSize: const Size(0, 32),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
@@ -117,7 +118,7 @@ class _SplitButtonState extends State<SplitButton> {
                     children: [
                       if (widget.icon != null) ...[
                         Icon(widget.icon, size: 14),
-                        const SizedBox(width: 6),
+                        const HSpace.xs(),
                       ],
                       Text(widget.text, style: TKitTextStyles.buttonSmall),
                     ],
@@ -227,7 +228,7 @@ class _DropdownOverlay extends StatelessWidget {
                                     ? TKitColors.error
                                     : TKitColors.textSecondary,
                               ),
-                              const SizedBox(width: TKitSpacing.sm),
+                              const HSpace.sm(),
                             ],
                             Expanded(
                               child: Text(

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/l10n/app_localizations.dart';
 import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
 import 'package:tkit/shared/widgets/buttons/primary_button.dart';
 import 'package:tkit/shared/widgets/buttons/accent_button.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// Confirmation dialog with customizable title, message, and actions
 class ConfirmDialog extends StatelessWidget {
@@ -42,14 +44,14 @@ class ConfirmDialog extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 480, minWidth: 360),
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(TKitSpacing.xxl), // Design system: Use TKitSpacing
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Title
               Text(title, style: TKitTextStyles.heading3),
-              const SizedBox(height: 16),
+              const VSpace.lg(), // Design system: Use VSpace instead of hardcoded values
 
               // Message
               Text(
@@ -58,7 +60,7 @@ class ConfirmDialog extends StatelessWidget {
                   color: TKitColors.textSecondary,
                 ),
               ),
-              const SizedBox(height: 24),
+              const VSpace.xxl(), // Design system: Use VSpace instead of hardcoded values
 
               // Actions
               Row(
@@ -71,7 +73,7 @@ class ConfirmDialog extends StatelessWidget {
                       onCancel?.call();
                     },
                   ),
-                  const SizedBox(width: 12),
+                  const HSpace.md(), // Design system: Use HSpace instead of hardcoded values
                   if (isDestructive)
                     SizedBox(
                       height: 40,
@@ -87,7 +89,7 @@ class ConfirmDialog extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(0),
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xxl),
                         ),
                         child: Text(
                           effectiveConfirmText,

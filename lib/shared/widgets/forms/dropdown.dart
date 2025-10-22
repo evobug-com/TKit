@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
 import 'package:tkit/shared/theme/spacing.dart';
 import 'package:tkit/shared/theme/text_styles.dart';
+import 'package:tkit/shared/widgets/layout/spacer.dart';
 
 /// TKit dropdown with search capability
 /// Compact, monochrome design with minimal accent
@@ -89,7 +90,10 @@ class _TKitDropdownState<T> extends State<TKitDropdown<T>> {
       ),
       child: Container(
         height: 32,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        padding: const EdgeInsets.symmetric(
+          horizontal: TKitSpacing.sm,
+          vertical: TKitSpacing.sm,
+        ),
         decoration: BoxDecoration(
           color: TKitColors.background,
           border: Border.all(
@@ -167,8 +171,8 @@ class _TKitDropdownState<T> extends State<TKitDropdown<T>> {
                     borderSide: BorderSide(color: TKitColors.accent),
                   ),
                   contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 8,
+                    horizontal: TKitSpacing.sm,
+                    vertical: TKitSpacing.sm,
                   ),
                   isDense: true,
                 ),
@@ -280,7 +284,7 @@ class TKitDropdownFormField<T> extends FormField<T> {
                  displayBuilder: displayBuilder,
                ),
                if (state.hasError) ...[
-                 const SizedBox(height: TKitSpacing.xs),
+                 const VSpace.xs(),
                  Text(
                    state.errorText!,
                    style: TKitTextStyles.caption.copyWith(

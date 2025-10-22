@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tkit/shared/theme/colors.dart';
+import 'package:tkit/shared/theme/spacing.dart';
 
 /// Panel card with 1px border, sharp corners, dark background
 class PanelCard extends StatelessWidget {
@@ -29,7 +30,7 @@ class PanelCard extends StatelessWidget {
         border: Border.all(color: TKitColors.border, width: 1),
         borderRadius: BorderRadius.circular(0), // Sharp corners
       ),
-      padding: padding ?? const EdgeInsets.all(16),
+      padding: padding ?? const EdgeInsets.all(TKitSpacing.md),
       child: child,
     );
   }

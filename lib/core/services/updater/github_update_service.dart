@@ -69,8 +69,18 @@ class GitHubUpdateService {
         return;
       }
 
-      // Load ignored versions from persistent storage
-      await _loadIgnoredVersions();
+      // Load ignored versions from persistent storage with timeout
+      try {
+        await _loadIgnoredVersions().timeout(
+          const Duration(seconds: 5),
+          onTimeout: () {
+            _logger.warning('Timeout loading ignored versions, continuing...');
+          },
+        );
+      } on TimeoutException catch (e) {
+        _logger.warning('Timeout loading ignored versions: ${e.message}');
+        // Continue without ignored versions
+      }
 
       // Detect installation type
       final installationType = InstallationDetector.detect();
@@ -84,11 +94,21 @@ class GitHubUpdateService {
       // Check for updates on startup (brief delay to let app finish initializing)
       unawaited(
         Future.delayed(const Duration(seconds: 2), () async {
-          // Get channel from provider if available, otherwise use stable
-          final channel = _channelProvider != null
-              ? await _channelProvider!()
-              : UpdateChannel.stable;
-          await checkForUpdates(channel: channel);
+          try {
+            // Get channel from provider if available, otherwise use stable
+            final channel = _channelProvider != null
+                ? await _channelProvider!().timeout(
+                    const Duration(seconds: 5),
+                    onTimeout: () {
+                      _logger.warning('Timeout getting update channel');
+                      return UpdateChannel.stable;
+                    },
+                  )
+                : UpdateChannel.stable;
+            await checkForUpdates(channel: channel);
+          } catch (e, stackTrace) {
+            _logger.error('Error during startup update check', e, stackTrace);
+          }
         }),
       );
     } catch (e, stackTrace) {
@@ -97,6 +117,7 @@ class GitHubUpdateService {
         e,
         stackTrace,
       );
+      // Don't rethrow - updates are not critical for app functionality
     }
   }
 
@@ -115,10 +136,20 @@ class GitHubUpdateService {
             'X-GitHub-Api-Version': '2022-11-28',
           },
         ),
+      ).timeout(
+        const Duration(seconds: 30),
+        onTimeout: () {
+          throw TimeoutException('Fetching releases timed out');
+        },
       );
 
       if (response.statusCode == 200) {
-        return response.data as List;
+        final data = response.data;
+        if (data is! List) {
+          _logger.warning('Unexpected response format: expected List');
+          return [];
+        }
+        return data;
       }
 
       _logger.warning('Failed to fetch releases: ${response.statusCode}');
@@ -127,11 +158,27 @@ class GitHubUpdateService {
       if (e.response?.statusCode == 404) {
         _logger.debug('No releases found on GitHub yet');
         return [];
+      } else if (e.response?.statusCode == 403) {
+        _logger.warning('GitHub API rate limit exceeded');
+        return [];
+      } else if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        _logger.error('Network timeout fetching releases', e);
+        return [];
+      } else if (e.type == DioExceptionType.connectionError) {
+        _logger.warning('No network connection to fetch releases');
+        return [];
       }
-      _logger.error('Failed to fetch releases', e);
+      _logger.error('Network error fetching releases: ${e.message}', e);
+      return [];
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error('Timeout fetching releases', e, stackTrace);
+      return [];
+    } on FormatException catch (e, stackTrace) {
+      _logger.error('Invalid JSON format in releases response', e, stackTrace);
       return [];
     } catch (e, stackTrace) {
-      _logger.error('Failed to fetch releases', e, stackTrace);
+      _logger.error('Unexpected error fetching releases', e, stackTrace);
       return [];
     }
   }
@@ -185,7 +232,7 @@ class GitHubUpdateService {
 
       Response<dynamic>? response;
       try {
-        response = await _dio.get(
+        response = await _dio.get<List<dynamic>>(
           url,
           options: Options(
             headers: {
@@ -193,13 +240,31 @@ class GitHubUpdateService {
               'X-GitHub-Api-Version': '2022-11-28',
             },
           ),
+        ).timeout(
+          const Duration(seconds: 30),
+          onTimeout: () {
+            throw TimeoutException('Update check timed out');
+          },
         );
       } on DioException catch (e) {
         if (e.response?.statusCode == 404) {
           _logger.debug('No releases found on GitHub yet');
           return null;
+        } else if (e.response?.statusCode == 403) {
+          _logger.warning('GitHub API rate limit exceeded');
+          return null;
+        } else if (e.type == DioExceptionType.connectionTimeout ||
+            e.type == DioExceptionType.receiveTimeout) {
+          _logger.error('Network timeout checking for updates', e);
+          return null;
+        } else if (e.type == DioExceptionType.connectionError) {
+          _logger.warning('No network connection to check for updates');
+          return null;
         }
         rethrow;
+      } on TimeoutException catch (e, stackTrace) {
+        _logger.error('Timeout checking for updates', e, stackTrace);
+        return null;
       }
 
       if (response.statusCode != 200) {
@@ -280,22 +345,59 @@ class GitHubUpdateService {
             intermediateReleases,
             installationType: installationType,
           );
-        } catch (e) {
+        } on FormatException catch (e) {
           _logger.warning(
-            'Failed to parse releases with changelogs, falling back to single release',
+            'Invalid format parsing releases, falling back to single release',
             e,
           );
           // Fallback to single release
+          try {
+            updateInfo = UpdateInfo.fromGitHubRelease(
+              latestRelease,
+              installationType: installationType,
+            );
+          } catch (fallbackError, fallbackStackTrace) {
+            _logger.error(
+              'Failed to parse even single release',
+              fallbackError,
+              fallbackStackTrace,
+            );
+            return null;
+          }
+        } catch (e, stackTrace) {
+          _logger.warning(
+            'Error parsing releases with changelogs, falling back to single release',
+            e,
+            stackTrace,
+          );
+          // Fallback to single release
+          try {
+            updateInfo = UpdateInfo.fromGitHubRelease(
+              latestRelease,
+              installationType: installationType,
+            );
+          } catch (fallbackError, fallbackStackTrace) {
+            _logger.error(
+              'Failed to parse even single release',
+              fallbackError,
+              fallbackStackTrace,
+            );
+            return null;
+          }
+        }
+      } else {
+        try {
           updateInfo = UpdateInfo.fromGitHubRelease(
             latestRelease,
             installationType: installationType,
           );
+        } on FormatException catch (e, stackTrace) {
+          _logger.error('Invalid format in release data', e, stackTrace);
+          return null;
+        } catch (e, stackTrace) {
+          _logger.error('Failed to parse release data', e, stackTrace);
+          return null;
         }
-      } else {
-        updateInfo = UpdateInfo.fromGitHubRelease(
-          latestRelease,
-          installationType: installationType,
-        );
       }
 
       _logger.info('Latest version from GitHub: ${updateInfo.version}');
@@ -330,8 +432,17 @@ class GitHubUpdateService {
         _updateAvailableController.add(null);
         return null;
       }
+    } on DioException catch (e, stackTrace) {
+      _logger.error('Network error checking for updates: ${e.message}', e, stackTrace);
+      return null;
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error('Timeout checking for updates', e, stackTrace);
+      return null;
+    } on FormatException catch (e, stackTrace) {
+      _logger.error('Invalid data format from GitHub API', e, stackTrace);
+      return null;
     } catch (e, stackTrace) {
-      _logger.error('Failed to check for updates', e, stackTrace);
+      _logger.error('Unexpected error checking for updates', e, stackTrace);
       return null;
     }
   }
@@ -350,21 +461,39 @@ class GitHubUpdateService {
 
       // Check if file already exists on disk (works even after app restart)
       if (file.existsSync()) {
-        _logger.info('Update already exists on disk: $savePath');
-        _logger.info('File size: ${file.lengthSync()} bytes');
+        try {
+          final fileSize = file.lengthSync();
+          _logger.info('Update already exists on disk: $savePath');
+          _logger.info('File size: $fileSize bytes');
 
-        // Cache it in memory for this session
-        _downloadedFile = file;
+          // Verify file size matches expected size
+          if (fileSize != updateInfo.fileSize) {
+            _logger.warning(
+              'Existing file size ($fileSize) does not match expected size (${updateInfo.fileSize}), re-downloading',
+            );
+            file.deleteSync();
+          } else {
+            // Cache it in memory for this session
+            _downloadedFile = file;
 
-        // Set progress to completed
-        _currentDownloadProgress = DownloadProgress(
-          status: DownloadStatus.completed,
-          bytesReceived: updateInfo.fileSize,
-          totalBytes: updateInfo.fileSize,
-        );
-        _downloadProgressController.add(_currentDownloadProgress);
+            // Set progress to completed
+            _currentDownloadProgress = DownloadProgress(
+              status: DownloadStatus.completed,
+              bytesReceived: updateInfo.fileSize,
+              totalBytes: updateInfo.fileSize,
+            );
+            _downloadProgressController.add(_currentDownloadProgress);
 
-        return file;
+            return file;
+          }
+        } on FileSystemException catch (e, stackTrace) {
+          _logger.warning(
+            'Error accessing existing file, will re-download: ${e.message}',
+            e,
+            stackTrace,
+          );
+          // Continue with download
+        }
       }
 
       _logger.info('=== STARTING UPDATE DOWNLOAD ===');
@@ -382,9 +511,18 @@ class GitHubUpdateService {
       final tempDir = Directory(tempDirPath);
 
       // Create the directory if it doesn't exist
-      if (!tempDir.existsSync()) {
-        tempDir.createSync(recursive: true);
-        _logger.info('Created temp directory: $tempDirPath');
+      try {
+        if (!tempDir.existsSync()) {
+          tempDir.createSync(recursive: true);
+          _logger.info('Created temp directory: $tempDirPath');
+        }
+      } on FileSystemException catch (e, stackTrace) {
+        _logger.error(
+          'Failed to create temp directory: ${e.message}',
+          e,
+          stackTrace,
+        );
+        throw Exception('Cannot create download directory: ${e.message}');
       }
 
       _logger.info('Save path: $savePath');
@@ -392,32 +530,61 @@ class GitHubUpdateService {
       _downloadCancelToken = CancelToken();
 
       // Download with progress tracking (use long timeout for large files)
-      await _dio.download(
-        updateInfo.downloadUrl,
-        savePath,
-        cancelToken: _downloadCancelToken,
-        options: Options(
-          receiveTimeout: NetworkConfig.longTimeout,
-          sendTimeout: NetworkConfig.longTimeout,
-        ),
-        onReceiveProgress: (received, total) {
-          _currentDownloadProgress = DownloadProgress(
-            status: DownloadStatus.downloading,
-            bytesReceived: received,
-            totalBytes: total > 0 ? total : updateInfo.fileSize,
-          );
-          _downloadProgressController.add(_currentDownloadProgress);
-        },
-      );
+      try {
+        await _dio.download(
+          updateInfo.downloadUrl,
+          savePath,
+          cancelToken: _downloadCancelToken,
+          options: Options(
+            receiveTimeout: NetworkConfig.longTimeout,
+            sendTimeout: NetworkConfig.longTimeout,
+          ),
+          onReceiveProgress: (received, total) {
+            _currentDownloadProgress = DownloadProgress(
+              status: DownloadStatus.downloading,
+              bytesReceived: received,
+              totalBytes: total > 0 ? total : updateInfo.fileSize,
+            );
+            _downloadProgressController.add(_currentDownloadProgress);
+          },
+        );
+      } on DioException catch (e) {
+        if (e.type == DioExceptionType.cancel) {
+          _logger.info('Download cancelled by user');
+          return null;
+        } else if (e.type == DioExceptionType.connectionTimeout ||
+            e.type == DioExceptionType.receiveTimeout) {
+          throw TimeoutException('Download timed out: ${e.message}');
+        } else if (e.type == DioExceptionType.connectionError) {
+          throw Exception('Network error during download: ${e.message}');
+        } else if (e.response?.statusCode == 404) {
+          throw Exception('Update file not found on server');
+        } else if (e.response?.statusCode == 403) {
+          throw Exception('Access denied to update file');
+        }
+        rethrow;
+      }
 
-      // file is already declared at the top of the function
+      // Verify file was downloaded
       if (!file.existsSync()) {
-        throw Exception('Downloaded file not found');
+        throw FileSystemException(
+          'Downloaded file not found at expected location',
+          savePath,
+        );
+      }
+
+      // Verify file size
+      final downloadedSize = file.lengthSync();
+      if (downloadedSize != updateInfo.fileSize) {
+        _logger.warning(
+          'Downloaded file size ($downloadedSize) does not match expected size (${updateInfo.fileSize})',
+        );
+        // Continue anyway as GitHub API might report incorrect size
       }
 
       _currentDownloadProgress = DownloadProgress(
         status: DownloadStatus.completed,
-        bytesReceived: updateInfo.fileSize,
+        bytesReceived: downloadedSize,
         totalBytes: updateInfo.fileSize,
       );
       _downloadProgressController.add(_currentDownloadProgress);
@@ -427,14 +594,48 @@ class GitHubUpdateService {
 
       _logger.info('=== DOWNLOAD COMPLETED ===');
       _logger.info('File path: $savePath');
-      _logger.info('File size: ${file.lengthSync()} bytes');
+      _logger.info('File size: $downloadedSize bytes');
       return file;
-    } catch (e, stackTrace) {
-      _logger.error('Failed to download update', e, stackTrace);
+    } on DioException catch (e, stackTrace) {
+      final errorMessage = 'Network error downloading update: ${e.message}';
+      _logger.error(errorMessage, e, stackTrace);
 
       _currentDownloadProgress = DownloadProgress(
         status: DownloadStatus.failed,
-        error: e.toString(),
+        error: errorMessage,
+      );
+      _downloadProgressController.add(_currentDownloadProgress);
+
+      return null;
+    } on TimeoutException catch (e, stackTrace) {
+      const errorMessage = 'Download timed out';
+      _logger.error(errorMessage, e, stackTrace);
+
+      _currentDownloadProgress = DownloadProgress(
+        status: DownloadStatus.failed,
+        error: errorMessage,
+      );
+      _downloadProgressController.add(_currentDownloadProgress);
+
+      return null;
+    } on FileSystemException catch (e, stackTrace) {
+      final errorMessage = 'File system error: ${e.message}';
+      _logger.error(errorMessage, e, stackTrace);
+
+      _currentDownloadProgress = DownloadProgress(
+        status: DownloadStatus.failed,
+        error: errorMessage,
+      );
+      _downloadProgressController.add(_currentDownloadProgress);
+
+      return null;
+    } catch (e, stackTrace) {
+      final errorMessage = 'Unexpected error downloading update: $e';
+      _logger.error(errorMessage, e, stackTrace);
+
+      _currentDownloadProgress = DownloadProgress(
+        status: DownloadStatus.failed,
+        error: errorMessage,
       );
       _downloadProgressController.add(_currentDownloadProgress);
 
@@ -459,59 +660,113 @@ class GitHubUpdateService {
     try {
       _logger.info('=== STARTING UPDATE INSTALLATION ===');
       _logger.info('Installer file path: ${installerFile.path}');
-      _logger.info('File exists: ${installerFile.existsSync()}');
 
-      if (!installerFile.existsSync()) {
-        _logger.error('Installer file not found at: ${installerFile.path}');
-        throw Exception('Installer file not found');
+      // Verify file exists
+      try {
+        final exists = installerFile.existsSync();
+        _logger.info('File exists: $exists');
+        if (!exists) {
+          throw FileSystemException(
+            'Installer file not found',
+            installerFile.path,
+          );
+        }
+      } on FileSystemException catch (e) {
+        _logger.error('Installer file not accessible: ${e.message}', e);
+        throw Exception('Installer file not found: ${e.message}');
       }
 
-      _logger.info('File size: ${installerFile.lengthSync()} bytes');
+      // Get and log file size
+      int fileSize;
+      try {
+        fileSize = installerFile.lengthSync();
+        _logger.info('File size: $fileSize bytes');
+        if (fileSize == 0) {
+          throw FileSystemException(
+            'Installer file is empty',
+            installerFile.path,
+          );
+        }
+      } on FileSystemException catch (e) {
+        _logger.error('Cannot read installer file: ${e.message}', e);
+        throw Exception('Cannot read installer file: ${e.message}');
+      }
 
       // Determine file type and launch appropriately
       final fileName = installerFile.path.toLowerCase();
-      _logger.info(
-        'Detected file extension: ${fileName.substring(fileName.lastIndexOf('.'))}',
-      );
+      final extension = fileName.substring(fileName.lastIndexOf('.'));
+      _logger.info('Detected file extension: $extension');
 
       if (fileName.endsWith('.exe')) {
         // For .exe files: Launch directly with silent install flags
-        // This allows passing command-line arguments for silent install + auto-launch
         _logger.info('Launching EXE installer with silent mode...');
         _logger.info(
           'Command: ${installerFile.path} /VERYSILENT /NORESTART /RESTARTAPPLICATIONS',
         );
 
-        final process = await Process.start(
-          installerFile.path,
-          [
-            '/VERYSILENT', // Completely silent install (Inno Setup)
-            '/NORESTART', // Don't restart the computer
-            '/RESTARTAPPLICATIONS', // Restart applications after install (auto-launch)
-          ],
-          mode: ProcessStartMode.detached,
-          runInShell: false,
-        );
+        try {
+          final process = await Process.start(
+            installerFile.path,
+            [
+              '/VERYSILENT', // Completely silent install (Inno Setup)
+              '/NORESTART', // Don't restart the computer
+              '/RESTARTAPPLICATIONS', // Restart applications after install (auto-launch)
+            ],
+            mode: ProcessStartMode.detached,
+            runInShell: false,
+          ).timeout(
+            const Duration(seconds: 10),
+            onTimeout: () {
+              throw TimeoutException('Installer process start timed out');
+            },
+          );
 
-        _logger.info('EXE installer launched with PID: ${process.pid}');
+          _logger.info('EXE installer launched with PID: ${process.pid}');
+        } on ProcessException catch (e, stackTrace) {
+          _logger.error(
+            'Failed to start installer process: ${e.message}',
+            e,
+            stackTrace,
+          );
+          throw Exception('Cannot start installer: ${e.message}');
+        } on TimeoutException catch (e, stackTrace) {
+          _logger.error('Timeout starting installer', e, stackTrace);
+          throw Exception('Installer start timed out');
+        }
       } else {
         // For MSIX and other files: Use explorer.exe for true process independence
-        // This ensures the installer continues running even after the app exits
         _logger.info(
           'Launching installer via explorer.exe for independent process...',
         );
         _logger.info('File: ${installerFile.path}');
 
-        final process = await Process.start(
-          'explorer.exe',
-          [installerFile.path],
-          mode: ProcessStartMode.detached,
-          runInShell: false,
-        );
+        try {
+          final process = await Process.start(
+            'explorer.exe',
+            [installerFile.path],
+            mode: ProcessStartMode.detached,
+            runInShell: false,
+          ).timeout(
+            const Duration(seconds: 10),
+            onTimeout: () {
+              throw TimeoutException('Explorer.exe launch timed out');
+            },
+          );
 
-        _logger.info(
-          'Installer launched via explorer.exe with PID: ${process.pid}',
-        );
+          _logger.info(
+            'Installer launched via explorer.exe with PID: ${process.pid}',
+          );
+        } on ProcessException catch (e, stackTrace) {
+          _logger.error(
+            'Failed to launch via explorer.exe: ${e.message}',
+            e,
+            stackTrace,
+          );
+          throw Exception('Cannot launch installer: ${e.message}');
+        } on TimeoutException catch (e, stackTrace) {
+          _logger.error('Timeout launching installer', e, stackTrace);
+          throw Exception('Installer launch timed out');
+        }
       }
 
       _logger.info('Installer launched successfully');
@@ -519,17 +774,27 @@ class GitHubUpdateService {
 
       // Exit the current application to allow update
       // Give the installer process time to fully start before exiting
-      // Increased delay to ensure explorer.exe fully launches the installer
       Future.delayed(const Duration(seconds: 3), () {
         _logger.info('Exiting application for update installation');
         exit(0);
       });
 
       return true;
+    } on FileSystemException catch (e, stackTrace) {
+      _logger.error('=== UPDATE INSTALLATION FAILED ===');
+      _logger.error('File system error: ${e.message}', e, stackTrace);
+      return false;
+    } on ProcessException catch (e, stackTrace) {
+      _logger.error('=== UPDATE INSTALLATION FAILED ===');
+      _logger.error('Process error: ${e.message}', e, stackTrace);
+      return false;
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error('=== UPDATE INSTALLATION FAILED ===');
+      _logger.error('Timeout error: ${e.message}', e, stackTrace);
+      return false;
     } catch (e, stackTrace) {
       _logger.error('=== UPDATE INSTALLATION FAILED ===');
-      _logger.error('Error: $e');
-      _logger.error('Stack trace: $stackTrace');
+      _logger.error('Unexpected error: $e', e, stackTrace);
       return false;
     }
   }
@@ -537,23 +802,44 @@ class GitHubUpdateService {
   /// Load ignored versions from persistent storage
   Future<void> _loadIgnoredVersions() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = await SharedPreferences.getInstance().timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          throw TimeoutException('Loading preferences timed out');
+        },
+      );
       final ignoredList = prefs.getStringList(_ignoredVersionsKey) ?? [];
       _ignoredVersions = ignoredList.toSet();
       _logger.info(
         'Loaded ${_ignoredVersions.length} ignored version(s): ${_ignoredVersions.join(", ")}',
       );
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error('Timeout loading ignored versions', e, stackTrace);
+      _ignoredVersions = {}; // Use empty set as fallback
     } catch (e, stackTrace) {
       _logger.error('Failed to load ignored versions', e, stackTrace);
+      _ignoredVersions = {}; // Use empty set as fallback
     }
   }
 
   /// Save ignored versions to persistent storage
   Future<void> _saveIgnoredVersions() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setStringList(_ignoredVersionsKey, _ignoredVersions.toList());
+      final prefs = await SharedPreferences.getInstance().timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          throw TimeoutException('Loading preferences timed out');
+        },
+      );
+      await prefs.setStringList(_ignoredVersionsKey, _ignoredVersions.toList()).timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          throw TimeoutException('Saving preferences timed out');
+        },
+      );
       _logger.info('Saved ${_ignoredVersions.length} ignored version(s)');
+    } on TimeoutException catch (e, stackTrace) {
+      _logger.error('Timeout saving ignored versions', e, stackTrace);
     } catch (e, stackTrace) {
       _logger.error('Failed to save ignored versions', e, stackTrace);
     }
@@ -625,9 +911,14 @@ class GitHubUpdateService {
   }
 
   /// Dispose resources
-  void dispose() {
-    _updateAvailableController.close();
-    _downloadProgressController.close();
-    _downloadCancelToken?.cancel();
+  Future<void> dispose() async {
+    try {
+      await _updateAvailableController.close();
+      await _downloadProgressController.close();
+      _downloadCancelToken?.cancel();
+      _logger.info('GitHub update service disposed');
+    } catch (e, stackTrace) {
+      _logger.error('Error disposing update service', e, stackTrace);
+    }
   }
 }

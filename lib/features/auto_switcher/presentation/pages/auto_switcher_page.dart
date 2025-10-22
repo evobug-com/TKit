@@ -92,11 +92,11 @@ class _AutoSwitcherPageState extends ConsumerState<AutoSwitcherPage> {
             align: ContentAlign.bottom,
             builder: (context, controller) {
               return Container(
-                margin: const EdgeInsets.only(top: 20),
-                padding: const EdgeInsets.all(24),
+                margin: const EdgeInsets.only(top: TKitSpacing.lg),
+                padding: const EdgeInsets.all(TKitSpacing.xl),
                 decoration: BoxDecoration(
                   color: TKitColors.surface,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(TKitSpacing.md),
                   border: Border.all(color: TKitColors.accentBright, width: 2),
                   boxShadow: [
                     BoxShadow(
@@ -117,7 +117,7 @@ class _AutoSwitcherPageState extends ConsumerState<AutoSwitcherPage> {
                           color: TKitColors.accentBright,
                           size: 24,
                         ),
-                        const SizedBox(width: 12),
+                        const HSpace.md(),
                         Expanded(
                           child: Text(
                             l10n.tutorialAutoSwitcherControlTitle,
@@ -129,7 +129,7 @@ class _AutoSwitcherPageState extends ConsumerState<AutoSwitcherPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    const VSpace.lg(),
                     Text(
                       l10n.tutorialAutoSwitcherControlDescription,
                       style: TKitTextStyles.bodyMedium.copyWith(
