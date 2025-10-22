@@ -50,9 +50,10 @@ class MappingSubmissionDataSource {
 
       // Build the JSON object
       // Keep twitchCategoryId as string for consistency (app expects strings)
+      // Explicitly ensure it's a string (in case it's somehow an int)
       final mappingJson = <String, dynamic>{
         'processName': processName,
-        'twitchCategoryId': twitchCategoryId,
+        'twitchCategoryId': twitchCategoryId.toString(),
         'twitchCategoryName': twitchCategoryName,
       };
 
