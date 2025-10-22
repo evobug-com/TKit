@@ -1,0 +1,20 @@
+# Code Owners for TKit Flutter
+# These owners will be automatically requested for review when PRs are opened
+
+# Default owner for everything
+* @sionzee
+
+# Critical configuration files
+/.github/ @sionzee
+/pubspec.yaml @sionzee
+/pubspec.lock @sionzee
+/analysis_options.yaml @sionzee
+
+# Core architecture
+/lib/core/ @sionzee
+
+# Feature modules
+/lib/features/ @sionzee
+
+# CI/CD workflows
+/.github/workflows/ @sionzee
