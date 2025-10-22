@@ -516,6 +516,70 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
 
       // Initialize periodic mapping list sync
       unawaited(_initializePeriodicListSync());
+
+      // Check if we should auto-sync mappings on app start
+      try {
+        final getSettingsUseCase = await ref.read(
+          getSettingsUseCaseProvider.future,
+        );
+        final settingsResult = await getSettingsUseCase();
+
+        await settingsResult.fold(
+          (failure) async {
+            logger.warning(
+              'Could not load settings for auto-sync mappings check',
+            );
+          },
+          (settings) async {
+            if (settings.autoSyncMappingsOnStart) {
+              logger.info('Auto-sync mappings on start enabled - syncing mappings...');
+
+              final mappingListRepository = ref.read(mappingListRepositoryProvider);
+              final syncListUseCase = ref.read(syncListUseCaseProvider);
+
+              // Get all enabled lists that should sync
+              final listsResult = await mappingListRepository.getAllLists();
+              await listsResult.fold(
+                (failure) {
+                  logger.warning(
+                    'Failed to get mapping lists for auto-sync on start: ${failure.message}',
+                  );
+                },
+                (lists) async {
+                  final enabledLists = lists
+                      .where((list) => list.isEnabled && list.shouldSync)
+                      .toList();
+
+                  if (enabledLists.isEmpty) {
+                    logger.debug('No enabled lists need syncing on start');
+                    return;
+                  }
+
+                  logger.info('Syncing ${enabledLists.length} enabled list(s) on app start...');
+
+                  for (final list in enabledLists) {
+                    final syncResult = await syncListUseCase(list.id);
+                    syncResult.fold(
+                      (failure) {
+                        logger.warning(
+                          'Auto-sync on start failed for "${list.name}": ${failure.message}',
+                        );
+                      },
+                      (_) {
+                        logger.info('Auto-sync on start completed for: ${list.name}');
+                      },
+                    );
+                  }
+                },
+              );
+            } else {
+              logger.info('Auto-sync mappings on start disabled');
+            }
+          },
+        );
+      } catch (e) {
+        logger.error('Error checking auto-sync mappings on start setting', e);
+      }
     } else {
       // User logged out - cancel periodic sync
       _periodicSyncTimer?.cancel();

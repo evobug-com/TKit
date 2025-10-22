@@ -10,8 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### TKit
 
 #### Added
-- Automatic start of auto-update on app launch (if enabled in settings)
 - What's new dialog on app start showing latest changes
+- Plus button next to Active App to add mapping of the current process
+- Automatic start of auto-updater on app launch (if enabled in settings)
+
+#### Fixed
+- Automatic start of auto-switcher on app launch (setting existed but wasn't actually implemented)
+- Auto-sync mappings on app start now works correctly (setting existed but wasn't being checked)
 
 ## [0.0.1-dev.7] - 2025-10-18
 
