@@ -325,6 +325,44 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
 
     // Check auth status
     await ref.read(authProvider.notifier).checkAuthStatus();
+
+    // Check if we should auto-start monitoring (only if authenticated)
+    final authState = ref.read(authProvider);
+    if (authState is Authenticated) {
+      try {
+        final getSettingsUseCase = await ref.read(
+          getSettingsUseCaseProvider.future,
+        );
+        final settingsResult = await getSettingsUseCase();
+
+        await settingsResult.fold(
+          (failure) async {
+            logger.warning(
+              'Could not load settings for auto-start monitoring check',
+            );
+          },
+          (settings) async {
+            if (settings.autoStartMonitoring) {
+              logger.info('Auto-start monitoring enabled - starting monitoring...');
+              // Small delay to ensure all providers are ready
+              await Future<void>.delayed(const Duration(milliseconds: 500));
+              try {
+                await ref.read(autoSwitcherProvider.notifier).startMonitoring();
+                logger.info('Monitoring started successfully on app launch');
+              } catch (e) {
+                logger.error('Failed to start monitoring on app launch', e);
+              }
+            } else {
+              logger.info('Auto-start monitoring disabled');
+            }
+          },
+        );
+      } catch (e) {
+        logger.error('Error checking auto-start monitoring setting', e);
+      }
+    } else {
+      logger.info('User not authenticated - skipping auto-start monitoring');
+    }
   }
 
   @override
