@@ -88,7 +88,7 @@ jobs:
         run: flutter build windows --release
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: windows-build
           path: build/windows/x64/runner/Release/**
@@ -120,7 +120,7 @@ jobs:
           mv build/windows/x64/runner/Release/tkit.msix build/windows/x64/runner/Release/TKit-Setup-${{ needs.build-windows.outputs.version }}.msix
 
       - name: Upload MSIX artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: windows-msix
           path: build/windows/x64/runner/Release/TKit-Setup-${{ needs.build-windows.outputs.version }}.msix
@@ -151,7 +151,7 @@ jobs:
         shell: cmd
 
       - name: Upload installer artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: windows-installer
           path: build/windows/TKit-Setup-${{ needs.build-windows.outputs.version }}.exe
