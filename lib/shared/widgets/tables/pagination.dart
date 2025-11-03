@@ -192,7 +192,9 @@ class _PaginationState extends State<Pagination> {
                 }
 
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xs / 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: TKitSpacing.xs / 2,
+                  ),
                   child: _PaginationButton(
                     onPressed: page != widget.currentPage
                         ? () => widget.onPageChanged(page)

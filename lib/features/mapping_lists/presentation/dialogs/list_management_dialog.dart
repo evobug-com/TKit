@@ -259,7 +259,10 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xs + 2, vertical: 2),
+      padding: const EdgeInsets.symmetric(
+        horizontal: TKitSpacing.xs + 2,
+        vertical: 2,
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         border: Border.all(color: color.withValues(alpha: 0.3)),
@@ -278,7 +281,10 @@ class _ListManagementDialogState extends ConsumerState<ListManagementDialog> {
 
   Widget _buildReadOnlyBadge(AppLocalizations l10n) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xs + 2, vertical: 2),
+      padding: const EdgeInsets.symmetric(
+        horizontal: TKitSpacing.xs + 2,
+        vertical: 2,
+      ),
       decoration: BoxDecoration(
         color: TKitColors.textMuted.withValues(alpha: 0.1),
         border: Border.all(color: TKitColors.textMuted.withValues(alpha: 0.3)),

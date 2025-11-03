@@ -44,7 +44,9 @@ class ConfirmDialog extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 480, minWidth: 360),
         child: Padding(
-          padding: const EdgeInsets.all(TKitSpacing.xxl), // Design system: Use TKitSpacing
+          padding: const EdgeInsets.all(
+            TKitSpacing.xxl,
+          ), // Design system: Use TKitSpacing
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +54,6 @@ class ConfirmDialog extends StatelessWidget {
               // Title
               Text(title, style: TKitTextStyles.heading3),
               const VSpace.lg(), // Design system: Use VSpace instead of hardcoded values
-
               // Message
               Text(
                 message,
@@ -61,7 +62,6 @@ class ConfirmDialog extends StatelessWidget {
                 ),
               ),
               const VSpace.xxl(), // Design system: Use VSpace instead of hardcoded values
-
               // Actions
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -89,7 +89,9 @@ class ConfirmDialog extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(0),
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xxl),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: TKitSpacing.xxl,
+                          ),
                         ),
                         child: Text(
                           effectiveConfirmText,

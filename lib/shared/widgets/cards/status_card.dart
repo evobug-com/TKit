@@ -36,7 +36,11 @@ class StatusCard extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: padding ?? const EdgeInsets.all(TKitSpacing.lg), // Design system: Use TKitSpacing
+            padding:
+                padding ??
+                const EdgeInsets.all(
+                  TKitSpacing.lg,
+                ), // Design system: Use TKitSpacing
             child: Row(
               children: [
                 if (leading != null) ...[leading!, const HSpace.md()],

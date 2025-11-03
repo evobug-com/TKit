@@ -30,77 +30,78 @@ void main() {
           processName: 'Visual Studio Code - Insiders.exe',
           pid: 12345,
           windowTitle: 'main.dart - TKit',
-          executablePath: 'C:\\Program Files\\Microsoft VS Code Insiders\\Code - Insiders.exe',
+          executablePath:
+              'C:\\Program Files\\Microsoft VS Code Insiders\\Code - Insiders.exe',
         );
 
-        when(mockRepository.getFocusedProcess())
-            .thenAnswer((_) async => const Right(processWithSpecialChars));
+        when(
+          mockRepository.getFocusedProcess(),
+        ).thenAnswer((_) async => const Right(processWithSpecialChars));
 
         // act
         final result = await getFocusedProcessUseCase();
 
         // assert
         expect(result.isRight(), true);
-        result.fold(
-          (l) => fail('Should return process'),
-          (r) {
-            expect(r?.processName, contains('Code - Insiders'));
-            expect(r?.normalizedName, 'visualstudiocodeinsiders');
-          },
-        );
+        result.fold((l) => fail('Should return process'), (r) {
+          expect(r?.processName, contains('Code - Insiders'));
+          expect(r?.normalizedName, 'visualstudiocodeinsiders');
+        });
       });
 
-      test('should handle process names with brackets and parentheses', () async {
-        // arrange
-        const processWithBrackets = ProcessInfo(
-          processName: 'Game [Beta] (v1.2.3).exe',
-          pid: 54321,
-          windowTitle: 'Game Window [Debug Mode]',
-          executablePath: 'D:\\Games\\Game [Beta]\\game.exe',
-        );
+      test(
+        'should handle process names with brackets and parentheses',
+        () async {
+          // arrange
+          const processWithBrackets = ProcessInfo(
+            processName: 'Game [Beta] (v1.2.3).exe',
+            pid: 54321,
+            windowTitle: 'Game Window [Debug Mode]',
+            executablePath: 'D:\\Games\\Game [Beta]\\game.exe',
+          );
 
-        when(mockRepository.getFocusedProcess())
-            .thenAnswer((_) async => const Right(processWithBrackets));
+          when(
+            mockRepository.getFocusedProcess(),
+          ).thenAnswer((_) async => const Right(processWithBrackets));
 
-        // act
-        final result = await getFocusedProcessUseCase();
+          // act
+          final result = await getFocusedProcessUseCase();
 
-        // assert
-        expect(result.isRight(), true);
-        result.fold(
-          (l) => fail('Should return process'),
-          (r) {
+          // assert
+          expect(result.isRight(), true);
+          result.fold((l) => fail('Should return process'), (r) {
             expect(r?.processName, contains('[Beta]'));
             expect(r?.processName, contains('(v1.2.3)'));
-          },
-        );
-      });
+          });
+        },
+      );
 
-      test('should handle process names with special symbols (!@#\$%^&*)', () async {
-        // arrange
-        const processWithSymbols = ProcessInfo(
-          processName: 'app@2.0!.exe',
-          pid: 99999,
-          windowTitle: 'App #1 - !Important',
-          executablePath: 'C:\\Special\\app@2.0!.exe',
-        );
+      test(
+        'should handle process names with special symbols (!@#\$%^&*)',
+        () async {
+          // arrange
+          const processWithSymbols = ProcessInfo(
+            processName: 'app@2.0!.exe',
+            pid: 99999,
+            windowTitle: 'App #1 - !Important',
+            executablePath: 'C:\\Special\\app@2.0!.exe',
+          );
 
-        when(mockRepository.getFocusedProcess())
-            .thenAnswer((_) async => const Right(processWithSymbols));
+          when(
+            mockRepository.getFocusedProcess(),
+          ).thenAnswer((_) async => const Right(processWithSymbols));
 
-        // act
-        final result = await getFocusedProcessUseCase();
+          // act
+          final result = await getFocusedProcessUseCase();
 
-        // assert
-        expect(result.isRight(), true);
-        result.fold(
-          (l) => fail('Should return process'),
-          (r) {
+          // assert
+          expect(result.isRight(), true);
+          result.fold((l) => fail('Should return process'), (r) {
             expect(r?.processName, contains('@'));
             expect(r?.processName, contains('!'));
-          },
-        );
-      });
+          });
+        },
+      );
     });
 
     group('Unicode and International Characters', () {
@@ -113,21 +114,19 @@ void main() {
           executablePath: 'C:\\Games\\日本\\ゲーム.exe',
         );
 
-        when(mockRepository.getFocusedProcess())
-            .thenAnswer((_) async => const Right(processWithJapanese));
+        when(
+          mockRepository.getFocusedProcess(),
+        ).thenAnswer((_) async => const Right(processWithJapanese));
 
         // act
         final result = await getFocusedProcessUseCase();
 
         // assert
         expect(result.isRight(), true);
-        result.fold(
-          (l) => fail('Should return process'),
-          (r) {
-            expect(r?.processName, 'ゲーム.exe');
-            expect(r?.windowTitle, contains('日本語'));
-          },
-        );
+        result.fold((l) => fail('Should return process'), (r) {
+          expect(r?.processName, 'ゲーム.exe');
+          expect(r?.windowTitle, contains('日本語'));
+        });
       });
 
       test('should handle process names with emojis', () async {
@@ -139,48 +138,47 @@ void main() {
           executablePath: 'C:\\Apps\\app_🚀_launcher.exe',
         );
 
-        when(mockRepository.getFocusedProcess())
-            .thenAnswer((_) async => const Right(processWithEmojis));
+        when(
+          mockRepository.getFocusedProcess(),
+        ).thenAnswer((_) async => const Right(processWithEmojis));
 
         // act
         final result = await getFocusedProcessUseCase();
 
         // assert
         expect(result.isRight(), true);
-        result.fold(
-          (l) => fail('Should return process'),
-          (r) {
-            expect(r?.processName, contains('🚀'));
-            expect(r?.windowTitle, contains('🎮'));
-          },
-        );
+        result.fold((l) => fail('Should return process'), (r) {
+          expect(r?.processName, contains('🚀'));
+          expect(r?.windowTitle, contains('🎮'));
+        });
       });
 
-      test('should handle process names with mixed scripts (Cyrillic, Arabic, etc)', () async {
-        // arrange
-        const processWithMixedScripts = ProcessInfo(
-          processName: 'игра_العبة_game.exe',
-          pid: 33333,
-          windowTitle: 'Мультиязычное окно',
-          executablePath: 'C:\\International\\игра_العبة_game.exe',
-        );
+      test(
+        'should handle process names with mixed scripts (Cyrillic, Arabic, etc)',
+        () async {
+          // arrange
+          const processWithMixedScripts = ProcessInfo(
+            processName: 'игра_العبة_game.exe',
+            pid: 33333,
+            windowTitle: 'Мультиязычное окно',
+            executablePath: 'C:\\International\\игра_العبة_game.exe',
+          );
 
-        when(mockRepository.getFocusedProcess())
-            .thenAnswer((_) async => const Right(processWithMixedScripts));
+          when(
+            mockRepository.getFocusedProcess(),
+          ).thenAnswer((_) async => const Right(processWithMixedScripts));
 
-        // act
-        final result = await getFocusedProcessUseCase();
+          // act
+          final result = await getFocusedProcessUseCase();
 
-        // assert
-        expect(result.isRight(), true);
-        result.fold(
-          (l) => fail('Should return process'),
-          (r) {
+          // assert
+          expect(result.isRight(), true);
+          result.fold((l) => fail('Should return process'), (r) {
             expect(r?.processName, contains('игра'));
             expect(r?.processName, contains('العبة'));
-          },
-        );
-      });
+          });
+        },
+      );
     });
 
     group('Extreme Length Process Names', () {
@@ -194,20 +192,18 @@ void main() {
           executablePath: 'C:\\VeryLong\\' + longName,
         );
 
-        when(mockRepository.getFocusedProcess())
-            .thenAnswer((_) async => Right(processWithLongName));
+        when(
+          mockRepository.getFocusedProcess(),
+        ).thenAnswer((_) async => Right(processWithLongName));
 
         // act
         final result = await getFocusedProcessUseCase();
 
         // assert
         expect(result.isRight(), true);
-        result.fold(
-          (l) => fail('Should return process'),
-          (r) {
-            expect(r?.processName.length, greaterThan(255));
-          },
-        );
+        result.fold((l) => fail('Should return process'), (r) {
+          expect(r?.processName.length, greaterThan(255));
+        });
       });
 
       test('should handle empty process names gracefully', () async {
@@ -219,21 +215,19 @@ void main() {
           executablePath: null,
         );
 
-        when(mockRepository.getFocusedProcess())
-            .thenAnswer((_) async => const Right(emptyProcess));
+        when(
+          mockRepository.getFocusedProcess(),
+        ).thenAnswer((_) async => const Right(emptyProcess));
 
         // act
         final result = await getFocusedProcessUseCase();
 
         // assert
         expect(result.isRight(), true);
-        result.fold(
-          (l) => fail('Should return process'),
-          (r) {
-            expect(r?.isEmpty, true);
-            expect(r?.normalizedName, '');
-          },
-        );
+        result.fold((l) => fail('Should return process'), (r) {
+          expect(r?.isEmpty, true);
+          expect(r?.normalizedName, '');
+        });
       });
 
       test('should handle null executable paths', () async {
@@ -245,21 +239,19 @@ void main() {
           executablePath: null,
         );
 
-        when(mockRepository.getFocusedProcess())
-            .thenAnswer((_) async => const Right(processWithNullPath));
+        when(
+          mockRepository.getFocusedProcess(),
+        ).thenAnswer((_) async => const Right(processWithNullPath));
 
         // act
         final result = await getFocusedProcessUseCase();
 
         // assert
         expect(result.isRight(), true);
-        result.fold(
-          (l) => fail('Should return process'),
-          (r) {
-            expect(r?.executablePath, isNull);
-            expect(r?.processName, 'system_process.exe');
-          },
-        );
+        result.fold((l) => fail('Should return process'), (r) {
+          expect(r?.executablePath, isNull);
+          expect(r?.processName, 'system_process.exe');
+        });
       });
     });
 
@@ -294,8 +286,9 @@ void main() {
         ).take(30); // 30 rapid changes
 
         final scanInterval = const Duration(milliseconds: 10);
-        when(mockRepository.watchProcessChanges(scanInterval))
-            .thenAnswer((_) => stream);
+        when(
+          mockRepository.watchProcessChanges(scanInterval),
+        ).thenAnswer((_) => stream);
 
         // act
         final result = watchProcessChangesUseCase(scanInterval);
@@ -305,8 +298,7 @@ void main() {
         await expectLater(
           result,
           emitsInOrder([
-            for (int i = 0; i < 30; i++)
-              processes[i % processes.length],
+            for (int i = 0; i < 30; i++) processes[i % processes.length],
           ]),
         );
       });
@@ -326,17 +318,15 @@ void main() {
         );
 
         final scanInterval = const Duration(milliseconds: 10);
-        when(mockRepository.watchProcessChanges(scanInterval))
-            .thenAnswer((_) => stream);
+        when(
+          mockRepository.watchProcessChanges(scanInterval),
+        ).thenAnswer((_) => stream);
 
         // act
         final result = watchProcessChangesUseCase(scanInterval);
 
         // assert - should emit distinct values
-        await expectLater(
-          result.distinct(),
-          emits(sameProcess),
-        );
+        await expectLater(result.distinct(), emits(sameProcess));
       });
     });
 
@@ -350,31 +340,24 @@ void main() {
           executablePath: 'C:\\app.x86_64.exe',
         );
 
-        when(mockRepository.getFocusedProcess())
-            .thenAnswer((_) async => const Right(processWithMultipleExts));
+        when(
+          mockRepository.getFocusedProcess(),
+        ).thenAnswer((_) async => const Right(processWithMultipleExts));
 
         // act
         final result = await getFocusedProcessUseCase();
 
         // assert
         expect(result.isRight(), true);
-        result.fold(
-          (l) => fail('Should return process'),
-          (r) {
-            // Should only remove .exe, not other dots
-            expect(r?.normalizedName, 'app.x86_64');
-          },
-        );
+        result.fold((l) => fail('Should return process'), (r) {
+          // Should only remove .exe, not other dots
+          expect(r?.normalizedName, 'app.x86_64');
+        });
       });
 
       test('should handle case variations in .exe extension', () async {
         // arrange
-        final testCases = [
-          'app.EXE',
-          'app.Exe',
-          'app.eXe',
-          'app.ExE',
-        ];
+        final testCases = ['app.EXE', 'app.Exe', 'app.eXe', 'app.ExE'];
 
         for (final name in testCases) {
           final process = ProcessInfo(
@@ -384,21 +367,19 @@ void main() {
             executablePath: 'C:\\$name',
           );
 
-          when(mockRepository.getFocusedProcess())
-              .thenAnswer((_) async => Right(process));
+          when(
+            mockRepository.getFocusedProcess(),
+          ).thenAnswer((_) async => Right(process));
 
           // act
           final result = await getFocusedProcessUseCase();
 
           // assert
           expect(result.isRight(), true);
-          result.fold(
-            (l) => fail('Should return process'),
-            (r) {
-              // Normalization is case-insensitive
-              expect(r?.normalizedName, 'app');
-            },
-          );
+          result.fold((l) => fail('Should return process'), (r) {
+            // Normalization is case-insensitive
+            expect(r?.normalizedName, 'app');
+          });
         }
       });
     });

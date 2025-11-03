@@ -45,7 +45,9 @@ class Breadcrumb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final displayItems = _getDisplayItems();
-    final textStyle = compact ? TKitTextStyles.caption : TKitTextStyles.bodySmall;
+    final textStyle = compact
+        ? TKitTextStyles.caption
+        : TKitTextStyles.bodySmall;
 
     return Row(
       children: [

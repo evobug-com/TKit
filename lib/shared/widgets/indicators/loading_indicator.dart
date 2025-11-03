@@ -77,7 +77,9 @@ class LoadingOverlay extends StatelessWidget {
           decoration: BoxDecoration(
             color: TKitColors.surface,
             border: Border.all(color: TKitColors.border, width: 1),
-            borderRadius: BorderRadius.circular(TKitSpacing.xs), // Minimal rounded corners
+            borderRadius: BorderRadius.circular(
+              TKitSpacing.xs,
+            ), // Minimal rounded corners
           ),
           child: message != null
               ? LoadingIndicatorWithText(text: message!)

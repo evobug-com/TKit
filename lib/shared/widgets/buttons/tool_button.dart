@@ -35,7 +35,10 @@ class ToolButton extends StatelessWidget {
         child: InkWell(
           onTap: onPressed,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.lg, vertical: TKitSpacing.md),
+            padding: const EdgeInsets.symmetric(
+              horizontal: TKitSpacing.lg,
+              vertical: TKitSpacing.md,
+            ),
             child: Row(
               children: [
                 Icon(

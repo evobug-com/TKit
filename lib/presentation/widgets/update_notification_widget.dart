@@ -133,7 +133,10 @@ Widget _buildUnorderedList(BuildContext context, Widget child, dynamic config) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
-            padding: EdgeInsets.only(top: TKitSpacing.xs, right: TKitSpacing.md),
+            padding: EdgeInsets.only(
+              top: TKitSpacing.xs,
+              right: TKitSpacing.md,
+            ),
             child: Icon(
               Icons.check_circle,
               size: 14,
@@ -173,7 +176,10 @@ Widget _buildOrderedList(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: TKitSpacing.xs, right: TKitSpacing.md),
+            padding: const EdgeInsets.only(
+              top: TKitSpacing.xs,
+              right: TKitSpacing.md,
+            ),
             child: TKitBadge(text: no, variant: TKitBadgeVariant.info),
           ),
           Expanded(
@@ -383,19 +389,27 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
 
         await result.fold(
           (_) async {
-            _logger.warning('[UpdateDialog] Failed to load settings for auto-install (already downloaded)');
+            _logger.warning(
+              '[UpdateDialog] Failed to load settings for auto-install (already downloaded)',
+            );
           },
           (settings) async {
-            _logger.info('[UpdateDialog] Auto-install setting (already downloaded): ${settings.autoInstallUpdates}');
+            _logger.info(
+              '[UpdateDialog] Auto-install setting (already downloaded): ${settings.autoInstallUpdates}',
+            );
             if (settings.autoInstallUpdates && service.downloadedFile != null) {
-              _logger.info('[UpdateDialog] Starting auto-install (update was already downloaded)...');
+              _logger.info(
+                '[UpdateDialog] Starting auto-install (update was already downloaded)...',
+              );
               // Wait a moment to let UI update
               await Future<void>.delayed(const Duration(milliseconds: 500));
 
               // Auto-install the update
               await service.installUpdate(service.downloadedFile!);
             } else if (!settings.autoInstallUpdates) {
-              _logger.info('[UpdateDialog] Auto-install disabled, waiting for user action');
+              _logger.info(
+                '[UpdateDialog] Auto-install disabled, waiting for user action',
+              );
             }
           },
         );
@@ -411,7 +425,9 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
 
         // Auto-install when download completes if enabled in settings
         if (progress.status == DownloadStatus.completed) {
-          _logger.info('[UpdateDialog] Download completed, checking auto-install settings');
+          _logger.info(
+            '[UpdateDialog] Download completed, checking auto-install settings',
+          );
           final getSettingsUseCase = await ref.read(
             getSettingsUseCaseProvider.future,
           );
@@ -419,11 +435,16 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
 
           await result.fold(
             (_) async {
-              _logger.warning('[UpdateDialog] Failed to load settings for auto-install');
+              _logger.warning(
+                '[UpdateDialog] Failed to load settings for auto-install',
+              );
             },
             (settings) async {
-              _logger.info('[UpdateDialog] Auto-install setting: ${settings.autoInstallUpdates}');
-              if (settings.autoInstallUpdates && service.downloadedFile != null) {
+              _logger.info(
+                '[UpdateDialog] Auto-install setting: ${settings.autoInstallUpdates}',
+              );
+              if (settings.autoInstallUpdates &&
+                  service.downloadedFile != null) {
                 _logger.info('[UpdateDialog] Starting auto-install...');
                 // Wait a moment to let UI update
                 await Future<void>.delayed(const Duration(milliseconds: 500));
@@ -431,7 +452,9 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                 // Auto-install the update
                 await service.installUpdate(service.downloadedFile!);
               } else if (!settings.autoInstallUpdates) {
-                _logger.info('[UpdateDialog] Auto-install disabled, waiting for user action');
+                _logger.info(
+                  '[UpdateDialog] Auto-install disabled, waiting for user action',
+                );
               } else {
                 _logger.warning('[UpdateDialog] Downloaded file not found');
               }
@@ -452,16 +475,22 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
 
         await result.fold(
           (_) async {
-            _logger.warning('[UpdateDialog] Failed to load settings for auto-download');
+            _logger.warning(
+              '[UpdateDialog] Failed to load settings for auto-download',
+            );
           },
           (settings) async {
-            _logger.info('[UpdateDialog] Auto-install setting: ${settings.autoInstallUpdates}');
+            _logger.info(
+              '[UpdateDialog] Auto-install setting: ${settings.autoInstallUpdates}',
+            );
             if (settings.autoInstallUpdates) {
               _logger.info('[UpdateDialog] Starting auto-download...');
               // Auto-download when dialog opens
               await service.downloadUpdate(widget.updateInfo);
             } else {
-              _logger.info('[UpdateDialog] Auto-install disabled, waiting for user to click download');
+              _logger.info(
+                '[UpdateDialog] Auto-install disabled, waiting for user to click download',
+              );
             }
           },
         );
@@ -866,7 +895,10 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                                               border: Border.all(
                                                 color: TKitColors.border,
                                               ),
-                                              borderRadius: BorderRadius.circular(TKitSpacing.xs),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                    TKitSpacing.xs,
+                                                  ),
                                             ),
                                             child: Text(
                                               changelog.version,

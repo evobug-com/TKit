@@ -45,9 +45,7 @@ class HotkeyService {
             },
           );
         } on PlatformException catch (e) {
-          _logger.warning(
-            'Platform error unregistering hotkeys: ${e.message}',
-          );
+          _logger.warning('Platform error unregistering hotkeys: ${e.message}');
           // Continue initialization even if unregister fails
         } on TimeoutException catch (e) {
           _logger.warning('Timeout unregistering hotkeys: ${e.message}');
@@ -156,26 +154,28 @@ class HotkeyService {
 
       while (retryCount <= maxRetries) {
         try {
-          await hotKeyManager.register(
-            hotKey,
-            keyDownHandler: (hotKey) {
-              try {
-                _logger.info('Manual update hotkey pressed');
-                _ref.read(autoSwitcherProvider.notifier).manualUpdate();
-              } catch (e, stackTrace) {
-                _logger.error(
-                  'Error handling manual update hotkey press',
-                  e,
-                  stackTrace,
-                );
-              }
-            },
-          ).timeout(
-            const Duration(seconds: 5),
-            onTimeout: () {
-              throw TimeoutException('Hotkey registration timed out');
-            },
-          );
+          await hotKeyManager
+              .register(
+                hotKey,
+                keyDownHandler: (hotKey) {
+                  try {
+                    _logger.info('Manual update hotkey pressed');
+                    _ref.read(autoSwitcherProvider.notifier).manualUpdate();
+                  } catch (e, stackTrace) {
+                    _logger.error(
+                      'Error handling manual update hotkey press',
+                      e,
+                      stackTrace,
+                    );
+                  }
+                },
+              )
+              .timeout(
+                const Duration(seconds: 5),
+                onTimeout: () {
+                  throw TimeoutException('Hotkey registration timed out');
+                },
+              );
 
           _currentManualUpdateHotkey = hotKey;
           _logger.info('Registered manual update hotkey: $hotkeyString');
@@ -234,12 +234,14 @@ class HotkeyService {
   Future<void> _unregisterManualUpdateHotkey() async {
     if (_currentManualUpdateHotkey != null) {
       try {
-        await hotKeyManager.unregister(_currentManualUpdateHotkey!).timeout(
-          const Duration(seconds: 3),
-          onTimeout: () {
-            _logger.warning('Timeout unregistering manual update hotkey');
-          },
-        );
+        await hotKeyManager
+            .unregister(_currentManualUpdateHotkey!)
+            .timeout(
+              const Duration(seconds: 3),
+              onTimeout: () {
+                _logger.warning('Timeout unregistering manual update hotkey');
+              },
+            );
         _logger.info('Unregistered manual update hotkey');
       } on PlatformException catch (e, stackTrace) {
         _logger.error(

@@ -20,10 +20,7 @@ class SettingsCheckbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
-      title: Text(
-        label,
-        style: TKitTextStyles.labelMedium,
-      ),
+      title: Text(label, style: TKitTextStyles.labelMedium),
       subtitle: subtitle != null
           ? Text(
               subtitle!,

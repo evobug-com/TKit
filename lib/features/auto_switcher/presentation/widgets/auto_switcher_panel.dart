@@ -197,7 +197,9 @@ class AutoSwitcherPanel extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.all(TKitSpacing.xs), // Design system: Use TKitSpacing
+                padding: const EdgeInsets.all(
+                  TKitSpacing.xs,
+                ), // Design system: Use TKitSpacing
                 decoration: BoxDecoration(
                   color: TKitColors.accent.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(TKitSpacing.xs),

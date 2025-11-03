@@ -39,7 +39,9 @@ class ErrorDialog extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 480, minWidth: 360),
         child: Padding(
-          padding: const EdgeInsets.all(TKitSpacing.xxl), // Design system: Use TKitSpacing
+          padding: const EdgeInsets.all(
+            TKitSpacing.xxl,
+          ), // Design system: Use TKitSpacing
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +55,6 @@ class ErrorDialog extends StatelessWidget {
                 ],
               ),
               const VSpace.lg(), // Design system: Use VSpace instead of hardcoded values
-
               // Message
               Text(
                 message,
@@ -66,7 +67,9 @@ class ErrorDialog extends StatelessWidget {
               if (details != null) ...[
                 const VSpace.lg(), // Design system: Use VSpace instead of hardcoded values
                 Container(
-                  padding: const EdgeInsets.all(TKitSpacing.md), // Design system: Use TKitSpacing
+                  padding: const EdgeInsets.all(
+                    TKitSpacing.md,
+                  ), // Design system: Use TKitSpacing
                   decoration: BoxDecoration(
                     color: TKitColors.surfaceVariant,
                     border: Border.all(color: TKitColors.border, width: 1),
@@ -83,7 +86,6 @@ class ErrorDialog extends StatelessWidget {
               ],
 
               const VSpace.xxl(), // Design system: Use VSpace instead of hardcoded values
-
               // Action
               Align(
                 alignment: Alignment.centerRight,

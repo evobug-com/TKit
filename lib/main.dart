@@ -10,8 +10,6 @@ import 'package:tkit/core/routing/app_router.dart';
 import 'package:tkit/core/services/locale_provider.dart';
 import 'package:tkit/features/auth/presentation/states/auth_state.dart';
 import 'package:tkit/features/auth/presentation/providers/auth_providers.dart';
-// Removed unused import: AutoSwitcherRepositoryImpl (callback registration is commented out)
-// import 'package:tkit/features/auto_switcher/data/repositories/auto_switcher_repository_impl.dart';
 import 'package:tkit/features/auto_switcher/presentation/providers/auto_switcher_providers.dart';
 import 'package:tkit/features/category_mapping/domain/entities/category_mapping.dart';
 import 'package:tkit/features/category_mapping/presentation/dialogs/unknown_game_dialog.dart';
@@ -343,7 +341,9 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
           },
           (settings) async {
             if (settings.autoStartMonitoring) {
-              logger.info('Auto-start monitoring enabled - starting monitoring...');
+              logger.info(
+                'Auto-start monitoring enabled - starting monitoring...',
+              );
               // Small delay to ensure all providers are ready
               await Future<void>.delayed(const Duration(milliseconds: 500));
               try {
@@ -570,9 +570,13 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
           },
           (settings) async {
             if (settings.autoSyncMappingsOnStart) {
-              logger.info('Auto-sync mappings on start enabled - syncing mappings...');
+              logger.info(
+                'Auto-sync mappings on start enabled - syncing mappings...',
+              );
 
-              final mappingListRepository = ref.read(mappingListRepositoryProvider);
+              final mappingListRepository = ref.read(
+                mappingListRepositoryProvider,
+              );
               final syncListUseCase = ref.read(syncListUseCaseProvider);
 
               // Get all enabled lists that should sync
@@ -593,7 +597,9 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
                     return;
                   }
 
-                  logger.info('Syncing ${enabledLists.length} enabled list(s) on app start...');
+                  logger.info(
+                    'Syncing ${enabledLists.length} enabled list(s) on app start...',
+                  );
 
                   for (final list in enabledLists) {
                     final syncResult = await syncListUseCase(list.id);
@@ -604,7 +610,9 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
                         );
                       },
                       (_) {
-                        logger.info('Auto-sync on start completed for: ${list.name}');
+                        logger.info(
+                          'Auto-sync on start completed for: ${list.name}',
+                        );
                       },
                     );
                   }
@@ -747,7 +755,12 @@ class _TKitAppState extends ConsumerState<TKitApp> with WindowListener {
         ),
       );
 
-      return _processDialogResult(result, processName, executablePath, windowTitle);
+      return _processDialogResult(
+        result,
+        processName,
+        executablePath,
+        windowTitle,
+      );
     } finally {
       _unknownGameDialogOpen = false;
       logger.debug('Unknown game dialog closed for: $processName');

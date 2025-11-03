@@ -98,7 +98,10 @@ class _SplitButtonState extends State<SplitButton> {
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.zero,
               ),
-              padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.lg, vertical: 0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: TKitSpacing.lg,
+                vertical: 0,
+              ),
               minimumSize: const Size(0, 32),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),

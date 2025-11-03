@@ -29,10 +29,7 @@ class SettingsDropdown<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TKitTextStyles.labelMedium,
-        ),
+        Text(label, style: TKitTextStyles.labelMedium),
         if (description != null) ...[
           const SizedBox(height: TKitSpacing.headerGap),
           Text(

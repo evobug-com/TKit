@@ -62,27 +62,36 @@ void main() {
         expect(extremeSettings.validate(), contains('between 1 and 300'));
       });
 
-      test('should require custom category ID when fallback behavior is custom', () {
-        // arrange
-        final invalidSettings = AppSettings.defaults().copyWith(
-          fallbackBehavior: FallbackBehavior.custom,
-          customFallbackCategoryId: null, // Missing required ID
-        );
+      test(
+        'should require custom category ID when fallback behavior is custom',
+        () {
+          // arrange
+          final invalidSettings = AppSettings.defaults().copyWith(
+            fallbackBehavior: FallbackBehavior.custom,
+            customFallbackCategoryId: null, // Missing required ID
+          );
 
-        expect(invalidSettings.validate(), isNotNull);
-        expect(invalidSettings.validate(), contains('Custom fallback category must be specified'));
-      });
+          expect(invalidSettings.validate(), isNotNull);
+          expect(
+            invalidSettings.validate(),
+            contains('Custom fallback category must be specified'),
+          );
+        },
+      );
 
-      test('should accept empty custom category ID when fallback is not custom', () {
-        // arrange
-        final validSettings = AppSettings.defaults().copyWith(
-          fallbackBehavior: FallbackBehavior.doNothing,
-          customFallbackCategoryId: null, // OK when not using custom
-        );
+      test(
+        'should accept empty custom category ID when fallback is not custom',
+        () {
+          // arrange
+          final validSettings = AppSettings.defaults().copyWith(
+            fallbackBehavior: FallbackBehavior.doNothing,
+            customFallbackCategoryId: null, // OK when not using custom
+          );
 
-        expect(validSettings.validate(), isNull);
-        expect(validSettings.isValid, true);
-      });
+          expect(validSettings.validate(), isNull);
+          expect(validSettings.isValid, true);
+        },
+      );
 
       test('should validate mappings sync interval boundaries', () {
         // arrange
@@ -110,35 +119,39 @@ void main() {
     });
 
     group('Corrupted Settings File Handling', () {
-      test('should fallback to defaults when settings file is corrupted', () async {
-        // arrange
-        when(mockRepository.getSettings())
-            .thenAnswer((_) async => const Left(CacheFailure(
-                  message: 'Failed to parse settings file: Invalid JSON',
-                  code: 'CORRUPTED_SETTINGS',
-                )));
+      test(
+        'should fallback to defaults when settings file is corrupted',
+        () async {
+          // arrange
+          when(mockRepository.getSettings()).thenAnswer(
+            (_) async => const Left(
+              CacheFailure(
+                message: 'Failed to parse settings file: Invalid JSON',
+                code: 'CORRUPTED_SETTINGS',
+              ),
+            ),
+          );
 
-        when(mockRepository.clearSettings())
-            .thenAnswer((_) async => const Right(null));
+          when(
+            mockRepository.clearSettings(),
+          ).thenAnswer((_) async => const Right(null));
 
-        // act
-        final getResult = await mockRepository.getSettings();
+          // act
+          final getResult = await mockRepository.getSettings();
 
-        // When get fails, app should clear and use defaults
-        final clearResult = await mockRepository.clearSettings();
+          // When get fails, app should clear and use defaults
+          final clearResult = await mockRepository.clearSettings();
 
-        // assert
-        expect(getResult.isLeft(), true);
-        getResult.fold(
-          (failure) {
+          // assert
+          expect(getResult.isLeft(), true);
+          getResult.fold((failure) {
             expect(failure, isA<CacheFailure>());
             expect((failure as CacheFailure).code, 'CORRUPTED_SETTINGS');
-          },
-          (r) => fail('Should fail with corrupted settings'),
-        );
+          }, (r) => fail('Should fail with corrupted settings'));
 
-        expect(clearResult.isRight(), true);
-      });
+          expect(clearResult.isRight(), true);
+        },
+      );
 
       test('should handle partial settings corruption gracefully', () async {
         // arrange - Some fields are corrupted but others are valid
@@ -149,51 +162,49 @@ void main() {
           minimizeToTray: false,
         );
 
-        when(mockRepository.getSettings())
-            .thenAnswer((_) async => Right(partialSettings));
+        when(
+          mockRepository.getSettings(),
+        ).thenAnswer((_) async => Right(partialSettings));
 
         // act
         final result = await mockRepository.getSettings();
 
         // assert
         expect(result.isRight(), true);
-        result.fold(
-          (l) => fail('Should handle partial corruption'),
-          (r) {
-            // Verify all fields have valid values
-            expect(r.scanIntervalSeconds, greaterThanOrEqualTo(1));
-            expect(r.scanIntervalSeconds, lessThanOrEqualTo(300));
-            expect(r.debounceSeconds, greaterThanOrEqualTo(0));
-            expect(r.debounceSeconds, lessThanOrEqualTo(300));
-            expect(r.fallbackBehavior, isIn(FallbackBehavior.values));
-            expect(r.updateChannel, isIn(UpdateChannel.values));
-            expect(r.windowControlsPosition, isIn(WindowControlsPosition.values));
-          },
-        );
+        result.fold((l) => fail('Should handle partial corruption'), (r) {
+          // Verify all fields have valid values
+          expect(r.scanIntervalSeconds, greaterThanOrEqualTo(1));
+          expect(r.scanIntervalSeconds, lessThanOrEqualTo(300));
+          expect(r.debounceSeconds, greaterThanOrEqualTo(0));
+          expect(r.debounceSeconds, lessThanOrEqualTo(300));
+          expect(r.fallbackBehavior, isIn(FallbackBehavior.values));
+          expect(r.updateChannel, isIn(UpdateChannel.values));
+          expect(r.windowControlsPosition, isIn(WindowControlsPosition.values));
+        });
       });
 
       test('should handle file system errors during update', () async {
         // arrange
         final settings = AppSettings.defaults();
 
-        when(mockRepository.updateSettings(settings))
-            .thenAnswer((_) async => const Left(CacheFailure(
-                  message: 'File system error: Access denied',
-                  code: 'FILE_WRITE_ERROR',
-                )));
+        when(mockRepository.updateSettings(settings)).thenAnswer(
+          (_) async => const Left(
+            CacheFailure(
+              message: 'File system error: Access denied',
+              code: 'FILE_WRITE_ERROR',
+            ),
+          ),
+        );
 
         // act
         final result = await mockRepository.updateSettings(settings);
 
         // assert
         expect(result.isLeft(), true);
-        result.fold(
-          (failure) {
-            expect(failure, isA<CacheFailure>());
-            expect((failure as CacheFailure).code, 'FILE_WRITE_ERROR');
-          },
-          (r) => fail('Should fail with file system error'),
-        );
+        result.fold((failure) {
+          expect(failure, isA<CacheFailure>());
+          expect((failure as CacheFailure).code, 'FILE_WRITE_ERROR');
+        }, (r) => fail('Should fail with file system error'));
       });
     });
 
@@ -203,8 +214,7 @@ void main() {
         final settings = AppSettings.defaults();
         var updateCount = 0;
 
-        when(mockRepository.updateSettings(any))
-            .thenAnswer((_) async {
+        when(mockRepository.updateSettings(any)).thenAnswer((_) async {
           updateCount++;
           // Simulate some processing delay
           await Future.delayed(const Duration(milliseconds: 10));
@@ -233,15 +243,13 @@ void main() {
         var settings = AppSettings.defaults();
         var version = 0;
 
-        when(mockRepository.getSettings())
-            .thenAnswer((_) async {
+        when(mockRepository.getSettings()).thenAnswer((_) async {
           // Simulate read delay
           await Future.delayed(const Duration(milliseconds: 20));
           return Right(settings);
         });
 
-        when(mockRepository.updateSettings(any))
-            .thenAnswer((invocation) async {
+        when(mockRepository.updateSettings(any)).thenAnswer((invocation) async {
           // Simulate write delay
           await Future.delayed(const Duration(milliseconds: 10));
           version++;
@@ -254,9 +262,13 @@ void main() {
 
         // Mix reads and writes
         futures.add(mockRepository.getSettings());
-        futures.add(mockRepository.updateSettings(settings.copyWith(debounceSeconds: 60)));
+        futures.add(
+          mockRepository.updateSettings(settings.copyWith(debounceSeconds: 60)),
+        );
         futures.add(mockRepository.getSettings());
-        futures.add(mockRepository.updateSettings(settings.copyWith(debounceSeconds: 90)));
+        futures.add(
+          mockRepository.updateSettings(settings.copyWith(debounceSeconds: 90)),
+        );
         futures.add(mockRepository.getSettings());
 
         final results = await Future.wait(futures);
@@ -281,8 +293,7 @@ void main() {
           updatedSettings,
         ]);
 
-        when(mockRepository.watchSettings())
-            .thenAnswer((_) => settingsStream);
+        when(mockRepository.watchSettings()).thenAnswer((_) => settingsStream);
 
         // act
         final emissions = <AppSettings>[];
@@ -316,11 +327,16 @@ void main() {
           );
 
           // Validate settings
-          expect(settings.isValid, true,
-              reason: 'Should accept boundary values: scan=${test.scanInterval}, debounce=${test.debounce}');
+          expect(
+            settings.isValid,
+            true,
+            reason:
+                'Should accept boundary values: scan=${test.scanInterval}, debounce=${test.debounce}',
+          );
 
-          when(mockRepository.updateSettings(settings))
-              .thenAnswer((_) async => const Right(null));
+          when(
+            mockRepository.updateSettings(settings),
+          ).thenAnswer((_) async => const Right(null));
 
           // act
           final result = await mockRepository.updateSettings(settings);
@@ -330,39 +346,50 @@ void main() {
         }
       });
 
-      test('should handle special characters in custom fallback category ID', () async {
-        // arrange
-        final specialIds = [
-          'category_with_unicode_🎮',
-          'category-with-dashes',
-          'category.with.dots',
-          'category with spaces',
-          'категория_кириллица', // Cyrillic
-          '类别_中文', // Chinese
-          'カテゴリー_日本語', // Japanese
-          'فئة_عربي', // Arabic
-        ];
+      test(
+        'should handle special characters in custom fallback category ID',
+        () async {
+          // arrange
+          final specialIds = [
+            'category_with_unicode_🎮',
+            'category-with-dashes',
+            'category.with.dots',
+            'category with spaces',
+            'категория_кириллица', // Cyrillic
+            '类别_中文', // Chinese
+            'カテゴリー_日本語', // Japanese
+            'فئة_عربي', // Arabic
+          ];
 
-        for (final id in specialIds) {
-          final settings = AppSettings.defaults().copyWith(
-            fallbackBehavior: FallbackBehavior.custom,
-            customFallbackCategoryId: id,
-            customFallbackCategoryName: 'Display Name for $id',
-          );
+          for (final id in specialIds) {
+            final settings = AppSettings.defaults().copyWith(
+              fallbackBehavior: FallbackBehavior.custom,
+              customFallbackCategoryId: id,
+              customFallbackCategoryName: 'Display Name for $id',
+            );
 
-          expect(settings.isValid, true, reason: 'Should accept special ID: $id');
+            expect(
+              settings.isValid,
+              true,
+              reason: 'Should accept special ID: $id',
+            );
 
-          when(mockRepository.updateSettings(settings))
-              .thenAnswer((_) async => const Right(null));
+            when(
+              mockRepository.updateSettings(settings),
+            ).thenAnswer((_) async => const Right(null));
 
-          // act
-          final result = await mockRepository.updateSettings(settings);
+            // act
+            final result = await mockRepository.updateSettings(settings);
 
-          // assert
-          expect(result.isRight(), true,
-              reason: 'Should handle special ID: $id');
-        }
-      });
+            // assert
+            expect(
+              result.isRight(),
+              true,
+              reason: 'Should handle special ID: $id',
+            );
+          }
+        },
+      );
     });
 
     group('Settings Validation Edge Cases', () {
@@ -395,7 +422,10 @@ void main() {
         );
 
         expect(invalidSettings.isValid, false);
-        expect(invalidSettings.validate(), contains('Custom fallback category'));
+        expect(
+          invalidSettings.validate(),
+          contains('Custom fallback category'),
+        );
       });
 
       test('should handle copyWith with nullable fields correctly', () {
@@ -429,16 +459,40 @@ void main() {
         expect(keepCurrent.debounceSeconds, 100);
       });
 
-      test('should detect and set correct update channel from version string', () {
-        // Test channel detection
-        expect(AppSettings.defaults(appVersion: '1.0.0').updateChannel, UpdateChannel.stable);
-        expect(AppSettings.defaults(appVersion: '1.0.0-beta.1').updateChannel, UpdateChannel.beta);
-        expect(AppSettings.defaults(appVersion: '1.0.0-rc.1').updateChannel, UpdateChannel.rc);
-        expect(AppSettings.defaults(appVersion: '1.0.0-dev.123').updateChannel, UpdateChannel.dev);
-        expect(AppSettings.defaults(appVersion: '1.0.0-alpha.1').updateChannel, UpdateChannel.dev);
-        expect(AppSettings.defaults(appVersion: null).updateChannel, UpdateChannel.stable);
-        expect(AppSettings.defaults(appVersion: '').updateChannel, UpdateChannel.stable);
-      });
+      test(
+        'should detect and set correct update channel from version string',
+        () {
+          // Test channel detection
+          expect(
+            AppSettings.defaults(appVersion: '1.0.0').updateChannel,
+            UpdateChannel.stable,
+          );
+          expect(
+            AppSettings.defaults(appVersion: '1.0.0-beta.1').updateChannel,
+            UpdateChannel.beta,
+          );
+          expect(
+            AppSettings.defaults(appVersion: '1.0.0-rc.1').updateChannel,
+            UpdateChannel.rc,
+          );
+          expect(
+            AppSettings.defaults(appVersion: '1.0.0-dev.123').updateChannel,
+            UpdateChannel.dev,
+          );
+          expect(
+            AppSettings.defaults(appVersion: '1.0.0-alpha.1').updateChannel,
+            UpdateChannel.dev,
+          );
+          expect(
+            AppSettings.defaults(appVersion: null).updateChannel,
+            UpdateChannel.stable,
+          );
+          expect(
+            AppSettings.defaults(appVersion: '').updateChannel,
+            UpdateChannel.stable,
+          );
+        },
+      );
     });
   });
 }

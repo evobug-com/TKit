@@ -40,7 +40,10 @@ class PrimaryButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(0), // Sharp corners
           ),
-          padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.lg, vertical: 0),
+          padding: const EdgeInsets.symmetric(
+            horizontal: TKitSpacing.lg,
+            vertical: 0,
+          ),
           minimumSize: const Size(0, 32),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),

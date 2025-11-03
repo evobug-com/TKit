@@ -304,13 +304,15 @@ class _HotkeyInputState extends State<HotkeyInput> {
                 children: [
                   Text(
                     widget.label,
-                    style: TKitTextStyles.labelMedium, // Design system: Use TKitTextStyles
+                    style: TKitTextStyles
+                        .labelMedium, // Design system: Use TKitTextStyles
                   ),
                   if (widget.description != null) ...[
                     const VSpace.xs(),
                     Text(
                       widget.description!,
-                      style: TKitTextStyles.caption.copyWith( // Design system: Use TKitTextStyles
+                      style: TKitTextStyles.caption.copyWith(
+                        // Design system: Use TKitTextStyles
                         color: TKitColors.textMuted,
                       ),
                     ),
@@ -319,7 +321,6 @@ class _HotkeyInputState extends State<HotkeyInput> {
               ),
             ),
             const HSpace.md(), // Design system: Use HSpace instead of hardcoded values
-
             // Display current or recording state
             if (_isRecording) ...[
               Container(

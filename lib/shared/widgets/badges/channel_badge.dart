@@ -49,7 +49,10 @@ class ChannelBadge extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.sm, vertical: TKitSpacing.xs),
+      padding: const EdgeInsets.symmetric(
+        horizontal: TKitSpacing.sm,
+        vertical: TKitSpacing.xs,
+      ),
       decoration: BoxDecoration(
         border: Border.all(color: _badgeColor, width: 1),
         borderRadius: BorderRadius.circular(TKitSpacing.xs),

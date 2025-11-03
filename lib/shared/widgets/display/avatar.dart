@@ -172,9 +172,7 @@ class AvatarGroup extends StatelessWidget {
           final avatar = entry.value;
 
           return Padding(
-            padding: EdgeInsets.only(
-              left: index > 0 ? overlap : 0,
-            ),
+            padding: EdgeInsets.only(left: index > 0 ? overlap : 0),
             child: avatar,
           );
         }),

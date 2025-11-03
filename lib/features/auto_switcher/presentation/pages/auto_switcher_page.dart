@@ -422,10 +422,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        if (trailing != null) ...[
-          const HSpace.sm(),
-          trailing,
-        ],
+        if (trailing != null) ...[const HSpace.sm(), trailing],
       ],
     );
   }
@@ -534,10 +531,7 @@ class _AutoSwitcherPageContent extends ConsumerWidget {
                 'Mapping saved: $processName -> ${mapping.twitchCategoryName}',
               );
               if (context.mounted) {
-                Toast.success(
-                  context,
-                  'Mapping added for $processName',
-                );
+                Toast.success(context, 'Mapping added for $processName');
               }
               // Refresh mappings list
               Future.delayed(const Duration(milliseconds: 500), () {

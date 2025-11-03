@@ -49,7 +49,10 @@ class CustomDropdown<T> extends StatelessWidget {
           onTap: () => _showDropdownDialog(context),
           borderRadius: BorderRadius.circular(TKitSpacing.xs),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.md, vertical: TKitSpacing.md),
+            padding: const EdgeInsets.symmetric(
+              horizontal: TKitSpacing.md,
+              vertical: TKitSpacing.md,
+            ),
             decoration: BoxDecoration(
               border: Border.all(color: Theme.of(context).colorScheme.outline),
               borderRadius: BorderRadius.circular(TKitSpacing.xs),

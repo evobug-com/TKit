@@ -268,7 +268,9 @@ class _VersionStatusIndicatorState
                       isClickable
                           ? '${_getTooltip(context)} (Click to update)'
                           : _getTooltip(context),
-                      style: TKitTextStyles.caption.copyWith(color: Colors.white),
+                      style: TKitTextStyles.caption.copyWith(
+                        color: Colors.white,
+                      ),
                       textAlign: TextAlign.center,
                       softWrap: false,
                     ),

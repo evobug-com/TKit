@@ -102,10 +102,7 @@ class _SettingsSliderState extends State<SettingsSlider>
                   children: [
                     Row(
                       children: [
-                        Text(
-                          widget.label,
-                          style: TKitTextStyles.labelMedium,
-                        ),
+                        Text(widget.label, style: TKitTextStyles.labelMedium),
                         if (widget.tooltip != null) ...[
                           const HSpace.xs(),
                           InfoTooltip(
@@ -174,8 +171,8 @@ class _SettingsSliderState extends State<SettingsSlider>
                       color: _isDragging
                           ? TKitColors.accent
                           : isRecommended
-                              ? TKitColors.success
-                              : TKitColors.textPrimary,
+                          ? TKitColors.success
+                          : TKitColors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                     child: Text(_getFormattedValue()),

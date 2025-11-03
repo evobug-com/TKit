@@ -365,7 +365,9 @@ class _UnknownGameDialogState extends ConsumerState<UnknownGameDialog>
                   Container(
                     width: 2,
                     height: 40,
-                    margin: const EdgeInsets.symmetric(vertical: TKitSpacing.xs),
+                    margin: const EdgeInsets.symmetric(
+                      vertical: TKitSpacing.xs,
+                    ),
                     color: isCompleted ? TKitColors.success : TKitColors.border,
                   ),
               ],

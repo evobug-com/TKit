@@ -713,7 +713,9 @@ class _MappingListWidgetState extends State<MappingListWidget> {
               });
             },
             tooltip: l10n.mappingListTooltipClearSearch,
-            padding: const EdgeInsets.all(TKitSpacing.xs), // Design system: Use TKitSpacing
+            padding: const EdgeInsets.all(
+              TKitSpacing.xs,
+            ), // Design system: Use TKitSpacing
             constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
           ),
         ],

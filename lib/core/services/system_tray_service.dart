@@ -43,16 +43,17 @@ class SystemTrayService with TrayListener {
 
       while (retryCount < maxRetries) {
         try {
-          await trayManager.setIcon(
-            Platform.isWindows
-                ? 'Assets/Icon512x512.ico'
-                : 'Assets/Icon512x512.png',
-          ).timeout(
-            const Duration(seconds: 5),
-            onTimeout: () => throw TimeoutException(
-              'Tray icon setup timed out',
-            ),
-          );
+          await trayManager
+              .setIcon(
+                Platform.isWindows
+                    ? 'Assets/Icon512x512.ico'
+                    : 'Assets/Icon512x512.png',
+              )
+              .timeout(
+                const Duration(seconds: 5),
+                onTimeout: () =>
+                    throw TimeoutException('Tray icon setup timed out'),
+              );
           break; // Success, exit retry loop
         } catch (e) {
           lastError = e is Exception ? e : Exception(e.toString());
@@ -61,7 +62,9 @@ class SystemTrayService with TrayListener {
             _logger.warning(
               'Failed to set tray icon (attempt $retryCount/$maxRetries), retrying...',
             );
-            await Future<void>.delayed(Duration(milliseconds: 500 * retryCount));
+            await Future<void>.delayed(
+              Duration(milliseconds: 500 * retryCount),
+            );
           }
         }
       }
@@ -80,16 +83,21 @@ class SystemTrayService with TrayListener {
       );
 
       // Set context menu
-      await trayManager.setContextMenu(menu).timeout(
-        const Duration(seconds: 3),
-        onTimeout: () => throw TimeoutException('Context menu setup timed out'),
-      );
+      await trayManager
+          .setContextMenu(menu)
+          .timeout(
+            const Duration(seconds: 3),
+            onTimeout: () =>
+                throw TimeoutException('Context menu setup timed out'),
+          );
 
       // Set tooltip
-      await trayManager.setToolTip(tooltip).timeout(
-        const Duration(seconds: 3),
-        onTimeout: () => throw TimeoutException('Tooltip setup timed out'),
-      );
+      await trayManager
+          .setToolTip(tooltip)
+          .timeout(
+            const Duration(seconds: 3),
+            onTimeout: () => throw TimeoutException('Tooltip setup timed out'),
+          );
 
       _isInitialized = true;
       _logger.info('System tray initialized successfully');
@@ -142,12 +150,14 @@ class SystemTrayService with TrayListener {
     }
 
     try {
-      await trayManager.setToolTip(tooltip).timeout(
-        const Duration(seconds: 3),
-        onTimeout: () {
-          _logger.warning('Timeout updating tray tooltip');
-        },
-      );
+      await trayManager
+          .setToolTip(tooltip)
+          .timeout(
+            const Duration(seconds: 3),
+            onTimeout: () {
+              _logger.warning('Timeout updating tray tooltip');
+            },
+          );
     } on TimeoutException catch (e, stackTrace) {
       _logger.error(
         'Timeout updating tray tooltip: ${e.message}',
@@ -201,12 +211,14 @@ class WindowService with WindowListener {
     try {
       windowManager.addListener(this);
       // Prevent window from closing immediately - trigger onWindowClose instead
-      await windowManager.setPreventClose(true).timeout(
-        const Duration(seconds: 3),
-        onTimeout: () {
-          _logger.warning('Timeout setting prevent close for window');
-        },
-      );
+      await windowManager
+          .setPreventClose(true)
+          .timeout(
+            const Duration(seconds: 3),
+            onTimeout: () {
+              _logger.warning('Timeout setting prevent close for window');
+            },
+          );
       _logger.info('Window service initialized');
     } on TimeoutException catch (e, stackTrace) {
       _logger.error(
@@ -215,11 +227,7 @@ class WindowService with WindowListener {
         stackTrace,
       );
     } catch (e, stackTrace) {
-      _logger.error(
-        'Failed to initialize window service',
-        e,
-        stackTrace,
-      );
+      _logger.error('Failed to initialize window service', e, stackTrace);
       // Rethrow as window service is critical
       rethrow;
     }
@@ -297,7 +305,9 @@ class WindowService with WindowListener {
       final isVisible = await windowManager.isVisible().timeout(
         const Duration(seconds: 2),
         onTimeout: () {
-          _logger.warning('Timeout checking window visibility, assuming hidden');
+          _logger.warning(
+            'Timeout checking window visibility, assuming hidden',
+          );
           return false;
         },
       );

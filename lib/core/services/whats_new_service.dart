@@ -59,7 +59,8 @@ class WhatsNewService {
           _logger.info('Found release info for version $version');
 
           // Parse the release into UpdateInfo
-          final changelog = releaseData['body'] as String? ?? 'No changelog available';
+          final changelog =
+              releaseData['body'] as String? ?? 'No changelog available';
           final publishedAt = releaseData['published_at'] as String? ?? '';
 
           return UpdateInfo(
@@ -68,7 +69,9 @@ class WhatsNewService {
             fileSize: 0, // Not needed for changelog display
             assetName: '', // Not needed for changelog display
             releaseNotes: changelog,
-            publishedAt: publishedAt.isNotEmpty ? DateTime.parse(publishedAt) : DateTime.now(),
+            publishedAt: publishedAt.isNotEmpty
+                ? DateTime.parse(publishedAt)
+                : DateTime.now(),
           );
         }
       }

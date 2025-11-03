@@ -557,7 +557,8 @@ class _SettingsPageContentState extends ConsumerState<_SettingsPageContent>
                       'Prevents category switching when you quickly alt-tab through applications. Higher values = more stability, but slower response.',
                   recommendedValue: 3,
                   recommendedLabel: 'Recommended',
-                  example: 'Recommended: 3 seconds to prevent accidental switches',
+                  example:
+                      'Recommended: 3 seconds to prevent accidental switches',
                   validator: (value) {
                     if (value == 0) {
                       return 'Instant switching - may cause rapid category changes';

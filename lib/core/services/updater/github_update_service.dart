@@ -128,20 +128,22 @@ class GitHubUpdateService {
       final url =
           'https://api.github.com/repos/${AppConfig.githubOwner}/${AppConfig.githubRepo}/releases';
 
-      final response = await _dio.get<dynamic>(
-        url,
-        options: Options(
-          headers: {
-            'Accept': 'application/vnd.github+json',
-            'X-GitHub-Api-Version': '2022-11-28',
-          },
-        ),
-      ).timeout(
-        const Duration(seconds: 30),
-        onTimeout: () {
-          throw TimeoutException('Fetching releases timed out');
-        },
-      );
+      final response = await _dio
+          .get<dynamic>(
+            url,
+            options: Options(
+              headers: {
+                'Accept': 'application/vnd.github+json',
+                'X-GitHub-Api-Version': '2022-11-28',
+              },
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 30),
+            onTimeout: () {
+              throw TimeoutException('Fetching releases timed out');
+            },
+          );
 
       if (response.statusCode == 200) {
         final data = response.data;
@@ -232,20 +234,22 @@ class GitHubUpdateService {
 
       Response<dynamic>? response;
       try {
-        response = await _dio.get<List<dynamic>>(
-          url,
-          options: Options(
-            headers: {
-              'Accept': 'application/vnd.github+json',
-              'X-GitHub-Api-Version': '2022-11-28',
-            },
-          ),
-        ).timeout(
-          const Duration(seconds: 30),
-          onTimeout: () {
-            throw TimeoutException('Update check timed out');
-          },
-        );
+        response = await _dio
+            .get<List<dynamic>>(
+              url,
+              options: Options(
+                headers: {
+                  'Accept': 'application/vnd.github+json',
+                  'X-GitHub-Api-Version': '2022-11-28',
+                },
+              ),
+            )
+            .timeout(
+              const Duration(seconds: 30),
+              onTimeout: () {
+                throw TimeoutException('Update check timed out');
+              },
+            );
       } on DioException catch (e) {
         if (e.response?.statusCode == 404) {
           _logger.debug('No releases found on GitHub yet');
@@ -433,7 +437,11 @@ class GitHubUpdateService {
         return null;
       }
     } on DioException catch (e, stackTrace) {
-      _logger.error('Network error checking for updates: ${e.message}', e, stackTrace);
+      _logger.error(
+        'Network error checking for updates: ${e.message}',
+        e,
+        stackTrace,
+      );
       return null;
     } on TimeoutException catch (e, stackTrace) {
       _logger.error('Timeout checking for updates', e, stackTrace);
@@ -705,21 +713,22 @@ class GitHubUpdateService {
         );
 
         try {
-          final process = await Process.start(
-            installerFile.path,
-            [
-              '/VERYSILENT', // Completely silent install (Inno Setup)
-              '/NORESTART', // Don't restart the computer
-              '/RESTARTAPPLICATIONS', // Restart applications after install (auto-launch)
-            ],
-            mode: ProcessStartMode.detached,
-            runInShell: false,
-          ).timeout(
-            const Duration(seconds: 10),
-            onTimeout: () {
-              throw TimeoutException('Installer process start timed out');
-            },
-          );
+          final process =
+              await Process.start(
+                installerFile.path,
+                [
+                  '/VERYSILENT', // Completely silent install (Inno Setup)
+                  '/NORESTART', // Don't restart the computer
+                  '/RESTARTAPPLICATIONS', // Restart applications after install (auto-launch)
+                ],
+                mode: ProcessStartMode.detached,
+                runInShell: false,
+              ).timeout(
+                const Duration(seconds: 10),
+                onTimeout: () {
+                  throw TimeoutException('Installer process start timed out');
+                },
+              );
 
           _logger.info('EXE installer launched with PID: ${process.pid}');
         } on ProcessException catch (e, stackTrace) {
@@ -741,17 +750,18 @@ class GitHubUpdateService {
         _logger.info('File: ${installerFile.path}');
 
         try {
-          final process = await Process.start(
-            'explorer.exe',
-            [installerFile.path],
-            mode: ProcessStartMode.detached,
-            runInShell: false,
-          ).timeout(
-            const Duration(seconds: 10),
-            onTimeout: () {
-              throw TimeoutException('Explorer.exe launch timed out');
-            },
-          );
+          final process =
+              await Process.start(
+                'explorer.exe',
+                [installerFile.path],
+                mode: ProcessStartMode.detached,
+                runInShell: false,
+              ).timeout(
+                const Duration(seconds: 10),
+                onTimeout: () {
+                  throw TimeoutException('Explorer.exe launch timed out');
+                },
+              );
 
           _logger.info(
             'Installer launched via explorer.exe with PID: ${process.pid}',
@@ -831,12 +841,14 @@ class GitHubUpdateService {
           throw TimeoutException('Loading preferences timed out');
         },
       );
-      await prefs.setStringList(_ignoredVersionsKey, _ignoredVersions.toList()).timeout(
-        const Duration(seconds: 5),
-        onTimeout: () {
-          throw TimeoutException('Saving preferences timed out');
-        },
-      );
+      await prefs
+          .setStringList(_ignoredVersionsKey, _ignoredVersions.toList())
+          .timeout(
+            const Duration(seconds: 5),
+            onTimeout: () {
+              throw TimeoutException('Saving preferences timed out');
+            },
+          );
       _logger.info('Saved ${_ignoredVersions.length} ignored version(s)');
     } on TimeoutException catch (e, stackTrace) {
       _logger.error('Timeout saving ignored versions', e, stackTrace);

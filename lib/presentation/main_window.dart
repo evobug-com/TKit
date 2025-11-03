@@ -56,14 +56,18 @@ class _MainWindowState extends ConsumerState<MainWindow> {
   Future<void> _checkAndShowWhatsNew() async {
     try {
       final whatsNewService = ref.read(whatsNewServiceProvider);
-      final shouldShow = await whatsNewService.shouldShowWhatsNew(AppConfig.appVersion);
+      final shouldShow = await whatsNewService.shouldShowWhatsNew(
+        AppConfig.appVersion,
+      );
 
       if (!shouldShow || !mounted) {
         return;
       }
 
       // Fetch changelog for current version
-      final updateInfo = await whatsNewService.getChangelogForVersion(AppConfig.appVersion);
+      final updateInfo = await whatsNewService.getChangelogForVersion(
+        AppConfig.appVersion,
+      );
 
       if (updateInfo == null || !mounted) {
         // No changelog found, mark as seen anyway
@@ -79,14 +83,14 @@ class _MainWindowState extends ConsumerState<MainWindow> {
           // ignore: use_build_context_synchronously
           context: navigatorContext,
           barrierDismissible: false,
-            builder: (context) => WhatsNewDialog(
-              updateInfo: updateInfo,
-              onClose: () {
-                Navigator.of(context).pop();
-                // Mark this version as seen
-                whatsNewService.markVersionAsSeen(AppConfig.appVersion);
-              },
-            ),
+          builder: (context) => WhatsNewDialog(
+            updateInfo: updateInfo,
+            onClose: () {
+              Navigator.of(context).pop();
+              // Mark this version as seen
+              whatsNewService.markVersionAsSeen(AppConfig.appVersion);
+            },
+          ),
         );
       }
     } catch (e) {
@@ -337,10 +341,13 @@ class _MainWindowState extends ConsumerState<MainWindow> {
               },
               child: DragToMoveArea(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.md),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: TKitSpacing.md,
+                  ),
                   child: Text(
                     AppConfig.appName.toUpperCase(),
-                    style: TKitTextStyles.labelSmall.copyWith( // Design system: Use labelSmall for small UI text
+                    style: TKitTextStyles.labelSmall.copyWith(
+                      // Design system: Use labelSmall for small UI text
                       letterSpacing: 1.8,
                       fontWeight: FontWeight.w700,
                     ),
@@ -363,10 +370,13 @@ class _MainWindowState extends ConsumerState<MainWindow> {
               },
               child: DragToMoveArea(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.md),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: TKitSpacing.md,
+                  ),
                   child: Text(
                     AppConfig.appName.toUpperCase(),
-                    style: TKitTextStyles.labelSmall.copyWith( // Design system: Use labelSmall for small UI text
+                    style: TKitTextStyles.labelSmall.copyWith(
+                      // Design system: Use labelSmall for small UI text
                       letterSpacing: 1.8,
                       fontWeight: FontWeight.w700,
                     ),
@@ -591,7 +601,8 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                       isAuthenticated
                           ? l10n.mainWindowStatusConnected
                           : l10n.mainWindowStatusDisconnected,
-                      style: TKitTextStyles.caption.copyWith( // Design system: Use caption for small text
+                      style: TKitTextStyles.caption.copyWith(
+                        // Design system: Use caption for small text
                         color: TKitColors.textMuted,
                       ),
                     ),
@@ -647,7 +658,6 @@ class _MainWindowState extends ConsumerState<MainWindow> {
             ),
           ),
           const HSpace.md(), // Design system: Use HSpace instead of hardcoded values
-
           // evobug.com link (not draggable - clickable)
           MouseRegion(
             cursor: SystemMouseCursors.click,
@@ -660,7 +670,8 @@ class _MainWindowState extends ConsumerState<MainWindow> {
               },
               child: Text(
                 'evobug.com',
-                style: TKitTextStyles.labelSmall.copyWith( // Design system: Use labelSmall for UI labels
+                style: TKitTextStyles.labelSmall.copyWith(
+                  // Design system: Use labelSmall for UI labels
                   color: TKitColors.info,
                   decoration: TextDecoration.underline,
                 ),
@@ -668,7 +679,6 @@ class _MainWindowState extends ConsumerState<MainWindow> {
             ),
           ),
           const HSpace.lg(), // Design system: Use HSpace instead of hardcoded values
-
           // Version info (draggable)
           GestureDetector(
             onDoubleTap: () async {
@@ -684,7 +694,8 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                 children: [
                   Text(
                     'v${AppConfig.appVersion}',
-                    style: TKitTextStyles.labelSmall.copyWith( // Design system: Use labelSmall for UI labels
+                    style: TKitTextStyles.labelSmall.copyWith(
+                      // Design system: Use labelSmall for UI labels
                       color: TKitColors.textDisabled,
                     ),
                   ),
@@ -766,7 +777,8 @@ class _TabButtonState extends State<_TabButton> {
           child: Center(
             child: Text(
               widget.label.toUpperCase(),
-              style: TKitTextStyles.labelSmall.copyWith( // Design system: Use labelSmall for small UI text
+              style: TKitTextStyles.labelSmall.copyWith(
+                // Design system: Use labelSmall for small UI text
                 color: widget.isSelected
                     ? TKitColors.textPrimary
                     : (_isHovered

@@ -34,7 +34,10 @@ class AuthButton extends StatelessWidget {
           disabledForegroundColor: TKitColors.textSecondary,
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
           elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: TKitSpacing.xxl, vertical: TKitSpacing.md),
+          padding: const EdgeInsets.symmetric(
+            horizontal: TKitSpacing.xxl,
+            vertical: TKitSpacing.md,
+          ),
         ),
         child: isLoading
             ? const SizedBox(
