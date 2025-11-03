@@ -94,7 +94,7 @@ dev_dependencies:
 dependency_overrides:
   build_runner: ^2.10.0
   build: ^4.0.2
-  analyzer: ^9.0.0
+  analyzer: ^8.4.1
   _fe_analyzer_shared: ^92.0.0
   source_gen: ^4.0.2
   characters: 1.4.1
