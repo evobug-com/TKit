@@ -1,6 +1,6 @@
 name: tkit
 description: "Twitch Toolkit"
-publish_to: 'none'
+publish_to: "none"
 version: 0.0.1-dev.8+1
 
 environment:
@@ -94,8 +94,8 @@ dev_dependencies:
 dependency_overrides:
   build_runner: ^2.10.0
   build: ^4.0.2
-  analyzer: ^8.4.0
-  _fe_analyzer_shared: ^91.0.0
+  analyzer: ^9.0.0
+  _fe_analyzer_shared: ^92.0.0
   source_gen: ^4.0.2
   characters: 1.4.1
   js: 0.7.2
@@ -132,10 +132,10 @@ msix_config:
 
   # Platform
   architecture: x64
-  os_min_version: 10.0.17763.0  # Windows 10 1809+
+  os_min_version: 10.0.17763.0 # Windows 10 1809+
 
   # Distribution
-  store: false  # Set to true when publishing to Microsoft Store
+  store: false # Set to true when publishing to Microsoft Store
 
   # Protocol handlers (for twitch:// URLs in future)
   # protocol_activation: twitch
