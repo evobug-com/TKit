@@ -93,7 +93,6 @@ dependency_overrides:
   characters: 1.4.1
   js: 0.7.2
   material_color_utilities: 0.13.0
-  objective_c: 9.2.1
 
 flutter:
   uses-material-design: true
