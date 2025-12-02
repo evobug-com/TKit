@@ -19,8 +19,8 @@ dependencies:
   equatable: ^2.0.7
 
   # Database
-  drift: ^2.28.2
-  sqlite3: ^2.9.2
+  drift: ^2.29.0
+  sqlite3: ^2.9.4
   sqlite3_flutter_libs: ^0.5.41
   path_provider: ^2.1.5
   path: ^1.9.1
@@ -46,14 +46,13 @@ dependencies:
   # Logging
   talker: ^5.1.2
   talker_flutter: ^5.1.2
-  
+
   # Hotkeys
   hotkey_manager: ^0.2.3
 
   # Version info
   package_info_plus: ^9.0.0
 
-  # Markdown
   gpt_markdown: ^1.1.4
   hooks_riverpod: ^3.0.3
   flutter_hooks: ^0.21.3+1
@@ -74,7 +73,7 @@ dev_dependencies:
   # Code Generators
   build_runner: ^2.10.4
   json_serializable: ^6.11.2
-  drift_dev: ^2.28.3
+  drift_dev: ^2.29.0
   auto_route_generator: ^10.3.0
 
   # Testing
@@ -83,24 +82,18 @@ dev_dependencies:
   integration_test:
     sdk: flutter
 
-  # MSIX packaging
-  msix: ^3.16.12
   riverpod_generator: ^3.0.3
   custom_lint: ^0.8.1
   riverpod_lint: ^3.0.3
-  dead_code_analyzer: ^1.1.7
 
-# Dependency Overrides - force newer build_runner version
 dependency_overrides:
-  build_runner: ^2.10.0
-  build: ^4.0.2
   analyzer: ^8.4.1
   _fe_analyzer_shared: ^91.0.0
   source_gen: ^4.0.2
   characters: 1.4.1
   js: 0.7.2
   material_color_utilities: 0.13.0
-  objective_c: 8.1.0
+  objective_c: 9.2.1
 
 flutter:
   uses-material-design: true
@@ -108,37 +101,6 @@ flutter:
   assets:
     - Assets/Icon512x512.ico
     - Assets/Icon512x512.png
-
-msix_config:
-  # App Identity
-  display_name: TKit
-  publisher_display_name: evobug.com
-  identity_name: com.evobug.tkit
-  publisher: CN=evobug
-  install_certificate: false
-
-  # Version (format: a.b.c.d)
-  msix_version: 1.0.0.0
-
-  # Branding
-  logo_path: Assets\Icon512x512.ico
-
-  # Capabilities - only what's needed
-  # Note: runFullTrust is automatically added by msix package for desktop apps
-  capabilities: internetClient
-
-  # Localization
-  languages: en-us
-
-  # Platform
-  architecture: x64
-  os_min_version: 10.0.17763.0 # Windows 10 1809+
-
-  # Distribution
-  store: false # Set to true when publishing to Microsoft Store
-
-  # Protocol handlers (for twitch:// URLs in future)
-  # protocol_activation: twitch
 
 sentry:
   upload_debug_symbols: true
