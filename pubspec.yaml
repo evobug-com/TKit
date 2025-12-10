@@ -45,7 +45,7 @@ dependencies:
 
   # Logging
   talker: ^5.1.5
-  talker_flutter: ^5.1.5
+  talker_flutter: ^5.1.6
 
   # Hotkeys
   hotkey_manager: ^0.2.3
