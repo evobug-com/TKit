@@ -44,7 +44,7 @@ dependencies:
   file_picker: ^10.3.7
 
   # Logging
-  talker: ^5.1.5
+  talker: ^5.1.8
   talker_flutter: ^5.1.5
 
   # Hotkeys
