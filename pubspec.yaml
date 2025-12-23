@@ -53,7 +53,7 @@ dependencies:
   # Version info
   package_info_plus: ^9.0.0
 
-  gpt_markdown: ^1.1.4
+  gpt_markdown: ^1.1.5
   hooks_riverpod: ^3.0.3
   flutter_hooks: ^0.21.3+1
   riverpod_annotation: ^3.0.3
